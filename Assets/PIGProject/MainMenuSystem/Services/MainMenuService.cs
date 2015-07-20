@@ -74,8 +74,9 @@ public class MainMenuService : MainMenuServiceBase
         var screen = screens.FirstOrDefault(s => s.GetType() == screenType); 
         
         //Deactivate all the screens
-        screens.ToList().ForEach( s => s.IsActive = false );
-        
+        //screens.ToList().ForEach( s => s.IsActive = false );
+		screens.Where(s=> s.GetType() != screenType).ToList().ForEach( s => s.IsActive = false );
+
         //If screen of matching type is found - activate is
         if (screen != null) screen.IsActive = true;
     }

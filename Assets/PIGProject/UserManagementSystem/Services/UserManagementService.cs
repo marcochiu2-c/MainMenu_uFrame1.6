@@ -17,7 +17,9 @@ public class UserManagementService : UserManagementServiceBase
     public override void Setup()
     {
         base.Setup();
-        LocalUser.AuthorizationState = AuthorizationState.Unauthorized;
+		// for develop only
+		LocalUser.AuthorizationState = AuthorizationState.Authorized;
+        //LocalUser.AuthorizationState = AuthorizationState.Unauthorized;
     }
 
     public void AuthorizeLocalUser(string Username, string Password)
