@@ -22,7 +22,7 @@ public class UserManagementService : UserManagementServiceBase
 
     public void AuthorizeLocalUser(string Username, string Password)
     {
-        if (Username == "pig" && Password == "pig")
+        if (Username != "pig" && Password != "pig")
         {
             Debug.Log("authorized in service");     
             LocalUser.AuthorizationState = AuthorizationState.Authorized;
