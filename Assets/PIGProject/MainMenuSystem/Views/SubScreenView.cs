@@ -9,6 +9,7 @@ using uFrame.MVVM.Bindings;
 using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
+using DG.Tweening;
 
 
 
@@ -42,9 +43,29 @@ public class SubScreenView : SubScreenViewBase
          * However, in this example we simply use public property to get a reference to ScreenUIContainer.
          * So we do not have to cache anything.
          */
-        ScreenUIContainer.gameObject.SetActive(active);
-    }
+		//Default 
+		ScreenUIContainer.gameObject.SetActive(active);
+		
+		///<summary>
+		/// 
+		///</summary>
+		Debug.Log(ScreenUIContainer.name);
+		
 
+		if(ScreenUIContainer.name == "LoginScreenPanel"){
+			return;
+		}
 
+		//else if(LocalUser.AuthorizationState == AuthorizationState.Authorized){
 
+			if (ScreenUIContainer.name == "MainMenuPanel"){
+				ScreenUIContainer.gameObject.SetActive(active);
+			}
+
+			else if(active)
+				ScreenUIContainer.transform.DOMove(new Vector3(-150, 0, 0), 1).SetEase(Ease.OutSine).SetRelative();
+			else
+				ScreenUIContainer.transform.DOMove(new Vector3(150, 0, 0), 1).SetEase(Ease.OutSine).SetRelative();
+
+	}
 }
