@@ -22,10 +22,12 @@ public class SubScreenView : SubScreenViewBase
 {
 
     public GameObject ScreenUIContainer;
+	//public GameObject DisableScreenContianer;
 
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
+		//DisableScreenContianer.gameObject.SetActive(false);
     }
 
     public override void Bind() {
@@ -64,19 +66,22 @@ public class SubScreenView : SubScreenViewBase
 			}
 
 		else if(active){
-			ScreenUIContainer.gameObject.SetActive(active);
-			ScreenUIContainer.transform.DOMove(new Vector3(120, 61, 4), 1, true).SetEase(Ease.OutSine);
+			//ScreenUIContainer.gameObject.SetActive(active);
+			ScreenUIContainer.transform.DOMove(new Vector3(120, 61, 4), 1, true).SetEase(Ease.OutSine).OnStart(()=>DisablePanel(active));
 			Debug.Log (ScreenUIContainer.name + " actived");
 		}
 		else{
-			ScreenUIContainer.transform.DOMove(new Vector3(300, 61, 4), 1, true).SetEase(Ease.OutSine).OnComplete(()=>HidePanel(active));
+			ScreenUIContainer.transform.DOMove(new Vector3(300, 61, 4), 1, true).SetEase(Ease.OutSine).OnComplete(()=>DisablePanel(active));
 			Debug.Log (ScreenUIContainer.name + " not actived");
 		}
+
+
 	}
 
-	private void HidePanel(Boolean active){
+	private void DisablePanel(Boolean active){
 		ScreenUIContainer.gameObject.SetActive(active);
-		Debug.Log (ScreenUIContainer.name + " run from HidePanel");
+		//DisableScreenContianer.gameObject.SetActive(!active);
+		Debug.Log ("DisPanel runs from " + ScreenUIContainer.name);
 	}
 	
 }

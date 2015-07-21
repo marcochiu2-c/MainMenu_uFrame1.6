@@ -15,10 +15,12 @@ using UnityEngine.UI;
 public class MenuScreenView : MenuScreenViewBase
 {
 
-    public Button LevelSelectButton;
+	public Button LevelSelectButton;
+	//public Button LevelSelectButton;
     public Button SettingsButton;
     public Button ExitButton;
 	public Button NoticeButton;
+	//public Image TestArea;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
