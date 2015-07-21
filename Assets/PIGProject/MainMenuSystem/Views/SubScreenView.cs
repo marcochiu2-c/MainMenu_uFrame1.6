@@ -44,12 +44,12 @@ public class SubScreenView : SubScreenViewBase
          * So we do not have to cache anything.
          */
 		//Default 
-		ScreenUIContainer.gameObject.SetActive(active);
+		//ScreenUIContainer.gameObject.SetActive(active);
 		
 		///<summary>
 		/// 
 		///</summary>
-		Debug.Log(ScreenUIContainer.name);
+		//Debug.Log(ScreenUIContainer.name);
 		
 
 		if(ScreenUIContainer.name == "LoginScreenPanel"){
@@ -58,14 +58,25 @@ public class SubScreenView : SubScreenViewBase
 
 		//else if(LocalUser.AuthorizationState == AuthorizationState.Authorized){
 
-			if (ScreenUIContainer.name == "MainMenuPanel"){
+		else if (ScreenUIContainer.name == "MainMenuPanel"){
 				ScreenUIContainer.gameObject.SetActive(active);
+
 			}
 
-			else if(active)
-				ScreenUIContainer.transform.DOMove(new Vector3(-150, 0, 0), 1).SetEase(Ease.OutSine).SetRelative();
-			else
-				ScreenUIContainer.transform.DOMove(new Vector3(150, 0, 0), 1).SetEase(Ease.OutSine).SetRelative();
-
+		else if(active){
+			ScreenUIContainer.gameObject.SetActive(active);
+			ScreenUIContainer.transform.DOMove(new Vector3(120, 61, 4), 1, true).SetEase(Ease.OutSine);
+			Debug.Log (ScreenUIContainer.name + " actived");
+		}
+		else{
+			ScreenUIContainer.transform.DOMove(new Vector3(300, 61, 4), 1, true).SetEase(Ease.OutSine).OnComplete(()=>HidePanel(active));
+			Debug.Log (ScreenUIContainer.name + " not actived");
+		}
 	}
+
+	private void HidePanel(Boolean active){
+		ScreenUIContainer.gameObject.SetActive(active);
+		Debug.Log (ScreenUIContainer.name + " run from HidePanel");
+	}
+	
 }
