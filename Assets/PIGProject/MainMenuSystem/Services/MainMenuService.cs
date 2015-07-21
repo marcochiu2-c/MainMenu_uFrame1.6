@@ -16,7 +16,7 @@ public class MainMenuService : MainMenuServiceBase
     //Inject MainMenuRoot view model with id "MainMenuRoot"
     [Inject("MainMenuRoot")] public MainMenuRootViewModel MainMenuRoot;
     [Inject("LocalUser")] public UserViewModel LocalUser;
-	public GameObject DisablePanel;
+	[Inject] public GameObject DisablePanel;
 
     //Invoked when kernel is loading to prepare the service
 
@@ -65,6 +65,9 @@ public class MainMenuService : MainMenuServiceBase
 
     private void ChangeMainMenuScreen(Type screenType)
     {	
+
+		DisablePanel = GameObject.Find ("DisablePanel");
+
 		Debug.Log(string.Format("Screen type changed to {0}", screenType == null ? "null" : screenType.Name));
 
         //Cast to IEnumerable to avoid ambiguosity between UniRX and Collections namespaces

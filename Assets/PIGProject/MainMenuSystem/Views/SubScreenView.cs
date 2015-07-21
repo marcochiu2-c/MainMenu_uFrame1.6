@@ -68,11 +68,11 @@ public class SubScreenView : SubScreenViewBase
 		else if(active){
 			//ScreenUIContainer.gameObject.SetActive(active);
 			ScreenUIContainer.transform.DOMove(new Vector3(120, 61, 4), 1, true).SetEase(Ease.OutSine).OnStart(()=>DisablePanel(active));
-			Debug.Log (ScreenUIContainer.name + " actived");
+			//Debug.Log (ScreenUIContainer.name + " actived");
 		}
 		else{
 			ScreenUIContainer.transform.DOMove(new Vector3(300, 61, 4), 1, true).SetEase(Ease.OutSine).OnComplete(()=>DisablePanel(active));
-			Debug.Log (ScreenUIContainer.name + " not actived");
+			//Debug.Log (ScreenUIContainer.name + " not actived");
 		}
 
 
@@ -81,7 +81,7 @@ public class SubScreenView : SubScreenViewBase
 	private void DisablePanel(Boolean active){
 		ScreenUIContainer.gameObject.SetActive(active);
 		//DisableScreenContianer.gameObject.SetActive(!active);
-		Debug.Log ("DisPanel runs from " + ScreenUIContainer.name);
+		//Debug.Log ("DisPanel runs from " + ScreenUIContainer.name);
 	}
 	
 }
