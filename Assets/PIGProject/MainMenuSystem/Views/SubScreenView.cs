@@ -59,24 +59,26 @@ public class SubScreenView : SubScreenViewBase
 		//else if(LocalUser.AuthorizationState == AuthorizationState.Authorized){
 
 		else if (ScreenUIContainer.name == "MainMenuPanel"){
-				ScreenUIContainer.gameObject.SetActive(active);
-
+				//ScreenUIContainer.gameObject.SetActive(active);
 			}
 
 		else if(active){
-			ScreenUIContainer.gameObject.SetActive(active);
-			ScreenUIContainer.transform.DOMove(new Vector3(120, 61, 4), 1, true).SetEase(Ease.OutSine);
-			Debug.Log (ScreenUIContainer.name + " actived");
+			ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>DisablePanel(active));
+			//ScreenUIContainer.transform.DOMove(new Vector3(120, 61, 4), 1, true).SetEase(Ease.OutSine).OnStart(()=>DisablePanel(active));
+			//Debug.Log (ScreenUIContainer.name + " actived");
 		}
 		else{
-			ScreenUIContainer.transform.DOMove(new Vector3(300, 61, 4), 1, true).SetEase(Ease.OutSine).OnComplete(()=>HidePanel(active));
-			Debug.Log (ScreenUIContainer.name + " not actived");
+			ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>DisablePanel(active));
+			//ScreenUIContainer.transform.DOMove(new Vector3(300, 61, 4), 1, true).SetEase(Ease.OutSine).OnComplete(()=>DisablePanel(active));
+			//Debug.Log (ScreenUIContainer.name + " not actived");
 		}
+
+
 	}
 
-	private void HidePanel(Boolean active){
+	private void DisablePanel(Boolean active){
 		ScreenUIContainer.gameObject.SetActive(active);
-		Debug.Log (ScreenUIContainer.name + " run from HidePanel");
+		//Debug.Log ("DisPanel runs from " + ScreenUIContainer.name);
 	}
 	
 }

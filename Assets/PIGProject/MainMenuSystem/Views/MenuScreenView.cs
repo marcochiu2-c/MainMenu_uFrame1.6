@@ -14,11 +14,13 @@ using UnityEngine.UI;
 
 public class MenuScreenView : MenuScreenViewBase
 {
-
-    public Button LevelSelectButton;
+	public GameObject DisablePanel;
+	public Button LevelSelectButton;
+	//public Button LevelSelectButton;
     public Button SettingsButton;
     public Button ExitButton;
 	public Button NoticeButton;
+	//public Image TestArea;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -63,4 +65,12 @@ public class MenuScreenView : MenuScreenViewBase
 
 		//this.BindButtonToHandler(TryButton, Application.Quit);
     }
+
+	public override void IsActiveChanged(Boolean active)
+	{
+		base.IsActiveChanged(active);
+		DisablePanel.gameObject.SetActive(!active);
+	}
+
+
 }

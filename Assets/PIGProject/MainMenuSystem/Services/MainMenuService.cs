@@ -16,13 +16,15 @@ public class MainMenuService : MainMenuServiceBase
     //Inject MainMenuRoot view model with id "MainMenuRoot"
     [Inject("MainMenuRoot")] public MainMenuRootViewModel MainMenuRoot;
     [Inject("LocalUser")] public UserViewModel LocalUser;
+	//public GameObject DisablePanel;
 
     //Invoked when kernel is loading to prepare the service
+
     public override void Setup()
     {
         base.Setup();
-        
-        //Every time CurrentScreenType changes, invoke ChangeMainMenuScreen and pass it a new value
+			
+		//Every time CurrentScreenType changes, invoke ChangeMainMenuScreen and pass it a new value
         MainMenuRoot.CurrentScreenTypeProperty.Subscribe(ChangeMainMenuScreen);
 
         //Every time new Screen is added to the Screens collection, invoke ScreenAdded and pass the new screen
@@ -36,7 +38,12 @@ public class MainMenuService : MainMenuServiceBase
             .StartWith(LocalUser.AuthorizationState) //Force subscribtion to be triggered immediately with the current value
             .Subscribe(OnAuthorizationStateChanged);
 
+		FindObject ();
     }
+
+	private void FindObject(){
+		//DisablePanel = GameObject.Find ("DisablePanel");
+	}
 
     private void OnAuthorizationStateChanged(AuthorizationState state)
     {
@@ -63,9 +70,8 @@ public class MainMenuService : MainMenuServiceBase
     }
 
     private void ChangeMainMenuScreen(Type screenType)
-    {
-
-        Debug.Log(string.Format("Screen type changed to {0}", screenType == null ? "null" : screenType.Name));
+    {	
+		Debug.Log(string.Format("Screen type changed to {0}", screenType == null ? "null" : screenType.Name));
 
         //Cast to IEnumerable to avoid ambiguosity between UniRX and Collections namespaces
         var screens = MainMenuRoot.Screens as IEnumerable<SubScreenViewModel>; 
@@ -78,7 +84,13 @@ public class MainMenuService : MainMenuServiceBase
 		screens.Where(s=> s.GetType() != screenType).ToList().ForEach( s => s.IsActive = false );
 
         //If screen of matching type is found - activate is
-        if (screen != null) screen.IsActive = true;
+		if (screen != null) screen.IsActive = true;
+
+		//Disable all the event behind the Current Screen by a Panel
+		//if(DisablePanel != null){
+		//	if (screenType.Name != "MenuScreenViewModel") DisablePanel.gameObject.SetActive(true);
+		//	else DisablePanel.gameObject.SetActive(false);
+		//}
     }
 
     public override void RequestMainMenuScreenCommandHandler(RequestMainMenuScreenCommand data)
