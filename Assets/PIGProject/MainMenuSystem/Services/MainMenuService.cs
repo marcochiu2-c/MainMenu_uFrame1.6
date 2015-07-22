@@ -16,7 +16,7 @@ public class MainMenuService : MainMenuServiceBase
     //Inject MainMenuRoot view model with id "MainMenuRoot"
     [Inject("MainMenuRoot")] public MainMenuRootViewModel MainMenuRoot;
     [Inject("LocalUser")] public UserViewModel LocalUser;
-	[Inject] public GameObject DisablePanel;
+	//public GameObject DisablePanel;
 
     //Invoked when kernel is loading to prepare the service
 
@@ -37,7 +37,13 @@ public class MainMenuService : MainMenuServiceBase
         LocalUser.AuthorizationStateProperty
             .StartWith(LocalUser.AuthorizationState) //Force subscribtion to be triggered immediately with the current value
             .Subscribe(OnAuthorizationStateChanged);
+
+		FindObject ();
     }
+
+	private void FindObject(){
+		//DisablePanel = GameObject.Find ("DisablePanel");
+	}
 
     private void OnAuthorizationStateChanged(AuthorizationState state)
     {
@@ -65,9 +71,6 @@ public class MainMenuService : MainMenuServiceBase
 
     private void ChangeMainMenuScreen(Type screenType)
     {	
-
-		DisablePanel = GameObject.Find ("DisablePanel");
-
 		Debug.Log(string.Format("Screen type changed to {0}", screenType == null ? "null" : screenType.Name));
 
         //Cast to IEnumerable to avoid ambiguosity between UniRX and Collections namespaces
@@ -84,10 +87,10 @@ public class MainMenuService : MainMenuServiceBase
 		if (screen != null) screen.IsActive = true;
 
 		//Disable all the event behind the Current Screen by a Panel
-		if(DisablePanel != null){
-			if (screenType.Name != "MenuScreenViewModel") DisablePanel.gameObject.SetActive(true);
-			else DisablePanel.gameObject.SetActive(false);
-		}
+		//if(DisablePanel != null){
+		//	if (screenType.Name != "MenuScreenViewModel") DisablePanel.gameObject.SetActive(true);
+		//	else DisablePanel.gameObject.SetActive(false);
+		//}
     }
 
     public override void RequestMainMenuScreenCommandHandler(RequestMainMenuScreenCommand data)

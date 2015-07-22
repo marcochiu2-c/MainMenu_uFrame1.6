@@ -22,12 +22,10 @@ public class SubScreenView : SubScreenViewBase
 {
 
     public GameObject ScreenUIContainer;
-	//public GameObject DisableScreenContianer;
 
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
-		//DisableScreenContianer.gameObject.SetActive(false);
     }
 
     public override void Bind() {
@@ -61,17 +59,17 @@ public class SubScreenView : SubScreenViewBase
 		//else if(LocalUser.AuthorizationState == AuthorizationState.Authorized){
 
 		else if (ScreenUIContainer.name == "MainMenuPanel"){
-				ScreenUIContainer.gameObject.SetActive(active);
-
+				//ScreenUIContainer.gameObject.SetActive(active);
 			}
 
 		else if(active){
-			//ScreenUIContainer.gameObject.SetActive(active);
-			ScreenUIContainer.transform.DOMove(new Vector3(120, 61, 4), 1, true).SetEase(Ease.OutSine).OnStart(()=>DisablePanel(active));
+			ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>DisablePanel(active));
+			//ScreenUIContainer.transform.DOMove(new Vector3(120, 61, 4), 1, true).SetEase(Ease.OutSine).OnStart(()=>DisablePanel(active));
 			//Debug.Log (ScreenUIContainer.name + " actived");
 		}
 		else{
-			ScreenUIContainer.transform.DOMove(new Vector3(300, 61, 4), 1, true).SetEase(Ease.OutSine).OnComplete(()=>DisablePanel(active));
+			ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>DisablePanel(active));
+			//ScreenUIContainer.transform.DOMove(new Vector3(300, 61, 4), 1, true).SetEase(Ease.OutSine).OnComplete(()=>DisablePanel(active));
 			//Debug.Log (ScreenUIContainer.name + " not actived");
 		}
 
@@ -80,7 +78,6 @@ public class SubScreenView : SubScreenViewBase
 
 	private void DisablePanel(Boolean active){
 		ScreenUIContainer.gameObject.SetActive(active);
-		//DisableScreenContianer.gameObject.SetActive(!active);
 		//Debug.Log ("DisPanel runs from " + ScreenUIContainer.name);
 	}
 	
