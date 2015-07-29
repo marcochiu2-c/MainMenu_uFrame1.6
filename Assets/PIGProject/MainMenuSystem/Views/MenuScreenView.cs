@@ -50,7 +50,7 @@ public class MenuScreenView : MenuScreenViewBase
         });
 
 		this.BindButtonToHandler(NoticeButton, () =>
-		                         {
+		{
 			Publish(new RequestMainMenuScreenCommand()
 			        {
 				ScreenType = typeof(NoticeScreenViewModel)
@@ -69,7 +69,7 @@ public class MenuScreenView : MenuScreenViewBase
 	public override void IsActiveChanged(Boolean active)
 	{
 		base.IsActiveChanged(active);
-		DisablePanel.gameObject.SetActive(!active);
+		//DisablePanel.gameObject.SetActive(!active);
 	}
 
 
