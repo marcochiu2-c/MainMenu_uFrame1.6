@@ -64,25 +64,19 @@ public class SubScreenView : SubScreenViewBase
 
 		else if(active){
 			if(ScreenUIContainer.name == "SettingsPanel")
-				ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>DisablePanel(active));
+				ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>ScreenUIContainer.gameObject.SetActive(true));
 			else
-			ScreenUIContainer.transform.DOMove(new Vector3(134, 53, -2.5f), 0.5f).SetEase(Ease.OutSine).OnStart(()=>DisablePanel(active));
+				ScreenUIContainer.transform.DOMove(new Vector3(134, 53, -2.5f), 0.5f).SetEase(Ease.OutSine).OnStart(()=>ScreenUIContainer.gameObject.SetActive(true));
 			//Debug.Log (ScreenUIContainer.name + " actived");
 		}
 		else{
 			if(ScreenUIContainer.name == "SettingsPanel")
-				ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>DisablePanel(active));
+						ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
 			else
-				ScreenUIContainer.transform.DOMove(new Vector3(134, -80, -2.5f), 0.5f).SetEase(Ease.OutSine).OnComplete(()=>DisablePanel(active));
+						ScreenUIContainer.transform.DOMove(new Vector3(134, -80, -2.5f), 0.5f).SetEase(Ease.OutSine).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
 			//Debug.Log (ScreenUIContainer.name + " not actived");
 		}
 
-
 	}
-
-	private void DisablePanel(Boolean active){
-		ScreenUIContainer.gameObject.SetActive(active);
-		//Debug.Log ("DisPanel runs from " + ScreenUIContainer.name);
-	}
-	
+					
 }
