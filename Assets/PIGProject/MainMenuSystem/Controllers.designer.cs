@@ -15,8 +15,8 @@ using System.Linq;
 using uFrame.MVVM;
 using uFrame.Kernel;
 using uFrame.IOC;
-using uFrame.Serialization;
 using UniRx;
+using uFrame.Serialization;
 
 
 public class MainMenuRootControllerBase : uFrame.MVVM.Controller {
@@ -424,11 +424,19 @@ public class NoticeScreenControllerBase : SubScreenController {
     
     public virtual void InitializeNoticeScreen(NoticeScreenViewModel viewModel) {
         // This is called when a NoticeScreenViewModel is created
+        viewModel.Sign.Action = this.SignHandler;
         NoticeScreenViewModelManager.Add(viewModel);
     }
     
     public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
         base.DisposingViewModel(viewModel);
         NoticeScreenViewModelManager.Remove(viewModel);
+    }
+    
+    public virtual void Sign(NoticeScreenViewModel viewModel) {
+    }
+    
+    public virtual void SignHandler(SignCommand command) {
+        this.Sign(command.Sender as NoticeScreenViewModel);
     }
 }

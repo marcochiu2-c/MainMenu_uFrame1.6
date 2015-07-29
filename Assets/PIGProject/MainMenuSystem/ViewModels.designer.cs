@@ -478,12 +478,24 @@ public partial class MenuScreenViewModel {
 
 public partial class NoticeScreenViewModelBase : SubScreenViewModel {
     
+    private Signal<SignCommand> _Sign;
+    
     public NoticeScreenViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
     
+    public virtual Signal<SignCommand> Sign {
+        get {
+            return _Sign;
+        }
+        set {
+            _Sign = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
+        this.Sign = new Signal<SignCommand>(this);
     }
     
     public override void Read(ISerializerStream stream) {
@@ -496,6 +508,7 @@ public partial class NoticeScreenViewModelBase : SubScreenViewModel {
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
         base.FillCommands(list);
+        list.Add(new ViewModelCommandInfo("Sign", Sign) { ParameterType = typeof(void) });
     }
     
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {

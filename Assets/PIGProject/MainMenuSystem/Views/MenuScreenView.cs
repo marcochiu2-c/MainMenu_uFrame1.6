@@ -16,7 +16,6 @@ public class MenuScreenView : MenuScreenViewBase
 {
 	public GameObject DisablePanel;
 	public Button LevelSelectButton;
-	//public Button LevelSelectButton;
     public Button SettingsButton;
     public Button ExitButton;
 	public Button NoticeButton;
@@ -33,28 +32,28 @@ public class MenuScreenView : MenuScreenViewBase
         // When button is clicked, handler is excuted
         // Ex: When we press LevelSelectButton, we publish
         // RequestMainMenuScreenCommand and pass LevelSelectScreenViewModel type
+		var evt = new RequestMainMenuScreenCommand();
+
         this.BindButtonToHandler(LevelSelectButton, () =>
         {
-            Publish(new RequestMainMenuScreenCommand()
-            {
-                ScreenType = typeof(LevelSelectScreenViewModel)
-            });
+			evt.ScreenType = typeof(LevelSelectScreenViewModel);
+			Publish(evt);
+			//Publish(new RequestMainMenuScreenCommand()
+            //{
+            //    ScreenType = typeof(LevelSelectScreenViewModel)
+            //});
         });
 
         this.BindButtonToHandler(SettingsButton, () =>
         {
-            Publish(new RequestMainMenuScreenCommand()
-            {
-                ScreenType = typeof(SettingsScreenViewModel)
-            });
+			evt.ScreenType = typeof(SettingsScreenViewModel);
+			Publish(evt);
         });
 
 		this.BindButtonToHandler(NoticeButton, () =>
 		{
-			Publish(new RequestMainMenuScreenCommand()
-			        {
-				ScreenType = typeof(NoticeScreenViewModel)
-			});
+			evt.ScreenType = typeof(NoticeScreenViewModel);
+			Publish(evt);
 		});
 
         // This follows the same logic, but we use Method Group syntax.

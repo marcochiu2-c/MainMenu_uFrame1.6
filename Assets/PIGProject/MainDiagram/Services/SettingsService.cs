@@ -11,11 +11,23 @@ using uFrame.MVVM;
 
 public class SettingsService : SettingsServiceBase {
 
+	public float DefaultVolume
+	{
+		get { return 0.6f; }
+	}
+	
+	public ResolutionInformation DefaultResolution
+	{
+		get { return GetAvailableResolutions().First(); }
+	}
 
-    //Simple property which works of PlayerPrefs
-    public float Volume
+	//Simple property which works of PlayerPrefs
+	public float Volume
     {
-        get { return PlayerPrefs.GetFloat("Settings_Volume", 0.5f); }
+        get 
+		{ 
+			return PlayerPrefs.GetFloat("Settings_Volume", DefaultVolume); 
+		}
         set
         {
             PlayerPrefs.SetFloat("Settings_Volume",value);
@@ -40,9 +52,9 @@ public class SettingsService : SettingsServiceBase {
             else
             {
                 //return default value, if player never changed settings
-                return AvailableResolutions.First();
-            }
-        }
+				return DefaultResolution;
+			}
+		}
         set
         {
             //Serialize

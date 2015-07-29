@@ -483,6 +483,16 @@ public class MenuScreenViewBase : SubScreenView {
 
 public class NoticeScreenViewBase : SubScreenView {
     
+    [UFToggleGroup("Sign")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindSign = true;
+    
+    [UFGroup("Sign")]
+    [UnityEngine.SerializeField()]
+    [UnityEngine.HideInInspector()]
+    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_Signbutton")]
+    protected UnityEngine.UI.Button _SignButton;
+    
     public override string DefaultIdentifier {
         get {
             return base.DefaultIdentifier;
@@ -513,5 +523,17 @@ public class NoticeScreenViewBase : SubScreenView {
         // Use this.NoticeScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+        if (_BindSign) {
+            this.BindButtonToCommand(_SignButton, this.NoticeScreen.Sign);
+        }
+    }
+    
+    public virtual void ExecuteSign() {
+        NoticeScreen.Sign.OnNext(new SignCommand() { Sender = NoticeScreen });
+    }
+    
+    public virtual void ExecuteSign(SignCommand command) {
+        command.Sender = NoticeScreen;
+        NoticeScreen.Sign.OnNext(command);
     }
 }

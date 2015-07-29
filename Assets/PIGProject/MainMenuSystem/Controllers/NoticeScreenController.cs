@@ -7,6 +7,7 @@ using uFrame.Kernel;
 using uFrame.IOC;
 using uFrame.Serialization;
 using UniRx;
+using UnityEngine;
 
 
 public class NoticeScreenController : NoticeScreenControllerBase {
@@ -15,4 +16,10 @@ public class NoticeScreenController : NoticeScreenControllerBase {
         base.InitializeNoticeScreen(viewModel);
         // This is called when a NoticeScreenViewModel is created
     }
+
+	public override void Sign(NoticeScreenViewModel viewModel) {
+		base.Sign(viewModel);
+		//TODO
+		Debug.Log("You have signed");
+	}
 }

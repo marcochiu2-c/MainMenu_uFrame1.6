@@ -48,5 +48,7 @@ public class SettingsScreenController : SettingsScreenControllerBase
      */
     public override void Default(SettingsScreenViewModel viewModel) {
         base.Default(viewModel);
-    }
+		viewModel.Volume = SettingsService.Volume = SettingsService.DefaultVolume;
+		viewModel.Resolution= SettingsService.Resolution = SettingsService.DefaultResolution;
+	}
 }
