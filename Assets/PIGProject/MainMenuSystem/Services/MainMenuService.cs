@@ -52,11 +52,11 @@ public class MainMenuService : MainMenuServiceBase
         {
             case AuthorizationState.Authorized:
                 //Show menu if user is authorized
-                MainMenuRoot.CurrentScreenType = typeof (MenuScreenViewModel);
+				MainMenuRoot.CurrentScreenType = typeof (MenuScreenViewModel);
                 break;
             case AuthorizationState.Unauthorized:
                 //Show login screen if user is unauthorized
-                MainMenuRoot.CurrentScreenType = typeof (LoginScreenViewModel);
+				MainMenuRoot.CurrentScreenType = typeof (LoginScreenViewModel);
                 break;
             default:
                 throw new ArgumentOutOfRangeException("state", state, null);

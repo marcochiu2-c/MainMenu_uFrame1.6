@@ -10,7 +10,7 @@ using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
 using DG.Tweening;
-
+using uFrame.IOC;
 
 
 /*
@@ -22,7 +22,7 @@ public class SubScreenView : SubScreenViewBase
 {
 
     public GameObject ScreenUIContainer;
-
+	[Inject("LocalUser")] public UserViewModel LocalUser;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -53,13 +53,14 @@ public class SubScreenView : SubScreenViewBase
 		
 
 		if(ScreenUIContainer.name == "LoginScreenPanel"){
-			return;
+			ScreenUIContainer.gameObject.SetActive(active);
 		}
 
-		//else if(LocalUser.AuthorizationState == AuthorizationState.Authorized){
+		//if(LocalUser != null && LocalUser.AuthorizationState == AuthorizationState.Authorized){
 
-		else if (ScreenUIContainer.name == "MainMenuPanel"){
-				//ScreenUIContainer.gameObject.SetActive(active);
+		if (ScreenUIContainer.name == "MainMenuPanel"){
+				ScreenUIContainer.gameObject.SetActive(true);
+				//Debug.Log ("Hello from MainMenuPanel codition");
 			}
 
 		else if(active){
@@ -76,7 +77,6 @@ public class SubScreenView : SubScreenViewBase
 						ScreenUIContainer.transform.DOMove(new Vector3(134, -80, -2.5f), 0.5f).SetEase(Ease.OutSine).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
 			//Debug.Log (ScreenUIContainer.name + " not actived");
 		}
-
+		//}						
 	}
-					
 }
