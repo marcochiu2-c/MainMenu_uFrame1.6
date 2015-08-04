@@ -78,3 +78,23 @@ public class SettingsServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
         base.Setup();
     }
 }
+
+public class NotificationServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
+    
+    /// <summary>
+    /// This method is invoked whenever the kernel is loading.
+    /// Since the kernel lives throughout the entire lifecycle of the game, this will only be invoked once.
+    /// </summary>
+    public override void Setup() {
+        base.Setup();
+        this.OnEvent<NotifyCommand>().Subscribe(this.NotifyCommandHandler);
+    }
+    
+    /// <summary>
+    // This method is executed when using this.Publish(new NotifyCommand())
+    /// </summary>
+    public virtual void NotifyCommandHandler(NotifyCommand data) {
+        // Process the commands information.  Also, you can publish new events by using the line below.
+        // this.Publish(new AnotherEvent())
+    }
+}

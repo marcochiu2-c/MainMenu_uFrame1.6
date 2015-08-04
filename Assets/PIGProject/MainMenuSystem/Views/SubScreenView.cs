@@ -63,6 +63,11 @@ public class SubScreenView : SubScreenViewBase
 				//Debug.Log ("Hello from MainMenuPanel codition");
 			}
 
+		else if (ScreenUIContainer.name == "LevelSelectPanel"){
+				ScreenUIContainer.gameObject.SetActive(active);
+				//Debug.Log ("Hello from MainMenuPanel codition");
+		}
+
 		else if(active){
 			if(ScreenUIContainer.name == "SettingsPanel")
 				ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>ScreenUIContainer.gameObject.SetActive(true));

@@ -440,3 +440,53 @@ public class NoticeScreenControllerBase : SubScreenController {
         this.Sign(command.Sender as NoticeScreenViewModel);
     }
 }
+
+public class SampleScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _SampleScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("SampleScreen")]
+    public uFrame.MVVM.IViewModelManager SampleScreenViewModelManager {
+        get {
+            return _SampleScreenViewModelManager;
+        }
+        set {
+            _SampleScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<SampleScreenViewModel> SampleScreenViewModels {
+        get {
+            return SampleScreenViewModelManager.OfType<SampleScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeSampleScreen(((SampleScreenViewModel)(viewModel)));
+    }
+    
+    public virtual SampleScreenViewModel CreateSampleScreen() {
+        return ((SampleScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new SampleScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeSampleScreen(SampleScreenViewModel viewModel) {
+        // This is called when a SampleScreenViewModel is created
+        SampleScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        SampleScreenViewModelManager.Remove(viewModel);
+    }
+}

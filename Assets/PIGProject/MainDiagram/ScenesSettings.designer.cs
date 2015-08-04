@@ -27,3 +27,6 @@ public class IntroSceneSettingsBase : SceneSettings<IntroScene> {
 
 public class AssetsLoadingSceneSettingsBase : SceneSettings<AssetsLoadingScene> {
 }
+
+public class NotificationUISceneSettingsBase : SceneSettings<NotificationUIScene> {
+}

@@ -537,3 +537,38 @@ public class NoticeScreenViewBase : SubScreenView {
         NoticeScreen.Sign.OnNext(command);
     }
 }
+
+public class SampleScreenViewBase : SubScreenView {
+    
+    public override string DefaultIdentifier {
+        get {
+            return base.DefaultIdentifier;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SampleScreenViewModel);
+        }
+    }
+    
+    public SampleScreenViewModel SampleScreen {
+        get {
+            return (SampleScreenViewModel)ViewModelObject;
+        }
+    }
+    
+    protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
+        base.InitializeViewModel(model);
+        // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
+        // var vm = model as SampleScreenViewModel;
+        // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        // Use this.SampleScreen to access the viewmodel.
+        // Use this method to subscribe to the view-model.
+        // Any designer bindings are created in the base implementation.
+    }
+}

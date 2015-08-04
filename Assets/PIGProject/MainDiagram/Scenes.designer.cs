@@ -133,3 +133,32 @@ public class AssetsLoadingSceneLoaderBase : SceneLoader<AssetsLoadingScene> {
         yield break;
     }
 }
+
+public class NotificationUISceneBase : uFrame.Kernel.Scene {
+    
+    public override string DefaultKernelScene {
+        get {
+            return "PIGProjectKernelScene";
+        }
+    }
+    
+    public virtual NotificationUISceneSettings Settings {
+        get {
+            return _SettingsObject as NotificationUISceneSettings;
+        }
+        set {
+            _SettingsObject = value;
+        }
+    }
+}
+
+public class NotificationUISceneLoaderBase : SceneLoader<NotificationUIScene> {
+    
+    protected override IEnumerator LoadScene(NotificationUIScene scene, Action<float, string> progressDelegate) {
+        yield break;
+    }
+    
+    protected override IEnumerator UnloadScene(NotificationUIScene scene, Action<float, string> progressDelegate) {
+        yield break;
+    }
+}

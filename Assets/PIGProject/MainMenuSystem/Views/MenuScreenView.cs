@@ -33,6 +33,7 @@ public class MenuScreenView : MenuScreenViewBase
         // Ex: When we press LevelSelectButton, we publish
         // RequestMainMenuScreenCommand and pass LevelSelectScreenViewModel type
 		var evt = new RequestMainMenuScreenCommand();
+		var evtPopUp = new NotifyCommand();
 
         this.BindButtonToHandler(LevelSelectButton, () =>
         {
