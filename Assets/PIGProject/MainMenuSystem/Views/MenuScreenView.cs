@@ -19,6 +19,7 @@ public class MenuScreenView : MenuScreenViewBase
     public Button SettingsButton;
     public Button ExitButton;
 	public Button NoticeButton;
+	public Button HeadButton;
 	//public Image TestArea;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
@@ -54,6 +55,12 @@ public class MenuScreenView : MenuScreenViewBase
 		this.BindButtonToHandler(NoticeButton, () =>
 		{
 			evt.ScreenType = typeof(NoticeScreenViewModel);
+			Publish(evt);
+		});
+
+		this.BindButtonToHandler(HeadButton, () =>
+		{
+			evt.ScreenType = typeof(SampleScreenViewModel);
 			Publish(evt);
 		});
 

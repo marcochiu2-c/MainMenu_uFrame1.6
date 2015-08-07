@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using uFrame.MVVM;
+using DG.Tweening;
 
 
 public class NotificationService : NotificationServiceBase {
@@ -25,8 +26,8 @@ public class NotificationService : NotificationServiceBase {
 
 		//Will invoke NotificationUISceneLoaded when such scene is loaded
 		this.OnEvent<SceneLoaderEvent>()
-			.Where (evt=>evt.SceneRoot as NotificationUIScene)
-				.Subscribe(evt => NotificationUISceneLoaded(evt.SceneRoot as NotificationUIScene));
+			.Where (evt=>evt.SceneRoot is NotificationUIScene)
+			.Subscribe(evt => NotificationUISceneLoaded(evt.SceneRoot as NotificationUIScene));
 	}
 
 	protected void NotificationUISceneLoaded(NotificationUIScene scene){
@@ -49,6 +50,35 @@ public class NotificationService : NotificationServiceBase {
 
 	IEnumerator ShowNotification(NotifyCommand notificationData){
 		//Construct prefab and cache uiItemCanvas
+		var uiItem = Instantiate (NotificationItemPrefab) as GameObject;
+
+		//var uiItemCanvas = uiItem.GetComponent<CanvasGroup>();
+
+		//Set text to message
+		uiItem.GetComponentInChildren<Text>().text = notificationData.Message;
+		
+		//Parent object to the Container
+		uiItem.transform.SetParent(UIContainer);
+
+		uiItem.transform.localScale = Vector3.zero;
+
+		uiItem.SetActive(false);
+
+		//yield return new WaitForSeconds(1);
+
+		//uiItem.transform.DOScale(Vector3.one, 2f).SetEase(Ease.InOutBack);
+		uiItem.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(() => uiItem.SetActive(true));
+
+		yield return new WaitForSeconds(1);
+
+		uiItem.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(() => Destroy(uiItem));
+
+
+	}
+	
+/*
+	IEnumerator ShowNotification(NotifyCommand notificationData){
+		//Construct prefab and cache uiItemCanvas
 		var uiItem = Instantiate (NotificationItemPrefab);
 		var uiItemCanvas = uiItem.GetComponent<CanvasGroup>();
 
@@ -68,7 +98,7 @@ public class NotificationService : NotificationServiceBase {
 		yield return StartCoroutine(Fade(uiItemCanvas, 1, 0.5f));
 		
 		//Let it be for 5 seconds
-		yield return new WaitForSeconds(1);
+		yield return new WaitForSeconds(5);
 		
 		//Fade Out
 		yield return StartCoroutine(Fade(uiItemCanvas, 0, 0.5f));
@@ -90,4 +120,5 @@ public class NotificationService : NotificationServiceBase {
 				yield return null;
 			}
 		}
+*/
 	}
