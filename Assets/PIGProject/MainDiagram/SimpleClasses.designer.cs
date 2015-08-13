@@ -144,3 +144,26 @@ public class NotifyCommandBase : object {
         var node = JSON.Parse(json);
     }
 }
+
+public class DialogueCommandBase : object {
+    
+    private String _ConversationName;
+    
+    public String ConversationName {
+        get {
+            return _ConversationName;
+        }
+        set {
+            _ConversationName = value;
+        }
+    }
+    
+    public virtual string Serialize() {
+        var jsonObject = new JSONClass();
+        return jsonObject.ToString();
+    }
+    
+    public virtual void Deserialize(string json) {
+        var node = JSON.Parse(json);
+    }
+}

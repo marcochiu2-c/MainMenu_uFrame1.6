@@ -30,3 +30,6 @@ public class AssetsLoadingSceneSettingsBase : SceneSettings<AssetsLoadingScene> 
 
 public class NotificationUISceneSettingsBase : SceneSettings<NotificationUIScene> {
 }
+
+public class DialogueSceneSettingsBase : SceneSettings<DialogueScene> {
+}

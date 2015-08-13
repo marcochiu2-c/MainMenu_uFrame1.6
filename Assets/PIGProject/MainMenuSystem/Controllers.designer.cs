@@ -12,11 +12,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using uFrame.MVVM;
-using uFrame.Kernel;
 using uFrame.IOC;
-using UniRx;
+using uFrame.Kernel;
+using uFrame.MVVM;
 using uFrame.Serialization;
+using UniRx;
 
 
 public class MainMenuRootControllerBase : uFrame.MVVM.Controller {

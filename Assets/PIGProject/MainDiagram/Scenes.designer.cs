@@ -162,3 +162,32 @@ public class NotificationUISceneLoaderBase : SceneLoader<NotificationUIScene> {
         yield break;
     }
 }
+
+public class DialogueSceneBase : uFrame.Kernel.Scene {
+    
+    public override string DefaultKernelScene {
+        get {
+            return "PIGProjectKernelScene";
+        }
+    }
+    
+    public virtual DialogueSceneSettings Settings {
+        get {
+            return _SettingsObject as DialogueSceneSettings;
+        }
+        set {
+            _SettingsObject = value;
+        }
+    }
+}
+
+public class DialogueSceneLoaderBase : SceneLoader<DialogueScene> {
+    
+    protected override IEnumerator LoadScene(DialogueScene scene, Action<float, string> progressDelegate) {
+        yield break;
+    }
+    
+    protected override IEnumerator UnloadScene(DialogueScene scene, Action<float, string> progressDelegate) {
+        yield break;
+    }
+}
