@@ -45,7 +45,8 @@ public class LevelSelectScreenController : LevelSelectScreenControllerBase
 
         Publish(new LoadSceneCommand()
         {
-            SceneName = arg.LevelScene // Load level scene
+            //SceneName = arg.LevelScene // Load level scene
+			SceneName = "MainGameScene" // Load level scene
         });
         
 		Publish(new NotifyCommand()

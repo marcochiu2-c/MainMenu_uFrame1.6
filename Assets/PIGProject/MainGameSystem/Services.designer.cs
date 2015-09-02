@@ -19,7 +19,7 @@ using uFrame.Kernel;
 using UnityEngine;
 
 
-public class LevelManagementServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
+public class MainGameServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
     
     /// <summary>
     /// This method is invoked whenever the kernel is loading.

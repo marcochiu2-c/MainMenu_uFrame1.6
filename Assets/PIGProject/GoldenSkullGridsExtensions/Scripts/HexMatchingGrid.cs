@@ -23,6 +23,7 @@ public class HexMatchingGrid : GridBehaviour<FlatHexPoint>
 	void Start () {
 		player.CurrentPointLocation = FlatHexPoint.Zero;
 		player.transform.position = new Vector3(Map[player.CurrentPointLocation].x, Map[player.CurrentPointLocation].y);
+		player.walkStyle = 0;
 		start = player.CurrentPointLocation;
 		//_playerPoint= startPoint;
 		
@@ -80,18 +81,19 @@ public class HexMatchingGrid : GridBehaviour<FlatHexPoint>
 			{
 				pathNode.Color = ExampleUtils.Colors[2];
 			}
+
 		}
 		
 		for(int i = 0; i < pathList.Count - 1; i++)
 		{
-			yield return StartCoroutine(Move (pathList[i], pathList[i+1]));
+			yield return StartCoroutine(Move (pathList[i], pathList[i+1], player.walkStyle));
 		}
-		//CallCommand();
+		CallCommand();
 	 }
 
 
 
-	public IEnumerator Move(FlatHexPoint currentPoint, FlatHexPoint endPoint){
+	public IEnumerator Move(FlatHexPoint currentPoint, FlatHexPoint endPoint, int walkStyle){
 		float time = 0;
 		const float totalTime = .3f;
 		
@@ -110,7 +112,17 @@ public class HexMatchingGrid : GridBehaviour<FlatHexPoint>
 		
 		player.CurrentPointLocation  = endPoint;
 		//yield return null;
-		yield return new WaitForSeconds(0.05f);
+		if(walkStyle == 0)
+			yield return new WaitForSeconds(0.05f);
+
+		else if(walkStyle == 1)
+			yield return new WaitForSeconds(0.1f);
+
+		else if(walkStyle == 2)
+			yield return new WaitForSeconds(0.2f);
+
+		else
+			yield return new WaitForSeconds(0.4f);
 	}
 	
 	public void CallCommand(){
@@ -128,7 +140,7 @@ public class HexMatchingGrid : GridBehaviour<FlatHexPoint>
 	{
 		public static Color ColorFromInt(int r, int g, int b)
 		{
-			return new Color(r/255.0f, g/255.0f, b/255.0f);
+			return new Color(r/255.0f, g/255.0f, b/255.0f, 0.5f);
 		}
 		
 		public static Color ColorFromInt(int r, int g, int b, int a)

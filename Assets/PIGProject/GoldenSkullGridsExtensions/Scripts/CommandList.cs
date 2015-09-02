@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CommandList : MonoBehaviour {
 
+	public Player player;
+
 	public void Attack()
 	{
 		//TODO
@@ -46,5 +48,25 @@ public class CommandList : MonoBehaviour {
 	public void Search()
 	{
 		//TODO
+	}
+
+	public void WalkStyle_Fast()
+	{
+		player.walkStyle = 0 ;
+	}
+
+	public void WalkStyle_Normal()
+	{
+		player.walkStyle = 1 ;
+	}
+
+	public void WalkStyle_Slow()
+	{
+		player.walkStyle = 2 ;
+	}
+
+	public void WalkStyle_Wait()
+	{
+		player.walkStyle = 3 ;
 	}
 }

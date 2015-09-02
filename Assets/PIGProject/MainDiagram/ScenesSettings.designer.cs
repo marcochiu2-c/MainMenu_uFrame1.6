@@ -33,3 +33,6 @@ public class NotificationUISceneSettingsBase : SceneSettings<NotificationUIScene
 
 public class DialogueSceneSettingsBase : SceneSettings<DialogueScene> {
 }
+
+public class MainGameSceneSettingsBase : SceneSettings<MainGameScene> {
+}

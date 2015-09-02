@@ -12,4 +12,10 @@ public class Player : MonoBehaviour {
 			get;
 			set;
 	}
+
+	public  int walkStyle
+	{
+		get;
+		set;
+	}
 }

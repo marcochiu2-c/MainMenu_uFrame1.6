@@ -191,3 +191,32 @@ public class DialogueSceneLoaderBase : SceneLoader<DialogueScene> {
         yield break;
     }
 }
+
+public class MainGameSceneBase : uFrame.Kernel.Scene {
+    
+    public override string DefaultKernelScene {
+        get {
+            return "PIGProjectKernelScene";
+        }
+    }
+    
+    public virtual MainGameSceneSettings Settings {
+        get {
+            return _SettingsObject as MainGameSceneSettings;
+        }
+        set {
+            _SettingsObject = value;
+        }
+    }
+}
+
+public class MainGameSceneLoaderBase : SceneLoader<MainGameScene> {
+    
+    protected override IEnumerator LoadScene(MainGameScene scene, Action<float, string> progressDelegate) {
+        yield break;
+    }
+    
+    protected override IEnumerator UnloadScene(MainGameScene scene, Action<float, string> progressDelegate) {
+        yield break;
+    }
+}

@@ -19,35 +19,23 @@ using uFrame.IOC;
 using UniRx;
 
 
-public class UserControllerBase : uFrame.MVVM.Controller {
+public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     
-    private uFrame.MVVM.IViewModelManager _UserViewModelManager;
+    private uFrame.MVVM.IViewModelManager _MainGameRootViewModelManager;
     
-    private UserViewModel _LocalUser;
-    
-    [uFrame.IOC.InjectAttribute("User")]
-    public uFrame.MVVM.IViewModelManager UserViewModelManager {
+    [uFrame.IOC.InjectAttribute("MainGameRoot")]
+    public uFrame.MVVM.IViewModelManager MainGameRootViewModelManager {
         get {
-            return _UserViewModelManager;
+            return _MainGameRootViewModelManager;
         }
         set {
-            _UserViewModelManager = value;
+            _MainGameRootViewModelManager = value;
         }
     }
     
-    [uFrame.IOC.InjectAttribute("LocalUser")]
-    public UserViewModel LocalUser {
+    public IEnumerable<MainGameRootViewModel> MainGameRootViewModels {
         get {
-            return _LocalUser;
-        }
-        set {
-            _LocalUser = value;
-        }
-    }
-    
-    public IEnumerable<UserViewModel> UserViewModels {
-        get {
-            return UserViewModelManager.OfType<UserViewModel>();
+            return MainGameRootViewModelManager.OfType<MainGameRootViewModel>();
         }
     }
     
@@ -59,24 +47,24 @@ public class UserControllerBase : uFrame.MVVM.Controller {
     public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
         base.Initialize(viewModel);
         // This is called when a viewmodel is created
-        this.InitializeUser(((UserViewModel)(viewModel)));
+        this.InitializeMainGameRoot(((MainGameRootViewModel)(viewModel)));
     }
     
-    public virtual UserViewModel CreateUser() {
-        return ((UserViewModel)(this.Create(Guid.NewGuid().ToString())));
+    public virtual MainGameRootViewModel CreateMainGameRoot() {
+        return ((MainGameRootViewModel)(this.Create(Guid.NewGuid().ToString())));
     }
     
     public override uFrame.MVVM.ViewModel CreateEmpty() {
-        return new UserViewModel(this.EventAggregator);
+        return new MainGameRootViewModel(this.EventAggregator);
     }
     
-    public virtual void InitializeUser(UserViewModel viewModel) {
-        // This is called when a UserViewModel is created
-        UserViewModelManager.Add(viewModel);
+    public virtual void InitializeMainGameRoot(MainGameRootViewModel viewModel) {
+        // This is called when a MainGameRootViewModel is created
+        MainGameRootViewModelManager.Add(viewModel);
     }
     
     public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
         base.DisposingViewModel(viewModel);
-        UserViewModelManager.Remove(viewModel);
+        MainGameRootViewModelManager.Remove(viewModel);
     }
 }
