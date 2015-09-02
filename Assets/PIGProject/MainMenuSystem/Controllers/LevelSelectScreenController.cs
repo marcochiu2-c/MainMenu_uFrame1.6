@@ -47,7 +47,10 @@ public class LevelSelectScreenController : LevelSelectScreenControllerBase
         {
             SceneName = arg.LevelScene // Load level scene
         });
-            
-
+        
+		Publish(new NotifyCommand()
+		{
+			Message = "Playing "+arg.Title
+		});
     }
 }

@@ -9,9 +9,12 @@ using uFrame.MVVM.Bindings;
 using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class NoticeScreenView : NoticeScreenViewBase {
+
+	//public Button SignButton;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -25,5 +28,12 @@ public class NoticeScreenView : NoticeScreenViewBase {
         // Use this.NoticeScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
-    }
+		//this.BindButtonToHandler(SignButton, () =>
+		//{                                           
+		//	Publish(new NotifyCommand()
+		//	{
+		//		Message = "Signed"
+		//	});
+		//});
+	}
 }

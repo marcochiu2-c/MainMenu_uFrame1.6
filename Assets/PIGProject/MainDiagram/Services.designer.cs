@@ -12,11 +12,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using uFrame.MVVM;
 using uFrame.IOC;
 using uFrame.Kernel;
-using UnityEngine;
 using UniRx;
-using uFrame.MVVM;
+using UnityEngine;
 
 
 public class SceneFlowServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
@@ -76,5 +76,45 @@ public class SettingsServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
     /// </summary>
     public override void Setup() {
         base.Setup();
+    }
+}
+
+public class NotificationServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
+    
+    /// <summary>
+    /// This method is invoked whenever the kernel is loading.
+    /// Since the kernel lives throughout the entire lifecycle of the game, this will only be invoked once.
+    /// </summary>
+    public override void Setup() {
+        base.Setup();
+        this.OnEvent<NotifyCommand>().Subscribe(this.NotifyCommandHandler);
+    }
+    
+    /// <summary>
+    // This method is executed when using this.Publish(new NotifyCommand())
+    /// </summary>
+    public virtual void NotifyCommandHandler(NotifyCommand data) {
+        // Process the commands information.  Also, you can publish new events by using the line below.
+        // this.Publish(new AnotherEvent())
+    }
+}
+
+public class DialogueServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
+    
+    /// <summary>
+    /// This method is invoked whenever the kernel is loading.
+    /// Since the kernel lives throughout the entire lifecycle of the game, this will only be invoked once.
+    /// </summary>
+    public override void Setup() {
+        base.Setup();
+        this.OnEvent<DialogueCommand>().Subscribe(this.DialogueCommandHandler);
+    }
+    
+    /// <summary>
+    // This method is executed when using this.Publish(new DialogueCommand())
+    /// </summary>
+    public virtual void DialogueCommandHandler(DialogueCommand data) {
+        // Process the commands information.  Also, you can publish new events by using the line below.
+        // this.Publish(new AnotherEvent())
     }
 }

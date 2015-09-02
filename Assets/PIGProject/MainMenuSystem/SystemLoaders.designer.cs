@@ -35,6 +35,8 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private NoticeScreenController _NoticeScreenController;
     
+    private SampleScreenController _SampleScreenController;
+    
     [uFrame.IOC.InjectAttribute("MainMenuRoot")]
     public virtual MainMenuRootViewModel MainMenuRoot {
         get {
@@ -138,6 +140,19 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
         }
     }
     
+    [uFrame.IOC.InjectAttribute()]
+    public virtual SampleScreenController SampleScreenController {
+        get {
+            if (_SampleScreenController==null) {
+                _SampleScreenController = Container.CreateInstance(typeof(SampleScreenController)) as SampleScreenController;;
+            }
+            return _SampleScreenController;
+        }
+        set {
+            _SampleScreenController = value;
+        }
+    }
+    
     public override void Load() {
         Container.RegisterViewModelManager<MainMenuRootViewModel>(new ViewModelManager<MainMenuRootViewModel>());
         Container.RegisterController<MainMenuRootController>(MainMenuRootController);
@@ -153,6 +168,8 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
         Container.RegisterController<MenuScreenController>(MenuScreenController);
         Container.RegisterViewModelManager<NoticeScreenViewModel>(new ViewModelManager<NoticeScreenViewModel>());
         Container.RegisterController<NoticeScreenController>(NoticeScreenController);
+        Container.RegisterViewModelManager<SampleScreenViewModel>(new ViewModelManager<SampleScreenViewModel>());
+        Container.RegisterController<SampleScreenController>(SampleScreenController);
         Container.RegisterViewModel<MainMenuRootViewModel>(MainMenuRoot, "MainMenuRoot");
     }
 }
