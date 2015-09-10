@@ -32,8 +32,8 @@ public class SettingsScreenView : SettingsScreenViewBase
          * Manual binding for the buttons: invoke same method with different arguments,
          * based on what button you click.
          */
-        this.BindButtonToHandler(NextResolutionButton, () =>SelectResolutionWithOffset(1));
-        this.BindButtonToHandler(PrevResolutionButton, ()=> SelectResolutionWithOffset(-1));
+        this.BindButtonToHandler(NextResolutionButton, () => SelectResolutionWithOffset(1));
+        this.BindButtonToHandler(PrevResolutionButton, () => SelectResolutionWithOffset(-1));
         
         /*
          * Manual binding for the text object:

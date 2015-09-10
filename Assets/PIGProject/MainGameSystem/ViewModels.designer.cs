@@ -23,7 +23,311 @@ using UniRx;
 
 public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
     
+    private P<String> _StateProperty;
+    
+    private P<HexGridMatching> _MapGridProperty;
+    
+    private ModelCollection<PlayerViewModel> _Player;
+    
+    private ModelCollection<EnemyViewModel> _Enemy;
+    
+    private Signal<GoToMenuCommand> _GoToMenu;
+    
+    private Signal<PlayCommand> _Play;
+    
+    private Signal<GameOverCommand> _GameOver;
+    
     public MainGameRootViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
+            base(aggregator) {
+    }
+    
+    public virtual P<String> StateProperty {
+        get {
+            return _StateProperty;
+        }
+        set {
+            _StateProperty = value;
+        }
+    }
+    
+    public virtual P<HexGridMatching> MapGridProperty {
+        get {
+            return _MapGridProperty;
+        }
+        set {
+            _MapGridProperty = value;
+        }
+    }
+    
+    public virtual String State {
+        get {
+            return StateProperty.Value;
+        }
+        set {
+            StateProperty.Value = value;
+        }
+    }
+    
+    public virtual HexGridMatching MapGrid {
+        get {
+            return MapGridProperty.Value;
+        }
+        set {
+            MapGridProperty.Value = value;
+        }
+    }
+    
+    public virtual ModelCollection<PlayerViewModel> Player {
+        get {
+            return _Player;
+        }
+        set {
+            _Player = value;
+        }
+    }
+    
+    public virtual ModelCollection<EnemyViewModel> Enemy {
+        get {
+            return _Enemy;
+        }
+        set {
+            _Enemy = value;
+        }
+    }
+    
+    public virtual Signal<GoToMenuCommand> GoToMenu {
+        get {
+            return _GoToMenu;
+        }
+        set {
+            _GoToMenu = value;
+        }
+    }
+    
+    public virtual Signal<PlayCommand> Play {
+        get {
+            return _Play;
+        }
+        set {
+            _Play = value;
+        }
+    }
+    
+    public virtual Signal<GameOverCommand> GameOver {
+        get {
+            return _GameOver;
+        }
+        set {
+            _GameOver = value;
+        }
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        this.GoToMenu = new Signal<GoToMenuCommand>(this);
+        this.Play = new Signal<PlayCommand>(this);
+        this.GameOver = new Signal<GameOverCommand>(this);
+        _StateProperty = new P<String>(this, "State");
+        _MapGridProperty = new P<HexGridMatching>(this, "MapGrid");
+        _Player = new ModelCollection<PlayerViewModel>(this, "Player");
+        _Enemy = new ModelCollection<EnemyViewModel>(this, "Enemy");
+    }
+    
+    public override void Read(ISerializerStream stream) {
+        base.Read(stream);
+        this.State = stream.DeserializeString("State");;
+        if (stream.DeepSerialize) {
+            this.Player.Clear();
+            this.Player.AddRange(stream.DeserializeObjectArray<PlayerViewModel>("Player"));
+        }
+        if (stream.DeepSerialize) {
+            this.Enemy.Clear();
+            this.Enemy.AddRange(stream.DeserializeObjectArray<EnemyViewModel>("Enemy"));
+        }
+    }
+    
+    public override void Write(ISerializerStream stream) {
+        base.Write(stream);
+        stream.SerializeString("State", this.State);
+        if (stream.DeepSerialize) stream.SerializeArray("Player", this.Player);
+        if (stream.DeepSerialize) stream.SerializeArray("Enemy", this.Enemy);
+    }
+    
+    protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
+        base.FillCommands(list);
+        list.Add(new ViewModelCommandInfo("GoToMenu", GoToMenu) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("Play", Play) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("GameOver", GameOver) { ParameterType = typeof(void) });
+    }
+    
+    protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
+        base.FillProperties(list);
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_StateProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_MapGridProperty, false, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_Player, true, true, false, false));
+        list.Add(new ViewModelPropertyInfo(_Enemy, true, true, false, false));
+    }
+}
+
+public partial class MainGameRootViewModel {
+    
+    public MainGameRootViewModel(uFrame.Kernel.IEventAggregator aggregator) : 
+            base(aggregator) {
+    }
+}
+
+public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
+    
+    private P<MoveStyle> _MovementProperty;
+    
+    private P<Int32> _QuantityProperty;
+    
+    private P<Single> _AtkSpeedProperty;
+    
+    private P<PlayerState> _StateProperty;
+    
+    private Signal<ActionCommand> _Action;
+    
+    public PlayerViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
+            base(aggregator) {
+    }
+    
+    public virtual P<MoveStyle> MovementProperty {
+        get {
+            return _MovementProperty;
+        }
+        set {
+            _MovementProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> QuantityProperty {
+        get {
+            return _QuantityProperty;
+        }
+        set {
+            _QuantityProperty = value;
+        }
+    }
+    
+    public virtual P<Single> AtkSpeedProperty {
+        get {
+            return _AtkSpeedProperty;
+        }
+        set {
+            _AtkSpeedProperty = value;
+        }
+    }
+    
+    public virtual P<PlayerState> StateProperty {
+        get {
+            return _StateProperty;
+        }
+        set {
+            _StateProperty = value;
+        }
+    }
+    
+    public virtual MoveStyle Movement {
+        get {
+            return MovementProperty.Value;
+        }
+        set {
+            MovementProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 Quantity {
+        get {
+            return QuantityProperty.Value;
+        }
+        set {
+            QuantityProperty.Value = value;
+        }
+    }
+    
+    public virtual Single AtkSpeed {
+        get {
+            return AtkSpeedProperty.Value;
+        }
+        set {
+            AtkSpeedProperty.Value = value;
+        }
+    }
+    
+    public virtual PlayerState State {
+        get {
+            return StateProperty.Value;
+        }
+        set {
+            StateProperty.Value = value;
+        }
+    }
+    
+    public virtual Signal<ActionCommand> Action {
+        get {
+            return _Action;
+        }
+        set {
+            _Action = value;
+        }
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        this.Action = new Signal<ActionCommand>(this);
+        _MovementProperty = new P<MoveStyle>(this, "Movement");
+        _QuantityProperty = new P<Int32>(this, "Quantity");
+        _AtkSpeedProperty = new P<Single>(this, "AtkSpeed");
+        _StateProperty = new P<PlayerState>(this, "State");
+    }
+    
+    public override void Read(ISerializerStream stream) {
+        base.Read(stream);
+        this.Movement = (MoveStyle)stream.DeserializeInt("Movement");;
+        this.Quantity = stream.DeserializeInt("Quantity");;
+        this.AtkSpeed = stream.DeserializeFloat("AtkSpeed");;
+        this.State = (PlayerState)stream.DeserializeInt("State");;
+    }
+    
+    public override void Write(ISerializerStream stream) {
+        base.Write(stream);
+        stream.SerializeInt("Movement", (int)this.Movement);;
+        stream.SerializeInt("Quantity", this.Quantity);
+        stream.SerializeFloat("AtkSpeed", this.AtkSpeed);
+        stream.SerializeInt("State", (int)this.State);;
+    }
+    
+    protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
+        base.FillCommands(list);
+        list.Add(new ViewModelCommandInfo("Action", Action) { ParameterType = typeof(ActionStyle) });
+    }
+    
+    protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
+        base.FillProperties(list);
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_MovementProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_QuantityProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_AtkSpeedProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_StateProperty, false, false, true, false));
+    }
+}
+
+public partial class PlayerViewModel {
+    
+    public PlayerViewModel(uFrame.Kernel.IEventAggregator aggregator) : 
+            base(aggregator) {
+    }
+}
+
+public partial class EnemyViewModelBase : uFrame.MVVM.ViewModel {
+    
+    public EnemyViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
     
@@ -48,9 +352,9 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
     }
 }
 
-public partial class MainGameRootViewModel {
+public partial class EnemyViewModel {
     
-    public MainGameRootViewModel(uFrame.Kernel.IEventAggregator aggregator) : 
+    public EnemyViewModel(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
 }

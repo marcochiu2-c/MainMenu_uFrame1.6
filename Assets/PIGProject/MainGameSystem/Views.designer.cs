@@ -23,6 +23,16 @@ using UnityEngine;
 
 public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public String _State;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public HexGridMatching _MapGrid;
+    
     public override string DefaultIdentifier {
         get {
             return base.DefaultIdentifier;
@@ -46,11 +56,161 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as MainGameRootViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+        var maingamerootview = ((MainGameRootViewModel)model);
+        maingamerootview.State = this._State;
+        maingamerootview.MapGrid = this._MapGrid;
     }
     
     public override void Bind() {
         base.Bind();
         // Use this.MainGameRoot to access the viewmodel.
+        // Use this method to subscribe to the view-model.
+        // Any designer bindings are created in the base implementation.
+    }
+    
+    public virtual void ExecuteGoToMenu() {
+        MainGameRoot.GoToMenu.OnNext(new GoToMenuCommand() { Sender = MainGameRoot });
+    }
+    
+    public virtual void ExecutePlay() {
+        MainGameRoot.Play.OnNext(new PlayCommand() { Sender = MainGameRoot });
+    }
+    
+    public virtual void ExecuteGameOver() {
+        MainGameRoot.GameOver.OnNext(new GameOverCommand() { Sender = MainGameRoot });
+    }
+    
+    public virtual void ExecuteGoToMenu(GoToMenuCommand command) {
+        command.Sender = MainGameRoot;
+        MainGameRoot.GoToMenu.OnNext(command);
+    }
+    
+    public virtual void ExecutePlay(PlayCommand command) {
+        command.Sender = MainGameRoot;
+        MainGameRoot.Play.OnNext(command);
+    }
+    
+    public virtual void ExecuteGameOver(GameOverCommand command) {
+        command.Sender = MainGameRoot;
+        MainGameRoot.GameOver.OnNext(command);
+    }
+}
+
+public class PlayerViewBase : uFrame.MVVM.ViewBase {
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public MoveStyle _Movement;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Quantity;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Single _AtkSpeed;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public PlayerState _State;
+    
+    [UFToggleGroup("State")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindState = true;
+    
+    [UFGroup("State")]
+    [UnityEngine.SerializeField()]
+    [UnityEngine.HideInInspector()]
+    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_StateonlyWhenChanged")]
+    protected bool _StateOnlyWhenChanged;
+    
+    public override string DefaultIdentifier {
+        get {
+            return base.DefaultIdentifier;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(PlayerViewModel);
+        }
+    }
+    
+    public PlayerViewModel Player {
+        get {
+            return (PlayerViewModel)ViewModelObject;
+        }
+    }
+    
+    protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
+        base.InitializeViewModel(model);
+        // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
+        // var vm = model as PlayerViewModel;
+        // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+        var playerview = ((PlayerViewModel)model);
+        playerview.Movement = this._Movement;
+        playerview.Quantity = this._Quantity;
+        playerview.AtkSpeed = this._AtkSpeed;
+        playerview.State = this._State;
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        // Use this.Player to access the viewmodel.
+        // Use this method to subscribe to the view-model.
+        // Any designer bindings are created in the base implementation.
+        if (_BindState) {
+            this.BindProperty(this.Player.StateProperty, this.StateChanged, _StateOnlyWhenChanged);
+        }
+    }
+    
+    public virtual void StateChanged(PlayerState arg1) {
+    }
+    
+    public virtual void ExecuteAction(ActionCommand command) {
+        command.Sender = Player;
+        Player.Action.OnNext(command);
+    }
+    
+    public virtual void ExecuteAction(ActionStyle arg) {
+        Player.Action.OnNext(new ActionCommand() { Sender = Player, Argument = arg });
+    }
+}
+
+public class EnemyViewBase : uFrame.MVVM.ViewBase {
+    
+    public override string DefaultIdentifier {
+        get {
+            return base.DefaultIdentifier;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(EnemyViewModel);
+        }
+    }
+    
+    public EnemyViewModel Enemy {
+        get {
+            return (EnemyViewModel)ViewModelObject;
+        }
+    }
+    
+    protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
+        base.InitializeViewModel(model);
+        // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
+        // var vm = model as EnemyViewModel;
+        // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        // Use this.Enemy to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
     }

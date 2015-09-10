@@ -6,11 +6,11 @@ using Gamelogic;
 using Gamelogic.Grids;
 using PixelCrushers.DialogueSystem;
 
-public class HexMatchingGrid : GridBehaviour<FlatHexPoint> 
+public class HexGridMatching : GridBehaviour<FlatHexPoint> 
 {
 	
 	//need to create a array to save the point and command since it will be run agagin when the battle start
-	public Player player;
+	public PlayerView player;
 	public SpriteCell pathPrefab;
 	public GameObject pathRoot;
 
@@ -21,12 +21,14 @@ public class HexMatchingGrid : GridBehaviour<FlatHexPoint>
 	// Use this for initialization
 
 	void Start () {
-		player.CurrentPointLocation = FlatHexPoint.Zero;
-		player.transform.position = new Vector3(Map[player.CurrentPointLocation].x, Map[player.CurrentPointLocation].y);
-		player.walkStyle = 0;
-		start = player.CurrentPointLocation;
-		//_playerPoint= startPoint;
-		
+
+		if(player != null && Map != null){
+			player.CurrentPointLocation = FlatHexPoint.Zero;
+			player._Movement = MoveStyle.SLOW;
+			start = FlatHexPoint.Zero;
+
+			player.Move(Map[player.CurrentPointLocation], Map[player.CurrentPointLocation],player._Movement);
+		}
 		///<c>
 		/// player.CurrentPointLocation -> DiamondPoint -> e.g) (1,0)
 		/// Map[player.CurrentPointLocation] -> actually position ----->Map[].X, Map[].Y
@@ -37,19 +39,19 @@ public class HexMatchingGrid : GridBehaviour<FlatHexPoint>
 	
 	public void OnClick(FlatHexPoint point)
 	{	
-
-		onAction = !onAction; 
-
+		//onAction = !onAction; 
 		//if(onAction) return;
 		
-		Debug.Log (point.BasePoint);   //return (x,y)
+		//Debug.Log (point.BasePoint);   //return (x,y)
 		
-		if(player.CurrentPointLocation != null)
+		if(player != null)
 		{
 			//StartCoroutine(Move (player.CurrentPointLocation , point));
 			start = player.CurrentPointLocation;
 			finish = point;
+			player.CurrentPointLocation = point;
 			var path = Algorithms.AStar(Grid, start, finish);
+
 			StartCoroutine(MovePath(path));
 		}
 	}
@@ -86,14 +88,14 @@ public class HexMatchingGrid : GridBehaviour<FlatHexPoint>
 		
 		for(int i = 0; i < pathList.Count - 1; i++)
 		{
-			yield return StartCoroutine(Move (pathList[i], pathList[i+1], player.walkStyle));
+			yield return StartCoroutine(player.Move (Map[pathList[i]], Map[pathList[i+1]], player._Movement));
 		}
 		CallCommand();
 	 }
 
 
-
-	public IEnumerator Move(FlatHexPoint currentPoint, FlatHexPoint endPoint, int walkStyle){
+	/*
+	public IEnumerator Move(FlatHexPoint currentPoint, FlatHexPoint endPoint, MoveStyle moveStyle){
 		float time = 0;
 		const float totalTime = .3f;
 		
@@ -104,26 +106,28 @@ public class HexMatchingGrid : GridBehaviour<FlatHexPoint>
 			float x = Mathf.Lerp(Map[currentPoint].x, Map[endPoint].x, time / totalTime);
 			float y = Mathf.Lerp(Map[currentPoint].y, Map[endPoint].y, time / totalTime);
 
-			y -= 20;
-
-			player.transform.position = new Vector3(x, y);
+			player.Move(x, y);
 			time += Time.deltaTime;
 		}
 		
 		player.CurrentPointLocation  = endPoint;
-		//yield return null;
-		if(walkStyle == 0)
+		yield return null;
+
+		/*
+		if(moveStyle == MoveStyle.SLOW)
 			yield return new WaitForSeconds(0.05f);
 
-		else if(walkStyle == 1)
+		else if(moveStyle == MoveStyle.NORMAL)
 			yield return new WaitForSeconds(0.1f);
 
-		else if(walkStyle == 2)
+		else if(moveStyle == MoveStyle.FAST)
 			yield return new WaitForSeconds(0.2f);
 
 		else
 			yield return new WaitForSeconds(0.4f);
-	}
+
+		}
+		*/
 	
 	public void CallCommand(){
 		//TODO

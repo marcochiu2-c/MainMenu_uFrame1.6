@@ -21,6 +21,10 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private MainGameRootController _MainGameRootController;
     
+    private PlayerController _PlayerController;
+    
+    private EnemyController _EnemyController;
+    
     [uFrame.IOC.InjectAttribute()]
     public virtual MainGameRootController MainGameRootController {
         get {
@@ -34,8 +38,38 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
         }
     }
     
+    [uFrame.IOC.InjectAttribute()]
+    public virtual PlayerController PlayerController {
+        get {
+            if (_PlayerController==null) {
+                _PlayerController = Container.CreateInstance(typeof(PlayerController)) as PlayerController;;
+            }
+            return _PlayerController;
+        }
+        set {
+            _PlayerController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual EnemyController EnemyController {
+        get {
+            if (_EnemyController==null) {
+                _EnemyController = Container.CreateInstance(typeof(EnemyController)) as EnemyController;;
+            }
+            return _EnemyController;
+        }
+        set {
+            _EnemyController = value;
+        }
+    }
+    
     public override void Load() {
         Container.RegisterViewModelManager<MainGameRootViewModel>(new ViewModelManager<MainGameRootViewModel>());
         Container.RegisterController<MainGameRootController>(MainGameRootController);
+        Container.RegisterViewModelManager<PlayerViewModel>(new ViewModelManager<PlayerViewModel>());
+        Container.RegisterController<PlayerController>(PlayerController);
+        Container.RegisterViewModelManager<EnemyViewModel>(new ViewModelManager<EnemyViewModel>());
+        Container.RegisterController<EnemyController>(EnemyController);
     }
 }

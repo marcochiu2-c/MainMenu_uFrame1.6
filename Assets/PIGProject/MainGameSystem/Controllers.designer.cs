@@ -60,11 +60,143 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     
     public virtual void InitializeMainGameRoot(MainGameRootViewModel viewModel) {
         // This is called when a MainGameRootViewModel is created
+        viewModel.GoToMenu.Action = this.GoToMenuHandler;
+        viewModel.Play.Action = this.PlayHandler;
+        viewModel.GameOver.Action = this.GameOverHandler;
         MainGameRootViewModelManager.Add(viewModel);
     }
     
     public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
         base.DisposingViewModel(viewModel);
         MainGameRootViewModelManager.Remove(viewModel);
+    }
+    
+    public virtual void GoToMenu(MainGameRootViewModel viewModel) {
+    }
+    
+    public virtual void Play(MainGameRootViewModel viewModel) {
+    }
+    
+    public virtual void GameOver(MainGameRootViewModel viewModel) {
+    }
+    
+    public virtual void GoToMenuHandler(GoToMenuCommand command) {
+        this.GoToMenu(command.Sender as MainGameRootViewModel);
+    }
+    
+    public virtual void PlayHandler(PlayCommand command) {
+        this.Play(command.Sender as MainGameRootViewModel);
+    }
+    
+    public virtual void GameOverHandler(GameOverCommand command) {
+        this.GameOver(command.Sender as MainGameRootViewModel);
+    }
+}
+
+public class PlayerControllerBase : uFrame.MVVM.Controller {
+    
+    private uFrame.MVVM.IViewModelManager _PlayerViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("Player")]
+    public uFrame.MVVM.IViewModelManager PlayerViewModelManager {
+        get {
+            return _PlayerViewModelManager;
+        }
+        set {
+            _PlayerViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<PlayerViewModel> PlayerViewModels {
+        get {
+            return PlayerViewModelManager.OfType<PlayerViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializePlayer(((PlayerViewModel)(viewModel)));
+    }
+    
+    public virtual PlayerViewModel CreatePlayer() {
+        return ((PlayerViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new PlayerViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializePlayer(PlayerViewModel viewModel) {
+        // This is called when a PlayerViewModel is created
+        viewModel.Action.Action = this.ActionHandler;
+        PlayerViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        PlayerViewModelManager.Remove(viewModel);
+    }
+    
+    public virtual void ActionHandler(ActionCommand command) {
+        this.Action(command.Sender as PlayerViewModel, command.Argument);
+    }
+    
+    public virtual void Action(PlayerViewModel viewModel, ActionStyle arg) {
+    }
+}
+
+public class EnemyControllerBase : uFrame.MVVM.Controller {
+    
+    private uFrame.MVVM.IViewModelManager _EnemyViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("Enemy")]
+    public uFrame.MVVM.IViewModelManager EnemyViewModelManager {
+        get {
+            return _EnemyViewModelManager;
+        }
+        set {
+            _EnemyViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<EnemyViewModel> EnemyViewModels {
+        get {
+            return EnemyViewModelManager.OfType<EnemyViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeEnemy(((EnemyViewModel)(viewModel)));
+    }
+    
+    public virtual EnemyViewModel CreateEnemy() {
+        return ((EnemyViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new EnemyViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeEnemy(EnemyViewModel viewModel) {
+        // This is called when a EnemyViewModel is created
+        EnemyViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        EnemyViewModelManager.Remove(viewModel);
     }
 }
