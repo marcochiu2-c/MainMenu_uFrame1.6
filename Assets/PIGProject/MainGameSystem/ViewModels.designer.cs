@@ -180,27 +180,18 @@ public partial class MainGameRootViewModel {
 
 public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
     
-    private P<MoveStyle> _MovementProperty;
-    
     private P<Int32> _QuantityProperty;
     
     private P<Single> _AtkSpeedProperty;
     
     private P<PlayerState> _StateProperty;
     
+    private P<MoveStyle> _MovementProperty;
+    
     private Signal<ActionCommand> _Action;
     
     public PlayerViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
-    }
-    
-    public virtual P<MoveStyle> MovementProperty {
-        get {
-            return _MovementProperty;
-        }
-        set {
-            _MovementProperty = value;
-        }
     }
     
     public virtual P<Int32> QuantityProperty {
@@ -230,12 +221,12 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual MoveStyle Movement {
+    public virtual P<MoveStyle> MovementProperty {
         get {
-            return MovementProperty.Value;
+            return _MovementProperty;
         }
         set {
-            MovementProperty.Value = value;
+            _MovementProperty = value;
         }
     }
     
@@ -266,6 +257,15 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual MoveStyle Movement {
+        get {
+            return MovementProperty.Value;
+        }
+        set {
+            MovementProperty.Value = value;
+        }
+    }
+    
     public virtual Signal<ActionCommand> Action {
         get {
             return _Action;
@@ -278,26 +278,26 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
     public override void Bind() {
         base.Bind();
         this.Action = new Signal<ActionCommand>(this);
-        _MovementProperty = new P<MoveStyle>(this, "Movement");
         _QuantityProperty = new P<Int32>(this, "Quantity");
         _AtkSpeedProperty = new P<Single>(this, "AtkSpeed");
         _StateProperty = new P<PlayerState>(this, "State");
+        _MovementProperty = new P<MoveStyle>(this, "Movement");
     }
     
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
-        this.Movement = (MoveStyle)stream.DeserializeInt("Movement");;
         this.Quantity = stream.DeserializeInt("Quantity");;
         this.AtkSpeed = stream.DeserializeFloat("AtkSpeed");;
         this.State = (PlayerState)stream.DeserializeInt("State");;
+        this.Movement = (MoveStyle)stream.DeserializeInt("Movement");;
     }
     
     public override void Write(ISerializerStream stream) {
         base.Write(stream);
-        stream.SerializeInt("Movement", (int)this.Movement);;
         stream.SerializeInt("Quantity", this.Quantity);
         stream.SerializeFloat("AtkSpeed", this.AtkSpeed);
         stream.SerializeInt("State", (int)this.State);;
+        stream.SerializeInt("Movement", (int)this.Movement);;
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -308,13 +308,13 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
         base.FillProperties(list);
         // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_MovementProperty, false, false, true, false));
-        // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_QuantityProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_AtkSpeedProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_StateProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_MovementProperty, false, false, true, false));
     }
 }
 

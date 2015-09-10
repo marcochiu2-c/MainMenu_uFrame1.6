@@ -101,11 +101,6 @@ public class PlayerViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public MoveStyle _Movement;
-    
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
     public Int32 _Quantity;
     
     [UnityEngine.SerializeField()]
@@ -117,6 +112,11 @@ public class PlayerViewBase : uFrame.MVVM.ViewBase {
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
     public PlayerState _State;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public MoveStyle _Movement;
     
     [UFToggleGroup("State")]
     [UnityEngine.HideInInspector()]
@@ -152,10 +152,10 @@ public class PlayerViewBase : uFrame.MVVM.ViewBase {
         // var vm = model as PlayerViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
         var playerview = ((PlayerViewModel)model);
-        playerview.Movement = this._Movement;
         playerview.Quantity = this._Quantity;
         playerview.AtkSpeed = this._AtkSpeed;
         playerview.State = this._State;
+        playerview.Movement = this._Movement;
     }
     
     public override void Bind() {

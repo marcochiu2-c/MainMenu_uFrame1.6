@@ -24,10 +24,9 @@ public class HexGridMatching : GridBehaviour<FlatHexPoint>
 
 		if(player != null && Map != null){
 			player.CurrentPointLocation = FlatHexPoint.Zero;
-			player._Movement = MoveStyle.SLOW;
 			start = FlatHexPoint.Zero;
 
-			player.Move(Map[player.CurrentPointLocation], Map[player.CurrentPointLocation],player._Movement);
+			player.Move(Map[player.CurrentPointLocation], Map[player.CurrentPointLocation]);
 		}
 		///<c>
 		/// player.CurrentPointLocation -> DiamondPoint -> e.g) (1,0)
@@ -46,7 +45,6 @@ public class HexGridMatching : GridBehaviour<FlatHexPoint>
 		
 		if(player != null)
 		{
-			//StartCoroutine(Move (player.CurrentPointLocation , point));
 			start = player.CurrentPointLocation;
 			finish = point;
 			player.CurrentPointLocation = point;
@@ -88,7 +86,7 @@ public class HexGridMatching : GridBehaviour<FlatHexPoint>
 		
 		for(int i = 0; i < pathList.Count - 1; i++)
 		{
-			yield return StartCoroutine(player.Move (Map[pathList[i]], Map[pathList[i+1]], player._Movement));
+			yield return StartCoroutine(player.Move (Map[pathList[i]], Map[pathList[i+1]]));
 		}
 		CallCommand();
 	 }
