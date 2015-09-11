@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using Gamelogic;
 using Gamelogic.Grids;
 using PixelCrushers.DialogueSystem;
@@ -11,23 +12,31 @@ public class HexGridMatching : GridBehaviour<FlatHexPoint>
 	
 	//need to create a array to save the point and command since it will be run agagin when the battle start
 	public PlayerView player;
+	public EnemyView target;
 	public SpriteCell pathPrefab;
 	public GameObject pathRoot;
+	public Text myText;
 
 	private bool onAction = true; 
 	private FlatHexPoint start;
 	private FlatHexPoint finish;
+	private Vector3 tempPoint;
 	
 	// Use this for initialization
 
-	void Start () {
-
-		if(player != null && Map != null){
+	public override void InitGrid()
+	{
+		//if(player != null && target != null && Map != null){
+			Debug.Log ("FuckYou");
 			player.CurrentPointLocation = FlatHexPoint.Zero;
-			start = FlatHexPoint.Zero;
+			player.transform.position = Map[FlatHexPoint.Zero];
+			start = player.CurrentPointLocation;
 
-			player.Move(Map[player.CurrentPointLocation], Map[player.CurrentPointLocation]);
-		}
+			target.CurrentPointLocation = new FlatHexPoint(7, 4);
+			target.transform.position = Map[new FlatHexPoint(7, 4)];
+			InitPosition();
+		//}
+
 		///<c>
 		/// player.CurrentPointLocation -> DiamondPoint -> e.g) (1,0)
 		/// Map[player.CurrentPointLocation] -> actually position ----->Map[].X, Map[].Y
@@ -35,25 +44,68 @@ public class HexGridMatching : GridBehaviour<FlatHexPoint>
 		/// 
 		/// </c>
 	}
+
+	public void InitPosition()
+	{	
+		//Debug.Log ("InitPosition");
+		//player.transform.position = Map[FlatHexPoint.Zero];
+		target.CurrentPointLocation = new FlatHexPoint(7, 4);
+		target.transform.position = Map[new FlatHexPoint(7, 4)];
+	}
 	
+
 	public void OnClick(FlatHexPoint point)
 	{	
 		//onAction = !onAction; 
 		//if(onAction) return;
-		
 		//Debug.Log (point.BasePoint);   //return (x,y)
-		
+		InitPosition();
 		if(player != null)
-		{
-			start = player.CurrentPointLocation;
-			finish = point;
-			player.CurrentPointLocation = point;
-			var path = Algorithms.AStar(Grid, start, finish);
+		{	
+			if(player._State == PlayerState.MOVE)
+			{
+				start = player.CurrentPointLocation;
+				finish = point;
+				player.CurrentPointLocation = point;
+				var path = Algorithms.AStar(Grid, start, finish);
 
-			StartCoroutine(MovePath(path));
+					StartCoroutine(MovePath(path));
+			}
+
+			else if (player._State == PlayerState.ATTACK)
+			{
+
+				// (target.CurrentPointLocation == point && in Grid.GetAllNeighbors(player))
+				foreach (var neighbor in Grid.GetAllNeighbors(player.CurrentPointLocation))
+				{
+					if(neighbor == point && neighbor == target.CurrentPointLocation)
+					{
+						//FindNearly cell, get the target
+						//if point is one of neighbour, target = pointtarget
+						Debug.Log ("You can Attack");
+						Battle (player, target);
+						return;
+					}
+				}
+				Debug.Log ("You can't Attack");
+				myText.text = "You can't Attack, Please Move";
+				player._State = PlayerState.MOVE;
+
+			}
 		}
 	}
+	
+	public void Battle(PlayerView p1, EnemyView p2)
+	{
+		p1._Quantity -=  p2._Power;
+		p2._Quantity -=  p1._Power;
 
+		myText.text =  "Your Quantity: " + p1._Quantity + " Target Quantity: " + p2._Quantity;
+		Debug.Log("Player Quantity: " + p1._Quantity);
+		Debug.Log("Target Quantity: " + p2._Quantity);
+
+		player._State = PlayerState.MOVE;
+	}
 
 	public IEnumerator MovePath(IEnumerable<FlatHexPoint> path)
 	{

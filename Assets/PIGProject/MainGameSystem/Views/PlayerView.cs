@@ -18,6 +18,7 @@ public class PlayerView : PlayerViewBase {
 	public Button SlowButton; 
 	public Button NormalButton; 
 	public Button FastButton;
+	public Text myText;
 
 	public FlatHexPoint CurrentPointLocation
 	{
@@ -30,7 +31,7 @@ public class PlayerView : PlayerViewBase {
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as PlayerViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
-    }
+	}
     
     public override void Bind() {
         base.Bind();
@@ -45,6 +46,10 @@ public class PlayerView : PlayerViewBase {
 
     }
 
+	public void UpdateQuantity(int number){
+		this._Quantity = number;
+	}
+	
 	private void ChangeMoveStyle(MoveStyle m)
 	{
 		switch (m)
@@ -76,7 +81,8 @@ public class PlayerView : PlayerViewBase {
 	public IEnumerator Move(Vector3 currentPoint, Vector3 endPoint){
 		float time = 0;
 		const float totalTime = .3f;
-		
+
+		this._State = PlayerState.ATTACK;
 		//onAction = true;
 		while (time < totalTime)
 		{
@@ -88,6 +94,7 @@ public class PlayerView : PlayerViewBase {
 			transform.position = new Vector3(x, y);
 			time += Time.deltaTime;
 		}
+
 
 		yield return null;
 
@@ -108,7 +115,32 @@ public class PlayerView : PlayerViewBase {
 
 	//TODO
 	//Set BindButtonHandler for the movement
+	public override void StateChanged(PlayerState state) {
+		myText.text = this._State + " State";
 
-    public override void StateChanged(PlayerState _state) {
+		if(this._State == PlayerState.ATTACK)
+		{
+			//ActuallyATK();
+
+		}
+		else if(this._State == PlayerState.WAIT)
+		{
+			
+		}
+		else if(this._State == PlayerState.MOVE)
+		{
+			
+		}
+		Debug.Log (this._State);
     }
+
+	private void Attackable(){
+
+	}
+
+	private void ActuallyATK(){
+		//TODO
+		this._State = PlayerState.MOVE;
+	}
+
 }

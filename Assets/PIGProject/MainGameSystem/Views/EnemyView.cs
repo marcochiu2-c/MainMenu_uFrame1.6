@@ -9,9 +9,15 @@ using uFrame.MVVM.Bindings;
 using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
-
+using Gamelogic.Grids;
 
 public class EnemyView : EnemyViewBase {
+
+	public FlatHexPoint CurrentPointLocation
+	{
+		get;
+		set;
+	}
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);

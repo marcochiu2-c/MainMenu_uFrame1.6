@@ -188,6 +188,8 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<MoveStyle> _MovementProperty;
     
+    private P<Int32> _PowerProperty;
+    
     private Signal<ActionCommand> _Action;
     
     public PlayerViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
@@ -230,6 +232,15 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<Int32> PowerProperty {
+        get {
+            return _PowerProperty;
+        }
+        set {
+            _PowerProperty = value;
+        }
+    }
+    
     public virtual Int32 Quantity {
         get {
             return QuantityProperty.Value;
@@ -266,6 +277,15 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual Int32 Power {
+        get {
+            return PowerProperty.Value;
+        }
+        set {
+            PowerProperty.Value = value;
+        }
+    }
+    
     public virtual Signal<ActionCommand> Action {
         get {
             return _Action;
@@ -282,6 +302,7 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         _AtkSpeedProperty = new P<Single>(this, "AtkSpeed");
         _StateProperty = new P<PlayerState>(this, "State");
         _MovementProperty = new P<MoveStyle>(this, "Movement");
+        _PowerProperty = new P<Int32>(this, "Power");
     }
     
     public override void Read(ISerializerStream stream) {
@@ -290,6 +311,7 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         this.AtkSpeed = stream.DeserializeFloat("AtkSpeed");;
         this.State = (PlayerState)stream.DeserializeInt("State");;
         this.Movement = (MoveStyle)stream.DeserializeInt("Movement");;
+        this.Power = stream.DeserializeInt("Power");;
     }
     
     public override void Write(ISerializerStream stream) {
@@ -298,6 +320,7 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         stream.SerializeFloat("AtkSpeed", this.AtkSpeed);
         stream.SerializeInt("State", (int)this.State);;
         stream.SerializeInt("Movement", (int)this.Movement);;
+        stream.SerializeInt("Power", this.Power);
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -315,6 +338,8 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_StateProperty, false, false, true, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_MovementProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_PowerProperty, false, false, false, false));
     }
 }
 
@@ -327,20 +352,89 @@ public partial class PlayerViewModel {
 
 public partial class EnemyViewModelBase : uFrame.MVVM.ViewModel {
     
+    private P<Int32> _QuantityProperty;
+    
+    private P<Single> _AtkSpeedProperty;
+    
+    private P<Int32> _PowerProperty;
+    
     public EnemyViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
     
+    public virtual P<Int32> QuantityProperty {
+        get {
+            return _QuantityProperty;
+        }
+        set {
+            _QuantityProperty = value;
+        }
+    }
+    
+    public virtual P<Single> AtkSpeedProperty {
+        get {
+            return _AtkSpeedProperty;
+        }
+        set {
+            _AtkSpeedProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> PowerProperty {
+        get {
+            return _PowerProperty;
+        }
+        set {
+            _PowerProperty = value;
+        }
+    }
+    
+    public virtual Int32 Quantity {
+        get {
+            return QuantityProperty.Value;
+        }
+        set {
+            QuantityProperty.Value = value;
+        }
+    }
+    
+    public virtual Single AtkSpeed {
+        get {
+            return AtkSpeedProperty.Value;
+        }
+        set {
+            AtkSpeedProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 Power {
+        get {
+            return PowerProperty.Value;
+        }
+        set {
+            PowerProperty.Value = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
+        _QuantityProperty = new P<Int32>(this, "Quantity");
+        _AtkSpeedProperty = new P<Single>(this, "AtkSpeed");
+        _PowerProperty = new P<Int32>(this, "Power");
     }
     
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
+        this.Quantity = stream.DeserializeInt("Quantity");;
+        this.AtkSpeed = stream.DeserializeFloat("AtkSpeed");;
+        this.Power = stream.DeserializeInt("Power");;
     }
     
     public override void Write(ISerializerStream stream) {
         base.Write(stream);
+        stream.SerializeInt("Quantity", this.Quantity);
+        stream.SerializeFloat("AtkSpeed", this.AtkSpeed);
+        stream.SerializeInt("Power", this.Power);
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -349,6 +443,12 @@ public partial class EnemyViewModelBase : uFrame.MVVM.ViewModel {
     
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
         base.FillProperties(list);
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_QuantityProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_AtkSpeedProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_PowerProperty, false, false, false, false));
     }
 }
 

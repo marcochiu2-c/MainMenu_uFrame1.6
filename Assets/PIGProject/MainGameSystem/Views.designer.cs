@@ -118,6 +118,11 @@ public class PlayerViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.HideInInspector()]
     public MoveStyle _Movement;
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Power;
+    
     [UFToggleGroup("State")]
     [UnityEngine.HideInInspector()]
     public bool _BindState = true;
@@ -156,6 +161,7 @@ public class PlayerViewBase : uFrame.MVVM.ViewBase {
         playerview.AtkSpeed = this._AtkSpeed;
         playerview.State = this._State;
         playerview.Movement = this._Movement;
+        playerview.Power = this._Power;
     }
     
     public override void Bind() {
@@ -183,6 +189,21 @@ public class PlayerViewBase : uFrame.MVVM.ViewBase {
 
 public class EnemyViewBase : uFrame.MVVM.ViewBase {
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Quantity;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Single _AtkSpeed;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Power;
+    
     public override string DefaultIdentifier {
         get {
             return base.DefaultIdentifier;
@@ -206,6 +227,10 @@ public class EnemyViewBase : uFrame.MVVM.ViewBase {
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as EnemyViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+        var enemyview = ((EnemyViewModel)model);
+        enemyview.Quantity = this._Quantity;
+        enemyview.AtkSpeed = this._AtkSpeed;
+        enemyview.Power = this._Power;
     }
     
     public override void Bind() {
