@@ -110,9 +110,5 @@ public class PlayerView : PlayerViewBase {
 	//Set BindButtonHandler for the movement
 
     public override void StateChanged(PlayerState _state) {
-		if(Player.Action == ActionStyle.ASSAULT)
-		{
-
-		}
     }
 }
