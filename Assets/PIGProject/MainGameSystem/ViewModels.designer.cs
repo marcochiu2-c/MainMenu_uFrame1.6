@@ -190,7 +190,7 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<Int32> _PowerProperty;
     
-    private Signal<ActionCommand> _Action;
+    private P<ActionStyle> _ActionProperty;
     
     public PlayerViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
@@ -241,6 +241,15 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<ActionStyle> ActionProperty {
+        get {
+            return _ActionProperty;
+        }
+        set {
+            _ActionProperty = value;
+        }
+    }
+    
     public virtual Int32 Quantity {
         get {
             return QuantityProperty.Value;
@@ -286,23 +295,23 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual Signal<ActionCommand> Action {
+    public virtual ActionStyle Action {
         get {
-            return _Action;
+            return ActionProperty.Value;
         }
         set {
-            _Action = value;
+            ActionProperty.Value = value;
         }
     }
     
     public override void Bind() {
         base.Bind();
-        this.Action = new Signal<ActionCommand>(this);
         _QuantityProperty = new P<Int32>(this, "Quantity");
         _AtkSpeedProperty = new P<Single>(this, "AtkSpeed");
         _StateProperty = new P<PlayerState>(this, "State");
         _MovementProperty = new P<MoveStyle>(this, "Movement");
         _PowerProperty = new P<Int32>(this, "Power");
+        _ActionProperty = new P<ActionStyle>(this, "Action");
     }
     
     public override void Read(ISerializerStream stream) {
@@ -312,6 +321,7 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         this.State = (PlayerState)stream.DeserializeInt("State");;
         this.Movement = (MoveStyle)stream.DeserializeInt("Movement");;
         this.Power = stream.DeserializeInt("Power");;
+        this.Action = (ActionStyle)stream.DeserializeInt("Action");;
     }
     
     public override void Write(ISerializerStream stream) {
@@ -321,11 +331,11 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         stream.SerializeInt("State", (int)this.State);;
         stream.SerializeInt("Movement", (int)this.Movement);;
         stream.SerializeInt("Power", this.Power);
+        stream.SerializeInt("Action", (int)this.Action);;
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
         base.FillCommands(list);
-        list.Add(new ViewModelCommandInfo("Action", Action) { ParameterType = typeof(ActionStyle) });
     }
     
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
@@ -340,6 +350,8 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_MovementProperty, false, false, true, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_PowerProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_ActionProperty, false, false, true, false));
     }
 }
 

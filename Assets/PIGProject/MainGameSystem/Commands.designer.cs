@@ -25,17 +25,3 @@ public partial class PlayCommand : uFrame.MVVM.ViewModelCommand {
 
 public partial class GameOverCommand : uFrame.MVVM.ViewModelCommand {
 }
-
-public partial class ActionCommand : uFrame.MVVM.ViewModelCommand {
-    
-    private ActionStyle _Argument;
-    
-    public ActionStyle Argument {
-        get {
-            return _Argument;
-        }
-        set {
-            _Argument = value;
-        }
-    }
-}

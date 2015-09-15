@@ -26,4 +26,7 @@ public class MainGameRootView : MainGameRootViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
     }
+
+    public override void StateChanged(String arg1) {
+    }
 }

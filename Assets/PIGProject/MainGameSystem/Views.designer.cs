@@ -33,6 +33,16 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.HideInInspector()]
     public HexGridMatching _MapGrid;
     
+    [UFToggleGroup("State")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindState = true;
+    
+    [UFGroup("State")]
+    [UnityEngine.SerializeField()]
+    [UnityEngine.HideInInspector()]
+    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_StateonlyWhenChanged")]
+    protected bool _StateOnlyWhenChanged;
+    
     public override string DefaultIdentifier {
         get {
             return base.DefaultIdentifier;
@@ -66,6 +76,12 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
         // Use this.MainGameRoot to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+        if (_BindState) {
+            this.BindProperty(this.MainGameRoot.StateProperty, this.StateChanged, _StateOnlyWhenChanged);
+        }
+    }
+    
+    public virtual void StateChanged(String arg1) {
     }
     
     public virtual void ExecuteGoToMenu() {
@@ -123,6 +139,11 @@ public class PlayerViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.HideInInspector()]
     public Int32 _Power;
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public ActionStyle _Action;
+    
     [UFToggleGroup("State")]
     [UnityEngine.HideInInspector()]
     public bool _BindState = true;
@@ -162,6 +183,7 @@ public class PlayerViewBase : uFrame.MVVM.ViewBase {
         playerview.State = this._State;
         playerview.Movement = this._Movement;
         playerview.Power = this._Power;
+        playerview.Action = this._Action;
     }
     
     public override void Bind() {
@@ -175,15 +197,6 @@ public class PlayerViewBase : uFrame.MVVM.ViewBase {
     }
     
     public virtual void StateChanged(PlayerState arg1) {
-    }
-    
-    public virtual void ExecuteAction(ActionCommand command) {
-        command.Sender = Player;
-        Player.Action.OnNext(command);
-    }
-    
-    public virtual void ExecuteAction(ActionStyle arg) {
-        Player.Action.OnNext(new ActionCommand() { Sender = Player, Argument = arg });
     }
 }
 

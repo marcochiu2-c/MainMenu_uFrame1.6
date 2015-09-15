@@ -134,20 +134,12 @@ public class PlayerControllerBase : uFrame.MVVM.Controller {
     
     public virtual void InitializePlayer(PlayerViewModel viewModel) {
         // This is called when a PlayerViewModel is created
-        viewModel.Action.Action = this.ActionHandler;
         PlayerViewModelManager.Add(viewModel);
     }
     
     public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
         base.DisposingViewModel(viewModel);
         PlayerViewModelManager.Remove(viewModel);
-    }
-    
-    public virtual void ActionHandler(ActionCommand command) {
-        this.Action(command.Sender as PlayerViewModel, command.Argument);
-    }
-    
-    public virtual void Action(PlayerViewModel viewModel, ActionStyle arg) {
     }
 }
 

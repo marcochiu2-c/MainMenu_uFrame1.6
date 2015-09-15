@@ -11,6 +11,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Gamelogic.Grids;
+using DG.Tweening;
 
 public class PlayerView : PlayerViewBase {
 	//public IMap<FlatHexPoint> Map;
@@ -18,7 +19,16 @@ public class PlayerView : PlayerViewBase {
 	public Button SlowButton; 
 	public Button NormalButton; 
 	public Button FastButton;
+
+	public Button AttackButton;
+	public Button AssaultButton; 
+
 	public Text myText;
+	public GameObject healthBar;
+	public GameObject MovePanel;
+	public GameObject ActionPanel;
+
+	private float Max_Quantity;
 
 	public FlatHexPoint CurrentPointLocation
 	{
@@ -31,6 +41,8 @@ public class PlayerView : PlayerViewBase {
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as PlayerViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+		Max_Quantity = (float)this._Quantity;
+		Debug.Log("Max_Quantity = " + Max_Quantity);
 	}
     
     public override void Bind() {
@@ -39,15 +51,34 @@ public class PlayerView : PlayerViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
+		//MoveStyle
 		this.BindButtonToHandler(IgnoreButton, () => ChangeMoveStyle(MoveStyle.IGNORE));
 		this.BindButtonToHandler(SlowButton, () => ChangeMoveStyle(MoveStyle.SLOW));
 		this.BindButtonToHandler(NormalButton, () => ChangeMoveStyle(MoveStyle.NORMAL));
 		this.BindButtonToHandler(FastButton, () => ChangeMoveStyle(MoveStyle.FAST));
 
+		this.BindButtonToHandler(AttackButton, () => ChangeActionStyle(ActionStyle.ATTACK));
+		this.BindButtonToHandler(AssaultButton, () => ChangeActionStyle(ActionStyle.ASSAULT));
+
+
+		//ActionStyle
+
+
     }
 
 	public void UpdateQuantity(int number){
+		float maxHealth = 100f;
+
 		this._Quantity = number;
+		var curHealth = (float)this._Quantity/Max_Quantity;
+		//Debug.Log("curHealth: " + curHealth);
+
+		healthBar.transform.localScale = new Vector3(curHealth, healthBar.transform.localScale.y);
+
+		if(number == 0){
+			//TODO
+			//Destroy the object
+		}
 	}
 	
 	private void ChangeMoveStyle(MoveStyle m)
@@ -70,19 +101,29 @@ public class PlayerView : PlayerViewBase {
 			this._Movement = MoveStyle.NORMAL;
 			break;
 		}
-
-
 	}
-	//public void Move(float x, float y){
-	//	transform.position = new Vector3(x, y);
-	//}
+
+	private void ChangeActionStyle(ActionStyle a)
+	{
+		switch (a)
+		{
+		case ActionStyle.ATTACK:
+			this._Action = ActionStyle.ATTACK;
+			break;
+		case ActionStyle.ASSAULT:
+			this._Action = ActionStyle.ASSAULT;
+			break;
+		default:
+			this._Action = ActionStyle.ATTACK;
+			break;
+		}
+	}
 
 	// try to use UniRx when have time	
 	public IEnumerator Move(Vector3 currentPoint, Vector3 endPoint){
 		float time = 0;
 		const float totalTime = .3f;
 
-		this._State = PlayerState.ATTACK;
 		//onAction = true;
 		while (time < totalTime)
 		{
@@ -95,6 +136,8 @@ public class PlayerView : PlayerViewBase {
 			time += Time.deltaTime;
 		}
 
+		//this._State = PlayerState.ATTACK;
+		//Debug.Log ("After Move: " + this._State);
 
 		yield return null;
 
@@ -116,31 +159,25 @@ public class PlayerView : PlayerViewBase {
 	//TODO
 	//Set BindButtonHandler for the movement
 	public override void StateChanged(PlayerState state) {
-		myText.text = this._State + " State";
 
-		if(this._State == PlayerState.ATTACK)
-		{
-			//ActuallyATK();
+		base.StateChanged(state);
+		myText.text = state + " State";
 
-		}
-		else if(this._State == PlayerState.WAIT)
+		if(state == PlayerState.ATTACK)
 		{
-			
+			//Active Action btns
+			Debug.Log ("Attack !!");
+			ActionPanel.gameObject.SetActive(true);
+			MovePanel.gameObject.SetActive(false);
 		}
-		else if(this._State == PlayerState.MOVE)
+
+		if(state == PlayerState.MOVE)
 		{
-			
+			//Active Move btns
+			Debug.Log ("Move !!");
+			MovePanel.gameObject.SetActive(true);
+			ActionPanel.gameObject.SetActive(false);
 		}
 		Debug.Log (this._State);
     }
-
-	private void Attackable(){
-
-	}
-
-	private void ActuallyATK(){
-		//TODO
-		this._State = PlayerState.MOVE;
-	}
-
 }

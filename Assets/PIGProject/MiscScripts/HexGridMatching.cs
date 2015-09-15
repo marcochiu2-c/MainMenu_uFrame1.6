@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Gamelogic;
 using Gamelogic.Grids;
 using PixelCrushers.DialogueSystem;
+using DG.Tweening;
 
 public class HexGridMatching : GridBehaviour<FlatHexPoint> 
 {
@@ -70,10 +71,12 @@ public class HexGridMatching : GridBehaviour<FlatHexPoint>
 				var path = Algorithms.AStar(Grid, start, finish);
 
 					StartCoroutine(MovePath(path));
+				player._State = PlayerState.ATTACK;
 			}
 
 			else if (player._State == PlayerState.ATTACK)
 			{
+
 
 				// (target.CurrentPointLocation == point && in Grid.GetAllNeighbors(player))
 				foreach (var neighbor in Grid.GetAllNeighbors(player.CurrentPointLocation))
@@ -83,7 +86,7 @@ public class HexGridMatching : GridBehaviour<FlatHexPoint>
 						//FindNearly cell, get the target
 						//if point is one of neighbour, target = pointtarget
 						Debug.Log ("You can Attack");
-						Battle (player, target);
+						StartCoroutine(Battle (player, target));
 						return;
 					}
 				}
@@ -95,16 +98,32 @@ public class HexGridMatching : GridBehaviour<FlatHexPoint>
 		}
 	}
 	
-	public void Battle(PlayerView p1, EnemyView p2)
+	public IEnumerator Battle(PlayerView p1, EnemyView p2)
 	{
+		//separte them finally, need two tweener
+		while(p1._Quantity >= p2._Power && p2._Quantity >= p1._Power){
 		p1._Quantity -=  p2._Power;
+			if(p1._Quantity <= 0) p1._Quantity = 0;
 		p2._Quantity -=  p1._Power;
+			if(p2._Quantity <= 0) p2._Quantity = 0;
+		 
+		p2.UpdateQuantity(p2._Quantity);
+		p1.transform.DOPunchPosition(Vector3.right *100, 0.1f, 100, 1f, false).OnComplete(() => {
+			p2.transform.DOPunchPosition(Vector3.right *100, 0.5f, 100, 1f, false);
+			p1.UpdateQuantity(p1._Quantity);
+			});
 
+		//p1.UpdateQuantity(p1._Quantity);
+		//p2.UpdateQuantity(p2._Quantity);	
 		myText.text =  "Your Quantity: " + p1._Quantity + " Target Quantity: " + p2._Quantity;
-		Debug.Log("Player Quantity: " + p1._Quantity);
-		Debug.Log("Target Quantity: " + p2._Quantity);
+		//Debug.Log("Player Quantity: " + p1._Quantity);
+		//Debug.Log("Target Quantity: " + p2._Quantity);
+
+		yield return new WaitForSeconds(1);
+		}
 
 		player._State = PlayerState.MOVE;
+		myText.text = "You are dead !";
 	}
 
 	public IEnumerator MovePath(IEnumerable<FlatHexPoint> path)
@@ -140,45 +159,10 @@ public class HexGridMatching : GridBehaviour<FlatHexPoint>
 		{
 			yield return StartCoroutine(player.Move (Map[pathList[i]], Map[pathList[i+1]]));
 		}
+
 		CallCommand();
 	 }
 
-
-	/*
-	public IEnumerator Move(FlatHexPoint currentPoint, FlatHexPoint endPoint, MoveStyle moveStyle){
-		float time = 0;
-		const float totalTime = .3f;
-		
-		//onAction = true;
-		
-		while (time < totalTime)
-		{
-			float x = Mathf.Lerp(Map[currentPoint].x, Map[endPoint].x, time / totalTime);
-			float y = Mathf.Lerp(Map[currentPoint].y, Map[endPoint].y, time / totalTime);
-
-			player.Move(x, y);
-			time += Time.deltaTime;
-		}
-		
-		player.CurrentPointLocation  = endPoint;
-		yield return null;
-
-		/*
-		if(moveStyle == MoveStyle.SLOW)
-			yield return new WaitForSeconds(0.05f);
-
-		else if(moveStyle == MoveStyle.NORMAL)
-			yield return new WaitForSeconds(0.1f);
-
-		else if(moveStyle == MoveStyle.FAST)
-			yield return new WaitForSeconds(0.2f);
-
-		else
-			yield return new WaitForSeconds(0.4f);
-
-		}
-		*/
-	
 	public void CallCommand(){
 		//TODO
 		DialogueManager.StartConversation("PiKaChuAction");
