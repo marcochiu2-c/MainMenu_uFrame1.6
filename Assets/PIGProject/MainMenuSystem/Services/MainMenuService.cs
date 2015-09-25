@@ -12,8 +12,7 @@ using uFrame.MVVM;
 
 public class MainMenuService : MainMenuServiceBase
 {
-
-    //Inject MainMenuRoot view model with id "MainMenuRoot"
+	//Inject MainMenuRoot view model with id "MainMenuRoot"
     [Inject("MainMenuRoot")] public MainMenuRootViewModel MainMenuRoot;
     [Inject("LocalUser")] public UserViewModel LocalUser;
 	//public GameObject DisablePanel;

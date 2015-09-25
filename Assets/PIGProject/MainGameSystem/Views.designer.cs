@@ -31,7 +31,7 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public HexGridMatching _MapGrid;
+    public String _HexGridMatching;
     
     [UFToggleGroup("State")]
     [UnityEngine.HideInInspector()]
@@ -68,7 +68,7 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
         var maingamerootview = ((MainGameRootViewModel)model);
         maingamerootview.State = this._State;
-        maingamerootview.MapGrid = this._MapGrid;
+        maingamerootview.HexGridMatching = this._HexGridMatching;
     }
     
     public override void Bind() {
@@ -112,114 +112,96 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
     }
 }
 
-public class PlayerViewBase : uFrame.MVVM.ViewBase {
+public class SoldierViewBase : EntityView {
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Int32 _Quantity;
+    public SoldierState _SoldierState;
     
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
+    [UFToggleGroup("SoldierState")]
     [UnityEngine.HideInInspector()]
-    public Single _AtkSpeed;
+    public bool _BindSoldierState = true;
     
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
-    public PlayerState _State;
-    
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
-    public MoveStyle _Movement;
-    
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
-    public Int32 _Power;
-    
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
-    public ActionStyle _Action;
-    
-    [UFToggleGroup("State")]
-    [UnityEngine.HideInInspector()]
-    public bool _BindState = true;
-    
-    [UFGroup("State")]
+    [UFGroup("SoldierState")]
     [UnityEngine.SerializeField()]
     [UnityEngine.HideInInspector()]
-    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_StateonlyWhenChanged")]
-    protected bool _StateOnlyWhenChanged;
+    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_SoldierStateonlyWhenChanged")]
+    protected bool _SoldierStateOnlyWhenChanged;
     
     public override string DefaultIdentifier {
         get {
-            return base.DefaultIdentifier;
+            return "Soldier";
         }
     }
     
     public override System.Type ViewModelType {
         get {
-            return typeof(PlayerViewModel);
+            return typeof(SoldierViewModel);
         }
     }
     
-    public PlayerViewModel Player {
+    public SoldierViewModel Soldier {
         get {
-            return (PlayerViewModel)ViewModelObject;
+            return (SoldierViewModel)ViewModelObject;
         }
     }
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
-        // var vm = model as PlayerViewModel;
+        // var vm = model as SoldierViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
-        var playerview = ((PlayerViewModel)model);
-        playerview.Quantity = this._Quantity;
-        playerview.AtkSpeed = this._AtkSpeed;
-        playerview.State = this._State;
-        playerview.Movement = this._Movement;
-        playerview.Power = this._Power;
-        playerview.Action = this._Action;
+        var soldierview = ((SoldierViewModel)model);
+        soldierview.SoldierState = this._SoldierState;
     }
     
     public override void Bind() {
         base.Bind();
-        // Use this.Player to access the viewmodel.
+        // Use this.Soldier to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
-        if (_BindState) {
-            this.BindProperty(this.Player.StateProperty, this.StateChanged, _StateOnlyWhenChanged);
+        if (_BindSoldierState) {
+            this.BindProperty(this.Soldier.SoldierStateProperty, this.SoldierStateChanged, _SoldierStateOnlyWhenChanged);
         }
     }
     
-    public virtual void StateChanged(PlayerState arg1) {
+    public virtual void SoldierStateChanged(SoldierState arg1) {
+    }
+    
+    public virtual void ExecuteChangeActionStyle() {
+        Soldier.ChangeActionStyle.OnNext(new ChangeActionStyleCommand() { Sender = Soldier });
+    }
+    
+    public virtual void ExecuteChangeMoveStyle() {
+        Soldier.ChangeMoveStyle.OnNext(new ChangeMoveStyleCommand() { Sender = Soldier });
+    }
+    
+    public virtual void ExecuteChangeQuantity() {
+        Soldier.ChangeQuantity.OnNext(new ChangeQuantityCommand() { Sender = Soldier });
+    }
+    
+    public virtual void ExecuteChangeActionStyle(ChangeActionStyleCommand command) {
+        command.Sender = Soldier;
+        Soldier.ChangeActionStyle.OnNext(command);
+    }
+    
+    public virtual void ExecuteChangeMoveStyle(ChangeMoveStyleCommand command) {
+        command.Sender = Soldier;
+        Soldier.ChangeMoveStyle.OnNext(command);
+    }
+    
+    public virtual void ExecuteChangeQuantity(ChangeQuantityCommand command) {
+        command.Sender = Soldier;
+        Soldier.ChangeQuantity.OnNext(command);
     }
 }
 
-public class EnemyViewBase : uFrame.MVVM.ViewBase {
-    
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
-    public Int32 _Quantity;
-    
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
-    public Single _AtkSpeed;
-    
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
-    public Int32 _Power;
+public class EnemyViewBase : EntityView {
     
     public override string DefaultIdentifier {
         get {
-            return base.DefaultIdentifier;
+            return "Enemy";
         }
     }
     
@@ -240,15 +222,209 @@ public class EnemyViewBase : uFrame.MVVM.ViewBase {
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as EnemyViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
-        var enemyview = ((EnemyViewModel)model);
-        enemyview.Quantity = this._Quantity;
-        enemyview.AtkSpeed = this._AtkSpeed;
-        enemyview.Power = this._Power;
     }
     
     public override void Bind() {
         base.Bind();
         // Use this.Enemy to access the viewmodel.
+        // Use this method to subscribe to the view-model.
+        // Any designer bindings are created in the base implementation.
+    }
+}
+
+public class EntityViewBase : uFrame.MVVM.ViewBase {
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Single _Health;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Single _Max_Health;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Single _AttackSpeed;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public MoveStyle _Movement;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Power;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _isAttack;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public ActionStyle _Action;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _MAXROUNDS;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public String _Name;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Single _Physique;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _HitPoint;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _WeaponProficieny;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Single _Dodge;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Hurt;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Dead;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _InitialMorale;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Prestige;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _DEBUG;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _counter;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Counter;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _UpdatePerRound;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _ElementsPerSecond;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _WarTimeLimitInSecond;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Weapons _Weapons;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Armors _Armors;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Formations _Formations;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Shields _Shields;
+    
+    public override string DefaultIdentifier {
+        get {
+            return base.DefaultIdentifier;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(EntityViewModel);
+        }
+    }
+    
+    public EntityViewModel Entity {
+        get {
+            return (EntityViewModel)ViewModelObject;
+        }
+    }
+    
+    protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
+        base.InitializeViewModel(model);
+        // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
+        // var vm = model as EntityViewModel;
+        // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+        var entityview = ((EntityViewModel)model);
+        entityview.Health = this._Health;
+        entityview.Max_Health = this._Max_Health;
+        entityview.AttackSpeed = this._AttackSpeed;
+        entityview.Movement = this._Movement;
+        entityview.Power = this._Power;
+        entityview.isAttack = this._isAttack;
+        entityview.Action = this._Action;
+        entityview.MAXROUNDS = this._MAXROUNDS;
+        entityview.Name = this._Name;
+        entityview.Physique = this._Physique;
+        entityview.HitPoint = this._HitPoint;
+        entityview.WeaponProficieny = this._WeaponProficieny;
+        entityview.Dodge = this._Dodge;
+        entityview.Hurt = this._Hurt;
+        entityview.Dead = this._Dead;
+        entityview.InitialMorale = this._InitialMorale;
+        entityview.Prestige = this._Prestige;
+        entityview.DEBUG = this._DEBUG;
+        entityview.counter = this._counter;
+        entityview.Counter = this._Counter;
+        entityview.UpdatePerRound = this._UpdatePerRound;
+        entityview.ElementsPerSecond = this._ElementsPerSecond;
+        entityview.WarTimeLimitInSecond = this._WarTimeLimitInSecond;
+        entityview.Weapons = this._Weapons;
+        entityview.Armors = this._Armors;
+        entityview.Formations = this._Formations;
+        entityview.Shields = this._Shields;
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        // Use this.Entity to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
     }

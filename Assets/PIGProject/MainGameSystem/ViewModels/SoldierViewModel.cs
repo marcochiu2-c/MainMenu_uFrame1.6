@@ -11,5 +11,5 @@ using UnityEngine;
 using UniRx;
 
 
-public partial class PlayerViewModel : PlayerViewModelBase {
+public partial class SoldierViewModel : SoldierViewModelBase {
 }

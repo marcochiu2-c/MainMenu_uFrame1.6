@@ -25,11 +25,13 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<String> _StateProperty;
     
-    private P<HexGridMatching> _MapGridProperty;
+    private P<String> _HexGridMatchingProperty;
     
-    private ModelCollection<PlayerViewModel> _Player;
+    private ModelCollection<String> _Soldier;
     
-    private ModelCollection<EnemyViewModel> _Enemy;
+    private ModelCollection<String> _Enemy;
+    
+    private ModelCollection<EntityViewModel> _Memebers;
     
     private Signal<GoToMenuCommand> _GoToMenu;
     
@@ -50,12 +52,12 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual P<HexGridMatching> MapGridProperty {
+    public virtual P<String> HexGridMatchingProperty {
         get {
-            return _MapGridProperty;
+            return _HexGridMatchingProperty;
         }
         set {
-            _MapGridProperty = value;
+            _HexGridMatchingProperty = value;
         }
     }
     
@@ -68,30 +70,39 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual HexGridMatching MapGrid {
+    public virtual String HexGridMatching {
         get {
-            return MapGridProperty.Value;
+            return HexGridMatchingProperty.Value;
         }
         set {
-            MapGridProperty.Value = value;
+            HexGridMatchingProperty.Value = value;
         }
     }
     
-    public virtual ModelCollection<PlayerViewModel> Player {
+    public virtual ModelCollection<String> Soldier {
         get {
-            return _Player;
+            return _Soldier;
         }
         set {
-            _Player = value;
+            _Soldier = value;
         }
     }
     
-    public virtual ModelCollection<EnemyViewModel> Enemy {
+    public virtual ModelCollection<String> Enemy {
         get {
             return _Enemy;
         }
         set {
             _Enemy = value;
+        }
+    }
+    
+    public virtual ModelCollection<EntityViewModel> Memebers {
+        get {
+            return _Memebers;
+        }
+        set {
+            _Memebers = value;
         }
     }
     
@@ -128,29 +139,27 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         this.Play = new Signal<PlayCommand>(this);
         this.GameOver = new Signal<GameOverCommand>(this);
         _StateProperty = new P<String>(this, "State");
-        _MapGridProperty = new P<HexGridMatching>(this, "MapGrid");
-        _Player = new ModelCollection<PlayerViewModel>(this, "Player");
-        _Enemy = new ModelCollection<EnemyViewModel>(this, "Enemy");
+        _HexGridMatchingProperty = new P<String>(this, "HexGridMatching");
+        _Soldier = new ModelCollection<String>(this, "Soldier");
+        _Enemy = new ModelCollection<String>(this, "Enemy");
+        _Memebers = new ModelCollection<EntityViewModel>(this, "Memebers");
     }
     
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
         this.State = stream.DeserializeString("State");;
+        this.HexGridMatching = stream.DeserializeString("HexGridMatching");;
         if (stream.DeepSerialize) {
-            this.Player.Clear();
-            this.Player.AddRange(stream.DeserializeObjectArray<PlayerViewModel>("Player"));
-        }
-        if (stream.DeepSerialize) {
-            this.Enemy.Clear();
-            this.Enemy.AddRange(stream.DeserializeObjectArray<EnemyViewModel>("Enemy"));
+            this.Memebers.Clear();
+            this.Memebers.AddRange(stream.DeserializeObjectArray<EntityViewModel>("Memebers"));
         }
     }
     
     public override void Write(ISerializerStream stream) {
         base.Write(stream);
         stream.SerializeString("State", this.State);
-        if (stream.DeepSerialize) stream.SerializeArray("Player", this.Player);
-        if (stream.DeepSerialize) stream.SerializeArray("Enemy", this.Enemy);
+        stream.SerializeString("HexGridMatching", this.HexGridMatching);
+        if (stream.DeepSerialize) stream.SerializeArray("Memebers", this.Memebers);
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -165,9 +174,10 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_StateProperty, false, false, false, false));
         // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_MapGridProperty, false, false, false, false));
-        list.Add(new ViewModelPropertyInfo(_Player, true, true, false, false));
-        list.Add(new ViewModelPropertyInfo(_Enemy, true, true, false, false));
+        list.Add(new ViewModelPropertyInfo(_HexGridMatchingProperty, false, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_Soldier, false, true, false, false));
+        list.Add(new ViewModelPropertyInfo(_Enemy, false, true, false, false));
+        list.Add(new ViewModelPropertyInfo(_Memebers, true, true, false, false));
     }
 }
 
@@ -178,48 +188,235 @@ public partial class MainGameRootViewModel {
     }
 }
 
-public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
+public partial class SoldierViewModelBase : EntityViewModel {
     
-    private P<Int32> _QuantityProperty;
+    private P<SoldierState> _SoldierStateProperty;
     
-    private P<Single> _AtkSpeedProperty;
+    private ModelCollection<Int32> _HealthHistory;
     
-    private P<PlayerState> _StateProperty;
+    private Signal<ChangeActionStyleCommand> _ChangeActionStyle;
+    
+    private Signal<ChangeMoveStyleCommand> _ChangeMoveStyle;
+    
+    private Signal<ChangeQuantityCommand> _ChangeQuantity;
+    
+    public SoldierViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
+            base(aggregator) {
+    }
+    
+    public virtual P<SoldierState> SoldierStateProperty {
+        get {
+            return _SoldierStateProperty;
+        }
+        set {
+            _SoldierStateProperty = value;
+        }
+    }
+    
+    public virtual SoldierState SoldierState {
+        get {
+            return SoldierStateProperty.Value;
+        }
+        set {
+            SoldierStateProperty.Value = value;
+        }
+    }
+    
+    public virtual ModelCollection<Int32> HealthHistory {
+        get {
+            return _HealthHistory;
+        }
+        set {
+            _HealthHistory = value;
+        }
+    }
+    
+    public virtual Signal<ChangeActionStyleCommand> ChangeActionStyle {
+        get {
+            return _ChangeActionStyle;
+        }
+        set {
+            _ChangeActionStyle = value;
+        }
+    }
+    
+    public virtual Signal<ChangeMoveStyleCommand> ChangeMoveStyle {
+        get {
+            return _ChangeMoveStyle;
+        }
+        set {
+            _ChangeMoveStyle = value;
+        }
+    }
+    
+    public virtual Signal<ChangeQuantityCommand> ChangeQuantity {
+        get {
+            return _ChangeQuantity;
+        }
+        set {
+            _ChangeQuantity = value;
+        }
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        this.ChangeActionStyle = new Signal<ChangeActionStyleCommand>(this);
+        this.ChangeMoveStyle = new Signal<ChangeMoveStyleCommand>(this);
+        this.ChangeQuantity = new Signal<ChangeQuantityCommand>(this);
+        _SoldierStateProperty = new P<SoldierState>(this, "SoldierState");
+        _HealthHistory = new ModelCollection<Int32>(this, "HealthHistory");
+    }
+    
+    public override void Read(ISerializerStream stream) {
+        base.Read(stream);
+        this.SoldierState = (SoldierState)stream.DeserializeInt("SoldierState");;
+    }
+    
+    public override void Write(ISerializerStream stream) {
+        base.Write(stream);
+        stream.SerializeInt("SoldierState", (int)this.SoldierState);;
+    }
+    
+    protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
+        base.FillCommands(list);
+        list.Add(new ViewModelCommandInfo("ChangeActionStyle", ChangeActionStyle) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("ChangeMoveStyle", ChangeMoveStyle) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("ChangeQuantity", ChangeQuantity) { ParameterType = typeof(void) });
+    }
+    
+    protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
+        base.FillProperties(list);
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_SoldierStateProperty, false, false, true, false));
+        list.Add(new ViewModelPropertyInfo(_HealthHistory, false, true, false, false));
+    }
+}
+
+public partial class SoldierViewModel {
+    
+    public SoldierViewModel(uFrame.Kernel.IEventAggregator aggregator) : 
+            base(aggregator) {
+    }
+}
+
+public partial class EnemyViewModelBase : EntityViewModel {
+    
+    public EnemyViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
+            base(aggregator) {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    public override void Read(ISerializerStream stream) {
+        base.Read(stream);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+        base.Write(stream);
+    }
+    
+    protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
+        base.FillCommands(list);
+    }
+    
+    protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
+        base.FillProperties(list);
+    }
+}
+
+public partial class EnemyViewModel {
+    
+    public EnemyViewModel(uFrame.Kernel.IEventAggregator aggregator) : 
+            base(aggregator) {
+    }
+}
+
+public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
+    
+    private P<Single> _HealthProperty;
+    
+    private P<Single> _Max_HealthProperty;
+    
+    private P<Single> _AttackSpeedProperty;
     
     private P<MoveStyle> _MovementProperty;
     
     private P<Int32> _PowerProperty;
     
+    private P<Boolean> _isAttackProperty;
+    
     private P<ActionStyle> _ActionProperty;
     
-    public PlayerViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
+    private P<Int32> _MAXROUNDSProperty;
+    
+    private P<String> _NameProperty;
+    
+    private P<Single> _PhysiqueProperty;
+    
+    private P<Int32> _HitPointProperty;
+    
+    private P<Int32> _WeaponProficienyProperty;
+    
+    private P<Single> _DodgeProperty;
+    
+    private P<Int32> _HurtProperty;
+    
+    private P<Int32> _DeadProperty;
+    
+    private P<Int32> _InitialMoraleProperty;
+    
+    private P<Int32> _PrestigeProperty;
+    
+    private P<Boolean> _DEBUGProperty;
+    
+    private P<Int32> _counterProperty;
+    
+    private P<Int32> _CounterProperty;
+    
+    private P<Int32> _UpdatePerRoundProperty;
+    
+    private P<Int32> _ElementsPerSecondProperty;
+    
+    private P<Int32> _WarTimeLimitInSecondProperty;
+    
+    private P<Weapons> _WeaponsProperty;
+    
+    private P<Armors> _ArmorsProperty;
+    
+    private P<Formations> _FormationsProperty;
+    
+    private P<Shields> _ShieldsProperty;
+    
+    public EntityViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
     
-    public virtual P<Int32> QuantityProperty {
+    public virtual P<Single> HealthProperty {
         get {
-            return _QuantityProperty;
+            return _HealthProperty;
         }
         set {
-            _QuantityProperty = value;
+            _HealthProperty = value;
         }
     }
     
-    public virtual P<Single> AtkSpeedProperty {
+    public virtual P<Single> Max_HealthProperty {
         get {
-            return _AtkSpeedProperty;
+            return _Max_HealthProperty;
         }
         set {
-            _AtkSpeedProperty = value;
+            _Max_HealthProperty = value;
         }
     }
     
-    public virtual P<PlayerState> StateProperty {
+    public virtual P<Single> AttackSpeedProperty {
         get {
-            return _StateProperty;
+            return _AttackSpeedProperty;
         }
         set {
-            _StateProperty = value;
+            _AttackSpeedProperty = value;
         }
     }
     
@@ -241,6 +438,15 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<Boolean> isAttackProperty {
+        get {
+            return _isAttackProperty;
+        }
+        set {
+            _isAttackProperty = value;
+        }
+    }
+    
     public virtual P<ActionStyle> ActionProperty {
         get {
             return _ActionProperty;
@@ -250,30 +456,210 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual Int32 Quantity {
+    public virtual P<Int32> MAXROUNDSProperty {
         get {
-            return QuantityProperty.Value;
+            return _MAXROUNDSProperty;
         }
         set {
-            QuantityProperty.Value = value;
+            _MAXROUNDSProperty = value;
         }
     }
     
-    public virtual Single AtkSpeed {
+    public virtual P<String> NameProperty {
         get {
-            return AtkSpeedProperty.Value;
+            return _NameProperty;
         }
         set {
-            AtkSpeedProperty.Value = value;
+            _NameProperty = value;
         }
     }
     
-    public virtual PlayerState State {
+    public virtual P<Single> PhysiqueProperty {
         get {
-            return StateProperty.Value;
+            return _PhysiqueProperty;
         }
         set {
-            StateProperty.Value = value;
+            _PhysiqueProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> HitPointProperty {
+        get {
+            return _HitPointProperty;
+        }
+        set {
+            _HitPointProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> WeaponProficienyProperty {
+        get {
+            return _WeaponProficienyProperty;
+        }
+        set {
+            _WeaponProficienyProperty = value;
+        }
+    }
+    
+    public virtual P<Single> DodgeProperty {
+        get {
+            return _DodgeProperty;
+        }
+        set {
+            _DodgeProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> HurtProperty {
+        get {
+            return _HurtProperty;
+        }
+        set {
+            _HurtProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> DeadProperty {
+        get {
+            return _DeadProperty;
+        }
+        set {
+            _DeadProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> InitialMoraleProperty {
+        get {
+            return _InitialMoraleProperty;
+        }
+        set {
+            _InitialMoraleProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> PrestigeProperty {
+        get {
+            return _PrestigeProperty;
+        }
+        set {
+            _PrestigeProperty = value;
+        }
+    }
+    
+    public virtual P<Boolean> DEBUGProperty {
+        get {
+            return _DEBUGProperty;
+        }
+        set {
+            _DEBUGProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> counterProperty {
+        get {
+            return _counterProperty;
+        }
+        set {
+            _counterProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> CounterProperty {
+        get {
+            return _CounterProperty;
+        }
+        set {
+            _CounterProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> UpdatePerRoundProperty {
+        get {
+            return _UpdatePerRoundProperty;
+        }
+        set {
+            _UpdatePerRoundProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> ElementsPerSecondProperty {
+        get {
+            return _ElementsPerSecondProperty;
+        }
+        set {
+            _ElementsPerSecondProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> WarTimeLimitInSecondProperty {
+        get {
+            return _WarTimeLimitInSecondProperty;
+        }
+        set {
+            _WarTimeLimitInSecondProperty = value;
+        }
+    }
+    
+    public virtual P<Weapons> WeaponsProperty {
+        get {
+            return _WeaponsProperty;
+        }
+        set {
+            _WeaponsProperty = value;
+        }
+    }
+    
+    public virtual P<Armors> ArmorsProperty {
+        get {
+            return _ArmorsProperty;
+        }
+        set {
+            _ArmorsProperty = value;
+        }
+    }
+    
+    public virtual P<Formations> FormationsProperty {
+        get {
+            return _FormationsProperty;
+        }
+        set {
+            _FormationsProperty = value;
+        }
+    }
+    
+    public virtual P<Shields> ShieldsProperty {
+        get {
+            return _ShieldsProperty;
+        }
+        set {
+            _ShieldsProperty = value;
+        }
+    }
+    
+    public virtual Single Health {
+        get {
+            return HealthProperty.Value;
+        }
+        set {
+            HealthProperty.Value = value;
+        }
+    }
+    
+    public virtual Single Max_Health {
+        get {
+            return Max_HealthProperty.Value;
+        }
+        set {
+            Max_HealthProperty.Value = value;
+        }
+    }
+    
+    public virtual Single AttackSpeed {
+        get {
+            return AttackSpeedProperty.Value;
+        }
+        set {
+            AttackSpeedProperty.Value = value;
         }
     }
     
@@ -295,6 +681,15 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual Boolean isAttack {
+        get {
+            return isAttackProperty.Value;
+        }
+        set {
+            isAttackProperty.Value = value;
+        }
+    }
+    
     public virtual ActionStyle Action {
         get {
             return ActionProperty.Value;
@@ -304,34 +699,267 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual Int32 MAXROUNDS {
+        get {
+            return MAXROUNDSProperty.Value;
+        }
+        set {
+            MAXROUNDSProperty.Value = value;
+        }
+    }
+    
+    public virtual String Name {
+        get {
+            return NameProperty.Value;
+        }
+        set {
+            NameProperty.Value = value;
+        }
+    }
+    
+    public virtual Single Physique {
+        get {
+            return PhysiqueProperty.Value;
+        }
+        set {
+            PhysiqueProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 HitPoint {
+        get {
+            return HitPointProperty.Value;
+        }
+        set {
+            HitPointProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 WeaponProficieny {
+        get {
+            return WeaponProficienyProperty.Value;
+        }
+        set {
+            WeaponProficienyProperty.Value = value;
+        }
+    }
+    
+    public virtual Single Dodge {
+        get {
+            return DodgeProperty.Value;
+        }
+        set {
+            DodgeProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 Hurt {
+        get {
+            return HurtProperty.Value;
+        }
+        set {
+            HurtProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 Dead {
+        get {
+            return DeadProperty.Value;
+        }
+        set {
+            DeadProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 InitialMorale {
+        get {
+            return InitialMoraleProperty.Value;
+        }
+        set {
+            InitialMoraleProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 Prestige {
+        get {
+            return PrestigeProperty.Value;
+        }
+        set {
+            PrestigeProperty.Value = value;
+        }
+    }
+    
+    public virtual Boolean DEBUG {
+        get {
+            return DEBUGProperty.Value;
+        }
+        set {
+            DEBUGProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 counter {
+        get {
+            return counterProperty.Value;
+        }
+        set {
+            counterProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 Counter {
+        get {
+            return CounterProperty.Value;
+        }
+        set {
+            CounterProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 UpdatePerRound {
+        get {
+            return UpdatePerRoundProperty.Value;
+        }
+        set {
+            UpdatePerRoundProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 ElementsPerSecond {
+        get {
+            return ElementsPerSecondProperty.Value;
+        }
+        set {
+            ElementsPerSecondProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 WarTimeLimitInSecond {
+        get {
+            return WarTimeLimitInSecondProperty.Value;
+        }
+        set {
+            WarTimeLimitInSecondProperty.Value = value;
+        }
+    }
+    
+    public virtual Weapons Weapons {
+        get {
+            return WeaponsProperty.Value;
+        }
+        set {
+            WeaponsProperty.Value = value;
+        }
+    }
+    
+    public virtual Armors Armors {
+        get {
+            return ArmorsProperty.Value;
+        }
+        set {
+            ArmorsProperty.Value = value;
+        }
+    }
+    
+    public virtual Formations Formations {
+        get {
+            return FormationsProperty.Value;
+        }
+        set {
+            FormationsProperty.Value = value;
+        }
+    }
+    
+    public virtual Shields Shields {
+        get {
+            return ShieldsProperty.Value;
+        }
+        set {
+            ShieldsProperty.Value = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
-        _QuantityProperty = new P<Int32>(this, "Quantity");
-        _AtkSpeedProperty = new P<Single>(this, "AtkSpeed");
-        _StateProperty = new P<PlayerState>(this, "State");
+        _HealthProperty = new P<Single>(this, "Health");
+        _Max_HealthProperty = new P<Single>(this, "Max_Health");
+        _AttackSpeedProperty = new P<Single>(this, "AttackSpeed");
         _MovementProperty = new P<MoveStyle>(this, "Movement");
         _PowerProperty = new P<Int32>(this, "Power");
+        _isAttackProperty = new P<Boolean>(this, "isAttack");
         _ActionProperty = new P<ActionStyle>(this, "Action");
+        _MAXROUNDSProperty = new P<Int32>(this, "MAXROUNDS");
+        _NameProperty = new P<String>(this, "Name");
+        _PhysiqueProperty = new P<Single>(this, "Physique");
+        _HitPointProperty = new P<Int32>(this, "HitPoint");
+        _WeaponProficienyProperty = new P<Int32>(this, "WeaponProficieny");
+        _DodgeProperty = new P<Single>(this, "Dodge");
+        _HurtProperty = new P<Int32>(this, "Hurt");
+        _DeadProperty = new P<Int32>(this, "Dead");
+        _InitialMoraleProperty = new P<Int32>(this, "InitialMorale");
+        _PrestigeProperty = new P<Int32>(this, "Prestige");
+        _DEBUGProperty = new P<Boolean>(this, "DEBUG");
+        _counterProperty = new P<Int32>(this, "counter");
+        _CounterProperty = new P<Int32>(this, "Counter");
+        _UpdatePerRoundProperty = new P<Int32>(this, "UpdatePerRound");
+        _ElementsPerSecondProperty = new P<Int32>(this, "ElementsPerSecond");
+        _WarTimeLimitInSecondProperty = new P<Int32>(this, "WarTimeLimitInSecond");
+        _WeaponsProperty = new P<Weapons>(this, "Weapons");
+        _ArmorsProperty = new P<Armors>(this, "Armors");
+        _FormationsProperty = new P<Formations>(this, "Formations");
+        _ShieldsProperty = new P<Shields>(this, "Shields");
     }
     
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
-        this.Quantity = stream.DeserializeInt("Quantity");;
-        this.AtkSpeed = stream.DeserializeFloat("AtkSpeed");;
-        this.State = (PlayerState)stream.DeserializeInt("State");;
+        this.Health = stream.DeserializeFloat("Health");;
+        this.Max_Health = stream.DeserializeFloat("Max_Health");;
+        this.AttackSpeed = stream.DeserializeFloat("AttackSpeed");;
         this.Movement = (MoveStyle)stream.DeserializeInt("Movement");;
         this.Power = stream.DeserializeInt("Power");;
+        this.isAttack = stream.DeserializeBool("isAttack");;
         this.Action = (ActionStyle)stream.DeserializeInt("Action");;
+        this.MAXROUNDS = stream.DeserializeInt("MAXROUNDS");;
+        this.Physique = stream.DeserializeFloat("Physique");;
+        this.HitPoint = stream.DeserializeInt("HitPoint");;
+        this.WeaponProficieny = stream.DeserializeInt("WeaponProficieny");;
+        this.Dodge = stream.DeserializeFloat("Dodge");;
+        this.Hurt = stream.DeserializeInt("Hurt");;
+        this.Dead = stream.DeserializeInt("Dead");;
+        this.InitialMorale = stream.DeserializeInt("InitialMorale");;
+        this.Prestige = stream.DeserializeInt("Prestige");;
+        this.DEBUG = stream.DeserializeBool("DEBUG");;
+        this.counter = stream.DeserializeInt("counter");;
+        this.Counter = stream.DeserializeInt("Counter");;
+        this.UpdatePerRound = stream.DeserializeInt("UpdatePerRound");;
+        this.ElementsPerSecond = stream.DeserializeInt("ElementsPerSecond");;
+        this.WarTimeLimitInSecond = stream.DeserializeInt("WarTimeLimitInSecond");;
     }
     
     public override void Write(ISerializerStream stream) {
         base.Write(stream);
-        stream.SerializeInt("Quantity", this.Quantity);
-        stream.SerializeFloat("AtkSpeed", this.AtkSpeed);
-        stream.SerializeInt("State", (int)this.State);;
+        stream.SerializeFloat("Health", this.Health);
+        stream.SerializeFloat("Max_Health", this.Max_Health);
+        stream.SerializeFloat("AttackSpeed", this.AttackSpeed);
         stream.SerializeInt("Movement", (int)this.Movement);;
         stream.SerializeInt("Power", this.Power);
+        stream.SerializeBool("isAttack", this.isAttack);
         stream.SerializeInt("Action", (int)this.Action);;
+        stream.SerializeInt("MAXROUNDS", this.MAXROUNDS);
+        stream.SerializeFloat("Physique", this.Physique);
+        stream.SerializeInt("HitPoint", this.HitPoint);
+        stream.SerializeInt("WeaponProficieny", this.WeaponProficieny);
+        stream.SerializeFloat("Dodge", this.Dodge);
+        stream.SerializeInt("Hurt", this.Hurt);
+        stream.SerializeInt("Dead", this.Dead);
+        stream.SerializeInt("InitialMorale", this.InitialMorale);
+        stream.SerializeInt("Prestige", this.Prestige);
+        stream.SerializeBool("DEBUG", this.DEBUG);
+        stream.SerializeInt("counter", this.counter);
+        stream.SerializeInt("Counter", this.Counter);
+        stream.SerializeInt("UpdatePerRound", this.UpdatePerRound);
+        stream.SerializeInt("ElementsPerSecond", this.ElementsPerSecond);
+        stream.SerializeInt("WarTimeLimitInSecond", this.WarTimeLimitInSecond);
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -341,132 +969,65 @@ public partial class PlayerViewModelBase : uFrame.MVVM.ViewModel {
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
         base.FillProperties(list);
         // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_QuantityProperty, false, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_HealthProperty, false, false, false, false));
         // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_AtkSpeedProperty, false, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_Max_HealthProperty, false, false, false, false));
         // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_StateProperty, false, false, true, false));
+        list.Add(new ViewModelPropertyInfo(_AttackSpeedProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_MovementProperty, false, false, true, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_PowerProperty, false, false, false, false));
         // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_isAttackProperty, false, false, false, false));
+        // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_ActionProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_MAXROUNDSProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_NameProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_PhysiqueProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_HitPointProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_WeaponProficienyProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_DodgeProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_HurtProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_DeadProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_InitialMoraleProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_PrestigeProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_DEBUGProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_counterProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_CounterProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_UpdatePerRoundProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_ElementsPerSecondProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_WarTimeLimitInSecondProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_WeaponsProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_ArmorsProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_FormationsProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_ShieldsProperty, false, false, false, false));
     }
 }
 
-public partial class PlayerViewModel {
+public partial class EntityViewModel {
     
-    public PlayerViewModel(uFrame.Kernel.IEventAggregator aggregator) : 
-            base(aggregator) {
-    }
-}
-
-public partial class EnemyViewModelBase : uFrame.MVVM.ViewModel {
-    
-    private P<Int32> _QuantityProperty;
-    
-    private P<Single> _AtkSpeedProperty;
-    
-    private P<Int32> _PowerProperty;
-    
-    public EnemyViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
-            base(aggregator) {
-    }
-    
-    public virtual P<Int32> QuantityProperty {
-        get {
-            return _QuantityProperty;
-        }
-        set {
-            _QuantityProperty = value;
-        }
-    }
-    
-    public virtual P<Single> AtkSpeedProperty {
-        get {
-            return _AtkSpeedProperty;
-        }
-        set {
-            _AtkSpeedProperty = value;
-        }
-    }
-    
-    public virtual P<Int32> PowerProperty {
-        get {
-            return _PowerProperty;
-        }
-        set {
-            _PowerProperty = value;
-        }
-    }
-    
-    public virtual Int32 Quantity {
-        get {
-            return QuantityProperty.Value;
-        }
-        set {
-            QuantityProperty.Value = value;
-        }
-    }
-    
-    public virtual Single AtkSpeed {
-        get {
-            return AtkSpeedProperty.Value;
-        }
-        set {
-            AtkSpeedProperty.Value = value;
-        }
-    }
-    
-    public virtual Int32 Power {
-        get {
-            return PowerProperty.Value;
-        }
-        set {
-            PowerProperty.Value = value;
-        }
-    }
-    
-    public override void Bind() {
-        base.Bind();
-        _QuantityProperty = new P<Int32>(this, "Quantity");
-        _AtkSpeedProperty = new P<Single>(this, "AtkSpeed");
-        _PowerProperty = new P<Int32>(this, "Power");
-    }
-    
-    public override void Read(ISerializerStream stream) {
-        base.Read(stream);
-        this.Quantity = stream.DeserializeInt("Quantity");;
-        this.AtkSpeed = stream.DeserializeFloat("AtkSpeed");;
-        this.Power = stream.DeserializeInt("Power");;
-    }
-    
-    public override void Write(ISerializerStream stream) {
-        base.Write(stream);
-        stream.SerializeInt("Quantity", this.Quantity);
-        stream.SerializeFloat("AtkSpeed", this.AtkSpeed);
-        stream.SerializeInt("Power", this.Power);
-    }
-    
-    protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
-        base.FillCommands(list);
-    }
-    
-    protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
-        base.FillProperties(list);
-        // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_QuantityProperty, false, false, false, false));
-        // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_AtkSpeedProperty, false, false, false, false));
-        // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_PowerProperty, false, false, false, false));
-    }
-}
-
-public partial class EnemyViewModel {
-    
-    public EnemyViewModel(uFrame.Kernel.IEventAggregator aggregator) : 
+    public EntityViewModel(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
 }

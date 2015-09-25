@@ -22,7 +22,7 @@ public class DialogueService : DialogueServiceBase {
 		base.Setup();
 		//Every time GAmeReadyEvent is published, invok LoadNotificationUIScene
 		this.OnEvent<GameReadyEvent>().Subscribe(evt => LoadDialogueScene());
-		
+
 		//Will invoke NotificationUISceneLoaded when such scene is loaded
 		this.OnEvent<SceneLoaderEvent>()
 			.Where (evt=>evt.SceneRoot is NotificationUIScene)
@@ -30,7 +30,7 @@ public class DialogueService : DialogueServiceBase {
 	}
 	
 	protected void DialogueSceneLoaded(DialogueScene scene){
-		UIContainer = scene.UIContainer;
+		//UIContainer = scene.UIContainer;
 	}
 	
 	protected void LoadDialogueScene(){

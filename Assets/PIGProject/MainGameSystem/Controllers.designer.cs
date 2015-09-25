@@ -23,6 +23,12 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     
     private uFrame.MVVM.IViewModelManager _MainGameRootViewModelManager;
     
+    private SoldierViewModel _Soldier;
+    
+    private SoldierViewModel _Soldier2;
+    
+    private EnemyViewModel _Enemy;
+    
     [uFrame.IOC.InjectAttribute("MainGameRoot")]
     public uFrame.MVVM.IViewModelManager MainGameRootViewModelManager {
         get {
@@ -30,6 +36,36 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _MainGameRootViewModelManager = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier")]
+    public SoldierViewModel Soldier {
+        get {
+            return _Soldier;
+        }
+        set {
+            _Soldier = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier2")]
+    public SoldierViewModel Soldier2 {
+        get {
+            return _Soldier2;
+        }
+        set {
+            _Soldier2 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy")]
+    public EnemyViewModel Enemy {
+        get {
+            return _Enemy;
+        }
+        set {
+            _Enemy = value;
         }
     }
     
@@ -93,23 +129,23 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     }
 }
 
-public class PlayerControllerBase : uFrame.MVVM.Controller {
+public class SoldierControllerBase : EntityController {
     
-    private uFrame.MVVM.IViewModelManager _PlayerViewModelManager;
+    private uFrame.MVVM.IViewModelManager _SoldierViewModelManager;
     
-    [uFrame.IOC.InjectAttribute("Player")]
-    public uFrame.MVVM.IViewModelManager PlayerViewModelManager {
+    [uFrame.IOC.InjectAttribute("Soldier")]
+    public uFrame.MVVM.IViewModelManager SoldierViewModelManager {
         get {
-            return _PlayerViewModelManager;
+            return _SoldierViewModelManager;
         }
         set {
-            _PlayerViewModelManager = value;
+            _SoldierViewModelManager = value;
         }
     }
     
-    public IEnumerable<PlayerViewModel> PlayerViewModels {
+    public IEnumerable<SoldierViewModel> SoldierViewModels {
         get {
-            return PlayerViewModelManager.OfType<PlayerViewModel>();
+            return SoldierViewModelManager.OfType<SoldierViewModel>();
         }
     }
     
@@ -121,29 +157,53 @@ public class PlayerControllerBase : uFrame.MVVM.Controller {
     public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
         base.Initialize(viewModel);
         // This is called when a viewmodel is created
-        this.InitializePlayer(((PlayerViewModel)(viewModel)));
+        this.InitializeSoldier(((SoldierViewModel)(viewModel)));
     }
     
-    public virtual PlayerViewModel CreatePlayer() {
-        return ((PlayerViewModel)(this.Create(Guid.NewGuid().ToString())));
+    public virtual SoldierViewModel CreateSoldier() {
+        return ((SoldierViewModel)(this.Create(Guid.NewGuid().ToString())));
     }
     
     public override uFrame.MVVM.ViewModel CreateEmpty() {
-        return new PlayerViewModel(this.EventAggregator);
+        return new SoldierViewModel(this.EventAggregator);
     }
     
-    public virtual void InitializePlayer(PlayerViewModel viewModel) {
-        // This is called when a PlayerViewModel is created
-        PlayerViewModelManager.Add(viewModel);
+    public virtual void InitializeSoldier(SoldierViewModel viewModel) {
+        // This is called when a SoldierViewModel is created
+        viewModel.ChangeActionStyle.Action = this.ChangeActionStyleHandler;
+        viewModel.ChangeMoveStyle.Action = this.ChangeMoveStyleHandler;
+        viewModel.ChangeQuantity.Action = this.ChangeQuantityHandler;
+        SoldierViewModelManager.Add(viewModel);
     }
     
     public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
         base.DisposingViewModel(viewModel);
-        PlayerViewModelManager.Remove(viewModel);
+        SoldierViewModelManager.Remove(viewModel);
+    }
+    
+    public virtual void ChangeActionStyle(SoldierViewModel viewModel) {
+    }
+    
+    public virtual void ChangeMoveStyle(SoldierViewModel viewModel) {
+    }
+    
+    public virtual void ChangeQuantity(SoldierViewModel viewModel) {
+    }
+    
+    public virtual void ChangeActionStyleHandler(ChangeActionStyleCommand command) {
+        this.ChangeActionStyle(command.Sender as SoldierViewModel);
+    }
+    
+    public virtual void ChangeMoveStyleHandler(ChangeMoveStyleCommand command) {
+        this.ChangeMoveStyle(command.Sender as SoldierViewModel);
+    }
+    
+    public virtual void ChangeQuantityHandler(ChangeQuantityCommand command) {
+        this.ChangeQuantity(command.Sender as SoldierViewModel);
     }
 }
 
-public class EnemyControllerBase : uFrame.MVVM.Controller {
+public class EnemyControllerBase : EntityController {
     
     private uFrame.MVVM.IViewModelManager _EnemyViewModelManager;
     
@@ -190,5 +250,91 @@ public class EnemyControllerBase : uFrame.MVVM.Controller {
     public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
         base.DisposingViewModel(viewModel);
         EnemyViewModelManager.Remove(viewModel);
+    }
+}
+
+public class EntityControllerBase : uFrame.MVVM.Controller {
+    
+    private uFrame.MVVM.IViewModelManager _EntityViewModelManager;
+    
+    private SoldierViewModel _Soldier;
+    
+    private SoldierViewModel _Soldier2;
+    
+    private EnemyViewModel _Enemy;
+    
+    [uFrame.IOC.InjectAttribute("Entity")]
+    public uFrame.MVVM.IViewModelManager EntityViewModelManager {
+        get {
+            return _EntityViewModelManager;
+        }
+        set {
+            _EntityViewModelManager = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier")]
+    public SoldierViewModel Soldier {
+        get {
+            return _Soldier;
+        }
+        set {
+            _Soldier = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier2")]
+    public SoldierViewModel Soldier2 {
+        get {
+            return _Soldier2;
+        }
+        set {
+            _Soldier2 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy")]
+    public EnemyViewModel Enemy {
+        get {
+            return _Enemy;
+        }
+        set {
+            _Enemy = value;
+        }
+    }
+    
+    public IEnumerable<EntityViewModel> EntityViewModels {
+        get {
+            return EntityViewModelManager.OfType<EntityViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeEntity(((EntityViewModel)(viewModel)));
+    }
+    
+    public virtual EntityViewModel CreateEntity() {
+        return ((EntityViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new EntityViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeEntity(EntityViewModel viewModel) {
+        // This is called when a EntityViewModel is created
+        EntityViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        EntityViewModelManager.Remove(viewModel);
     }
 }

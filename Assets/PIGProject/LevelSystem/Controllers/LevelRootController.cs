@@ -27,7 +27,6 @@ public class LevelRootController : LevelRootControllerBase {
         {
             SceneName = viewModel.CurrentLevel.LevelScene
         });
-
         Publish(new LoadSceneCommand()
         {
             SceneName = "MainMenuScene"

@@ -18,11 +18,11 @@ public enum MoveStyle {
     
     FAST,
     
-    NORMAL,
-    
     SLOW,
     
     IGNORE,
+    
+    NORMAL,
 }
 
 public enum NewEnumNode {
@@ -43,11 +43,11 @@ public enum ActionStyle {
     YAWP,
     
     SEARCH,
+    
+    EnumItems,
 }
 
-public enum PlayerState {
-    
-    WAIT,
+public enum SoldierState {
     
     MOVE,
     

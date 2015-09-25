@@ -25,3 +25,12 @@ public partial class PlayCommand : uFrame.MVVM.ViewModelCommand {
 
 public partial class GameOverCommand : uFrame.MVVM.ViewModelCommand {
 }
+
+public partial class ChangeActionStyleCommand : uFrame.MVVM.ViewModelCommand {
+}
+
+public partial class ChangeMoveStyleCommand : uFrame.MVVM.ViewModelCommand {
+}
+
+public partial class ChangeQuantityCommand : uFrame.MVVM.ViewModelCommand {
+}

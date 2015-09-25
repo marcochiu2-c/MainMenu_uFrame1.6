@@ -19,11 +19,55 @@ using uFrame.MVVM;
 
 public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
+    private SoldierViewModel _Soldier;
+    
+    private SoldierViewModel _Soldier2;
+    
+    private EnemyViewModel _Enemy;
+    
     private MainGameRootController _MainGameRootController;
     
-    private PlayerController _PlayerController;
+    private SoldierController _SoldierController;
     
     private EnemyController _EnemyController;
+    
+    private EntityController _EntityController;
+    
+    [uFrame.IOC.InjectAttribute("Soldier")]
+    public virtual SoldierViewModel Soldier {
+        get {
+            if (this._Soldier == null) {
+                this._Soldier = this.CreateViewModel<SoldierViewModel>( "Soldier");
+            }
+            return _Soldier;
+        }
+        set {
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier2")]
+    public virtual SoldierViewModel Soldier2 {
+        get {
+            if (this._Soldier2 == null) {
+                this._Soldier2 = this.CreateViewModel<SoldierViewModel>( "Soldier2");
+            }
+            return _Soldier2;
+        }
+        set {
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy")]
+    public virtual EnemyViewModel Enemy {
+        get {
+            if (this._Enemy == null) {
+                this._Enemy = this.CreateViewModel<EnemyViewModel>( "Enemy");
+            }
+            return _Enemy;
+        }
+        set {
+        }
+    }
     
     [uFrame.IOC.InjectAttribute()]
     public virtual MainGameRootController MainGameRootController {
@@ -39,15 +83,15 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     }
     
     [uFrame.IOC.InjectAttribute()]
-    public virtual PlayerController PlayerController {
+    public virtual SoldierController SoldierController {
         get {
-            if (_PlayerController==null) {
-                _PlayerController = Container.CreateInstance(typeof(PlayerController)) as PlayerController;;
+            if (_SoldierController==null) {
+                _SoldierController = Container.CreateInstance(typeof(SoldierController)) as SoldierController;;
             }
-            return _PlayerController;
+            return _SoldierController;
         }
         set {
-            _PlayerController = value;
+            _SoldierController = value;
         }
     }
     
@@ -64,12 +108,30 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
         }
     }
     
+    [uFrame.IOC.InjectAttribute()]
+    public virtual EntityController EntityController {
+        get {
+            if (_EntityController==null) {
+                _EntityController = Container.CreateInstance(typeof(EntityController)) as EntityController;;
+            }
+            return _EntityController;
+        }
+        set {
+            _EntityController = value;
+        }
+    }
+    
     public override void Load() {
         Container.RegisterViewModelManager<MainGameRootViewModel>(new ViewModelManager<MainGameRootViewModel>());
         Container.RegisterController<MainGameRootController>(MainGameRootController);
-        Container.RegisterViewModelManager<PlayerViewModel>(new ViewModelManager<PlayerViewModel>());
-        Container.RegisterController<PlayerController>(PlayerController);
+        Container.RegisterViewModelManager<SoldierViewModel>(new ViewModelManager<SoldierViewModel>());
+        Container.RegisterController<SoldierController>(SoldierController);
         Container.RegisterViewModelManager<EnemyViewModel>(new ViewModelManager<EnemyViewModel>());
         Container.RegisterController<EnemyController>(EnemyController);
+        Container.RegisterViewModelManager<EntityViewModel>(new ViewModelManager<EntityViewModel>());
+        Container.RegisterController<EntityController>(EntityController);
+        Container.RegisterViewModel<SoldierViewModel>(Soldier, "Soldier");
+        Container.RegisterViewModel<SoldierViewModel>(Soldier2, "Soldier2");
+        Container.RegisterViewModel<EnemyViewModel>(Enemy, "Enemy");
     }
 }
