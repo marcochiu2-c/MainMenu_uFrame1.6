@@ -7,4 +7,5 @@ public class Armors : MonoBehaviour {
 	public int CriticalCover;
 	public int FatalCover;
 	public int Hardness;
+	public int OtherCover;
 }

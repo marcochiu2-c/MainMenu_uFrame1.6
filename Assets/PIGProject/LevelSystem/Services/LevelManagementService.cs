@@ -15,7 +15,6 @@ using UnityEngine;
 public class LevelManagementService : LevelManagementServiceBase
 {
     private List<LevelDescriptor> _levels;
-
     //Game object holding LevelDescriptor components 
     public GameObject LevelsContainer;    
     

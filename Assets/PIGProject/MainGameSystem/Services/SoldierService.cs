@@ -10,7 +10,7 @@ using UnityEngine;
 
 
 public class SoldierService : SoldierServiceBase {
-	//[Inject("Soldier")] public SoldierViewModel Soldier;
+	[Inject("Soldier")] public SoldierViewModel Soldier;
 	/*
 	public override void Setup()
 	{

@@ -19,6 +19,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 	public EnemyViewModel TargetVM;
 	public EnemyView TargetView;
+
+	public MainGameRootController MainGameController;
 	
 	//public SoldierViewModel TargetVM;
 	//public SoldierView TargetView;
@@ -38,11 +40,13 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		base.KernelLoaded();
 		SoldierVM = uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier");
 		Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM.Movement + " and " + SoldierVM.Health + " and " + SoldierVM.Action);
-
+		//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM.ActualHit() + " and " + SoldierVM.ActualDodge() + " and " + SoldierVM.ActualMorale());
 
 		TargetVM  = uFrameKernel.Container.Resolve<EnemyViewModel>("Enemy");
 		//Debug.Log (TargetVM == null ? "TargetVM is null" : TargetVM.Quantity);
 
+		MainGameController = uFrameKernel.Container.Resolve<MainGameRootController>();
+		Debug.Log (MainGameController == null ? "MainGameController is null" : "MainGameController is here" );
 		//TargetVM = uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier2");
 		//Debug.Log (TargetVM == null ? "TargetVM is null" : TargetVM.Movement + " and " + TargetVM.Quantity + " and " + TargetVM.Action);
 
@@ -63,7 +67,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public void OnClick(FlatHexPoint point)
 	{	
 		//Debug.Log (point.BasePoint);   //return (x,y)
-		
 		if(point == SoldierView.CurrentPointLocation)
 		{
 			//TODO
@@ -85,8 +88,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			
 			else if (SoldierVM.SoldierState == SoldierState.ATTACK)
 			{
-				
-				
 				// (target.CurrentPointLocation == point && in Grid.GetAllNeighbors(player))
 				foreach (var neighbor in Grid.GetAllNeighbors(SoldierView.CurrentPointLocation))
 				{
@@ -95,7 +96,9 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 						//FindNearly cell, get the target
 						//if point is one of neighbour, target = pointtarget
 						Debug.Log ("You can Attack");
-						StartCoroutine(Battle (SoldierVM, TargetVM, SoldierView, TargetView));
+						//Call GameRoot or cal
+						MainGameController.StartBattle(SoldierVM, TargetVM);
+						//StartCoroutine(Battle (SoldierVM, TargetVM, SoldierView, TargetView));
 						return;
 					}
 				}

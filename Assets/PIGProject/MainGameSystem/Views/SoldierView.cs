@@ -69,8 +69,6 @@ public class SoldierView : SoldierViewBase {
         // Use this.Player to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
-
-		//MoveStyle
 		this.BindButtonToHandler(IgnoreButton, () => this.Soldier.Movement = MoveStyle.IGNORE);
 		this.BindButtonToHandler(SlowButton, () => this.Soldier.Movement = MoveStyle.SLOW);	
 		this.BindButtonToHandler(NormalButton, () => this.Soldier.Movement = MoveStyle.NORMAL);	
@@ -87,12 +85,12 @@ public class SoldierView : SoldierViewBase {
 
 		this.BindButtonToHandler(PlayButton, () => PlayBattle());
     }
-
+	
 	public void PlayBattle()
 	{
 		foreach (var item in playlist)
 		{
-			Debug.Log(" Point: " + item.SavePointLocation + " Move: " + item.SaveMove + " Action: " + item.SaveAction);	
+			Debug.Log("ID: " + playlist.IndexOf(item) + " Point: " + item.SavePointLocation + " Move: " + item.SaveMove + " Action: " + item.SaveAction);	
 		}
 	}
 
@@ -134,13 +132,13 @@ public class SoldierView : SoldierViewBase {
 		//Debug.Log ("After Move: " + this._State);
 		yield return null;
 
-		if(this._Movement == MoveStyle.SLOW)
+		if(this.Soldier.Movement == MoveStyle.SLOW)
 			yield return new WaitForSeconds(0.2f);
 		
-		else if(this._Movement == MoveStyle.NORMAL)
+		else if(this.Soldier.Movement == MoveStyle.NORMAL)
 			yield return new WaitForSeconds(0.1f);
 		
-		else if(this._Movement == MoveStyle.FAST)
+		else if(this.Soldier.Movement == MoveStyle.FAST)
 			yield return new WaitForSeconds(0.05f);
 		
 		else
@@ -161,7 +159,7 @@ public class SoldierView : SoldierViewBase {
 			ActionPanel.gameObject.SetActive(true);
 			MovePanel.gameObject.SetActive(false);
 			//this.playlist = new PlayList(this.CurrentPointLocation, this._Action);
-			this.playlist.Insert(step, new PlayList(this.CurrentPointLocation, this._Movement ,this._Action));
+			this.playlist.Insert(step, new PlayList(this.CurrentPointLocation, this.Soldier.Movement ,this.Soldier.Action));
 			step++;
 		}
 

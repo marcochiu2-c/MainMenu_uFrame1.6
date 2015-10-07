@@ -29,3 +29,14 @@ public class SoldierServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
         base.Setup();
     }
 }
+
+public class GameCalServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
+    
+    /// <summary>
+    /// This method is invoked whenever the kernel is loading.
+    /// Since the kernel lives throughout the entire lifecycle of the game, this will only be invoked once.
+    /// </summary>
+    public override void Setup() {
+        base.Setup();
+    }
+}

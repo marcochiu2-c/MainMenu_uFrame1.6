@@ -12,4 +12,5 @@ using UniRx;
 
 
 public partial class SoldierViewModel : SoldierViewModelBase {
+
 }

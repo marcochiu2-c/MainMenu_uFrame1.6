@@ -45,7 +45,7 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
     
     public override string DefaultIdentifier {
         get {
-            return base.DefaultIdentifier;
+            return "MainGame";
         }
     }
     
@@ -247,7 +247,7 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Single _AttackSpeed;
+    public Int32 _AttackSpeed;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
@@ -302,12 +302,12 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Int32 _Hurt;
+    public Single _Hurt;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Int32 _Dead;
+    public Single _Dead;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
@@ -352,22 +352,27 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Weapons _Weapons;
+    public Single _starttime;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Armors _Armors;
+    public Boolean _TimeStarted;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Formations _Formations;
+    public Int32 _WeaponProficiency;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Shields _Shields;
+    public Int32 _moraleStandard;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public uFrame.MVVM.ViewBase _Opponent;
     
     public override string DefaultIdentifier {
         get {
@@ -416,10 +421,11 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
         entityview.UpdatePerRound = this._UpdatePerRound;
         entityview.ElementsPerSecond = this._ElementsPerSecond;
         entityview.WarTimeLimitInSecond = this._WarTimeLimitInSecond;
-        entityview.Weapons = this._Weapons;
-        entityview.Armors = this._Armors;
-        entityview.Formations = this._Formations;
-        entityview.Shields = this._Shields;
+        entityview.starttime = this._starttime;
+        entityview.TimeStarted = this._TimeStarted;
+        entityview.WeaponProficiency = this._WeaponProficiency;
+        entityview.moraleStandard = this._moraleStandard;
+        entityview.Opponent = this._Opponent == null ? null :  ViewService.FetchViewModel(this._Opponent) as EntityViewModel;
     }
     
     public override void Bind() {

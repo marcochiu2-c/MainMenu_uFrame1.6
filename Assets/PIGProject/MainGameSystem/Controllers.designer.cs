@@ -29,6 +29,8 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     
     private EnemyViewModel _Enemy;
     
+    private MainGameRootViewModel _MainGame;
+    
     [uFrame.IOC.InjectAttribute("MainGameRoot")]
     public uFrame.MVVM.IViewModelManager MainGameRootViewModelManager {
         get {
@@ -66,6 +68,16 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Enemy = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("MainGame")]
+    public MainGameRootViewModel MainGame {
+        get {
+            return _MainGame;
+        }
+        set {
+            _MainGame = value;
         }
     }
     
@@ -263,6 +275,8 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
     
     private EnemyViewModel _Enemy;
     
+    private MainGameRootViewModel _MainGame;
+    
     [uFrame.IOC.InjectAttribute("Entity")]
     public uFrame.MVVM.IViewModelManager EntityViewModelManager {
         get {
@@ -300,6 +314,16 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Enemy = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("MainGame")]
+    public MainGameRootViewModel MainGame {
+        get {
+            return _MainGame;
+        }
+        set {
+            _MainGame = value;
         }
     }
     
