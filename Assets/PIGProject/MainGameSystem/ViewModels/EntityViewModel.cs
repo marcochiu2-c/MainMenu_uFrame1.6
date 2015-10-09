@@ -9,7 +9,7 @@ using uFrame.MVVM.Bindings;
 using uFrame.Serialization;
 using UnityEngine;
 using UniRx;
-
+using Gamelogic.Grids;
 
 public partial class EntityViewModel : EntityViewModelBase {
 	public float actualHit;
@@ -49,6 +49,7 @@ public partial class EntityViewModel : EntityViewModelBase {
 	public Armors Armor = new Armors {Weight = 2, OtherCover = 30, CriticalCover = 30, FatalCover = 30, Hardness =30};
 	public Shields Shield = new Shields{Weight = 0 , BlockRate = 0, Hardness =0};
 	public Formations Formation = new Formations {HitPoint = 10, Dodge = 10, Morale =5};
+	public FlatHexPoint CurrentPointLocation;
 
 
 
@@ -107,7 +108,8 @@ public partial class EntityViewModel : EntityViewModelBase {
 	
 	public float ActualMorale(){  
 		if (this.DEBUG) {
-			Debug.Log (Name + " InitialMorale: " + InitialMorale);
+			Debug.Log (Name
+			           + " InitialMorale: " + InitialMorale);
 			//Debug.Log (Name + " AdvisorPrestige - oppo.AdvisorPrestige: " + AdvisorPrestige + "  "+ Opponent.AdvisorPrestige);
 			//Debug.Log (Name + " GeneralPrestige - oppo.GeneralPrestige: " + GeneralPrestige  + "  "+ Opponent.GeneralPrestige);
 		}
@@ -179,6 +181,8 @@ public partial class EntityViewModel : EntityViewModelBase {
 		Opponent.dead = (hurtByArmorBroken > 0) ? (fatalHitCover + fatalHitNoCover) / 100f : fatalHitCover / 100f;
 		Debug.Log (Opponent.Name+" <color=red>Results:</color> " + (Opponent.noHurt*100) + "%  " + (Opponent.hurt*100)+ "% "+ (Opponent.dead*100)+"%");
 	}
+
+
 
 	public class Weapons{
 		public int Weight { get; set; }

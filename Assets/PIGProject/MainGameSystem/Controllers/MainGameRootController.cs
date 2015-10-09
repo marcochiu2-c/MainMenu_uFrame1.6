@@ -11,10 +11,12 @@ using UniRx;
 using Gamelogic;
 using Gamelogic.Grids;
 using System.Timers;
+using DG.Tweening;
 
 public class MainGameRootController : MainGameRootControllerBase {
     
 	public List<EntityViewModel> soldiers = new List<EntityViewModel>();
+	public List<EntityView> soldiersView = new List<EntityView>();
 	public bool TimerStarted = false;
 	public static float WarStartTime = 0;
 
@@ -36,48 +38,52 @@ public class MainGameRootController : MainGameRootControllerBase {
         base.GameOver(viewModel);
     }
 
-	public void StartBattle(EntityViewModel P1, EntityViewModel P2){
+
+	public void StartBattle(EntityViewModel P1, EntityViewModel P2, EntityView P1v, EntityView P2v){
 		Debug.Log("Running StartBattle");
 
-		soldiers.Add (P1);
-		soldiers.Add (P2);
-		//soldiers.Add (new Soldiers (SetParameterSoldier3 ()));
-		//soldiers.Add (new Soldiers (SetParameterSoldier4 ()));
+		soldiers.Insert(0, P1);
+		soldiers.Insert(1, P2);
+		soldiersView.Insert (0, P1v);
+		soldiersView.Insert (1, P2v);
 		soldiers[0].Opponent = soldiers[1];
 		soldiers[1].Opponent = soldiers[0];
-		//soldiers [2].Opponent = soldiers [1];
-		//soldiers [3].Opponent = soldiers [1];
-		soldiers[0].Action = ActionStyle.PIN;
-		//soldiers [2].action = ActionStyle.PIN;
-		//soldiers [3].action = ActionStyle.PIN;
+		soldiersView[0].OpponentView = soldiersView[1];
+		soldiersView[1].OpponentView = soldiersView[0];
 		soldiers[0].WarTimeLimitInSecond = 30;
 		soldiers[1].WarTimeLimitInSecond = 30;
 		soldiers[0].ElementsPerSecond = soldiers[0].UpdatePerRound * soldiers[1].UpdatePerRound;
 		soldiers[1].ElementsPerSecond = soldiers[1].ElementsPerSecond;
 		
 		for (int i=0; i<soldiers.Count; i++) {
-			soldiers[i].GetHealthProbabilities ();
+			soldiers[i].GetHealthProbabilities();
 			soldiers[i].starttime = Time.time;
 		}
+
 		WarStartTime = Time.time;
 		TimerStarted = true;
 		Observable.EveryUpdate().Subscribe(_ => 
 		{
-			if (soldiers.Count > 0) {
-				for (int i=0; i < soldiers.Count; i++) {
-					if (TimerStarted && (Time.time - soldiers[i].starttime >= 1f / soldiers[i].AttackSpeed)) {
-						Result (WarStartTime, soldiers[0].Counter, soldiers[i]);
+			if (soldiers.Count > 0) 
+			{
+				for (int i=0; i < soldiers.Count; i++) 
+				{
+					if (TimerStarted && (Time.time - soldiers[i].starttime >= 1f / soldiers[i].AttackSpeed)) 
+					{
+						Result (WarStartTime, soldiers[0].Counter, soldiers[i], soldiersView[i]);
 						soldiers[i].starttime = Time.time;
+					}
+					else if (!TimerStarted)
+					{
+						//Debug.Log (soldiers[i] + "is null");
+						//soldiers[i] = null;
 					}
 				}
 			}
-			
-			if (Time.time > 60)
-				soldiers = null;
 		});
 	}
 
-	public void Result(float warStartTime, int roundCounter, EntityViewModel p){
+	public void Result(float warStartTime, int roundCounter, EntityViewModel p, EntityView pV){
 		float factor = 1.0f;
 		/*
 		if (action == ActionStyle.PIN){
@@ -92,7 +98,9 @@ public class MainGameRootController : MainGameRootControllerBase {
 		p.Opponent.Hurt = ht * factor;
 		//healthHistory [nextCnt] = (healthHistory [counter] - Mathf.RoundToInt(d  * factor) - Mathf.RoundToInt(ht*factor));
 		p.Opponent.Health = (p.Opponent.Health - p.Opponent.Dead - p.Opponent.Hurt) >= 0.5 ? p.Opponent.Health - p.Opponent.Dead - p.Opponent.Hurt : 0;
-		
+
+		pV.AtkAndUpdateHealth();
+
 		//Debug.Log (Name + " Health: " + healthHistory [Counter]);
 		string colorTag = p.Name != "Soldier3" ? "<color=red>" :"<color=yellow>";
 		colorTag = p.Name == "Soldier4" ? "<color=purple>" : colorTag;

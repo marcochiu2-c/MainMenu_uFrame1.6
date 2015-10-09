@@ -35,7 +35,6 @@ public class SoldierView : SoldierViewBase {
 	public GameObject MovePanel;
 	public GameObject ActionPanel;
 	[SerializeField]
-	private float Max_Quantity;
 	private int step = 0;
 
 	public List<PlayList> playlist = new List<PlayList>(){};
@@ -45,13 +44,15 @@ public class SoldierView : SoldierViewBase {
 		public FlatHexPoint SavePointLocation;
 		public MoveStyle SaveMove;
 		public ActionStyle SaveAction;
+		public EntityViewModel SaveEnemyVM;
 		//public int[] HealthHistory = new int[50];
 		
-		public PlayList(FlatHexPoint savePointLocation, MoveStyle saveMove, ActionStyle saveAction)
+		public PlayList(FlatHexPoint savePointLocation, MoveStyle saveMove, ActionStyle saveAction, EntityViewModel saveEnemyVM)
 		{
 			this.SavePointLocation = savePointLocation;
 			this.SaveMove = saveMove;
 			this.SaveAction = saveAction;
+			this.SaveEnemyVM = saveEnemyVM;
 			//this.HealthHistory = healthHistory;
 		}
 	}
@@ -85,73 +86,22 @@ public class SoldierView : SoldierViewBase {
 
 		this.BindButtonToHandler(PlayButton, () => PlayBattle());
     }
-	
+
+	//the LIst that save the move and command
 	public void PlayBattle()
 	{
 		foreach (var item in playlist)
 		{
-			Debug.Log("ID: " + playlist.IndexOf(item) + " Point: " + item.SavePointLocation + " Move: " + item.SaveMove + " Action: " + item.SaveAction);	
+			Debug.Log("ID: " + playlist.IndexOf(item) + " Point: " + item.SavePointLocation + " Move: " + item.SaveMove + " Action: " + item.SaveAction + " Opponent: " + item.SaveEnemyVM);	
 		}
 	}
-
-	/*
-	public void UpdateQuantity(float number)
-	{
-		float maxHealth = 100f;
-		this._Health = number;
-		var curHealth = (float)this._Health/Max_Quantity;
-		//Debug.Log("curHealth: " + curHealth);
-
-		healthBar.transform.localScale = new Vector3(curHealth, healthBar.transform.localScale.y);
-
-		if(number == 0){
-			//TODO
-			//Destroy the object
-		}
-	}
-	*/
-
-	// try to use UniRx when have time	
-	public IEnumerator Move(Vector3 currentPoint, Vector3 endPoint){
-		float time = 0;
-		const float totalTime = .3f;
-
-		//onAction = true;
-		while (time < totalTime)
-		{
-			float x = Mathf.Lerp(currentPoint.x, endPoint.x, time / totalTime);
-			float y = Mathf.Lerp(currentPoint.y, endPoint.y, time / totalTime);
-
-			//y -= 20;
-			
-			transform.position = new Vector3(x, y);
-			time += Time.deltaTime;
-		}
-
-		//this._State = PlayerState.ATTACK;
-		//Debug.Log ("After Move: " + this._State);
-		yield return null;
-
-		if(this.Soldier.Movement == MoveStyle.SLOW)
-			yield return new WaitForSeconds(0.2f);
-		
-		else if(this.Soldier.Movement == MoveStyle.NORMAL)
-			yield return new WaitForSeconds(0.1f);
-		
-		else if(this.Soldier.Movement == MoveStyle.FAST)
-			yield return new WaitForSeconds(0.05f);
-		
-		else
-			yield return new WaitForSeconds(0.4f);
-	}
-
-
 
 	public override void SoldierStateChanged(SoldierState state) {
 
 		base.SoldierStateChanged(state);
 		myText.text = state + " State";
 
+		//Change the Panel to Attack Panel
 		if(state == SoldierState.ATTACK)
 		{
 			//Active Action btns
@@ -159,10 +109,10 @@ public class SoldierView : SoldierViewBase {
 			ActionPanel.gameObject.SetActive(true);
 			MovePanel.gameObject.SetActive(false);
 			//this.playlist = new PlayList(this.CurrentPointLocation, this._Action);
-			this.playlist.Insert(step, new PlayList(this.CurrentPointLocation, this.Soldier.Movement ,this.Soldier.Action));
+			this.playlist.Insert(step, new PlayList(this.Entity.CurrentPointLocation, this.Soldier.Movement ,this.Soldier.Action, this.Soldier.Opponent));
 			step++;
 		}
-
+		//Change the Panel to Move Panel
 		if(state == SoldierState.MOVE)
 		{
 			//Active Move btns

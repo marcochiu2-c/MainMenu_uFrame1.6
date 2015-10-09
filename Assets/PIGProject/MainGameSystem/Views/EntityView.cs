@@ -10,12 +10,13 @@ using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
 using Gamelogic.Grids;
+using DG.Tweening;
 
 
 public class EntityView : EntityViewBase {
 	public GameObject healthBar;
 
-	public FlatHexPoint CurrentPointLocation
+	public EntityView OpponentView 
 	{
 		get;
 		set;
@@ -34,17 +35,25 @@ public class EntityView : EntityViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
     }
-	
+
+	public void AtkAndUpdateHealth()
+	{
+		this.transform.DOPunchPosition(Vector3.right *100, 0.1f, 100, 1f, false).OnComplete(() => {
+			//Debug.Log ("Update Opponent Health");
+			this.OpponentView.UpdateHealth(this.Entity.Opponent.Health);
+		});
+	}
+
 	public void UpdateHealth(float number)
 	{
-		float maxHealth = 100f;
-		this.Entity.Health = number;
-		var curHealth = (float)this.Entity.Health/this.Entity.Max_Health;
+		//this.Entity.Opponent.Health = number;
+		var curHealth = (float)number/this.Entity.Max_Health;
 		//Debug.Log("curHealth: " + curHealth);
 		
 		healthBar.transform.localScale = new Vector3(curHealth, healthBar.transform.localScale.y);
 		
-		if(number == 0){
+		if(number <= 0){
+			this.transform.DOShakeScale(0.4f, 80).OnComplete(() => this.gameObject.SetActive(false));
 			//TODO
 			//Destroy the object
 		}
@@ -71,13 +80,13 @@ public class EntityView : EntityViewBase {
 		//Debug.Log ("After Move: " + this._State);
 		yield return null;
 		
-		if(this._Movement == MoveStyle.SLOW)
+		if(this.Entity.Movement == MoveStyle.SLOW)
 			yield return new WaitForSeconds(0.2f);
 		
-		else if(this._Movement == MoveStyle.NORMAL)
+		else if(this.Entity.Movement == MoveStyle.NORMAL)
 			yield return new WaitForSeconds(0.1f);
 		
-		else if(this._Movement == MoveStyle.FAST)
+		else if(this.Entity.Movement == MoveStyle.FAST)
 			yield return new WaitForSeconds(0.05f);
 		
 		else

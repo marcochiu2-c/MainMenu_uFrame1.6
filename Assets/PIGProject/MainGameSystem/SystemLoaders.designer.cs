@@ -27,6 +27,8 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private MainGameRootViewModel _MainGame;
     
+    private EnemyViewModel _Enemy2;
+    
     private MainGameRootController _MainGameRootController;
     
     private SoldierController _SoldierController;
@@ -78,6 +80,18 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
                 this._MainGame = this.CreateViewModel<MainGameRootViewModel>( "MainGame");
             }
             return _MainGame;
+        }
+        set {
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy2")]
+    public virtual EnemyViewModel Enemy2 {
+        get {
+            if (this._Enemy2 == null) {
+                this._Enemy2 = this.CreateViewModel<EnemyViewModel>( "Enemy2");
+            }
+            return _Enemy2;
         }
         set {
         }
@@ -148,5 +162,6 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
         Container.RegisterViewModel<SoldierViewModel>(Soldier2, "Soldier2");
         Container.RegisterViewModel<EnemyViewModel>(Enemy, "Enemy");
         Container.RegisterViewModel<MainGameRootViewModel>(MainGame, "MainGame");
+        Container.RegisterViewModel<EnemyViewModel>(Enemy2, "Enemy2");
     }
 }

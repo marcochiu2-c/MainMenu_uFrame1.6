@@ -14,11 +14,20 @@ using uFrame.MVVM;
 
 public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
-	public SoldierViewModel SoldierVM;
+	//public SoldierViewModel SoldierVM;
 	public SoldierView SoldierView; 
 
-	public EnemyViewModel TargetVM;
-	public EnemyView TargetView;
+	//public EnemyViewModel TargetVM;
+	//public EnemyView TargetView1;
+	//public EnemyView TargetView2;
+	//public EnemyView TargetView3;
+	//public EnemyView TargetView4;
+	//public EnemyView TargetView5;
+
+	public List<SoldierViewModel> SoldierVM = new List<SoldierViewModel>();
+	public List<EnemyViewModel> TargetVM = new List<EnemyViewModel>();
+
+	public List<EnemyView> TargetV = new List<EnemyView>();
 
 	public MainGameRootController MainGameController;
 	
@@ -38,12 +47,27 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public override void KernelLoaded()
 	{
 		base.KernelLoaded();
-		SoldierVM = uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier");
-		Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM.Movement + " and " + SoldierVM.Health + " and " + SoldierVM.Action);
+		SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier"));
+		Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
 		//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM.ActualHit() + " and " + SoldierVM.ActualDodge() + " and " + SoldierVM.ActualMorale());
 
-		TargetVM  = uFrameKernel.Container.Resolve<EnemyViewModel>("Enemy");
-		//Debug.Log (TargetVM == null ? "TargetVM is null" : TargetVM.Quantity);
+		for (int i = 1; i <= 5; i++)
+			TargetVM.Add(uFrameKernel.Container.Resolve<EnemyViewModel>("Enemy" + i));
+
+		for (int i = 1; i <= 5; i++)
+		{
+
+			GameObject obj = GameObject.Find("Enemy" + i);
+			TargetV.Add (obj.GetComponent<EnemyView>() as EnemyView);
+			//EnemyView temp = GameObject.Find("Enemy" + i) as EnemyView;
+			//TargetV.Add(temp);
+		}
+		/*
+		TargetVM.Add(uFrameKernel.Container.Resolve<EnemyViewModel>("Enemy"));
+		TargetVM.Add(uFrameKernel.Container.Resolve<EnemyViewModel>("Enemy2"));
+		Debug.Log (TargetVM[0] == null ? "TargetVM is null" : "TargetVM is here");
+		Debug.Log (TargetVM[1] == null ? "TargetVM is null" : "TargetVM is here");
+		*/
 
 		MainGameController = uFrameKernel.Container.Resolve<MainGameRootController>();
 		Debug.Log (MainGameController == null ? "MainGameController is null" : "MainGameController is here" );
@@ -56,18 +80,28 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	//Init all Gameobject in the Grid
 	public void InitPosition()
 	{	
-		SoldierView.CurrentPointLocation = FlatHexPoint.Zero;
+
+		SoldierVM[0].CurrentPointLocation = FlatHexPoint.Zero;
 		SoldierView.transform.position = Map[FlatHexPoint.Zero];
-		start = SoldierView.CurrentPointLocation;
-		
-		TargetView.CurrentPointLocation = new FlatHexPoint(7, 4);
-		TargetView.transform.position = Map[new FlatHexPoint(7, 4)];
+		start = SoldierVM[0].CurrentPointLocation;
+
+		//TargetView1.transform.position = Map[new FlatHexPoint(7, 4)];
+		//TargetView2.transform.position = Map[new FlatHexPoint(8, 0)];
+
+		TargetVM[0].CurrentPointLocation = new FlatHexPoint(7, 4);
+		TargetVM[1].CurrentPointLocation = new FlatHexPoint(8, 2);
+		TargetVM[2].CurrentPointLocation = new FlatHexPoint(2, 5);
+		TargetVM[3].CurrentPointLocation = new FlatHexPoint(0, 6);
+		TargetVM[4].CurrentPointLocation = new FlatHexPoint(5, 4);
+
+		for(int i = 0; i < TargetV.Count; i++)
+			TargetV[i].transform.position = Map[TargetVM[i].CurrentPointLocation];
 	}
 
 	public void OnClick(FlatHexPoint point)
 	{	
 		//Debug.Log (point.BasePoint);   //return (x,y)
-		if(point == SoldierView.CurrentPointLocation)
+		if(point == SoldierVM[0].CurrentPointLocation)
 		{
 			//TODO
 			Debug.Log ("Selected");
@@ -75,36 +109,40 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		
 		if(SoldierView != null)
 		{	
-			if(SoldierVM.SoldierState == SoldierState.MOVE)
+			if(SoldierVM[0].SoldierState == SoldierState.MOVE)
 			{
-				start = SoldierView.CurrentPointLocation;
+				start = SoldierVM[0].CurrentPointLocation;
 				finish = point;
-				SoldierView.CurrentPointLocation = point;
+				SoldierVM[0].CurrentPointLocation = point;
 				var path = Algorithms.AStar(Grid, start, finish);
 				
 				StartCoroutine(MovePath(path));
-				SoldierVM.SoldierState = SoldierState.ATTACK;
+				SoldierVM[0].SoldierState = SoldierState.ATTACK;
 			}
 			
-			else if (SoldierVM.SoldierState == SoldierState.ATTACK)
+			else if (SoldierVM[0].SoldierState == SoldierState.ATTACK)
 			{
 				// (target.CurrentPointLocation == point && in Grid.GetAllNeighbors(player))
-				foreach (var neighbor in Grid.GetAllNeighbors(SoldierView.CurrentPointLocation))
+				foreach (var neighbor in Grid.GetAllNeighbors(SoldierVM[0].CurrentPointLocation))
 				{
-					if(neighbor == point && neighbor == TargetView.CurrentPointLocation)
+					for(int i = 0; i < TargetVM.Count; i++)
 					{
-						//FindNearly cell, get the target
+						if(neighbor == point && neighbor == TargetVM[i].CurrentPointLocation)
+					//if(neighbor == point && neighbor == TargetVM[0].CurrentPointLocation)
+						{
+							//FindNearly cell, get the target
 						//if point is one of neighbour, target = pointtarget
-						Debug.Log ("You can Attack");
-						//Call GameRoot or cal
-						MainGameController.StartBattle(SoldierVM, TargetVM);
-						//StartCoroutine(Battle (SoldierVM, TargetVM, SoldierView, TargetView));
-						return;
+							Debug.Log ("You can Attack");
+							//Call GameRoot or cal
+							MainGameController.StartBattle(SoldierVM[0], TargetVM[i], SoldierView, TargetV[i]);
+							//StartCoroutine(Battle (SoldierVM, TargetVM, SoldierView, TargetView));
+							return;
+						}
 					}
 				}
 				Debug.Log ("You can't Attack");
 				myText.text = "You can't Attack, Please Move";
-				SoldierVM.SoldierState = SoldierState.MOVE;
+				SoldierVM[0].SoldierState = SoldierState.MOVE;
 			}
 		}
 	}
@@ -144,6 +182,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		}
 	}
 
+	/*
 	public IEnumerator Battle(SoldierViewModel p1, EnemyViewModel p2, SoldierView p1v, EnemyView p2v)
 	{
 		//separte them finally, need two tweener
@@ -156,11 +195,11 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			p2.Health -=  p1.Power;
 			if(p2.Health <= 0) p2.Health = 0;
 
-			p2v.UpdateHealth(p2.Health);
+			//p2v.UpdateHealth(p2.Health);
 
 			p1v.transform.DOPunchPosition(Vector3.right *100, 0.1f, 100, 1f, false).OnComplete(() => {
 				p2v.transform.DOPunchPosition(Vector3.right *100, 0.1f, 100, 1f, false);
-				p1v.UpdateHealth(p1.Health);
+				//p1v.UpdateHealth(p1.Health);
 			});
 			myText.text =  "Your Quantity: " + p1.Health + " Target Quantity: " + p2.Health;
 			//Debug.Log("Player Quantity: " + p1._Quantity);
@@ -172,7 +211,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		SoldierVM.SoldierState = SoldierState.MOVE;
 		myText.text = "You are dead !";
 	}
-	
+	*/
+
 	public static class ExampleUtils
 	{
 		public static Color ColorFromInt(int r, int g, int b)
