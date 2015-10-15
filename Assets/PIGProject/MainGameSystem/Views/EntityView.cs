@@ -60,7 +60,7 @@ public class EntityView : EntityViewBase {
 	}
 
 	// try to use UniRx when have time	
-	public IEnumerator Move(Vector3 currentPoint, Vector3 endPoint){
+	public IEnumerator Move(Vector3 currentPoint, Vector3 endPoint, MoveStyle move){
 		float time = 0;
 		const float totalTime = .3f;
 		
@@ -80,13 +80,13 @@ public class EntityView : EntityViewBase {
 		//Debug.Log ("After Move: " + this._State);
 		yield return null;
 		
-		if(this.Entity.Movement == MoveStyle.SLOW)
+		if(move == MoveStyle.SLOW)
 			yield return new WaitForSeconds(0.2f);
 		
-		else if(this.Entity.Movement == MoveStyle.NORMAL)
+		else if(move == MoveStyle.NORMAL)
 			yield return new WaitForSeconds(0.1f);
 		
-		else if(this.Entity.Movement == MoveStyle.FAST)
+		else if(move == MoveStyle.FAST)
 			yield return new WaitForSeconds(0.05f);
 		
 		else

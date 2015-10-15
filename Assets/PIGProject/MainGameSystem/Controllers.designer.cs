@@ -33,6 +33,12 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     
     private EnemyViewModel _Enemy2;
     
+    private EnemyViewModel _Enemy3;
+    
+    private EnemyViewModel _Enemy4;
+    
+    private EnemyViewModel _Enemy5;
+    
     [uFrame.IOC.InjectAttribute("MainGameRoot")]
     public uFrame.MVVM.IViewModelManager MainGameRootViewModelManager {
         get {
@@ -90,6 +96,36 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Enemy2 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy3")]
+    public EnemyViewModel Enemy3 {
+        get {
+            return _Enemy3;
+        }
+        set {
+            _Enemy3 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy4")]
+    public EnemyViewModel Enemy4 {
+        get {
+            return _Enemy4;
+        }
+        set {
+            _Enemy4 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy5")]
+    public EnemyViewModel Enemy5 {
+        get {
+            return _Enemy5;
+        }
+        set {
+            _Enemy5 = value;
         }
     }
     
@@ -197,6 +233,7 @@ public class SoldierControllerBase : EntityController {
         viewModel.ChangeActionStyle.Action = this.ChangeActionStyleHandler;
         viewModel.ChangeMoveStyle.Action = this.ChangeMoveStyleHandler;
         viewModel.ChangeQuantity.Action = this.ChangeQuantityHandler;
+        viewModel.PlayAction.Action = this.PlayActionHandler;
         SoldierViewModelManager.Add(viewModel);
     }
     
@@ -214,6 +251,9 @@ public class SoldierControllerBase : EntityController {
     public virtual void ChangeQuantity(SoldierViewModel viewModel) {
     }
     
+    public virtual void PlayAction(SoldierViewModel viewModel) {
+    }
+    
     public virtual void ChangeActionStyleHandler(ChangeActionStyleCommand command) {
         this.ChangeActionStyle(command.Sender as SoldierViewModel);
     }
@@ -224,6 +264,10 @@ public class SoldierControllerBase : EntityController {
     
     public virtual void ChangeQuantityHandler(ChangeQuantityCommand command) {
         this.ChangeQuantity(command.Sender as SoldierViewModel);
+    }
+    
+    public virtual void PlayActionHandler(PlayActionCommand command) {
+        this.PlayAction(command.Sender as SoldierViewModel);
     }
 }
 
@@ -291,6 +335,12 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
     
     private EnemyViewModel _Enemy2;
     
+    private EnemyViewModel _Enemy3;
+    
+    private EnemyViewModel _Enemy4;
+    
+    private EnemyViewModel _Enemy5;
+    
     [uFrame.IOC.InjectAttribute("Entity")]
     public uFrame.MVVM.IViewModelManager EntityViewModelManager {
         get {
@@ -348,6 +398,36 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Enemy2 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy3")]
+    public EnemyViewModel Enemy3 {
+        get {
+            return _Enemy3;
+        }
+        set {
+            _Enemy3 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy4")]
+    public EnemyViewModel Enemy4 {
+        get {
+            return _Enemy4;
+        }
+        set {
+            _Enemy4 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy5")]
+    public EnemyViewModel Enemy5 {
+        get {
+            return _Enemy5;
+        }
+        set {
+            _Enemy5 = value;
         }
     }
     

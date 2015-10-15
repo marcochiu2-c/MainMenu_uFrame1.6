@@ -36,26 +36,6 @@ public class SoldierView : SoldierViewBase {
 	public GameObject ActionPanel;
 	[SerializeField]
 	private int step = 0;
-
-	public List<PlayList> playlist = new List<PlayList>(){};
-
-	public struct PlayList
-	{
-		public FlatHexPoint SavePointLocation;
-		public MoveStyle SaveMove;
-		public ActionStyle SaveAction;
-		public EntityViewModel SaveEnemyVM;
-		//public int[] HealthHistory = new int[50];
-		
-		public PlayList(FlatHexPoint savePointLocation, MoveStyle saveMove, ActionStyle saveAction, EntityViewModel saveEnemyVM)
-		{
-			this.SavePointLocation = savePointLocation;
-			this.SaveMove = saveMove;
-			this.SaveAction = saveAction;
-			this.SaveEnemyVM = saveEnemyVM;
-			//this.HealthHistory = healthHistory;
-		}
-	}
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -90,11 +70,13 @@ public class SoldierView : SoldierViewBase {
 	//the LIst that save the move and command
 	public void PlayBattle()
 	{
-		foreach (var item in playlist)
+		foreach (var item in this.Soldier.playlist)
 		{
-			Debug.Log("ID: " + playlist.IndexOf(item) + " Point: " + item.SavePointLocation + " Move: " + item.SaveMove + " Action: " + item.SaveAction + " Opponent: " + item.SaveEnemyVM);	
+			Debug.Log("ID: " + this.Soldier.playlist.IndexOf(item) + " Point: " + item.SavePointLocation + " Move: " + item.SaveMove + " Action: " + item.SaveAction + " Opponent: " + item.SaveEnemyVM);	
 		}
 	}
+
+
 
 	public override void SoldierStateChanged(SoldierState state) {
 
@@ -109,7 +91,7 @@ public class SoldierView : SoldierViewBase {
 			ActionPanel.gameObject.SetActive(true);
 			MovePanel.gameObject.SetActive(false);
 			//this.playlist = new PlayList(this.CurrentPointLocation, this._Action);
-			this.playlist.Insert(step, new PlayList(this.Entity.CurrentPointLocation, this.Soldier.Movement ,this.Soldier.Action, this.Soldier.Opponent));
+			//this.Soldier.playlist.Insert(step, new PlayList(this.Entity.CurrentPointLocation, this.Soldier.Movement ,this.Soldier.Action, this.Soldier.Opponent));
 			step++;
 		}
 		//Change the Panel to Move Panel

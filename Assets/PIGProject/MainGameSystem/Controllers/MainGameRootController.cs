@@ -17,7 +17,8 @@ public class MainGameRootController : MainGameRootControllerBase {
     
 	public List<EntityViewModel> soldiers = new List<EntityViewModel>();
 	public List<EntityView> soldiersView = new List<EntityView>();
-	public bool TimerStarted = false;
+	private bool TimerStarted = false;
+	private bool _battleFinished = false;
 	public static float WarStartTime = 0;
 
 
@@ -39,7 +40,8 @@ public class MainGameRootController : MainGameRootControllerBase {
     }
 
 
-	public void StartBattle(EntityViewModel P1, EntityViewModel P2, EntityView P1v, EntityView P2v){
+	public void StartBattle(EntityViewModel P1, EntityViewModel P2, EntityView P1v, EntityView P2v)
+	{
 		Debug.Log("Running StartBattle");
 
 		soldiers.Insert(0, P1);
@@ -62,7 +64,8 @@ public class MainGameRootController : MainGameRootControllerBase {
 
 		WarStartTime = Time.time;
 		TimerStarted = true;
-		Observable.EveryUpdate().Subscribe(_ => 
+		_battleFinished = false;
+		Observable.EveryUpdate().Where (_ => TimerStarted == true).Subscribe(_ => 
 		{
 			if (soldiers.Count > 0) 
 			{
@@ -75,12 +78,14 @@ public class MainGameRootController : MainGameRootControllerBase {
 					}
 					else if (!TimerStarted)
 					{
-						//Debug.Log (soldiers[i] + "is null");
+						_battleFinished = true;
 						//soldiers[i] = null;
 					}
 				}
 			}
 		});
+
+		//if(_battleFinished )  yield break
 	}
 
 	public void Result(float warStartTime, int roundCounter, EntityViewModel p, EntityView pV){

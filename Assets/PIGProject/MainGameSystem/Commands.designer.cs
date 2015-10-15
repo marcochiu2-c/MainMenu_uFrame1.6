@@ -34,3 +34,6 @@ public partial class ChangeMoveStyleCommand : uFrame.MVVM.ViewModelCommand {
 
 public partial class ChangeQuantityCommand : uFrame.MVVM.ViewModelCommand {
 }
+
+public partial class PlayActionCommand : uFrame.MVVM.ViewModelCommand {
+}

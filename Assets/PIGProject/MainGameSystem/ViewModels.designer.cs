@@ -192,6 +192,8 @@ public partial class SoldierViewModelBase : EntityViewModel {
     
     private P<SoldierState> _SoldierStateProperty;
     
+    private P<PlayList> _PlayListProperty;
+    
     private ModelCollection<Int32> _HealthHistory;
     
     private Signal<ChangeActionStyleCommand> _ChangeActionStyle;
@@ -199,6 +201,8 @@ public partial class SoldierViewModelBase : EntityViewModel {
     private Signal<ChangeMoveStyleCommand> _ChangeMoveStyle;
     
     private Signal<ChangeQuantityCommand> _ChangeQuantity;
+    
+    private Signal<PlayActionCommand> _PlayAction;
     
     public SoldierViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
@@ -213,12 +217,30 @@ public partial class SoldierViewModelBase : EntityViewModel {
         }
     }
     
+    public virtual P<PlayList> PlayListProperty {
+        get {
+            return _PlayListProperty;
+        }
+        set {
+            _PlayListProperty = value;
+        }
+    }
+    
     public virtual SoldierState SoldierState {
         get {
             return SoldierStateProperty.Value;
         }
         set {
             SoldierStateProperty.Value = value;
+        }
+    }
+    
+    public virtual PlayList PlayList {
+        get {
+            return PlayListProperty.Value;
+        }
+        set {
+            PlayListProperty.Value = value;
         }
     }
     
@@ -258,12 +280,23 @@ public partial class SoldierViewModelBase : EntityViewModel {
         }
     }
     
+    public virtual Signal<PlayActionCommand> PlayAction {
+        get {
+            return _PlayAction;
+        }
+        set {
+            _PlayAction = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
         this.ChangeActionStyle = new Signal<ChangeActionStyleCommand>(this);
         this.ChangeMoveStyle = new Signal<ChangeMoveStyleCommand>(this);
         this.ChangeQuantity = new Signal<ChangeQuantityCommand>(this);
+        this.PlayAction = new Signal<PlayActionCommand>(this);
         _SoldierStateProperty = new P<SoldierState>(this, "SoldierState");
+        _PlayListProperty = new P<PlayList>(this, "PlayList");
         _HealthHistory = new ModelCollection<Int32>(this, "HealthHistory");
     }
     
@@ -282,12 +315,15 @@ public partial class SoldierViewModelBase : EntityViewModel {
         list.Add(new ViewModelCommandInfo("ChangeActionStyle", ChangeActionStyle) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("ChangeMoveStyle", ChangeMoveStyle) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("ChangeQuantity", ChangeQuantity) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("PlayAction", PlayAction) { ParameterType = typeof(void) });
     }
     
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
         base.FillProperties(list);
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_SoldierStateProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_PlayListProperty, false, false, false, false));
         list.Add(new ViewModelPropertyInfo(_HealthHistory, false, true, false, false));
     }
 }

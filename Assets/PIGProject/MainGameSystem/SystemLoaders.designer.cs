@@ -29,6 +29,12 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private EnemyViewModel _Enemy2;
     
+    private EnemyViewModel _Enemy3;
+    
+    private EnemyViewModel _Enemy4;
+    
+    private EnemyViewModel _Enemy5;
+    
     private MainGameRootController _MainGameRootController;
     
     private SoldierController _SoldierController;
@@ -92,6 +98,42 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
                 this._Enemy2 = this.CreateViewModel<EnemyViewModel>( "Enemy2");
             }
             return _Enemy2;
+        }
+        set {
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy3")]
+    public virtual EnemyViewModel Enemy3 {
+        get {
+            if (this._Enemy3 == null) {
+                this._Enemy3 = this.CreateViewModel<EnemyViewModel>( "Enemy3");
+            }
+            return _Enemy3;
+        }
+        set {
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy4")]
+    public virtual EnemyViewModel Enemy4 {
+        get {
+            if (this._Enemy4 == null) {
+                this._Enemy4 = this.CreateViewModel<EnemyViewModel>( "Enemy4");
+            }
+            return _Enemy4;
+        }
+        set {
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Enemy5")]
+    public virtual EnemyViewModel Enemy5 {
+        get {
+            if (this._Enemy5 == null) {
+                this._Enemy5 = this.CreateViewModel<EnemyViewModel>( "Enemy5");
+            }
+            return _Enemy5;
         }
         set {
         }
@@ -163,5 +205,8 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
         Container.RegisterViewModel<EnemyViewModel>(Enemy, "Enemy");
         Container.RegisterViewModel<MainGameRootViewModel>(MainGame, "MainGame");
         Container.RegisterViewModel<EnemyViewModel>(Enemy2, "Enemy2");
+        Container.RegisterViewModel<EnemyViewModel>(Enemy3, "Enemy3");
+        Container.RegisterViewModel<EnemyViewModel>(Enemy4, "Enemy4");
+        Container.RegisterViewModel<EnemyViewModel>(Enemy5, "Enemy5");
     }
 }

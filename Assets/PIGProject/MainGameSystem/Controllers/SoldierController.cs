@@ -41,4 +41,18 @@ public class SoldierController : SoldierControllerBase {
         base.ChangeQuantity(viewModel);
     }
 
+
+    public override void PlayAction(SoldierViewModel viewModel) {
+		base.PlayAction(viewModel);
+		for(int i=0; i < viewModel.playlist.Count; i++)
+		{
+
+			//viewModel.playlist[i].saveMove
+			//viewModel.playlist[i].SaveAction
+			//viewModel.playlist[i].savePointLocation
+			//MainGameController.StartBattle(SoldierVM[0], TargetVM[i], SoldierView, TargetV[i]);
+
+			//call move
+		}
+    }
 }

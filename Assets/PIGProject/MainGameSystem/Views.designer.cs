@@ -119,6 +119,11 @@ public class SoldierViewBase : EntityView {
     [UnityEngine.HideInInspector()]
     public SoldierState _SoldierState;
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public PlayList _PlayList;
+    
     [UFToggleGroup("SoldierState")]
     [UnityEngine.HideInInspector()]
     public bool _BindSoldierState = true;
@@ -154,6 +159,7 @@ public class SoldierViewBase : EntityView {
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
         var soldierview = ((SoldierViewModel)model);
         soldierview.SoldierState = this._SoldierState;
+        soldierview.PlayList = this._PlayList;
     }
     
     public override void Bind() {
@@ -181,6 +187,10 @@ public class SoldierViewBase : EntityView {
         Soldier.ChangeQuantity.OnNext(new ChangeQuantityCommand() { Sender = Soldier });
     }
     
+    public virtual void ExecutePlayAction() {
+        Soldier.PlayAction.OnNext(new PlayActionCommand() { Sender = Soldier });
+    }
+    
     public virtual void ExecuteChangeActionStyle(ChangeActionStyleCommand command) {
         command.Sender = Soldier;
         Soldier.ChangeActionStyle.OnNext(command);
@@ -194,6 +204,11 @@ public class SoldierViewBase : EntityView {
     public virtual void ExecuteChangeQuantity(ChangeQuantityCommand command) {
         command.Sender = Soldier;
         Soldier.ChangeQuantity.OnNext(command);
+    }
+    
+    public virtual void ExecutePlayAction(PlayActionCommand command) {
+        command.Sender = Soldier;
+        Soldier.PlayAction.OnNext(command);
     }
 }
 
