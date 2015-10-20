@@ -52,7 +52,7 @@ public class EntityView : EntityViewBase {
 		
 		healthBar.transform.localScale = new Vector3(curHealth, healthBar.transform.localScale.y);
 		
-		if(number <= 0){
+		if(number <= 1){
 			this.transform.DOShakeScale(0.4f, 80).OnComplete(() => this.gameObject.SetActive(false));
 			//TODO
 			//Destroy the object

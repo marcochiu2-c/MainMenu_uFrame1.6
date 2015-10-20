@@ -76,8 +76,6 @@ public class SoldierView : SoldierViewBase {
 		}
 	}
 
-
-
 	public override void SoldierStateChanged(SoldierState state) {
 
 		base.SoldierStateChanged(state);

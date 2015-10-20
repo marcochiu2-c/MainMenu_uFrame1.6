@@ -51,25 +51,6 @@ public partial class EntityViewModel : EntityViewModelBase {
 	public Formations Formation = new Formations {HitPoint = 10, Dodge = 10, Morale =5};
 	public FlatHexPoint CurrentPointLocation;
 
-
-
-	public int getGCDOfAttackSpeed(){
-		int Remainder;
-		int a = AttackSpeed;
-		int b = Opponent.AttackSpeed;
-		Debug.Log ("Attack Speed of A: " + a + " Attack Speed of B: " + b);
-		
-		while( b != 0 )
-		{
-			Remainder = a % b;
-			a = b;
-			b = Remainder;
-			//Debug.Log ("Remainder: "+Remainder);
-		}
-		
-		return a;
-	}
-
 	public float WeightDeduct (){
 		//int w = Weapon.Weight + Armor.Weight + Shield.Weight;
 		int w = 10;

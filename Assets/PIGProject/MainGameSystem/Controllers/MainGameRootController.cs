@@ -15,8 +15,8 @@ using DG.Tweening;
 
 public class MainGameRootController : MainGameRootControllerBase {
     
-	public List<EntityViewModel> soldiers = new List<EntityViewModel>();
-	public List<EntityView> soldiersView = new List<EntityView>();
+	//public List<EntityViewModel> soldiers = new List<EntityViewModel>();
+	//public List<EntityView> soldiersView = new List<EntityView>();
 	private bool TimerStarted = false;
 	private bool _battleFinished = false;
 	public static float WarStartTime = 0;
@@ -44,6 +44,18 @@ public class MainGameRootController : MainGameRootControllerBase {
 	{
 		Debug.Log("Running StartBattle");
 
+		List<EntityViewModel> soldiers = new List<EntityViewModel>();
+		List<EntityView> soldiersView = new List<EntityView>();
+
+		//soldiers.Insert(index1, P1);
+		//soldiers.Insert(index2, P2);
+		//soldiersView.Insert (index1, P1v);
+		//soldiersView.Insert (index2, P2v);
+		//soldiers[index1].Opponent = soldiers[index2];
+		//soldiers[index2].Opponent = soldiers[index1];
+		//soldiersView[index1].OpponentView = soldiersView[index2];
+		//soldiersView[index2].OpponentView = soldiersView[index1];
+
 		soldiers.Insert(0, P1);
 		soldiers.Insert(1, P2);
 		soldiersView.Insert (0, P1v);
@@ -52,43 +64,48 @@ public class MainGameRootController : MainGameRootControllerBase {
 		soldiers[1].Opponent = soldiers[0];
 		soldiersView[0].OpponentView = soldiersView[1];
 		soldiersView[1].OpponentView = soldiersView[0];
-		soldiers[0].WarTimeLimitInSecond = 30;
-		soldiers[1].WarTimeLimitInSecond = 30;
-		soldiers[0].ElementsPerSecond = soldiers[0].UpdatePerRound * soldiers[1].UpdatePerRound;
-		soldiers[1].ElementsPerSecond = soldiers[1].ElementsPerSecond;
-		
-		for (int i=0; i<soldiers.Count; i++) {
+
+
+		for (int i = 0; i < soldiers.Count; i++)
+		{
+			Debug.Log ("soldiers.Count: " + soldiers.Count);
 			soldiers[i].GetHealthProbabilities();
 			soldiers[i].starttime = Time.time;
 		}
 
 		WarStartTime = Time.time;
-		TimerStarted = true;
+		soldiers[0].TimeStarted = true;
+		soldiers[1].TimeStarted = true;
+		//if(soldiers[0] != null)
+		//	soldiers[0].TimeStarted = true;
+		//if(soldiers[1] != null)
+		//	soldiers[1].TimeStarted = true;
 		_battleFinished = false;
-		Observable.EveryUpdate().Where (_ => TimerStarted == true).Subscribe(_ => 
+
+		Observable.EveryUpdate().Where (_ => soldiers[0].TimeStarted == true && soldiers[1].TimeStarted).Subscribe(_ => 
 		{
 			if (soldiers.Count > 0) 
 			{
 				for (int i=0; i < soldiers.Count; i++) 
 				{
-					if (TimerStarted && (Time.time - soldiers[i].starttime >= 1f / soldiers[i].AttackSpeed)) 
+					if (soldiers[i].TimeStarted && (Time.time - soldiers[i].starttime >= 1f / soldiers[i].AttackSpeed)) 
 					{
-						Result (WarStartTime, soldiers[0].Counter, soldiers[i], soldiersView[i]);
+						Result (WarStartTime, soldiers[i], soldiersView[i]);
 						soldiers[i].starttime = Time.time;
 					}
-					else if (!TimerStarted)
+					else if (!soldiers[i].TimeStarted)
 					{
 						_battleFinished = true;
-						//soldiers[i] = null;
+						soldiers.Clear ();
 					}
 				}
 			}
 		});
 
-		//if(_battleFinished )  yield break
+		//if(_battleFinished ) soldiers.Clear ();
 	}
 
-	public void Result(float warStartTime, int roundCounter, EntityViewModel p, EntityView pV){
+	public void Result(float warStartTime, EntityViewModel p, EntityView pV){
 		float factor = 1.0f;
 		/*
 		if (action == ActionStyle.PIN){
@@ -104,7 +121,15 @@ public class MainGameRootController : MainGameRootControllerBase {
 		//healthHistory [nextCnt] = (healthHistory [counter] - Mathf.RoundToInt(d  * factor) - Mathf.RoundToInt(ht*factor));
 		p.Opponent.Health = (p.Opponent.Health - p.Opponent.Dead - p.Opponent.Hurt) >= 0.5 ? p.Opponent.Health - p.Opponent.Dead - p.Opponent.Hurt : 0;
 
-		pV.AtkAndUpdateHealth();
+		//if(p.Opponent.Health > 0)
+			pV.AtkAndUpdateHealth();
+
+		if (p.Opponent.Health <= 0) 
+		{
+			p.TimeStarted = false;
+			return;
+		}
+		//TimerStarted = false;
 
 		//Debug.Log (Name + " Health: " + healthHistory [Counter]);
 		string colorTag = p.Name != "Soldier3" ? "<color=red>" :"<color=yellow>";
@@ -115,11 +140,6 @@ public class MainGameRootController : MainGameRootControllerBase {
 		Debug.Log (colorTag + "Time</color> " + timeDiff + "s, " + p.Opponent.Name + " Actual Results: " + p.Opponent.Health + " " + p.Opponent.Hurt + " " + p.Opponent.Dead + " Total: " + (p.Opponent.Health + p.Opponent.Hurt + p.Opponent.Dead));
 		//Debug.Log (colorTag + "Round</color> " + roundCounter + ", " + p.Opponent.Name + " Results: " + health + "   " + ht  + "  " + d  + " <color=blue>Opponent.Counter:</color> " + p.Counter);
 		//Debug.Log (colorTag + "Round</color> " + roundCounter + ", " + p.Opponent.Name + " Actual Results: " + p.Opponent.Health + "   " + p.Opponent.Hurt + "  " + p.Opponent.Dead + " Total: " + (p.Opponent.Health + p.Opponent.Hurt + p.Opponent.Dead));
-
-		if (p.Opponent.Health <= 0) {
-				TimerStarted = false;
-				return;
-			}
 		p.Counter++;
 		}
 		

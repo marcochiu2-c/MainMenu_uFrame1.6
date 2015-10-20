@@ -23,11 +23,11 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     
     private uFrame.MVVM.IViewModelManager _MainGameRootViewModelManager;
     
-    private SoldierViewModel _Soldier;
+    private SoldierViewModel _Soldier1;
     
     private SoldierViewModel _Soldier2;
     
-    private EnemyViewModel _Enemy;
+    private EnemyViewModel _Enemy1;
     
     private MainGameRootViewModel _MainGame;
     
@@ -39,6 +39,12 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     
     private EnemyViewModel _Enemy5;
     
+    private SoldierViewModel _Soldier3;
+    
+    private SoldierViewModel _Soldier4;
+    
+    private SoldierViewModel _Soldier5;
+    
     [uFrame.IOC.InjectAttribute("MainGameRoot")]
     public uFrame.MVVM.IViewModelManager MainGameRootViewModelManager {
         get {
@@ -49,13 +55,13 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
         }
     }
     
-    [uFrame.IOC.InjectAttribute("Soldier")]
-    public SoldierViewModel Soldier {
+    [uFrame.IOC.InjectAttribute("Soldier1")]
+    public SoldierViewModel Soldier1 {
         get {
-            return _Soldier;
+            return _Soldier1;
         }
         set {
-            _Soldier = value;
+            _Soldier1 = value;
         }
     }
     
@@ -69,13 +75,13 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
         }
     }
     
-    [uFrame.IOC.InjectAttribute("Enemy")]
-    public EnemyViewModel Enemy {
+    [uFrame.IOC.InjectAttribute("Enemy1")]
+    public EnemyViewModel Enemy1 {
         get {
-            return _Enemy;
+            return _Enemy1;
         }
         set {
-            _Enemy = value;
+            _Enemy1 = value;
         }
     }
     
@@ -126,6 +132,36 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Enemy5 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier3")]
+    public SoldierViewModel Soldier3 {
+        get {
+            return _Soldier3;
+        }
+        set {
+            _Soldier3 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier4")]
+    public SoldierViewModel Soldier4 {
+        get {
+            return _Soldier4;
+        }
+        set {
+            _Soldier4 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier5")]
+    public SoldierViewModel Soldier5 {
+        get {
+            return _Soldier5;
+        }
+        set {
+            _Soldier5 = value;
         }
     }
     
@@ -325,11 +361,11 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
     
     private uFrame.MVVM.IViewModelManager _EntityViewModelManager;
     
-    private SoldierViewModel _Soldier;
+    private SoldierViewModel _Soldier1;
     
     private SoldierViewModel _Soldier2;
     
-    private EnemyViewModel _Enemy;
+    private EnemyViewModel _Enemy1;
     
     private MainGameRootViewModel _MainGame;
     
@@ -341,6 +377,12 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
     
     private EnemyViewModel _Enemy5;
     
+    private SoldierViewModel _Soldier3;
+    
+    private SoldierViewModel _Soldier4;
+    
+    private SoldierViewModel _Soldier5;
+    
     [uFrame.IOC.InjectAttribute("Entity")]
     public uFrame.MVVM.IViewModelManager EntityViewModelManager {
         get {
@@ -351,13 +393,13 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
         }
     }
     
-    [uFrame.IOC.InjectAttribute("Soldier")]
-    public SoldierViewModel Soldier {
+    [uFrame.IOC.InjectAttribute("Soldier1")]
+    public SoldierViewModel Soldier1 {
         get {
-            return _Soldier;
+            return _Soldier1;
         }
         set {
-            _Soldier = value;
+            _Soldier1 = value;
         }
     }
     
@@ -371,13 +413,13 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
         }
     }
     
-    [uFrame.IOC.InjectAttribute("Enemy")]
-    public EnemyViewModel Enemy {
+    [uFrame.IOC.InjectAttribute("Enemy1")]
+    public EnemyViewModel Enemy1 {
         get {
-            return _Enemy;
+            return _Enemy1;
         }
         set {
-            _Enemy = value;
+            _Enemy1 = value;
         }
     }
     
@@ -428,6 +470,36 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Enemy5 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier3")]
+    public SoldierViewModel Soldier3 {
+        get {
+            return _Soldier3;
+        }
+        set {
+            _Soldier3 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier4")]
+    public SoldierViewModel Soldier4 {
+        get {
+            return _Soldier4;
+        }
+        set {
+            _Soldier4 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier5")]
+    public SoldierViewModel Soldier5 {
+        get {
+            return _Soldier5;
+        }
+        set {
+            _Soldier5 = value;
         }
     }
     

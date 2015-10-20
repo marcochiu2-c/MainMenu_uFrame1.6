@@ -136,7 +136,7 @@ public class SoldierViewBase : EntityView {
     
     public override string DefaultIdentifier {
         get {
-            return "Soldier";
+            return "Soldier1";
         }
     }
     
@@ -216,7 +216,7 @@ public class EnemyViewBase : EntityView {
     
     public override string DefaultIdentifier {
         get {
-            return "Enemy";
+            return "Enemy1";
         }
     }
     
