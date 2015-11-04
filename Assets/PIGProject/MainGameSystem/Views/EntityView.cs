@@ -36,6 +36,11 @@ public class EntityView : EntityViewBase {
         // Any designer bindings are created in the base implementation.
     }
 
+	public void RendererColor(Color color)
+	{
+		this.gameObject.GetComponent<Renderer>().material.color = color;
+	}
+
 	public void AtkAndUpdateHealth()
 	{
 		this.transform.DOPunchPosition(Vector3.right *100, 0.1f, 100, 1f, false).OnComplete(() => {
@@ -51,12 +56,6 @@ public class EntityView : EntityViewBase {
 		//Debug.Log("curHealth: " + curHealth);
 		
 		healthBar.transform.localScale = new Vector3(curHealth, healthBar.transform.localScale.y);
-		
-		if(number <= 1){
-			this.transform.DOShakeScale(0.4f, 80).OnComplete(() => this.gameObject.SetActive(false));
-			//TODO
-			//Destroy the object
-		}
 	}
 
 	// try to use UniRx when have time	
@@ -92,4 +91,9 @@ public class EntityView : EntityViewBase {
 		else
 			yield return new WaitForSeconds(0.4f);
 	}
+
+    public override void HealthChanged(Single health) {
+		if(health <= 1)
+		this.transform.DOShakeScale(0.4f, 80).OnComplete(() => this.gameObject.SetActive(false));
+    }
 }

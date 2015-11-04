@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asset Change Report</title>
+
+    <style type="text/css">
+      <!--
+      body {
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 12px;
+        margin: 10px;
+        color:#333333;
+        background-color: #f9f9f9;
+      }
+      
+      a {
+        color: #68a135;
+      }
+
+      .headerRow { background-color: #b9c4c5;font-weight:bold;padding:5px 0px 5px 10px; }
+      .footerRow { background-color: #b9c4c5; }
+      .index_odd { background-color: #f1f1f1; }
+      .index_even { background-color: #ffffff; }
+    
+      .sectionVisible_yes { display: block; }
+      .sectionVisible_no { display: none; }
+
+      .tocButton {
+        background-color:#95a5a6;
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+        border-radius:3px;
+        border:1px solid #f1f1f1;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font-size:14px;
+        font-weight:bold;
+        padding:6px 20px;
+        width:40%;
+        text-decoration:none;
+      }
+      .tocButton:hover {
+        background-color:#828f90;
+      }
+      .tocButton:active {
+        position:relative;
+        top:1px;
+      }
+
+      h1 {
+        color:#333333;
+      }
+      
+      h2 {
+        background-color:#95a5a6;
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+        border-radius:3px;
+        border:1px solid #f1f1f1;
+        display:inline-block;
+        color:#ffffff;
+        font-size:16px;
+        font-weight:bold;
+        padding:4px 10px;
+        width:90%;
+        text-decoration:none;
+      }
+
+      table { background-color:#aaaaaa; }
+
+      -->
+    </style>
+
+  </head>
+  <body>
+
+  <h1>[--ProjectName--]</h1>
+  
+  <div class="sectionVisible_[++BlockVisible Block=TableOfContents++]">
+    <h2>Table of Contents</h2>
+    [++TableOfContents Block=TableOfContents++]
+    <br /><br />
+  </div>
+
+  <h2>Statistics</h2>
+  <table cellpadding="2" cellspacing="1" style="width:350px;">
+  <tr>
+    <td class="index_odd" style="width:150px;">Report Date:</td>
+    <td class="index_odd" style="text-align:right;">[--ReportDate--], [--ReportTime--]</td>
+  </tr>
+  <tr>
+    <td class="index_odd" style="width:150px;">New Assets ([--NewAssetCount--]):</td>
+    <td class="index_odd" style="text-align:right;">[--NewAssetTotalFileSizeAuto--]</td>
+  </tr>
+  <tr>
+    <td class="index_odd" style="width:150px;">Missing Assets ([--MissingAssetCount--]):</td>
+    <td class="index_odd" style="text-align:right;">[--MissingAssetTotalFileSizeAuto--]</td>
+  </tr>
+  <tr>
+    <td class="index_odd" style="width:150px;">Changed Assets ([--ChangedAssetCount--]):</td>
+    <td class="index_odd" style="text-align:right;">[--ChangedAssetTotalFileSizeAuto--]</td>
+  </tr>
+  <tr>
+    <td class="index_odd" style="width:150px;">Change Type ([--FileSizeChangeTypeTotal--]):</td>
+    <td class="index_odd" style="text-align:right;">[--FileSizeChangeValueTotal--]</td>
+  </tr>
+  </table>
+
+
+  <div class="sectionVisible_[++BlockVisible Block=NewAssets++]">
+    <h2>New Assets</h2>
+    <table cellpadding="2" cellspacing="1" style="width:90%;">
+    [++NewAssets Block=NewAssets++]
+    </table>
+  </div>
+
+  <div class="sectionVisible_[++BlockVisible Block=MissingAssets++]">
+    <h2>Missing Assets</h2>
+    <table cellpadding="2" cellspacing="1" style="width:90%;">
+    [++MissingAssets Block=MissingAssets++]
+    </table>
+  </div>
+
+  <div class="sectionVisible_[++BlockVisible Block=ChangedAssets++]">
+    <h2>Changed Assets</h2>
+    <table cellpadding="2" cellspacing="1" style="width:90%;>
+    [++ChangedAssets Block=ChangedAssets++]
+    </table>
+  </div>
+  
+  
+  </body>
+</html>
+
+[--EndOfContent--]
+<!--
+
+[--BlockStart TableOfContents--]
+<div style="margin-bottom:2px;">
+  <a class="tocButton" href="#[--TOCItemName--]">[--IndexFormatted--]: [--TOCItemSectionName--] ([--TOCItemBlockDefinitionName--])</a> 
+</div>    
+[--BlockEnd--]
+
+
+[--BlockStart NewAssets--]
+  <tr>
+    <td class="index_[--OddEven--]">[--IndexFormatted--]: [--AssetPath--][--AssetName--]</td>
+    <td class="index_[--OddEven--]">[--AssetTypeShort--]</td>
+  </tr>
+[--BlockEnd--]
+[--BlockStart NewAssets_NoData--]
+  <tr>
+    <td class="index_even">No new assets.</td>
+  </tr>
+[--BlockEnd--]
+
+
+[--BlockStart MissingAssets--]
+  <tr>
+    <td class="index_[--OddEven--]">[--IndexFormatted--]: [--AssetPath--]</td>
+  </tr>
+[--BlockEnd--]
+[--BlockStart MissingAssets_NoData--]
+  <tr>
+    <td class="index_even">No missing assets.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart ChangedAssets--]
+  <tr>
+    <td class="index_[--OddEven--]">[--IndexFormatted--]: [--AssetPath--][--AssetName--]</td>
+    <td class="index_[--OddEven--]">[--FileSizeChangeType--] ([--FileSizeChangeValue--])</td>
+    <td class="index_[--OddEven--]">[--OldAssetFileSize--]/[--OldAssetFileSizeImported--] Byte, ([--OldAssetFileSizeAuto--]/[--OldAssetFileSizeImportedAuto--])</td>
+    <td class="index_[--OddEven--]">[--AssetFileSize--]/[--AssetFileSizeImported--] Byte, ([--AssetFileSizeAuto--]/[--AssetFileSizeImportedAuto--])</td>
+  </tr>
+[--BlockEnd--]
+[--BlockStart ChangedAssets_NoData--]
+  <tr>
+    <td class="index_even">No changed assets.</td>
+  </tr>
+[--BlockEnd--]
+
+-->
+

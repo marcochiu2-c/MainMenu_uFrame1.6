@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Asset Report</title>
+    
+    <style type="text/css">
+      <!--
+      body {
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 12px;
+        margin: 10px;
+        color:#333333;
+        background-color: #f9f9f9;
+      }
+      
+      h1 { color:#333333; }
+      table { background-color:#aaaaaa; }
+      a { color: #68a135; }
+      
+      .headerRow { background-color: #b9c4c5;font-weight:bold;padding:5px 0px 5px 10px; }
+      .footerRow { background-color: #b9c4c5; }
+      .index_odd { background-color: #f1f1f1; }
+      .index_even { background-color: #ffffff; }
+    
+      .sectionVisible_yes { display: block; }
+      .sectionVisible_no { display: none; }
+
+      
+      -->
+    </style>
+    
+  </head>
+  <body style="font-family: Helvetica, Arial, sans-serif;font-size: 12px;">
+
+  <h1>[--ProjectName--]</h1>
+
+  <div class="sectionVisible_[++BlockVisible Block=AssetList++]">
+    [==IF [--SelectTopCount--] = 0 ==]     
+      <h2>Asset List ([--AssetCountFiltered--] / [--AssetCount--])</h2>
+    [==ENDIF==]    
+    [==IF [--SelectTopCount--] GT 0 ==]     
+      <h2>Asset List ([--AssetCountFiltered--] / [--AssetCount--]), showing the first [--SelectTopCount--]</h2>
+    [==ENDIF==]    
+    <br />
+    Filtered by [--FilterField--] ([--FilterValues--])
+    <br /><br />
+
+    <table cellpadding="2" cellspacing="1" style="width:800px;margin-bottom:2px;">
+    <tr>
+    [++AssetRegister Block=AssetRegister++]
+    </tr>
+    </table>
+    <table cellpadding="2" cellspacing="1" style="width:800px;">
+    <tr>
+      <td class="headerRow">Asset Name</td>
+      <td class="headerRow">Type</td>
+      <td class="headerRow" style="text-align:right;">Size&nbsp;Original&nbsp;</td>
+      <td class="headerRow" style="text-align:right;">Size&nbsp;Imported&nbsp;</td>
+      <td class="headerRow" style="text-align:right;">Import Ratio&nbsp;</td>
+    </tr>  
+    [++Assets Block=AssetList++]
+    </table>
+  </div>
+
+  </body>
+</html>
+
+[--EndOfContent--]
+<!--
+
+[--BlockStart AssetList--]
+  <tr>
+    <td class="index_[--OddEven--]">[--IndexFormatted--]: [--AssetName--]</td>
+    <td class="index_[--OddEven--]">[--AssetTypeShort--] ([--AssetFileExtension--])</td>
+    <td class="index_[--OddEven--]" style="text-align:right;">[--AssetFileSizeAuto--]&nbsp;</td>
+    <td class="index_[--OddEven--]" style="text-align:right;">[--AssetFileSizeImportedAuto--]&nbsp;</td>
+    <td class="index_[--OddEven--]" style="text-align:right;">[--ImportFileSizeRatio--]%&nbsp;</td>
+  </tr>  
+[--BlockEnd--]
+[--BlockStart AssetList_NoData--]
+  <tr>
+    <td colspan="5" class="index_even">No assets.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart AssetRegister--]
+    <td  class="index_even" style="text-align:center;font-weight:bold;"><a href="#[--RegisterChar--]">&nbsp;[--RegisterChar--]&nbsp;</a></td>
+[--BlockEnd--]
+-->
+

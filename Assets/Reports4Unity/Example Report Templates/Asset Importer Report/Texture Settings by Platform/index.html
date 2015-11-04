@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asset Importer Report</title>
+
+    <style type="text/css">
+      <!--
+      body {
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 12px;
+        margin: 10px;
+        color:#333333;
+        background-color: #f9f9f9;
+      }
+      
+      a {
+        color: #68a135;
+      }
+
+      .headerRow { background-color: #b9c4c5;font-weight:bold;padding:5px 0px 5px 10px; }
+      .footerRow { background-color: #b9c4c5; }
+      .index_odd { background-color: #f1f1f1; }
+      .index_even { background-color: #ffffff; }
+    
+      .sectionVisible_yes { display: block; }
+      .sectionVisible_no { display: none; }
+
+      h1 {
+        color:#333333;
+      }
+      
+      table { background-color:#aaaaaa; }
+
+      -->
+    </style>
+
+  </head>
+  <body>
+
+  <h1>[--ProjectName--]</h1>
+
+  <div class="sectionVisible_[++BlockVisible Block=TextureImportSettings++]">
+    <h2>Texture Import Settings by Platform</h2>
+    <table cellpadding="2" cellspacing="1" style="width:950px;">
+    [++TextureImportSettings Block=TextureImportSettings++]
+    </table>
+  </div>
+  
+  </body>
+</html>
+
+[--EndOfContent--]
+<!--
+
+
+[--BlockStart TextureImportSettings--]
+  <tr>
+    <td colspan="6" style="font-weight:bold;" class="headerRow">[--IndexFormatted--]: [--AssetName--]</td>
+  </tr>
+  <tr>
+    <td class="index_[--OddEven--]"></td>
+    <td class="index_[--OddEven--]" style="width:150px;">Default</td>
+    <td class="index_[--OddEven--]" style="width:150px;">Android</td>
+    <td class="index_[--OddEven--]" style="width:150px;">IPhone</td>
+    <td class="index_[--OddEven--]" style="width:150px;">Standalone</td>
+    <td class="index_[--OddEven--]" style="width:150px;">Web</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]">Compression Quality</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.CompressionQuality--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.CompressionQualityAndroid--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.CompressionQualityIPhone--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.CompressionQualityStandalone--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.CompressionQualityWeb--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]">Max. Texture Size</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.MaxTextureSize--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.MaxTextureSizeAndroid--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.MaxTextureSizeIPhone--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.MaxTextureSizeStandalone--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.MaxTextureSizeWeb--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]">Texture Format</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.TextureFormat--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.TextureFormatAndroid--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.TextureFormatIPhone--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.TextureFormatStandalone--]</td>
+    <td class="index_[--OddEven--]" style="width:150px;">[--TextureImporter.TextureFormatWeb--]</td>
+  </tr> 
+[--BlockEnd--]
+[--BlockStart TextureImportSettings_NoData--]
+  <tr>
+    <td class="index_even">No assets.</td>
+  </tr>
+[--BlockEnd--]
+
+
+-->
+

@@ -45,7 +45,7 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
     
     public override string DefaultIdentifier {
         get {
-            return "MainGame";
+            return base.DefaultIdentifier;
         }
     }
     
@@ -134,6 +134,10 @@ public class SoldierViewBase : EntityView {
     [UnityEngine.Serialization.FormerlySerializedAsAttribute("_SoldierStateonlyWhenChanged")]
     protected bool _SoldierStateOnlyWhenChanged;
     
+    [UFToggleGroup("ChangeActionStyle")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindChangeActionStyle = true;
+    
     public override string DefaultIdentifier {
         get {
             return "Soldier1";
@@ -170,45 +174,24 @@ public class SoldierViewBase : EntityView {
         if (_BindSoldierState) {
             this.BindProperty(this.Soldier.SoldierStateProperty, this.SoldierStateChanged, _SoldierStateOnlyWhenChanged);
         }
+        if (_BindChangeActionStyle) {
+            this.BindCommandExecuted(this.Soldier.ChangeActionStyle, this.ChangeActionStyleExecuted);
+        }
     }
     
     public virtual void SoldierStateChanged(SoldierState arg1) {
+    }
+    
+    public virtual void ChangeActionStyleExecuted(ChangeActionStyleCommand command) {
     }
     
     public virtual void ExecuteChangeActionStyle() {
         Soldier.ChangeActionStyle.OnNext(new ChangeActionStyleCommand() { Sender = Soldier });
     }
     
-    public virtual void ExecuteChangeMoveStyle() {
-        Soldier.ChangeMoveStyle.OnNext(new ChangeMoveStyleCommand() { Sender = Soldier });
-    }
-    
-    public virtual void ExecuteChangeQuantity() {
-        Soldier.ChangeQuantity.OnNext(new ChangeQuantityCommand() { Sender = Soldier });
-    }
-    
-    public virtual void ExecutePlayAction() {
-        Soldier.PlayAction.OnNext(new PlayActionCommand() { Sender = Soldier });
-    }
-    
     public virtual void ExecuteChangeActionStyle(ChangeActionStyleCommand command) {
         command.Sender = Soldier;
         Soldier.ChangeActionStyle.OnNext(command);
-    }
-    
-    public virtual void ExecuteChangeMoveStyle(ChangeMoveStyleCommand command) {
-        command.Sender = Soldier;
-        Soldier.ChangeMoveStyle.OnNext(command);
-    }
-    
-    public virtual void ExecuteChangeQuantity(ChangeQuantityCommand command) {
-        command.Sender = Soldier;
-        Soldier.ChangeQuantity.OnNext(command);
-    }
-    
-    public virtual void ExecutePlayAction(PlayActionCommand command) {
-        command.Sender = Soldier;
-        Soldier.PlayAction.OnNext(command);
     }
 }
 
@@ -389,6 +372,21 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.HideInInspector()]
     public uFrame.MVVM.ViewBase _Opponent;
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public BattleState _BattleState;
+    
+    [UFToggleGroup("Health")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindHealth = true;
+    
+    [UFGroup("Health")]
+    [UnityEngine.SerializeField()]
+    [UnityEngine.HideInInspector()]
+    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_HealthonlyWhenChanged")]
+    protected bool _HealthOnlyWhenChanged;
+    
     public override string DefaultIdentifier {
         get {
             return base.DefaultIdentifier;
@@ -441,6 +439,7 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
         entityview.WeaponProficiency = this._WeaponProficiency;
         entityview.moraleStandard = this._moraleStandard;
         entityview.Opponent = this._Opponent == null ? null :  ViewService.FetchViewModel(this._Opponent) as EntityViewModel;
+        entityview.BattleState = this._BattleState;
     }
     
     public override void Bind() {
@@ -448,5 +447,11 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
         // Use this.Entity to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+        if (_BindHealth) {
+            this.BindProperty(this.Entity.HealthProperty, this.HealthChanged, _HealthOnlyWhenChanged);
+        }
+    }
+    
+    public virtual void HealthChanged(Single arg1) {
     }
 }

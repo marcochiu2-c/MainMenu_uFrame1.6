@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asset Importer Report</title>
+
+    <style type="text/css">
+      <!--
+      body {
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 12px;
+        margin: 10px;
+        color:#333333;
+        background-color: #f9f9f9;
+      }
+      
+      a {
+        color: #68a135;
+      }
+
+      .headerRow { background-color: #b9c4c5;font-weight:bold;padding:5px 0px 5px 10px; }
+      .footerRow { background-color: #b9c4c5; }
+      .index_odd { background-color: #f1f1f1; }
+      .index_even { background-color: #ffffff; }
+    
+      .sectionVisible_yes { display: block; }
+      .sectionVisible_no { display: none; }
+
+      .tocButton {
+        background-color:#95a5a6;
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+        border-radius:3px;
+        border:1px solid #f1f1f1;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font-size:14px;
+        font-weight:bold;
+        padding:6px 20px;
+        width:500px;
+        text-decoration:none;
+      }
+      .tocButton:hover {
+        background-color:#828f90;
+      }
+      .tocButton:active {
+        position:relative;
+        top:1px;
+      }
+
+      h1 {
+        color:#333333;
+      }
+      
+      h2 {
+        background-color:#95a5a6;
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+        border-radius:3px;
+        border:1px solid #f1f1f1;
+        display:inline-block;
+        color:#ffffff;
+        font-size:16px;
+        font-weight:bold;
+        padding:4px 10px;
+        width:800px;
+        text-decoration:none;
+      }
+
+      table { background-color:#aaaaaa; }
+
+      -->
+    </style>
+
+  </head>
+  <body>
+
+  <h1>[--ProjectName--]</h1>
+
+  <div class="sectionVisible_[++BlockVisible Block=TableOfContents++]">
+    <h2>Table of Contents</h2>
+    [++TableOfContents Block=TableOfContents++]
+    <br /><br />
+  </div>
+  
+  <div class="sectionVisible_[++BlockVisible Block=TextureImportSettings++]">
+    <h2>Texture Import Settings</h2>
+    <table cellpadding="2" cellspacing="1" style="width:800px;">
+    [++TextureImportSettings Block=TextureImportSettings++]
+    </table>
+  </div>
+  
+  <div class="sectionVisible_[++BlockVisible Block=AudioImportSettings++]">
+    <h2>Audio Import Settings</h2>
+    <table cellpadding="2" cellspacing="1" style="width:800px;">
+    [++AudioImportSettings Block=AudioImportSettings++]
+    </table>
+  </div>
+  
+  <div class="sectionVisible_[++BlockVisible Block=ModelImportSettings++]">
+    <h2>Model Import Settings</h2>
+    <table cellpadding="2" cellspacing="1" style="width:800px;">
+    [++ModelImportSettings Block=ModelImportSettings++]
+    </table>
+  </div>
+
+  <div class="sectionVisible_[++BlockVisible Block=MovieImportSettings++]">
+    <h2>Movie Import Settings</h2>
+    <table cellpadding="2" cellspacing="1" style="width:800px;">
+    [++MovieImportSettings Block=MovieImportSettings++]
+    </table>
+  </div>
+
+  <div class="sectionVisible_[++BlockVisible Block=FontImportSettings++]">
+    <h2>Font Import Settings</h2>
+    <table cellpadding="2" cellspacing="1" style="width:800px;">
+    [++FontImportSettings Block=FontImportSettings++]
+    </table>
+  </div>
+  
+  </body>
+</html>
+
+[--EndOfContent--]
+<!--
+
+[--BlockStart TableOfContents--]
+<div style="margin-bottom:2px;">
+  <a class="tocButton" href="#[--TOCItemName--]">[--IndexFormatted--]: [--TOCItemSectionName--]</a> 
+</div>    
+[--BlockEnd--]
+
+
+[--BlockStart TextureImportSettings--]
+  <tr>
+    <td colspan="2" style="font-weight:bold;" class="headerRow">[--IndexFormatted--]: [--AssetName--]</td>
+  </tr>
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Asset Type</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[--AssetTypeShort--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Asset Path</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[--TextureImporter.assetPath--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Fields</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[++TextureImportSettingFields Block=TextureImportSettingsFieldList++]</td>
+  </tr> 
+[--BlockEnd--]
+[--BlockStart TextureImportSettings_NoData--]
+  <tr>
+    <td class="index_even">No assets.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart TextureImportSettingsFieldList--]
+  [--FieldName--] = [--FieldValue--]<br />
+[--BlockEnd--]
+
+[--BlockStart AudioImportSettings--]
+  <tr>
+    <td colspan="2" style="font-weight:bold;" class="headerRow">[--IndexFormatted--]: [--AssetName--]</td>
+  </tr>
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Asset Type</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[--AssetTypeShort--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Asset Path</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[--AudioImporter.assetPath--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Fields</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[++AudioImportSettingFields Block=AudioImportSettingsFieldList++]</td>
+  </tr> 
+[--BlockEnd--]
+[--BlockStart AudioImportSettings_NoData--]
+  <tr>
+    <td class="index_even">No assets.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart AudioImportSettingsFieldList--]
+  [--FieldName--] = [--FieldValue--]<br />
+[--BlockEnd--]
+
+
+[--BlockStart ModelImportSettings--]
+  <tr>
+    <td colspan="2" style="font-weight:bold;" class="headerRow">[--IndexFormatted--]: [--AssetName--]</td>
+  </tr>
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Asset Type</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[--AssetTypeShort--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Asset Path</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[--ModelImporter.assetPath--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Fields</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[++ModelImportSettingFields Block=ModelImportSettingsFieldList++]</td>
+  </tr> 
+[--BlockEnd--]
+[--BlockStart ModelImportSettings_NoData--]
+  <tr>
+    <td class="index_even">No assets.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart ModelImportSettingsFieldList--]
+  [--FieldName--] = [--FieldValue--]<br />
+[--BlockEnd--]
+
+
+[--BlockStart MovieImportSettings--]
+  <tr>
+    <td colspan="2" style="font-weight:bold;" class="headerRow">[--IndexFormatted--]: [--AssetName--]</td>
+  </tr>
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Asset Type</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[--AssetTypeShort--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Asset Path</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[--MovieImporter.assetPath--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Fields</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[++MovieImportSettingFields Block=MovieImportSettingsFieldList++]</td>
+  </tr> 
+[--BlockEnd--]
+[--BlockStart MovieImportSettings_NoData--]
+  <tr>
+    <td class="index_even">No assets.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart MovieImportSettingsFieldList--]
+  [--FieldName--] = [--FieldValue--]<br />
+[--BlockEnd--]
+
+
+[--BlockStart FontImportSettings--]
+  <tr>
+    <td colspan="2" style="font-weight:bold;" class="headerRow">[--IndexFormatted--]: [--AssetName--]</td>
+  </tr>
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Asset Type</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[--AssetTypeShort--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Asset Path</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[--FontImporter.assetPath--]</td>
+  </tr> 
+  <tr>
+    <td class="index_[--OddEven--]" style="width:150px;text-align:right;padding-right:10px;">Fields</td>
+    <td  class="index_[--OddEven--]" style="padding-left:10px;">[++FontImportSettingFields Block=FontImportSettingsFieldList++]</td>
+  </tr> 
+[--BlockEnd--]
+[--BlockStart FontImportSettings_NoData--]
+  <tr>
+    <td class="index_even">No assets.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart FontImportSettingsFieldList--]
+  [--FieldName--] = [--FieldValue--]<br />
+[--BlockEnd--]
+
+
+-->
+

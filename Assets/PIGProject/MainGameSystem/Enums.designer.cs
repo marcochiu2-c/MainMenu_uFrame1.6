@@ -43,8 +43,6 @@ public enum ActionStyle {
     YAWP,
     
     SEARCH,
-    
-    EnumItems,
 }
 
 public enum SoldierState {
@@ -52,4 +50,13 @@ public enum SoldierState {
     MOVE,
     
     ATTACK,
+}
+
+public enum BattleState {
+    
+    WAITING,
+    
+    FIGHTING,
+    
+    CONFUSING,
 }

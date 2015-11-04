@@ -31,28 +31,40 @@ public class SoldierController : SoldierControllerBase {
 	
 	public override void ChangeActionStyle(SoldierViewModel viewModel) {
         base.ChangeActionStyle(viewModel);
-    }
 
-	public override void ChangeMoveStyle(SoldierViewModel viewModel) {
-        base.ChangeMoveStyle(viewModel);
-    }
-
-	public override void ChangeQuantity(SoldierViewModel viewModel) {
-        base.ChangeQuantity(viewModel);
-    }
-
-
-    public override void PlayAction(SoldierViewModel viewModel) {
-		base.PlayAction(viewModel);
-		for(int i=0; i < viewModel.playlist.Count; i++)
+		if(viewModel.Action == ActionStyle.ATTACK)
 		{
+			Debug.Log ("ActionStyle is ATTACK");
+		}
 
-			//viewModel.playlist[i].saveMove
-			//viewModel.playlist[i].SaveAction
-			//viewModel.playlist[i].savePointLocation
-			//MainGameController.StartBattle(SoldierVM[0], TargetVM[i], SoldierView, TargetV[i]);
+		else if(viewModel.Action == ActionStyle.ASSAULT)
+		{
+			Debug.Log ("ActionStyle is ASSAULT");
+		}
 
-			//call move
+		else if(viewModel.Action == ActionStyle.FEINT)
+		{
+			Debug.Log ("ActionStyle is FEINT");
+		}
+
+		else if(viewModel.Action == ActionStyle.PIN)
+		{
+			Debug.Log ("ActionStyle is PIN");
+		}
+
+		else if(viewModel.Action == ActionStyle.RAID)
+		{
+			Debug.Log ("ActionStyle is RAID");
+		}
+
+		else if(viewModel.Action == ActionStyle.SEARCH)
+		{
+			Debug.Log ("ActionStyle is SEARCH");
+		}
+
+		else if(viewModel.Action == ActionStyle.YAWP)
+		{
+			Debug.Log ("ActionStyle is YWAP");
 		}
     }
 }

@@ -198,12 +198,6 @@ public partial class SoldierViewModelBase : EntityViewModel {
     
     private Signal<ChangeActionStyleCommand> _ChangeActionStyle;
     
-    private Signal<ChangeMoveStyleCommand> _ChangeMoveStyle;
-    
-    private Signal<ChangeQuantityCommand> _ChangeQuantity;
-    
-    private Signal<PlayActionCommand> _PlayAction;
-    
     public SoldierViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
@@ -262,39 +256,9 @@ public partial class SoldierViewModelBase : EntityViewModel {
         }
     }
     
-    public virtual Signal<ChangeMoveStyleCommand> ChangeMoveStyle {
-        get {
-            return _ChangeMoveStyle;
-        }
-        set {
-            _ChangeMoveStyle = value;
-        }
-    }
-    
-    public virtual Signal<ChangeQuantityCommand> ChangeQuantity {
-        get {
-            return _ChangeQuantity;
-        }
-        set {
-            _ChangeQuantity = value;
-        }
-    }
-    
-    public virtual Signal<PlayActionCommand> PlayAction {
-        get {
-            return _PlayAction;
-        }
-        set {
-            _PlayAction = value;
-        }
-    }
-    
     public override void Bind() {
         base.Bind();
         this.ChangeActionStyle = new Signal<ChangeActionStyleCommand>(this);
-        this.ChangeMoveStyle = new Signal<ChangeMoveStyleCommand>(this);
-        this.ChangeQuantity = new Signal<ChangeQuantityCommand>(this);
-        this.PlayAction = new Signal<PlayActionCommand>(this);
         _SoldierStateProperty = new P<SoldierState>(this, "SoldierState");
         _PlayListProperty = new P<PlayList>(this, "PlayList");
         _HealthHistory = new ModelCollection<Int32>(this, "HealthHistory");
@@ -313,9 +277,6 @@ public partial class SoldierViewModelBase : EntityViewModel {
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
         base.FillCommands(list);
         list.Add(new ViewModelCommandInfo("ChangeActionStyle", ChangeActionStyle) { ParameterType = typeof(void) });
-        list.Add(new ViewModelCommandInfo("ChangeMoveStyle", ChangeMoveStyle) { ParameterType = typeof(void) });
-        list.Add(new ViewModelCommandInfo("ChangeQuantity", ChangeQuantity) { ParameterType = typeof(void) });
-        list.Add(new ViewModelCommandInfo("PlayAction", PlayAction) { ParameterType = typeof(void) });
     }
     
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
@@ -426,6 +387,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     private P<Int32> _moraleStandardProperty;
     
     private P<EntityViewModel> _OpponentProperty;
+    
+    private P<BattleState> _BattleStateProperty;
     
     public EntityViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
@@ -683,6 +646,15 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<BattleState> BattleStateProperty {
+        get {
+            return _BattleStateProperty;
+        }
+        set {
+            _BattleStateProperty = value;
+        }
+    }
+    
     public virtual Single Health {
         get {
             return HealthProperty.Value;
@@ -935,6 +907,15 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual BattleState BattleState {
+        get {
+            return BattleStateProperty.Value;
+        }
+        set {
+            BattleStateProperty.Value = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
         _HealthProperty = new P<Single>(this, "Health");
@@ -965,6 +946,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         _WeaponProficiencyProperty = new P<Int32>(this, "WeaponProficiency");
         _moraleStandardProperty = new P<Int32>(this, "moraleStandard");
         _OpponentProperty = new P<EntityViewModel>(this, "Opponent");
+        _BattleStateProperty = new P<BattleState>(this, "BattleState");
     }
     
     public override void Read(ISerializerStream stream) {
@@ -996,6 +978,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         this.WeaponProficiency = stream.DeserializeInt("WeaponProficiency");;
         this.moraleStandard = stream.DeserializeInt("moraleStandard");;
         		if (stream.DeepSerialize) this.Opponent = stream.DeserializeObject<EntityViewModel>("Opponent");;
+        this.BattleState = (BattleState)stream.DeserializeInt("BattleState");;
     }
     
     public override void Write(ISerializerStream stream) {
@@ -1027,6 +1010,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         stream.SerializeInt("WeaponProficiency", this.WeaponProficiency);
         stream.SerializeInt("moraleStandard", this.moraleStandard);
         if (stream.DeepSerialize) stream.SerializeObject("Opponent", this.Opponent);;
+        stream.SerializeInt("BattleState", (int)this.BattleState);;
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -1091,6 +1075,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_moraleStandardProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_OpponentProperty, true, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_BattleStateProperty, false, false, true, false));
     }
 }
 

@@ -19,13 +19,7 @@ using uFrame.MVVM;
 
 public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
-    private SoldierViewModel _Soldier1;
-    
-    private SoldierViewModel _Soldier2;
-    
     private EnemyViewModel _Enemy1;
-    
-    private MainGameRootViewModel _MainGame;
     
     private EnemyViewModel _Enemy2;
     
@@ -34,6 +28,10 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     private EnemyViewModel _Enemy4;
     
     private EnemyViewModel _Enemy5;
+    
+    private SoldierViewModel _Soldier1;
+    
+    private SoldierViewModel _Soldier2;
     
     private SoldierViewModel _Soldier3;
     
@@ -49,30 +47,6 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private EntityController _EntityController;
     
-    [uFrame.IOC.InjectAttribute("Soldier1")]
-    public virtual SoldierViewModel Soldier1 {
-        get {
-            if (this._Soldier1 == null) {
-                this._Soldier1 = this.CreateViewModel<SoldierViewModel>( "Soldier1");
-            }
-            return _Soldier1;
-        }
-        set {
-        }
-    }
-    
-    [uFrame.IOC.InjectAttribute("Soldier2")]
-    public virtual SoldierViewModel Soldier2 {
-        get {
-            if (this._Soldier2 == null) {
-                this._Soldier2 = this.CreateViewModel<SoldierViewModel>( "Soldier2");
-            }
-            return _Soldier2;
-        }
-        set {
-        }
-    }
-    
     [uFrame.IOC.InjectAttribute("Enemy1")]
     public virtual EnemyViewModel Enemy1 {
         get {
@@ -80,18 +54,6 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
                 this._Enemy1 = this.CreateViewModel<EnemyViewModel>( "Enemy1");
             }
             return _Enemy1;
-        }
-        set {
-        }
-    }
-    
-    [uFrame.IOC.InjectAttribute("MainGame")]
-    public virtual MainGameRootViewModel MainGame {
-        get {
-            if (this._MainGame == null) {
-                this._MainGame = this.CreateViewModel<MainGameRootViewModel>( "MainGame");
-            }
-            return _MainGame;
         }
         set {
         }
@@ -140,6 +102,30 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
                 this._Enemy5 = this.CreateViewModel<EnemyViewModel>( "Enemy5");
             }
             return _Enemy5;
+        }
+        set {
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier1")]
+    public virtual SoldierViewModel Soldier1 {
+        get {
+            if (this._Soldier1 == null) {
+                this._Soldier1 = this.CreateViewModel<SoldierViewModel>( "Soldier1");
+            }
+            return _Soldier1;
+        }
+        set {
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier2")]
+    public virtual SoldierViewModel Soldier2 {
+        get {
+            if (this._Soldier2 == null) {
+                this._Soldier2 = this.CreateViewModel<SoldierViewModel>( "Soldier2");
+            }
+            return _Soldier2;
         }
         set {
         }
@@ -242,14 +228,13 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
         Container.RegisterController<EnemyController>(EnemyController);
         Container.RegisterViewModelManager<EntityViewModel>(new ViewModelManager<EntityViewModel>());
         Container.RegisterController<EntityController>(EntityController);
-        Container.RegisterViewModel<SoldierViewModel>(Soldier1, "Soldier1");
-        Container.RegisterViewModel<SoldierViewModel>(Soldier2, "Soldier2");
         Container.RegisterViewModel<EnemyViewModel>(Enemy1, "Enemy1");
-        Container.RegisterViewModel<MainGameRootViewModel>(MainGame, "MainGame");
         Container.RegisterViewModel<EnemyViewModel>(Enemy2, "Enemy2");
         Container.RegisterViewModel<EnemyViewModel>(Enemy3, "Enemy3");
         Container.RegisterViewModel<EnemyViewModel>(Enemy4, "Enemy4");
         Container.RegisterViewModel<EnemyViewModel>(Enemy5, "Enemy5");
+        Container.RegisterViewModel<SoldierViewModel>(Soldier1, "Soldier1");
+        Container.RegisterViewModel<SoldierViewModel>(Soldier2, "Soldier2");
         Container.RegisterViewModel<SoldierViewModel>(Soldier3, "Soldier3");
         Container.RegisterViewModel<SoldierViewModel>(Soldier4, "Soldier4");
         Container.RegisterViewModel<SoldierViewModel>(Soldier5, "Soldier5");

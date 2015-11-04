@@ -23,13 +23,7 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     
     private uFrame.MVVM.IViewModelManager _MainGameRootViewModelManager;
     
-    private SoldierViewModel _Soldier1;
-    
-    private SoldierViewModel _Soldier2;
-    
     private EnemyViewModel _Enemy1;
-    
-    private MainGameRootViewModel _MainGame;
     
     private EnemyViewModel _Enemy2;
     
@@ -38,6 +32,10 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     private EnemyViewModel _Enemy4;
     
     private EnemyViewModel _Enemy5;
+    
+    private SoldierViewModel _Soldier1;
+    
+    private SoldierViewModel _Soldier2;
     
     private SoldierViewModel _Soldier3;
     
@@ -55,26 +53,6 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
         }
     }
     
-    [uFrame.IOC.InjectAttribute("Soldier1")]
-    public SoldierViewModel Soldier1 {
-        get {
-            return _Soldier1;
-        }
-        set {
-            _Soldier1 = value;
-        }
-    }
-    
-    [uFrame.IOC.InjectAttribute("Soldier2")]
-    public SoldierViewModel Soldier2 {
-        get {
-            return _Soldier2;
-        }
-        set {
-            _Soldier2 = value;
-        }
-    }
-    
     [uFrame.IOC.InjectAttribute("Enemy1")]
     public EnemyViewModel Enemy1 {
         get {
@@ -82,16 +60,6 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Enemy1 = value;
-        }
-    }
-    
-    [uFrame.IOC.InjectAttribute("MainGame")]
-    public MainGameRootViewModel MainGame {
-        get {
-            return _MainGame;
-        }
-        set {
-            _MainGame = value;
         }
     }
     
@@ -132,6 +100,26 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Enemy5 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier1")]
+    public SoldierViewModel Soldier1 {
+        get {
+            return _Soldier1;
+        }
+        set {
+            _Soldier1 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier2")]
+    public SoldierViewModel Soldier2 {
+        get {
+            return _Soldier2;
+        }
+        set {
+            _Soldier2 = value;
         }
     }
     
@@ -267,9 +255,6 @@ public class SoldierControllerBase : EntityController {
     public virtual void InitializeSoldier(SoldierViewModel viewModel) {
         // This is called when a SoldierViewModel is created
         viewModel.ChangeActionStyle.Action = this.ChangeActionStyleHandler;
-        viewModel.ChangeMoveStyle.Action = this.ChangeMoveStyleHandler;
-        viewModel.ChangeQuantity.Action = this.ChangeQuantityHandler;
-        viewModel.PlayAction.Action = this.PlayActionHandler;
         SoldierViewModelManager.Add(viewModel);
     }
     
@@ -281,29 +266,9 @@ public class SoldierControllerBase : EntityController {
     public virtual void ChangeActionStyle(SoldierViewModel viewModel) {
     }
     
-    public virtual void ChangeMoveStyle(SoldierViewModel viewModel) {
-    }
-    
-    public virtual void ChangeQuantity(SoldierViewModel viewModel) {
-    }
-    
-    public virtual void PlayAction(SoldierViewModel viewModel) {
-    }
-    
     public virtual void ChangeActionStyleHandler(ChangeActionStyleCommand command) {
         this.ChangeActionStyle(command.Sender as SoldierViewModel);
-    }
-    
-    public virtual void ChangeMoveStyleHandler(ChangeMoveStyleCommand command) {
-        this.ChangeMoveStyle(command.Sender as SoldierViewModel);
-    }
-    
-    public virtual void ChangeQuantityHandler(ChangeQuantityCommand command) {
-        this.ChangeQuantity(command.Sender as SoldierViewModel);
-    }
-    
-    public virtual void PlayActionHandler(PlayActionCommand command) {
-        this.PlayAction(command.Sender as SoldierViewModel);
+        this.Publish(command);
     }
 }
 
@@ -361,13 +326,7 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
     
     private uFrame.MVVM.IViewModelManager _EntityViewModelManager;
     
-    private SoldierViewModel _Soldier1;
-    
-    private SoldierViewModel _Soldier2;
-    
     private EnemyViewModel _Enemy1;
-    
-    private MainGameRootViewModel _MainGame;
     
     private EnemyViewModel _Enemy2;
     
@@ -376,6 +335,10 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
     private EnemyViewModel _Enemy4;
     
     private EnemyViewModel _Enemy5;
+    
+    private SoldierViewModel _Soldier1;
+    
+    private SoldierViewModel _Soldier2;
     
     private SoldierViewModel _Soldier3;
     
@@ -393,26 +356,6 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
         }
     }
     
-    [uFrame.IOC.InjectAttribute("Soldier1")]
-    public SoldierViewModel Soldier1 {
-        get {
-            return _Soldier1;
-        }
-        set {
-            _Soldier1 = value;
-        }
-    }
-    
-    [uFrame.IOC.InjectAttribute("Soldier2")]
-    public SoldierViewModel Soldier2 {
-        get {
-            return _Soldier2;
-        }
-        set {
-            _Soldier2 = value;
-        }
-    }
-    
     [uFrame.IOC.InjectAttribute("Enemy1")]
     public EnemyViewModel Enemy1 {
         get {
@@ -420,16 +363,6 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Enemy1 = value;
-        }
-    }
-    
-    [uFrame.IOC.InjectAttribute("MainGame")]
-    public MainGameRootViewModel MainGame {
-        get {
-            return _MainGame;
-        }
-        set {
-            _MainGame = value;
         }
     }
     
@@ -470,6 +403,26 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Enemy5 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier1")]
+    public SoldierViewModel Soldier1 {
+        get {
+            return _Soldier1;
+        }
+        set {
+            _Soldier1 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("Soldier2")]
+    public SoldierViewModel Soldier2 {
+        get {
+            return _Soldier2;
+        }
+        set {
+            _Soldier2 = value;
         }
     }
     

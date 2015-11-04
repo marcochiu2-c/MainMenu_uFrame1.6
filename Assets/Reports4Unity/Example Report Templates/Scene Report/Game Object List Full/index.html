@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scene Report</title>
+
+    <style type="text/css">
+      <!--
+      body {
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 12px;
+        margin: 10px;
+        color:#333333;
+        background-color: #f9f9f9;
+      }
+      
+      a {
+        color: #68a135;
+      }
+
+      .headerRow { background-color: #b9c4c5;font-weight:bold;padding:5px 0px 5px 10px; }
+      .footerRow { background-color: #b9c4c5; }
+      .index_odd { background-color: #f1f1f1; }
+      .index_even { background-color: #ffffff; }
+    
+      .sectionVisible_yes { display: block; }
+      .sectionVisible_no { display: none; }
+
+      .tocButton {
+        background-color:#95a5a6;
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+        border-radius:3px;
+        border:1px solid #f1f1f1;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font-size:14px;
+        font-weight:bold;
+        padding:6px 20px;
+        width:40%;
+        text-decoration:none;
+      }
+      .tocButton:hover {
+        background-color:#828f90;
+      }
+      .tocButton:active {
+        position:relative;
+        top:1px;
+      }
+
+      h1 {
+        color:#333333;
+      }
+      
+      h2 {
+        background-color:#95a5a6;
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+        border-radius:3px;
+        border:1px solid #f1f1f1;
+        display:inline-block;
+        color:#ffffff;
+        font-size:16px;
+        font-weight:bold;
+        padding:4px 10px;
+        width:90%;
+        text-decoration:none;
+      }
+
+      table { background-color:#aaaaaa; }
+      
+      .isMissing_yes { color:#ff0000; }
+      .isMissing_no { color:#000000; }
+
+      -->
+    </style>
+
+  </head>
+  <body>
+
+  <h1>[--ProjectName--]</h1>
+
+  <div class="sectionVisible_[++BlockVisible Block=TableOfContents++]">
+    <h2>Table of Contents</h2>
+    [++TableOfContents Block=TableOfContents++]
+    <br /><br />
+  </div>
+
+  <h2>Statistics</h2>
+  <table cellpadding="2" cellspacing="1" style="width:350px;">
+  <tr>
+    <td class="index_odd">Report Date:</td>
+    <td class="index_odd" style="width:150px;text-align:right;">[--ReportDate--], [--ReportTime--]</td>
+  </tr>
+  <tr>
+    <td class="index_odd">Game Object Count Total:</td>
+    <td class="index_odd" style="width:150px;text-align:right;">[--GameObjectCount--]</td>
+  </tr>
+  <tr>
+    <td class="index_odd">Game Object Count Filtered:</td>
+    <td class="index_odd" style="width:150px;text-align:right;">[--GameObjectCountFiltered--]</td>
+  </tr>
+  </table>
+  <br /><br />
+
+  <div class="sectionVisible_[++BlockVisible Block=MissingScripts++]">
+    <h2>Game Objects Missing Scripts</h2>
+    <table cellpadding="2" cellspacing="1" style="width:500px;">
+    [++MissingScripts Block=MissingScripts++]
+    </table>
+    <br /><br />
+  </div>
+
+  <div class="sectionVisible_[++BlockVisible Block=MissingPrefabs++]">
+    <h2>Game Objects Missing Prefabs</h2>
+    <table cellpadding="2" cellspacing="1" style="width:500px;">
+    [++MissingPrefabs Block=MissingPrefabs++]
+    </table>
+    <br /><br />
+  </div>
+
+  <div class="sectionVisible_[++BlockVisible Block=MissingMeshes++]">
+    <h2>Game Objects Missing Meshes</h2>
+    <table cellpadding="2" cellspacing="1" style="width:500px;">
+    [++MissingMeshes Block=MissingMeshes++]
+    </table>
+    <br /><br />
+  </div>
+  
+  
+  <div class="sectionVisible_[++BlockVisible Block=GameObjectList++]">
+    <h2>Complete Game Object List</h2>
+    <br />Filtered by [--FilterField--] ([--FilterValues--])
+    <br /><br />
+
+    <table cellpadding="2" cellspacing="1" style="width:90%;">
+    <tr>
+    [++GameObjectRegister Block=GameObjectRegister++]
+    </tr>
+    </table>
+    <table cellpadding="2" cellspacing="1" style="width:90%;">
+    <tr class="headerRow">
+      <td>Scene</td>
+      <td>Game Object</td>
+      <td>Active&nbsp;Self/InHierarchy</td>
+      <td>Static</td>
+      <td>Prefab</td>
+      <td>Layer</td>
+      <td>Tag</td>
+    </tr>
+    [++GameObjects Block=GameObjectList++]
+    </table>
+    <br /><br />
+  </div>
+
+  </body>
+</html>
+
+
+[--EndOfContent--]
+<!--
+
+
+[--BlockStart TableOfContents--]
+<div style="margin-bottom:2px;">
+  <a class="tocButton" href="#[--TOCItemName--]">[--IndexFormatted--]: [--TOCItemSectionName--] ([--TOCItemBlockDefinitionName--])</a> 
+</div>    
+[--BlockEnd--]
+
+
+[--BlockStart MissingScripts--]
+  <tr>
+    <td class="index_[--OddEven--]">[--NameWithHierarchyPathFull--]</td>
+  </tr>
+[--BlockEnd--]
+[--BlockStart MissingScripts_NoData--]
+  <tr>
+    <td class="index_even">No missing scripts.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart MissingPrefabs--]
+  <tr>
+    <td class="index_[--OddEven--]">[--NameWithHierarchyPathFull--]</td>
+  </tr>
+[--BlockEnd--]
+[--BlockStart MissingPrefabs_NoData--]
+  <tr>
+    <td class="index_even">No missing prefabs.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart MissingMeshes--]
+  <tr>
+    <td class="index_[--OddEven--]">[--NameWithHierarchyPathFull--]</td>
+  </tr>
+[--BlockEnd--]
+[--BlockStart MissingMeshes_NoData--]
+  <tr>
+    <td class="index_even">No missing meshes.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart GameObjectList--]
+  <tr  class="index_[--OddEven--]">
+    <td>[--Scene--]</td>
+    <td>[--HierarchyPath--][--Name--]</td>
+    <td>[--ActiveSelf--]/[--ActiveInHierarchy--]</td>
+    <td>[--IsStatic--]</td>
+    <td>[--IsPrefab--]</td>
+    <td>[--Layer--]</td>
+    <td>[--Tag--]</td>
+  </tr>
+[--BlockEnd--]
+[--BlockStart GameObjectList_NoData--]
+  <tr>
+    <td colspan="7" class="index_even">No game objects.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart GameObjectRegister--]
+    <td  class="index_even" style="text-align:center;font-weight:bold;"><a href="#[--RegisterChar--]">&nbsp;[--RegisterChar--]&nbsp;</a></td>
+[--BlockEnd--]
+
+-->
+

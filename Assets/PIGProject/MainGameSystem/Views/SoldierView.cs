@@ -55,14 +55,35 @@ public class SoldierView : SoldierViewBase {
 		this.BindButtonToHandler(NormalButton, () => this.Soldier.Movement = MoveStyle.NORMAL);	
 		this.BindButtonToHandler(FastButton, () => this.Soldier.Movement = MoveStyle.FAST);
 	
-		this.BindButtonToHandler(AssaultButton, () => this.Soldier.Action = ActionStyle.ASSAULT);
-		this.BindButtonToHandler(AttackButton, () => this.Soldier.Action = ActionStyle.ATTACK);
-		this.BindButtonToHandler(RaidButton, () => this.Soldier.Action = ActionStyle.RAID);
-		this.BindButtonToHandler(FeintButton, () => this.Soldier.Action = ActionStyle.FEINT);
-		this.BindButtonToHandler(PinButton, () => this.Soldier.Action = ActionStyle.PIN);
-		this.BindButtonToHandler(YawpButton, () => this.Soldier.Action = ActionStyle.YAWP);
-		this.BindButtonToHandler(SearchButton, () => this.Soldier.Action = ActionStyle.SEARCH);
+		this.BindButtonToHandler(AssaultButton, () => {
+			this.Soldier.Action = ActionStyle.ASSAULT;
+			ExecuteChangeActionStyle();
+		});
+		this.BindButtonToHandler(AttackButton, () => {
+			this.Soldier.Action = ActionStyle.ATTACK;
+		    ExecuteChangeActionStyle();
+		});
+		this.BindButtonToHandler(RaidButton, () => {
+			this.Soldier.Action = ActionStyle.RAID;
+			ExecuteChangeActionStyle();
+		});
+		this.BindButtonToHandler(FeintButton, () => {
+			this.Soldier.Action = ActionStyle.FEINT;
+			ExecuteChangeActionStyle();
+		});
+		this.BindButtonToHandler(PinButton, () => {
+			this.Soldier.Action = ActionStyle.PIN;
+			ExecuteChangeActionStyle();
+		});
 
+		this.BindButtonToHandler(YawpButton, () => {
+			this.Soldier.Action = ActionStyle.YAWP;
+			ExecuteChangeActionStyle();
+		});
+		this.BindButtonToHandler(SearchButton, () => {
+			this.Soldier.Action = ActionStyle.SEARCH;
+			ExecuteChangeActionStyle();
+		});
 
 		this.BindButtonToHandler(PlayButton, () => PlayBattle());
     }
@@ -72,7 +93,8 @@ public class SoldierView : SoldierViewBase {
 	{
 		foreach (var item in this.Soldier.playlist)
 		{
-			Debug.Log("ID: " + this.Soldier.playlist.IndexOf(item) + " Point: " + item.SavePointLocation + " Move: " + item.SaveMove + " Action: " + item.SaveAction + " Opponent: " + item.SaveEnemyVM);	
+			Debug.Log("ID: " + this.Soldier.playlist.IndexOf(item) + " Point: " + item.SavePointLocation + " Move: " + item.SaveMove + 
+			          " Action: " + item.SaveAction + " Opponent: " + item.SaveEnemyVM);	
 		}
 	}
 
@@ -102,23 +124,7 @@ public class SoldierView : SoldierViewBase {
 		}
 
     }
-	/*
-    public override void isAttackChanged(Boolean attack) {
-		if (attack)
-		{
-			Debug.Log ("Attack !!");
-			ActionPanel.gameObject.SetActive(true);
-			MovePanel.gameObject.SetActive(false);
-			//this.playlist = new PlayList(this.CurrentPointLocation, this._Action);
-			this.playlist.Insert(step, new PlayList(this.CurrentPointLocation, this._Movement ,this._Action));
-			step++;
-		}
-		else
-		{
-			Debug.Log ("Move !!");
-			MovePanel.gameObject.SetActive(true);
-			ActionPanel.gameObject.SetActive(false);
-		}
+
+    public override void ChangeActionStyleExecuted(ChangeActionStyleCommand command) {
     }
-	*/
 }

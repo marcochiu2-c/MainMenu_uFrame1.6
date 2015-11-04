@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scene Report</title>
+
+    <style type="text/css">
+      <!--
+      body {
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 12px;
+        margin: 10px;
+        color:#333333;
+        background-color: #f9f9f9;
+      }
+      
+      a {
+        color: #68a135;
+      }
+
+      .headerRow { background-color: #b9c4c5;font-weight:bold;padding:5px 0px 5px 10px; }
+      .footerRow { background-color: #b9c4c5; }
+      .index_odd { background-color: #f1f1f1; }
+      .index_even { background-color: #ffffff; }
+    
+      .sectionVisible_yes { display: block; }
+      .sectionVisible_no { display: none; }
+
+      h1 {
+        color:#333333;
+      }
+      
+      table { background-color:#aaaaaa; }
+      
+      .isMissing_yes { color:#ff0000; }
+      .isMissing_no { color:#000000; }
+
+      -->
+    </style>
+
+  </head>
+  <body>
+
+  <h1>[--ProjectName--]</h1>
+
+  <div class="sectionVisible_[++BlockVisible Block=SceneList++]">
+    <h2>Collider Overview</h2>
+    <table cellpadding="0" cellspacing="0" style="width:900px;">
+    [++Scenes Block=SceneList++]
+    </table>
+  </div>
+  
+  </body>
+</html>
+
+
+[--EndOfContent--]
+<!--
+
+
+[--BlockStart SceneList--]
+  <tr>
+    <td class="headerRow" colspan="2" style="font-weight:bold;padding:10px;">[--ScenePathShort--] <span style="font-weight:normal;">([--GameObjectCount--] Game Objects)</span></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+    
+      <table cellpadding="2" cellspacing="1" style="width:100%;">
+      [++GameObjects Block=GameObjectListShort++]
+      </table>
+      
+    </td>
+  </tr>
+[--BlockEnd--]
+[--BlockStart SceneList_NoData--]
+  <tr>
+    <td class="index_even">No scenes.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart GameObjectListShort--]
+  <tr>
+    <td class="index_even" style="width:350px;vertical-align:top;">
+      <strong>[--HierarchyPath--][--Name--]</strong>
+    </td>
+    <td class="index_even">
+      
+      <table cellpadding="2" cellspacing="0" style="width:100%;">
+      [++Components Block=GameObjectComponentList++]
+      </table>
+      
+    </td>
+  </tr>
+[--BlockEnd--]
+[--BlockStart GameObjectListShort_NoData--]
+  <tr>
+    <td class="index_even">No game objects.</td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart GameObjectComponentList--]
+  <tr>
+    <td class="index_even" style="width:150px;vertical-align:top;">[--ComponentName--]</td>
+    <td class="index_even"> [++ComponentFields Block=GameObjectComponentFieldList++] </td>
+  </tr>
+[--BlockEnd--]
+
+[--BlockStart GameObjectComponentFieldList--]
+  [--ComponentFieldName--] = [--ComponentFieldValue--]<br />
+[--BlockEnd--]
+
+
+-->
+

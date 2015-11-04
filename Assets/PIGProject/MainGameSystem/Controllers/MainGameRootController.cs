@@ -12,13 +12,10 @@ using Gamelogic;
 using Gamelogic.Grids;
 using System.Timers;
 using DG.Tweening;
+using Random = UnityEngine.Random;
 
 public class MainGameRootController : MainGameRootControllerBase {
     
-	//public List<EntityViewModel> soldiers = new List<EntityViewModel>();
-	//public List<EntityView> soldiersView = new List<EntityView>();
-	private bool TimerStarted = false;
-	private bool _battleFinished = false;
 	public static float WarStartTime = 0;
 
 
@@ -39,14 +36,16 @@ public class MainGameRootController : MainGameRootControllerBase {
         base.GameOver(viewModel);
     }
 
-
-	public void StartBattle(EntityViewModel P1, EntityViewModel P2, EntityView P1v, EntityView P2v)
+	// P1 = Soldier
+	// P2 = Enemy
+	public void StartBattle(EntityViewModel P1, EntityViewModel P2, EntityView P1v, EntityView P2v, ActionStyle action)
 	{
 		Debug.Log("Running StartBattle");
 
 		List<EntityViewModel> soldiers = new List<EntityViewModel>();
 		List<EntityView> soldiersView = new List<EntityView>();
-
+		bool _battleFinished = false;
+		bool TimerStarted = false;
 		//soldiers.Insert(index1, P1);
 		//soldiers.Insert(index2, P2);
 		//soldiersView.Insert (index1, P1v);
@@ -60,10 +59,20 @@ public class MainGameRootController : MainGameRootControllerBase {
 		soldiers.Insert(1, P2);
 		soldiersView.Insert (0, P1v);
 		soldiersView.Insert (1, P2v);
+
 		soldiers[0].Opponent = soldiers[1];
-		soldiers[1].Opponent = soldiers[0];
 		soldiersView[0].OpponentView = soldiersView[1];
-		soldiersView[1].OpponentView = soldiersView[0];
+		soldiers[0].TimeStarted = true;
+
+		if(P2.BattleState == BattleState.WAITING)
+		{
+			soldiers[1].Opponent = soldiers[0];
+			soldiersView[1].OpponentView = soldiersView[0];
+			soldiers[1].TimeStarted = true;
+
+			P1.BattleState = BattleState.FIGHTING;
+			P2.BattleState = BattleState.FIGHTING;
+		}
 
 
 		for (int i = 0; i < soldiers.Count; i++)
@@ -74,27 +83,48 @@ public class MainGameRootController : MainGameRootControllerBase {
 		}
 
 		WarStartTime = Time.time;
-		soldiers[0].TimeStarted = true;
-		soldiers[1].TimeStarted = true;
+
 		//if(soldiers[0] != null)
 		//	soldiers[0].TimeStarted = true;
 		//if(soldiers[1] != null)
 		//	soldiers[1].TimeStarted = true;
 		_battleFinished = false;
 
-		Observable.EveryUpdate().Where (_ => soldiers[0].TimeStarted == true && soldiers[1].TimeStarted).Subscribe(_ => 
+		//Observable.EveryUpdate().Where (_ => soldiers[0].TimeStarted == true && soldiers[1].TimeStarted).Subscribe(_ => 
+		Observable.EveryUpdate().Subscribe(_ => 
 		{
-			if (soldiers.Count > 0) 
+			if (soldiers.Count > 0)
 			{
+				if(P2.BattleState == BattleState.WAITING)
+				{
+
+					Debug.Log ("Waiting from GameController if case");
+					soldiers[1].Opponent = soldiers[0];
+					soldiersView[1].OpponentView = soldiersView[0];
+					_battleFinished = false;
+					WarStartTime = Time.time;
+					P1.BattleState = BattleState.FIGHTING;
+					P2.BattleState = BattleState.FIGHTING;
+
+					soldiers[1].GetHealthProbabilities();
+					soldiers[1].starttime = Time.time;
+					soldiers[0].TimeStarted = true;
+					soldiers[1].TimeStarted = true;
+				}
+
 				for (int i=0; i < soldiers.Count; i++) 
 				{
-					if (soldiers[i].TimeStarted && (Time.time - soldiers[i].starttime >= 1f / soldiers[i].AttackSpeed)) 
+					if (soldiers[i].TimeStarted  && (soldiers[i].Opponent != null) && (Time.time - soldiers[i].starttime >= 1f / soldiers[i].AttackSpeed)) 
 					{
-						Result (WarStartTime, soldiers[i], soldiersView[i]);
+						Result (WarStartTime, soldiers[i], soldiersView[i], action);
 						soldiers[i].starttime = Time.time;
 					}
-					else if (!soldiers[i].TimeStarted)
+
+					if (!soldiers[i].TimeStarted)
 					{
+						Debug.Log ("Waiting from GameController");
+						if(P1 != null) P1.BattleState = BattleState.WAITING;
+						if(P2 != null) P2.BattleState = BattleState.WAITING;
 						_battleFinished = true;
 						soldiers.Clear ();
 					}
@@ -105,13 +135,67 @@ public class MainGameRootController : MainGameRootControllerBase {
 		//if(_battleFinished ) soldiers.Clear ();
 	}
 
-	public void Result(float warStartTime, EntityViewModel p, EntityView pV){
+	public void Result(float warStartTime, EntityViewModel p, EntityView pV, ActionStyle action){
 		float factor = 1.0f;
+		float timeDiff = Time.time - warStartTime;
 		/*
 		if (action == ActionStyle.PIN){
 			factor = 0.5f;
 		}
 		*/
+
+		//AcionStyle
+		if(action == ActionStyle.ASSAULT)
+		{
+			float prob = Random.value;
+
+			if(prob >= 0.25f)
+				p.Opponent.BattleState = BattleState.CONFUSING;
+			else if(prob < 0.5 && prob >= 0.5f)
+				p.BattleState = BattleState.CONFUSING;
+			else if(prob < 0.5f && prob >= 0.75f)
+			{
+				p.BattleState = BattleState.CONFUSING;
+				p.Opponent.BattleState = BattleState.CONFUSING;
+			}
+
+		}
+
+		else if(action == ActionStyle.RAID)
+		{
+			float prob = Random.value;
+
+			if(prob >= 0.5f)
+				p.Opponent.BattleState = BattleState.CONFUSING;
+		}
+
+		else if(action == ActionStyle.FEINT)
+		{
+			if(timeDiff >= 0.8f)
+			{
+				p.TimeStarted = false;
+				p.Counter++;
+				return;
+			}
+		}
+
+
+		else if(action == ActionStyle.PIN)
+		{
+			factor = 0.5f;
+		}
+
+
+		else if(action == ActionStyle.SEARCH)
+		{
+			
+		} 
+
+		else if(action == ActionStyle.YAWP)
+		{
+			
+		} 
+
 		
 		float health = p.Opponent.Health * Mathf.Pow (p.Opponent.noHurt, p.Health / (float)p.Opponent.Health);
 		float d = p.Opponent.Health - Mathf.Pow (p.Opponent.noHurt + p.Opponent.hurt, p.Health / (float)p.Opponent.Health) * p.Opponent.Health;
@@ -134,7 +218,6 @@ public class MainGameRootController : MainGameRootControllerBase {
 		//Debug.Log (Name + " Health: " + healthHistory [Counter]);
 		string colorTag = p.Name != "Soldier3" ? "<color=red>" :"<color=yellow>";
 		colorTag = p.Name == "Soldier4" ? "<color=purple>" : colorTag;
-		float timeDiff = Time.time - warStartTime;
 		//call animation, but how to call the view???
 		Debug.Log (colorTag + "Time</color> " + timeDiff + "s, " + p.Opponent.Name + " Results: " + health + " " + ht + " " + d + " <color=blue>Opponent.Counter:</color> " + p.Counter);
 		Debug.Log (colorTag + "Time</color> " + timeDiff + "s, " + p.Opponent.Name + " Actual Results: " + p.Opponent.Health + " " + p.Opponent.Hurt + " " + p.Opponent.Dead + " Total: " + (p.Opponent.Health + p.Opponent.Hurt + p.Opponent.Dead));
