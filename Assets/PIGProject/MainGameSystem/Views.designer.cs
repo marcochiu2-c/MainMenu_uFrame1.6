@@ -45,7 +45,7 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
     
     public override string DefaultIdentifier {
         get {
-            return base.DefaultIdentifier;
+            return "MainGameRoot";
         }
     }
     
@@ -119,11 +119,6 @@ public class SoldierViewBase : EntityView {
     [UnityEngine.HideInInspector()]
     public SoldierState _SoldierState;
     
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
-    public PlayList _PlayList;
-    
     [UFToggleGroup("SoldierState")]
     [UnityEngine.HideInInspector()]
     public bool _BindSoldierState = true;
@@ -163,7 +158,6 @@ public class SoldierViewBase : EntityView {
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
         var soldierview = ((SoldierViewModel)model);
         soldierview.SoldierState = this._SoldierState;
-        soldierview.PlayList = this._PlayList;
     }
     
     public override void Bind() {
@@ -197,6 +191,16 @@ public class SoldierViewBase : EntityView {
 
 public class EnemyViewBase : EntityView {
     
+    [UFToggleGroup("BattleState")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindBattleState = true;
+    
+    [UFGroup("BattleState")]
+    [UnityEngine.SerializeField()]
+    [UnityEngine.HideInInspector()]
+    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_BattleStateonlyWhenChanged")]
+    protected bool _BattleStateOnlyWhenChanged;
+    
     public override string DefaultIdentifier {
         get {
             return "Enemy1";
@@ -227,6 +231,12 @@ public class EnemyViewBase : EntityView {
         // Use this.Enemy to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+        if (_BindBattleState) {
+            this.BindProperty(this.Enemy.BattleStateProperty, this.BattleStateChanged, _BattleStateOnlyWhenChanged);
+        }
+    }
+    
+    public virtual void BattleStateChanged(BattleState arg1) {
     }
 }
 
@@ -377,6 +387,11 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.HideInInspector()]
     public BattleState _BattleState;
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public PlayList _PlayList;
+    
     [UFToggleGroup("Health")]
     [UnityEngine.HideInInspector()]
     public bool _BindHealth = true;
@@ -440,6 +455,7 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
         entityview.moraleStandard = this._moraleStandard;
         entityview.Opponent = this._Opponent == null ? null :  ViewService.FetchViewModel(this._Opponent) as EntityViewModel;
         entityview.BattleState = this._BattleState;
+        entityview.PlayList = this._PlayList;
     }
     
     public override void Bind() {

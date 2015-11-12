@@ -66,6 +66,8 @@ public class MainGameRootController : MainGameRootControllerBase {
 
 		if(P2.BattleState == BattleState.WAITING)
 		{
+
+			P2.Opponent = P1;
 			soldiers[1].Opponent = soldiers[0];
 			soldiersView[1].OpponentView = soldiersView[0];
 			soldiers[1].TimeStarted = true;

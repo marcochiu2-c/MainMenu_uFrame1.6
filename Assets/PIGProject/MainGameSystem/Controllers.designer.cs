@@ -12,11 +12,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using uFrame.Serialization;
+using UniRx;
 using uFrame.MVVM;
 using uFrame.Kernel;
 using uFrame.IOC;
-using UniRx;
+using uFrame.Serialization;
 
 
 public class MainGameRootControllerBase : uFrame.MVVM.Controller {
@@ -42,6 +42,8 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
     private SoldierViewModel _Soldier4;
     
     private SoldierViewModel _Soldier5;
+    
+    private MainGameRootViewModel _MainGameRoot;
     
     [uFrame.IOC.InjectAttribute("MainGameRoot")]
     public uFrame.MVVM.IViewModelManager MainGameRootViewModelManager {
@@ -150,6 +152,16 @@ public class MainGameRootControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Soldier5 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("MainGameRoot")]
+    public MainGameRootViewModel MainGameRoot {
+        get {
+            return _MainGameRoot;
+        }
+        set {
+            _MainGameRoot = value;
         }
     }
     
@@ -268,7 +280,6 @@ public class SoldierControllerBase : EntityController {
     
     public virtual void ChangeActionStyleHandler(ChangeActionStyleCommand command) {
         this.ChangeActionStyle(command.Sender as SoldierViewModel);
-        this.Publish(command);
     }
 }
 
@@ -345,6 +356,8 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
     private SoldierViewModel _Soldier4;
     
     private SoldierViewModel _Soldier5;
+    
+    private MainGameRootViewModel _MainGameRoot;
     
     [uFrame.IOC.InjectAttribute("Entity")]
     public uFrame.MVVM.IViewModelManager EntityViewModelManager {
@@ -453,6 +466,16 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
         }
         set {
             _Soldier5 = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute("MainGameRoot")]
+    public MainGameRootViewModel MainGameRoot {
+        get {
+            return _MainGameRoot;
+        }
+        set {
+            _MainGameRoot = value;
         }
     }
     

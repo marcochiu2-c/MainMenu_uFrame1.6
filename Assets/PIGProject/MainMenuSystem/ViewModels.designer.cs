@@ -139,6 +139,10 @@ public partial class SubScreenViewModelBase : uFrame.MVVM.ViewModel {
         _IsActiveProperty = new P<Boolean>(this, "IsActive");
     }
     
+    public virtual void ExecuteClose() {
+        this.Close.OnNext(new CloseCommand());
+    }
+    
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
         this.IsActive = stream.DeserializeBool("IsActive");;
@@ -230,6 +234,10 @@ public partial class LoginScreenViewModelBase : SubScreenViewModel {
         this.Login = new Signal<LoginCommand>(this);
         _UsernameProperty = new P<String>(this, "Username");
         _PasswordProperty = new P<String>(this, "Password");
+    }
+    
+    public virtual void ExecuteLogin() {
+        this.Login.OnNext(new LoginCommand());
     }
     
     public override void Read(ISerializerStream stream) {
@@ -349,6 +357,14 @@ public partial class SettingsScreenViewModelBase : SubScreenViewModel {
         _AvailableResolutions = new ModelCollection<ResolutionInformation>(this, "AvailableResolutions");
     }
     
+    public virtual void ExecuteApply() {
+        this.Apply.OnNext(new ApplyCommand());
+    }
+    
+    public virtual void ExecuteDefault() {
+        this.Default.OnNext(new DefaultCommand());
+    }
+    
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
         this.Volume = stream.DeserializeFloat("Volume");;
@@ -414,6 +430,10 @@ public partial class LevelSelectScreenViewModelBase : SubScreenViewModel {
         base.Bind();
         this.SelectLevel = new Signal<SelectLevelCommand>(this);
         _AvailableLevels = new ModelCollection<LevelDescriptor>(this, "AvailableLevels");
+    }
+    
+    public virtual void ExecuteSelectLevel(LevelDescriptor argument) {
+        this.SelectLevel.OnNext(new SelectLevelCommand(){Argument = argument});
     }
     
     public override void Read(ISerializerStream stream) {
@@ -496,6 +516,10 @@ public partial class NoticeScreenViewModelBase : SubScreenViewModel {
     public override void Bind() {
         base.Bind();
         this.Sign = new Signal<SignCommand>(this);
+    }
+    
+    public virtual void ExecuteSign() {
+        this.Sign.OnNext(new SignCommand());
     }
     
     public override void Read(ISerializerStream stream) {

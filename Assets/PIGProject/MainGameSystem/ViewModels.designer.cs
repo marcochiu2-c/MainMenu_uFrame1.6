@@ -145,6 +145,18 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         _Memebers = new ModelCollection<EntityViewModel>(this, "Memebers");
     }
     
+    public virtual void ExecuteGoToMenu() {
+        this.GoToMenu.OnNext(new GoToMenuCommand());
+    }
+    
+    public virtual void ExecutePlay() {
+        this.Play.OnNext(new PlayCommand());
+    }
+    
+    public virtual void ExecuteGameOver() {
+        this.GameOver.OnNext(new GameOverCommand());
+    }
+    
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
         this.State = stream.DeserializeString("State");;
@@ -192,8 +204,6 @@ public partial class SoldierViewModelBase : EntityViewModel {
     
     private P<SoldierState> _SoldierStateProperty;
     
-    private P<PlayList> _PlayListProperty;
-    
     private ModelCollection<Int32> _HealthHistory;
     
     private Signal<ChangeActionStyleCommand> _ChangeActionStyle;
@@ -211,30 +221,12 @@ public partial class SoldierViewModelBase : EntityViewModel {
         }
     }
     
-    public virtual P<PlayList> PlayListProperty {
-        get {
-            return _PlayListProperty;
-        }
-        set {
-            _PlayListProperty = value;
-        }
-    }
-    
     public virtual SoldierState SoldierState {
         get {
             return SoldierStateProperty.Value;
         }
         set {
             SoldierStateProperty.Value = value;
-        }
-    }
-    
-    public virtual PlayList PlayList {
-        get {
-            return PlayListProperty.Value;
-        }
-        set {
-            PlayListProperty.Value = value;
         }
     }
     
@@ -260,8 +252,11 @@ public partial class SoldierViewModelBase : EntityViewModel {
         base.Bind();
         this.ChangeActionStyle = new Signal<ChangeActionStyleCommand>(this);
         _SoldierStateProperty = new P<SoldierState>(this, "SoldierState");
-        _PlayListProperty = new P<PlayList>(this, "PlayList");
         _HealthHistory = new ModelCollection<Int32>(this, "HealthHistory");
+    }
+    
+    public virtual void ExecuteChangeActionStyle() {
+        this.ChangeActionStyle.OnNext(new ChangeActionStyleCommand());
     }
     
     public override void Read(ISerializerStream stream) {
@@ -283,8 +278,6 @@ public partial class SoldierViewModelBase : EntityViewModel {
         base.FillProperties(list);
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_SoldierStateProperty, false, false, true, false));
-        // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_PlayListProperty, false, false, false, false));
         list.Add(new ViewModelPropertyInfo(_HealthHistory, false, true, false, false));
     }
 }
@@ -389,6 +382,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     private P<EntityViewModel> _OpponentProperty;
     
     private P<BattleState> _BattleStateProperty;
+    
+    private P<PlayList> _PlayListProperty;
     
     public EntityViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
@@ -655,6 +650,15 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<PlayList> PlayListProperty {
+        get {
+            return _PlayListProperty;
+        }
+        set {
+            _PlayListProperty = value;
+        }
+    }
+    
     public virtual Single Health {
         get {
             return HealthProperty.Value;
@@ -916,6 +920,15 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual PlayList PlayList {
+        get {
+            return PlayListProperty.Value;
+        }
+        set {
+            PlayListProperty.Value = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
         _HealthProperty = new P<Single>(this, "Health");
@@ -947,6 +960,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         _moraleStandardProperty = new P<Int32>(this, "moraleStandard");
         _OpponentProperty = new P<EntityViewModel>(this, "Opponent");
         _BattleStateProperty = new P<BattleState>(this, "BattleState");
+        _PlayListProperty = new P<PlayList>(this, "PlayList");
     }
     
     public override void Read(ISerializerStream stream) {
@@ -1077,6 +1091,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_OpponentProperty, true, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_BattleStateProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_PlayListProperty, false, false, false, false));
     }
 }
 

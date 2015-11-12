@@ -209,5 +209,13 @@ namespace Gamelogic.Grids.GoldenSkull
 		}
 
 		#endregion
+
+		private bool isWalkable = true;
+		
+		public bool IsWalkable
+		{
+			get { return isWalkable; }
+			set { isWalkable = value; }
+		}
 	}
 }
