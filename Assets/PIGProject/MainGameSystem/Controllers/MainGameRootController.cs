@@ -133,8 +133,6 @@ public class MainGameRootController : MainGameRootControllerBase {
 				}
 			}
 		});
-
-		//if(_battleFinished ) soldiers.Clear ();
 	}
 
 	public void Result(float warStartTime, EntityViewModel p, EntityView pV, ActionStyle action){

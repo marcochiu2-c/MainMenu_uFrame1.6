@@ -26,7 +26,6 @@ public class SoldierController : SoldierControllerBase {
 		//viewModel.Armor = new Armors {Weight = 2, OtherCover = 30, CriticalCover = 30, FatalCover = 30, Hardness =30};
 		//viewModel.Shield = new Shields{Weight = 0 , BlockRate = 0, Hardness =0};
 		//viewModel.Formation = new Formations{HitPoint = 10, Dodge = 10, Morale =5};
-		Debug.Log(viewModel.Health);
 	}
 	
 	public override void ChangeActionStyle(SoldierViewModel viewModel) {

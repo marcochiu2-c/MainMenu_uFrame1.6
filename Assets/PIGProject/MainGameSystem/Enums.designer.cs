@@ -60,3 +60,10 @@ public enum BattleState {
     
     CONFUSING,
 }
+
+public enum Career {
+    
+    Swordman,
+    
+    Archer,
+}

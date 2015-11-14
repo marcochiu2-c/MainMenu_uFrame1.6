@@ -392,6 +392,11 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.HideInInspector()]
     public PlayList _PlayList;
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Career _Career;
+    
     [UFToggleGroup("Health")]
     [UnityEngine.HideInInspector()]
     public bool _BindHealth = true;
@@ -456,6 +461,7 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
         entityview.Opponent = this._Opponent == null ? null :  ViewService.FetchViewModel(this._Opponent) as EntityViewModel;
         entityview.BattleState = this._BattleState;
         entityview.PlayList = this._PlayList;
+        entityview.Career = this._Career;
     }
     
     public override void Bind() {

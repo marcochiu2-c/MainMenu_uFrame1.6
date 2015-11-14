@@ -385,6 +385,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<PlayList> _PlayListProperty;
     
+    private P<Career> _CareerProperty;
+    
     public EntityViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
@@ -659,6 +661,15 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<Career> CareerProperty {
+        get {
+            return _CareerProperty;
+        }
+        set {
+            _CareerProperty = value;
+        }
+    }
+    
     public virtual Single Health {
         get {
             return HealthProperty.Value;
@@ -929,6 +940,15 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual Career Career {
+        get {
+            return CareerProperty.Value;
+        }
+        set {
+            CareerProperty.Value = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
         _HealthProperty = new P<Single>(this, "Health");
@@ -961,6 +981,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         _OpponentProperty = new P<EntityViewModel>(this, "Opponent");
         _BattleStateProperty = new P<BattleState>(this, "BattleState");
         _PlayListProperty = new P<PlayList>(this, "PlayList");
+        _CareerProperty = new P<Career>(this, "Career");
     }
     
     public override void Read(ISerializerStream stream) {
@@ -993,6 +1014,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         this.moraleStandard = stream.DeserializeInt("moraleStandard");;
         		if (stream.DeepSerialize) this.Opponent = stream.DeserializeObject<EntityViewModel>("Opponent");;
         this.BattleState = (BattleState)stream.DeserializeInt("BattleState");;
+        this.Career = (Career)stream.DeserializeInt("Career");;
     }
     
     public override void Write(ISerializerStream stream) {
@@ -1025,6 +1047,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         stream.SerializeInt("moraleStandard", this.moraleStandard);
         if (stream.DeepSerialize) stream.SerializeObject("Opponent", this.Opponent);;
         stream.SerializeInt("BattleState", (int)this.BattleState);;
+        stream.SerializeInt("Career", (int)this.Career);;
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -1093,6 +1116,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_BattleStateProperty, false, false, true, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_PlayListProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_CareerProperty, false, false, true, false));
     }
 }
 
