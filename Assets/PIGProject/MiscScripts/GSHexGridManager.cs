@@ -76,7 +76,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	//Init all Gameobject in the Grid
 	public void InitPosition()
 	{	
-		
+
 		for(int i = 0; i < SoldierVM.Count; i++)
 		{
 			SoldierVM[i].CurrentPointLocation = new FlatHexPoint(i, 0);
@@ -89,7 +89,25 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		TargetVM[2].CurrentPointLocation = new FlatHexPoint(9, 0);
 		TargetVM[3].CurrentPointLocation = new FlatHexPoint(2, 9);
 		TargetVM[4].CurrentPointLocation = new FlatHexPoint(6, 6);
-		
+
+		//Set the river to logic false
+		walkableGrid[new FlatHexPoint(0, 8)].IsWalkable = false;
+		walkableGrid[new FlatHexPoint(1, 8)].IsWalkable = false;
+		walkableGrid[new FlatHexPoint(1, 7)].IsWalkable = false;
+
+		walkableGrid[new FlatHexPoint(3, 3)].IsWalkable = false;
+		walkableGrid[new FlatHexPoint(3, 2)].IsWalkable = false;
+		walkableGrid[new FlatHexPoint(4, 3)].IsWalkable = false;
+		walkableGrid[new FlatHexPoint(4, 2)].IsWalkable = false;
+		walkableGrid[new FlatHexPoint(4, 1)].IsWalkable = false;
+
+		walkableGrid[new FlatHexPoint(5, -1)].IsWalkable = false;
+		walkableGrid[new FlatHexPoint(6, -2)].IsWalkable = false;
+		walkableGrid[new FlatHexPoint(6, -3)].IsWalkable = false;
+
+		walkableGrid[new FlatHexPoint(7, 7)].IsWalkable = false;
+
+
 		for(int i = 0; i < TargetV.Count; i++)
 			TargetV[i].transform.position = Map[TargetVM[i].CurrentPointLocation];
 		
@@ -120,8 +138,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				start = SoldierVM[_sNum].CurrentPointLocation;
 				finish = point;
 				SoldierVM[_sNum].CurrentPointLocation = point;
-				var path = Algorithms.AStar(Grid, start, finish);
-				StartCoroutine(MovePath(path, SoldierVM[_sNum].Movement, SoldierV[_sNum]));
+				PathFinding(start, finish, SoldierVM[_sNum].Movement, SoldierV[_sNum]);
 
 				//Change state from move to attack after move
 				SoldierVM[_sNum].SoldierState = SoldierState.ATTACK;
@@ -189,8 +206,9 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 	public IEnumerator MovePath(IEnumerable<FlatHexPoint> path, MoveStyle move, EntityView entityView)
 	{
+		Debug.Log ("Moving from " + entityView);
 		var pathList = path.ToList();
-		
+
 		if(pathList.Count < 2) yield break; //Not a valid path
 		
 		//yield return new WaitForSeconds(0.2f);
@@ -218,11 +236,13 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			}
 			
 		}
-		
+
 		for(int i = 0; i < pathList.Count - 1; i++)
 		{
 			yield return StartCoroutine(entityView.Move(Map[pathList[i]], Map[pathList[i+1]], move));
 		}
+
+		//Please change battleState here
 	}
 
 	public void EndTurn()
@@ -267,7 +287,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			
 			PathFinding(start, finish, SoldierVM[i].playlist[j].SaveMove, SoldierV[i]);
 
-			//if Feint, let the enemy follow the corresponding soldier, may be need to check 
+			//if Feint, let the enemy follow the corresponding soldier, may be need to check
 			if( j != 0 && SoldierVM[i] != null && SoldierVM[i].playlist[j-1].SaveAction == ActionStyle.FEINT)
 			{
 				if(SoldierVM[i].playlist[j-1].SaveEnemyVM != null && SoldierVM[i].playlist[j-1].SaveEnemyVM.BattleState == BattleState.WAITING)
@@ -308,6 +328,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		}
 	}
 
+	//check the cell is walkable or not
 	public bool IsCellAccessible(GSCell cell)
 	{
 		return cell.IsWalkable;
@@ -317,22 +338,22 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public void PathFinding(FlatHexPoint s,  FlatHexPoint f, MoveStyle moveStyle, EntityView entityView)
 	{
 
+		//var path = Algorithms.AStar(Grid, s, f);
 		var path = Algorithms.AStar(
-			Grid,
-			s,
-			f);
-
-		/*
-		var path = Algorithms.AStar2(
 			Grid,
 			s,
 			f,
 			(p,q) => p.DistanceFrom(q),
-			c => true, //accessing your custom bool from the GSCell
-			1);
-		*/
+			c => ((GSCell) c).IsWalkable, //accessing your custom bool from the GSCell
+			(p, q) => 1);
 
-		if (path == null) return; //then there is no path between the start and goal.
+		Debug.Log(entityView.name + "PathFinding" + path);
+		if (path == null) 
+		{
+			return; //then there is no path between the start and goal.
+			Debug.Log("there is no path between the start and goal.");
+		}
+
 		StartCoroutine(MovePath(path, moveStyle, entityView));
 	}
 
@@ -343,4 +364,10 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		
 		return distance;
 	}
+
+	public void callFunctionTest()
+	{
+		Debug.Log ("Called from other scripts");
+	}
+
 }

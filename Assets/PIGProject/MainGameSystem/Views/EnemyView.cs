@@ -29,23 +29,25 @@ public class EnemyView : EnemyViewBase {
 
     public override void BattleStateChanged(BattleState bState) {
 		//ExecuteBattleStateCommand();
-		//GSHexGridManager gSHexGridManager = gameObject.GetComponent<GSHexGridManager>();
-		//gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent(GSHexGridManager);
-
 		/*
+		gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent<GSHexGridManager>();
+
+		//gSHexGridManager.callFunctionTest();
+
 		if(bState == BattleState.WAITING)
 			if(this.Enemy.Opponent != null && this.Enemy.PlayList.SaveAction == ActionStyle.FEINT)
-		{
-			//follow the soldier
-			FlatHexPoint start = this.Enemy.CurrentPointLocation;
-			FlatHexPoint finish = new FlatHexPoint(10,10);
-			Debug.Log(start + " " + finish);
-			this.Enemy.CurrentPointLocation = new FlatHexPoint(10,10);
-			if(gSHexGridManager == null)
-				Debug.Log("gSHexGridManager is null");
-			if(gSHexGridManager != null)
-				gSHexGridManager.PathFinding(start, finish, this.Enemy.Movement, this);
-		}
-		*/
+			{
+				//follow the soldier
+				FlatHexPoint start = this.Enemy.CurrentPointLocation;
+				FlatHexPoint finish = new FlatHexPoint(10,10);
+				Debug.Log(start + " " + finish);
+				this.Enemy.CurrentPointLocation = finish;
+				if(gSHexGridManager != null)
+				{
+					Debug.Log ("gSHexGridManager get");
+					gSHexGridManager.PathFinding(start, finish, MoveStyle.FAST, this);
+				}
+			}
+	*/
 	}
 }

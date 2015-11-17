@@ -40,7 +40,6 @@ namespace Gamelogic.Grids.GoldenSkull
 		/// The offset to used for stacking tiles.
 		/// </summary>
 		public float stackOffset = DefaultHexStackOffset;
-
 		#endregion
 
 		#region Private Fields
@@ -211,7 +210,7 @@ namespace Gamelogic.Grids.GoldenSkull
 		#endregion
 
 		private bool isWalkable = true;
-		
+
 		public bool IsWalkable
 		{
 			get { return isWalkable; }
