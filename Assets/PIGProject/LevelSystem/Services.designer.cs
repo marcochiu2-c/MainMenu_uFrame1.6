@@ -15,8 +15,8 @@ using System.Linq;
 using UnityEngine;
 using UniRx;
 using uFrame.IOC;
-using uFrame.Kernel;
 using uFrame.MVVM;
+using uFrame.Kernel;
 
 
 public class LevelManagementServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {

@@ -60,7 +60,8 @@ public class MainGameRootController : MainGameRootControllerBase {
 		soldiersView.Insert (0, P1v);
 		soldiersView.Insert (1, P2v);
 
-		soldiers[0].Opponent = soldiers[1];
+		//Need to check if not the first guy, prevent to run these script
+	   	soldiers[0].Opponent = soldiers[1];
 		soldiersView[0].OpponentView = soldiersView[1];
 		soldiers[0].TimeStarted = true;
 
@@ -72,7 +73,6 @@ public class MainGameRootController : MainGameRootControllerBase {
 			soldiersView[1].OpponentView = soldiersView[0];
 			soldiers[1].TimeStarted = true;
 
-			P1.BattleState = BattleState.FIGHTING;
 			P2.BattleState = BattleState.FIGHTING;
 		}
 
@@ -97,22 +97,41 @@ public class MainGameRootController : MainGameRootControllerBase {
 		{
 			if (soldiers.Count > 0)
 			{
+					//_battleFinished = false;
+					//WarStartTime = Time.time;
+					//soldiers[0].TimeStarted = true;
+					//soldiers[1].TimeStarted = true;
+
+				if(P1.BattleState == BattleState.WAITING)
+				{
+					soldiers[0].Opponent = soldiers[1];
+					soldiersView[0].OpponentView = soldiersView[1];
+					_battleFinished = false;
+					WarStartTime = Time.time;
+					P2.BattleState = BattleState.FIGHTING;
+					
+					soldiers[0].GetHealthProbabilities();
+					soldiers[0].starttime = Time.time;
+					soldiers[0].TimeStarted = true;
+					soldiers[1].TimeStarted = true;
+				}
+				
 				if(P2.BattleState == BattleState.WAITING)
 				{
-
+					
 					Debug.Log ("Waiting from GameController if case");
 					soldiers[1].Opponent = soldiers[0];
 					soldiersView[1].OpponentView = soldiersView[0];
 					_battleFinished = false;
 					WarStartTime = Time.time;
-					P1.BattleState = BattleState.FIGHTING;
 					P2.BattleState = BattleState.FIGHTING;
-
+					
 					soldiers[1].GetHealthProbabilities();
 					soldiers[1].starttime = Time.time;
 					soldiers[0].TimeStarted = true;
 					soldiers[1].TimeStarted = true;
 				}
+				
 
 				for (int i=0; i < soldiers.Count; i++) 
 				{
@@ -163,7 +182,7 @@ public class MainGameRootController : MainGameRootControllerBase {
 
 		else if(action == ActionStyle.RAID)
 		{
-			float prob = Random.value;
+			float prob = Random.value; 
 
 			if(prob >= 0.5f)
 				p.Opponent.BattleState = BattleState.CONFUSING;

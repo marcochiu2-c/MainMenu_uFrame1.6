@@ -50,6 +50,8 @@ public enum SoldierState {
     MOVE,
     
     ATTACK,
+    
+    PLAY,
 }
 
 public enum BattleState {

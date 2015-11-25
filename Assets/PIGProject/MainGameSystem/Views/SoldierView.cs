@@ -15,8 +15,8 @@ using DG.Tweening;
 
 public class SoldierView : SoldierViewBase {
 
-	//public SoldierService SS;
-	public Button IgnoreButton;
+	public GSHexGridManager gSHexGridManager;
+
 	public Button SlowButton; 
 	public Button NormalButton; 
 	public Button FastButton;
@@ -43,6 +43,7 @@ public class SoldierView : SoldierViewBase {
         // var vm = model as PlayerViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
 		//Debug.Log("Max_Quantity = " + Max_Quantity);
+		gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent<GSHexGridManager>();
 	}
     
     public override void Bind() {
@@ -50,42 +51,69 @@ public class SoldierView : SoldierViewBase {
         // Use this.Player to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
-		this.BindButtonToHandler(IgnoreButton, () => this.Soldier.Movement = MoveStyle.IGNORE);
-		this.BindButtonToHandler(SlowButton, () => this.Soldier.Movement = MoveStyle.SLOW);	
-		this.BindButtonToHandler(NormalButton, () => this.Soldier.Movement = MoveStyle.NORMAL);	
-		this.BindButtonToHandler(FastButton, () => this.Soldier.Movement = MoveStyle.FAST);
-	
+
+		this.BindButtonToHandler(SlowButton, () => {
+			this.Soldier.Movement = MoveStyle.SLOW;
+			//this.Soldier.SoldierState = SoldierState.ATTACK;
+			gSHexGridManager.selectPoint = true;
+		});	
+		this.BindButtonToHandler(NormalButton, () => {
+			this.Soldier.Movement = MoveStyle.NORMAL;
+			//this.Soldier.SoldierState = SoldierState.ATTACK;
+			gSHexGridManager.selectPoint = true;
+		});	
+		this.BindButtonToHandler(FastButton, () => {
+			this.Soldier.Movement = MoveStyle.FAST;
+			//this.Soldier.SoldierState = SoldierState.ATTACK;
+			gSHexGridManager.selectPoint = true;
+		});
+
 		this.BindButtonToHandler(AssaultButton, () => {
 			this.Soldier.Action = ActionStyle.ASSAULT;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
+			gSHexGridManager.selectPoint = true;
 		});
 		this.BindButtonToHandler(AttackButton, () => {
 			this.Soldier.Action = ActionStyle.ATTACK;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
 		    ExecuteChangeActionStyle();
+			gSHexGridManager.selectPoint = true;
 		});
 		this.BindButtonToHandler(RaidButton, () => {
 			this.Soldier.Action = ActionStyle.RAID;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
+			gSHexGridManager.selectPoint = true;
 		});
 		this.BindButtonToHandler(FeintButton, () => {
 			this.Soldier.Action = ActionStyle.FEINT;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
+			gSHexGridManager.selectPoint = true;
 		});
 		this.BindButtonToHandler(PinButton, () => {
 			this.Soldier.Action = ActionStyle.PIN;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
+			gSHexGridManager.selectPoint = true;
 		});
 
 		this.BindButtonToHandler(YawpButton, () => {
 			this.Soldier.Action = ActionStyle.YAWP;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
+			gSHexGridManager.selectPoint = true;
 		});
 		this.BindButtonToHandler(SearchButton, () => {
 			this.Soldier.Action = ActionStyle.SEARCH;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
+			gSHexGridManager.selectPoint = true;
 		});
 
-		this.BindButtonToHandler(PlayButton, () => PlayBattle());
+		//this.BindButtonToHandler(PlayButton, () => PlayBattle());
+
     }
 
 	//the LIst that save the move and command
@@ -104,22 +132,41 @@ public class SoldierView : SoldierViewBase {
 		myText.text = state + " State";
 
 		//Change the Panel to Attack Panel
-		if(state == SoldierState.ATTACK)
+		if (state == SoldierState.ATTACK)
 		{
 			//Active Action btns
 			Debug.Log ("Attack !!");
-			ActionPanel.gameObject.SetActive(true);
-			MovePanel.gameObject.SetActive(false);
-			//this.playlist = new PlayList(this.CurrentPointLocation, this._Action);
-			//this.Soldier.playlist.Insert(step, new PlayList(this.Entity.CurrentPointLocation, this.Soldier.Movement ,this.Soldier.Action, this.Soldier.Opponent));
-			step++;
+			if (MovePanel.gameObject.activeSelf && !ActionPanel.gameObject.activeSelf)
+			{
+				Debug.Log("Change to Action Panel");
+				MovePanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y + 50.0f), 1).SetEase(Ease.OutSine).OnComplete(() => MovePanel.gameObject.SetActive(false));
+				ActionPanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y - 20.0f), 1).SetEase(Ease.OutSine).OnStart(() => ActionPanel.gameObject.SetActive(true));
+				//MovePanel.transform.DOLocalMoveY(1.0f, 1).SetEase(Ease.OutSine).OnComplete(() => MovePanel.gameObject.SetActive(false));
+				//ActionPanel.transform.DOLocalMoveY(-1.0f, 1).SetEase(Ease.OutSine).OnStart(() => ActionPanel.gameObject.SetActive(true));
+			}
+
+			//ActionPanel.gameObject.SetActive(true);
+			//MovePanel.gameObject.SetActive(false);
 		}
 		//Change the Panel to Move Panel
-		if(state == SoldierState.MOVE)
+		if (state == SoldierState.MOVE)
 		{
 			//Active Move btns
 			Debug.Log ("Move !!");
-			MovePanel.gameObject.SetActive(true);
+
+			if (!MovePanel.gameObject.activeSelf && ActionPanel.gameObject.activeSelf)
+			{
+				Debug.Log("Change to Move Panel");
+				MovePanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y - 50.0f), 1).SetEase(Ease.OutSine).OnStart(() => MovePanel.gameObject.SetActive(true));
+				ActionPanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y + 20.0f), 1).SetEase(Ease.OutSine).OnComplete(() => ActionPanel.gameObject.SetActive(false));
+				//MovePanel.transform.DOLocalMoveY(-1.0f, 1).SetEase(Ease.OutSine).OnStart(() => MovePanel.gameObject.SetActive(true));
+				//ActionPanel.transform.DOLocalMoveY(1.0f, 1).SetEase(Ease.OutSine).OnComplete(() => ActionPanel.gameObject.SetActive(false));
+			}
+		}
+
+		if (state == SoldierState.PLAY)
+		{
+			MovePanel.gameObject.SetActive(false);
 			ActionPanel.gameObject.SetActive(false);
 		}
 
