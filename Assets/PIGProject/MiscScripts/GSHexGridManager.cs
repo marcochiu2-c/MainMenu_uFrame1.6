@@ -13,6 +13,7 @@ using uFrame.IOC;
 using UniRx;
 using uFrame.MVVM;
 using uFrame.Serialization;
+using UnityEngine.EventSystems;
 
 
 public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
@@ -37,8 +38,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 	public AudioSource audio;
 
-	//public GameObject MovePanel;
-	//public GameObject ActionPanel;
+	public Button Restart_Btn;
 
 	private FlatHexPoint start;
 	private FlatHexPoint finish;
@@ -320,6 +320,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		Debug.Log ("Battle End");
 	}
 
+	//Testing use only
 	public void ReStartBtn()
 	{
 		Application.LoadLevel(Application.loadedLevel);

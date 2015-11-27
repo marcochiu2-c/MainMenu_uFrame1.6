@@ -94,7 +94,10 @@ public partial class EntityViewModel : EntityViewModelBase {
 			//Debug.Log (Name + " AdvisorPrestige - oppo.AdvisorPrestige: " + AdvisorPrestige + "  "+ Opponent.AdvisorPrestige);
 			//Debug.Log (Name + " GeneralPrestige - oppo.GeneralPrestige: " + GeneralPrestige  + "  "+ Opponent.GeneralPrestige);
 		}
+		if(Opponent != null)
 		return InitialMorale * (200f + (Prestige - Opponent.Prestige)) * (100f + Formation.Morale)/20000f;
+
+		else return -1.0f ;
 	}
 
 	public float Hit (){ 
