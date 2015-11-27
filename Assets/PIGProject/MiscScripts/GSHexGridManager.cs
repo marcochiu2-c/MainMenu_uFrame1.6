@@ -46,7 +46,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	private int step = 0;
 	private int _sNum = 0;	//index for SoldierVM and SoldierV List
 	private bool _targetSelected = false;
-	private bool[] _movefinish = new bool[] {false, false, false, false, false};
 	private FlatHexGrid<GSCell> walkableGrid;
 
 	
@@ -324,6 +323,10 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public void ReStartBtn()
 	{
 		Application.LoadLevel(Application.loadedLevel);
+		for(int i = 0 ; i < SoldierVM.Count ; i++)
+		{
+			SoldierVM[i].playlist.Clear();
+		}
 	}
 
 	public IEnumerator PlayPlayList(int i)
