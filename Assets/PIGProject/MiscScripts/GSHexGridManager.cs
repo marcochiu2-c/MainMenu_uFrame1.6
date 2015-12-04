@@ -30,18 +30,20 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 	public Button Play_Btn;
 	public Button EndTurn_Btn;
+	public Button Restart_Btn;
+
 
 	public SpriteCell pathPrefab;
+	public SpriteCell markNode;
 	public GameObject pathRoot;
 	public Text myText;
 	public bool selectPoint = false;
 
 	public AudioSource audio;
 
-	public Button Restart_Btn;
-
 	private FlatHexPoint start;
 	private FlatHexPoint finish;
+	private FlatHexPoint _savePoint;
 	private Vector3 tempPoint;
 	private int step = 0;
 	private int _sNum = 0;	//index for SoldierVM and SoldierV List
@@ -146,15 +148,30 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		
 		start = SoldierVM[_sNum].CurrentPointLocation;
 	}
-
-
+	
 	//Call once a point has been clicked
-	public void OnClick(FlatHexPoint point)
-	{	
-
+	void Update()
+	{
 		if(selectPoint)
 		{
-		
+			start = SoldierVM[_sNum].CurrentPointLocation;
+			finish = _savePoint;
+			SoldierVM[_sNum].CurrentPointLocation = _savePoint;
+			PathFinding(start, finish, SoldierVM[_sNum].Movement, SoldierV[_sNum], null);
+			
+			//Change state from move to attack after move
+			SoldierVM[_sNum].SoldierState = SoldierState.ATTACK;
+		}
+	}
+
+	public void OnClick(FlatHexPoint point)
+	{
+		//if(!EventSystem.current.IsPointerOverGameObject())
+		//{
+		Touch[] touches = Input.touches;
+
+		if (touches.Length >= 2) return;
+
 		for(int i=0; i < SoldierVM.Count; i++)
 		{
 			//TODO
@@ -163,21 +180,36 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				//_sNum = i;
 				Debug.Log ("Soldier Selected");
 			}
-		}
+		} 
 		
 		if(SoldierV[_sNum] != null)
 		{	
 			//Clicked on Move State
 			if(SoldierVM[_sNum].SoldierState == SoldierState.MOVE)
 			{
-				//Algorithm from Path Finding and update the Point from Soldier
-				start = SoldierVM[_sNum].CurrentPointLocation;
-				finish = point;
-				SoldierVM[_sNum].CurrentPointLocation = point;
-				PathFinding(start, finish, SoldierVM[_sNum].Movement, SoldierV[_sNum], null);
 
-				//Change state from move to attack after move
-				SoldierVM[_sNum].SoldierState = SoldierState.ATTACK;
+				if(markNode == null) 
+					markNode = Instantiate(pathPrefab);
+				
+				markNode.transform.parent = pathRoot.transform;
+				markNode.transform.localScale = Vector3.one * 0.3f;
+				markNode.transform.localPosition = Map[point];
+				markNode.Color = ExampleUtils.Colors[3];
+				_savePoint = point;
+
+				//Algorithm from Path Finding and update the Point from Soldier
+				/*
+				if(selectPoint)
+				{
+					start = SoldierVM[_sNum].CurrentPointLocation;
+					finish = point;
+					SoldierVM[_sNum].CurrentPointLocation = point;
+					PathFinding(start, finish, SoldierVM[_sNum].Movement, SoldierV[_sNum], null);
+
+					//Change state from move to attack after move
+					SoldierVM[_sNum].SoldierState = SoldierState.ATTACK;
+				}
+				*/
 				//Change Panel
 			}
 
@@ -240,7 +272,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		}
 		_targetSelected = false;
 			selectPoint = false;
-		}
+		//}
 	}
 
 

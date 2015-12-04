@@ -56,7 +56,7 @@ public class MainGameRootController : MainGameRootControllerBase {
 		//soldiersView[index2].OpponentView = soldiersView[index1];
 
 		soldiers.Insert(0, P1);
-		soldiers.Insert(1, P2);
+		soldiers.Insert(1, P2); 
 		soldiersView.Insert (0, P1v);
 		soldiersView.Insert (1, P2v);
 
@@ -67,7 +67,6 @@ public class MainGameRootController : MainGameRootControllerBase {
 
 		if(P2.BattleState == BattleState.WAITING)
 		{
-
 			P2.Opponent = P1;
 			soldiers[1].Opponent = soldiers[0];
 			soldiersView[1].OpponentView = soldiersView[0];
