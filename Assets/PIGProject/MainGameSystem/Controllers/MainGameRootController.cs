@@ -61,10 +61,17 @@ public class MainGameRootController : MainGameRootControllerBase {
 		soldiersView.Insert (1, P2v);
 
 		//Need to check if not the first guy, prevent to run these script
-	   	soldiers[0].Opponent = soldiers[1];
-		soldiersView[0].OpponentView = soldiersView[1];
-		soldiers[0].TimeStarted = true;
+		//if(P1.BattleState == BattleState.WAITING)
+		//{
+	   		soldiers[0].Opponent = soldiers[1];
+			soldiersView[0].OpponentView = soldiersView[1];
+			soldiers[0].TimeStarted = true;
 
+			P1.BattleState = BattleState.FIGHTING;
+		//}
+
+
+		//check if P2 fighting to others, not match first
 		if(P2.BattleState == BattleState.WAITING)
 		{
 			P2.Opponent = P1;
@@ -96,29 +103,23 @@ public class MainGameRootController : MainGameRootControllerBase {
 		{
 			if (soldiers.Count > 0)
 			{
-					//_battleFinished = false;
-					//WarStartTime = Time.time;
-					//soldiers[0].TimeStarted = true;
-					//soldiers[1].TimeStarted = true;
-
+				//check if P1 finish battle from others
 				if(P1.BattleState == BattleState.WAITING)
 				{
 					soldiers[0].Opponent = soldiers[1];
 					soldiersView[0].OpponentView = soldiersView[1];
 					_battleFinished = false;
 					WarStartTime = Time.time;
-					P2.BattleState = BattleState.FIGHTING;
+					P1.BattleState = BattleState.FIGHTING;
 					
 					soldiers[0].GetHealthProbabilities();
 					soldiers[0].starttime = Time.time;
 					soldiers[0].TimeStarted = true;
 					soldiers[1].TimeStarted = true;
 				}
-				
+				//check if P2 finish battle from others
 				if(P2.BattleState == BattleState.WAITING)
 				{
-					
-					Debug.Log ("Waiting from GameController if case");
 					soldiers[1].Opponent = soldiers[0];
 					soldiersView[1].OpponentView = soldiersView[0];
 					_battleFinished = false;
@@ -134,7 +135,7 @@ public class MainGameRootController : MainGameRootControllerBase {
 
 				for (int i=0; i < soldiers.Count; i++) 
 				{
-					if (soldiers[i].TimeStarted  && (soldiers[i].Opponent != null) && (Time.time - soldiers[i].starttime >= 1f / soldiers[i].AttackSpeed)) 
+					if (soldiers[i].TimeStarted  && soldiers[i].Opponent != null && Time.time - soldiers[i].starttime >= 1f / soldiers[i].AttackSpeed) 
 					{
 						Result (WarStartTime, soldiers[i], soldiersView[i], action);
 						soldiers[i].starttime = Time.time;
@@ -231,8 +232,6 @@ public class MainGameRootController : MainGameRootControllerBase {
 			p.TimeStarted = false;
 			return;
 		}
-		//TimerStarted = false;
-
 		//Debug.Log (Name + " Health: " + healthHistory [Counter]);
 		string colorTag = p.Name != "Soldier3" ? "<color=red>" :"<color=yellow>";
 		colorTag = p.Name == "Soldier4" ? "<color=purple>" : colorTag;

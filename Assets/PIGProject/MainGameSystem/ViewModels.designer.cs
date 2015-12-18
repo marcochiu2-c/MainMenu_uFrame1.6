@@ -387,6 +387,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<Career> _CareerProperty;
     
+    private P<Boolean> _MovingProperty;
+    
     public EntityViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
@@ -670,6 +672,15 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<Boolean> MovingProperty {
+        get {
+            return _MovingProperty;
+        }
+        set {
+            _MovingProperty = value;
+        }
+    }
+    
     public virtual Single Health {
         get {
             return HealthProperty.Value;
@@ -949,6 +960,15 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual Boolean Moving {
+        get {
+            return MovingProperty.Value;
+        }
+        set {
+            MovingProperty.Value = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
         _HealthProperty = new P<Single>(this, "Health");
@@ -982,6 +1002,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         _BattleStateProperty = new P<BattleState>(this, "BattleState");
         _PlayListProperty = new P<PlayList>(this, "PlayList");
         _CareerProperty = new P<Career>(this, "Career");
+        _MovingProperty = new P<Boolean>(this, "Moving");
     }
     
     public override void Read(ISerializerStream stream) {
@@ -1015,6 +1036,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         		if (stream.DeepSerialize) this.Opponent = stream.DeserializeObject<EntityViewModel>("Opponent");;
         this.BattleState = (BattleState)stream.DeserializeInt("BattleState");;
         this.Career = (Career)stream.DeserializeInt("Career");;
+        this.Moving = stream.DeserializeBool("Moving");;
     }
     
     public override void Write(ISerializerStream stream) {
@@ -1048,6 +1070,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         if (stream.DeepSerialize) stream.SerializeObject("Opponent", this.Opponent);;
         stream.SerializeInt("BattleState", (int)this.BattleState);;
         stream.SerializeInt("Career", (int)this.Career);;
+        stream.SerializeBool("Moving", this.Moving);
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -1118,6 +1141,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_PlayListProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_CareerProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_MovingProperty, false, false, false, false));
     }
 }
 
