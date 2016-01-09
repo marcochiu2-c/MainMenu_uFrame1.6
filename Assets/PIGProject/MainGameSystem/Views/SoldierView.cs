@@ -135,7 +135,7 @@ public class SoldierView : SoldierViewBase {
 		if (state == SoldierState.ATTACK)
 		{
 			//Active Action btns
-			Debug.Log ("Attack !!");
+			//Debug.Log ("Attack !!");
 			if (MovePanel.gameObject.activeSelf && !ActionPanel.gameObject.activeSelf)
 			{
 				Debug.Log("Change to Action Panel");
@@ -152,7 +152,7 @@ public class SoldierView : SoldierViewBase {
 		if (state == SoldierState.MOVE)
 		{
 			//Active Move btns
-			Debug.Log ("Move !!");
+			//Debug.Log ("Move !!");
 
 			if (!MovePanel.gameObject.activeSelf && ActionPanel.gameObject.activeSelf)
 			{

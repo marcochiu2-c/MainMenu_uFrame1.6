@@ -33,37 +33,37 @@ public class SoldierController : SoldierControllerBase {
 
 		if(viewModel.Action == ActionStyle.ATTACK)
 		{
-			Debug.Log ("ActionStyle is ATTACK");
+			//Debug.Log ("ActionStyle is ATTACK");
 		}
 
 		else if(viewModel.Action == ActionStyle.ASSAULT)
 		{
-			Debug.Log ("ActionStyle is ASSAULT");
+			//Debug.Log ("ActionStyle is ASSAULT");
 		}
 
 		else if(viewModel.Action == ActionStyle.FEINT)
 		{
-			Debug.Log ("ActionStyle is FEINT");
+			//Debug.Log ("ActionStyle is FEINT");
 		}
 
 		else if(viewModel.Action == ActionStyle.PIN)
 		{
-			Debug.Log ("ActionStyle is PIN");
+			//Debug.Log ("ActionStyle is PIN");
 		}
 
 		else if(viewModel.Action == ActionStyle.RAID)
 		{
-			Debug.Log ("ActionStyle is RAID");
+			//Debug.Log ("ActionStyle is RAID");
 		}
 
 		else if(viewModel.Action == ActionStyle.SEARCH)
 		{
-			Debug.Log ("ActionStyle is SEARCH");
+			//Debug.Log ("ActionStyle is SEARCH");
 		}
 
 		else if(viewModel.Action == ActionStyle.YAWP)
 		{
-			Debug.Log ("ActionStyle is YWAP");
+			//Debug.Log ("ActionStyle is YWAP");
 		}
     }
 }

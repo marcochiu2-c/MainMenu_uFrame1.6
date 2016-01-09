@@ -20,8 +20,6 @@ public enum MoveStyle {
     
     SLOW,
     
-    IGNORE,
-    
     NORMAL,
 }
 
@@ -52,6 +50,8 @@ public enum SoldierState {
     ATTACK,
     
     PLAY,
+    
+    NOTMYTURN,
 }
 
 public enum BattleState {
@@ -68,4 +68,11 @@ public enum Career {
     Swordman,
     
     Archer,
+}
+
+public enum SenseStyle {
+    
+    AGGRESSIVE,
+    
+    IGNORE,
 }

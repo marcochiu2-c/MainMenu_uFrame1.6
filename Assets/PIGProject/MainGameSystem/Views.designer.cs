@@ -402,6 +402,11 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.HideInInspector()]
     public Boolean _Moving;
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public SenseStyle _Sense;
+    
     [UFToggleGroup("Health")]
     [UnityEngine.HideInInspector()]
     public bool _BindHealth = true;
@@ -468,6 +473,7 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
         entityview.PlayList = this._PlayList;
         entityview.Career = this._Career;
         entityview.Moving = this._Moving;
+        entityview.Sense = this._Sense;
     }
     
     public override void Bind() {
