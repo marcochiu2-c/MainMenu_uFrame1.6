@@ -41,6 +41,12 @@ public enum ActionStyle {
     YAWP,
     
     SEARCH,
+    
+    A_ATK,
+    
+    A_Def,
+    
+    STANDBY,
 }
 
 public enum SoldierState {

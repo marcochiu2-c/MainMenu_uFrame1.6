@@ -28,6 +28,7 @@ public class SoldierView : SoldierViewBase {
 	public Button PinButton;
 	public Button YawpButton;
 	public Button SearchButton;
+	public Button AATKButton;
 
 	public Button PlayButton; 
 
@@ -111,6 +112,13 @@ public class SoldierView : SoldierViewBase {
 			ExecuteChangeActionStyle();
 			gSHexGridManager.selectPoint = true;
 		});
+		
+		this.BindButtonToHandler(AATKButton, () => {
+			this.Soldier.Action = ActionStyle.A_ATK;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
+			ExecuteChangeActionStyle();
+			gSHexGridManager.selectPoint = true;
+		});
 
 		//this.BindButtonToHandler(PlayButton, () => PlayBattle());
 
@@ -138,7 +146,7 @@ public class SoldierView : SoldierViewBase {
 			//Debug.Log ("Attack !!");
 			if (MovePanel.gameObject.activeSelf && !ActionPanel.gameObject.activeSelf)
 			{
-				Debug.Log("Change to Action Panel");
+				//Debug.Log("Change to Action Panel");
 				MovePanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y + 50.0f), 1).SetEase(Ease.OutSine).OnComplete(() => MovePanel.gameObject.SetActive(false));
 				ActionPanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y - 20.0f), 1).SetEase(Ease.OutSine).OnStart(() => ActionPanel.gameObject.SetActive(true));
 				//MovePanel.transform.DOLocalMoveY(1.0f, 1).SetEase(Ease.OutSine).OnComplete(() => MovePanel.gameObject.SetActive(false));
@@ -156,7 +164,7 @@ public class SoldierView : SoldierViewBase {
 
 			if (!MovePanel.gameObject.activeSelf && ActionPanel.gameObject.activeSelf)
 			{
-				Debug.Log("Change to Move Panel");
+				//Debug.Log("Change to Move Panel");
 				MovePanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y - 50.0f), 1).SetEase(Ease.OutSine).OnStart(() => MovePanel.gameObject.SetActive(true));
 				ActionPanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y + 20.0f), 1).SetEase(Ease.OutSine).OnComplete(() => ActionPanel.gameObject.SetActive(false));
 				//MovePanel.transform.DOLocalMoveY(-1.0f, 1).SetEase(Ease.OutSine).OnStart(() => MovePanel.gameObject.SetActive(true));
@@ -172,6 +180,15 @@ public class SoldierView : SoldierViewBase {
 
     }
 
-    public override void ChangeActionStyleExecuted(ChangeActionStyleCommand command) {
+    public override void ChangeActionStyleExecuted(ChangeActionStyleCommand action) {
+    }
+
+    public override void ActionChanged(ActionStyle action) {
+		if (action == ActionStyle.A_ATK)
+		{
+			var color = this.gameObject.GetComponent<Renderer>().material.color;
+			color.a = 200.0f/255.0f;
+			//this.RendererColor(color);
+		}
     }
 }

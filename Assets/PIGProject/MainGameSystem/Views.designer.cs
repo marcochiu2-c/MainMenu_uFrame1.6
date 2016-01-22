@@ -133,6 +133,16 @@ public class SoldierViewBase : EntityView {
     [UnityEngine.HideInInspector()]
     public bool _BindChangeActionStyle = true;
     
+    [UFToggleGroup("Action")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindAction = true;
+    
+    [UFGroup("Action")]
+    [UnityEngine.SerializeField()]
+    [UnityEngine.HideInInspector()]
+    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_ActiononlyWhenChanged")]
+    protected bool _ActionOnlyWhenChanged;
+    
     public override string DefaultIdentifier {
         get {
             return "Soldier1";
@@ -171,12 +181,18 @@ public class SoldierViewBase : EntityView {
         if (_BindChangeActionStyle) {
             this.BindCommandExecuted(this.Soldier.ChangeActionStyle, this.ChangeActionStyleExecuted);
         }
+        if (_BindAction) {
+            this.BindProperty(this.Soldier.ActionProperty, this.ActionChanged, _ActionOnlyWhenChanged);
+        }
     }
     
     public virtual void SoldierStateChanged(SoldierState arg1) {
     }
     
     public virtual void ChangeActionStyleExecuted(ChangeActionStyleCommand command) {
+    }
+    
+    public virtual void ActionChanged(ActionStyle arg1) {
     }
     
     public virtual void ExecuteChangeActionStyle() {

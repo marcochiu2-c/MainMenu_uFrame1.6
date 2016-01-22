@@ -14,7 +14,7 @@ using UniRx;
 using uFrame.MVVM;
 using uFrame.Serialization;
 using UnityEngine.EventSystems;
-
+using System.Timers;
 
 public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
@@ -296,6 +296,9 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 		if(entityVM != null)
 			entityVM.Moving = true;
+			
+		Debug.Log (entityView is SoldierView ? "It is SoldierView" : "It is EnemyView");
+		
 		
 		//yield return new WaitForSeconds(0.2f);
 		foreach (var point in path)
@@ -321,47 +324,82 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			}
 
 		}
-
+		
+		
 		//if find enemy, attack it first
 		//check like walkable -> enemyExist, then call StartBattle
 		//run this script if play
 		for(int i = 0; i < pathList.Count - 1 ; i++)
 		{
 			//Check condition if not Feint
+			
 			//if(Play_Btn.interactable == false && entityVM.Sense == SenseStyle.AGGRESSIVE && entityVM.Action != ActionStyle.FEINT)
-			/*
-			if(Play_Btn.interactable == false && entityVM.Action != ActionStyle.FEINT)
+			if(Play_Btn.interactable == false)
 			{
 				var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(pathList[i]) < 2);
 
 				foreach (var neighbor in neighborhoodPoints)
 				{
-					for(int j = 0; j < TargetVM.Count; j++)
-						//check here enemy feinted by soldier?
-						if(neighbor == TargetVM[j].CurrentPointLocation)
+					
+					if (entityVM is SoldierViewModel)
+					{
+						for(int j = 0; j < TargetVM.Count; j++)
 						{
+							//check here enemy feinted by soldier?
+							if(neighbor == TargetVM[j].CurrentPointLocation)
+							{
+						  
 							//TargetVM[j].BattleState = BattleState.FIGHTING;
-							MainGameController.StartBattle(TargetVM[j], entityVM , TargetV[j], entityView, ActionStyle.ATTACK);
-							Debug.Log("Enemy Attack when Soldier moving");
+							    if(TargetVM[j].Action != ActionStyle.FEINT)
+							    {
+									//walkableGrid[neighbor].IsWalkable = true;
+								    MainGameController.StartBattle(TargetVM[j], entityVM , TargetV[j], entityView, ActionStyle.ATTACK);
+								    Debug.Log("Enemy Attack when Soldier moving");
+							    }
 							
 							//while(entityVM.BattleState != BattleState.WAITING)
-									//yield return new WaitForSeconds(0.5f);
-						}
-				}
+							//yield return new WaitForSeconds(0.5f);
+							}
+						} // Enf of for loop
+					} // End of if Soldier
+						
+					else if (entityVM is EnemyViewModel)
+					{
+						for(int j = 0; j < SoldierVM.Count; j++)
+					    {
+						//check here enemy feinted by soldier?
+						    if(neighbor == SoldierVM[j].CurrentPointLocation)
+						    {
+							    if(SoldierVM[j].Action == ActionStyle.A_ATK)
+							    {
+								    MainGameController.StartBattle(SoldierVM[j], entityVM , SoldierV[j], entityView, ActionStyle.ATTACK);
+								    Debug.Log("Soldier Attack when Enemy moving");
+							    }
+						   }
+						} // Enf of for loop
+					} // End of if Enemy
+
+				} // End of foreach
 
 			}
-			*/
-
-				
+			
 			if(entityVM != null)
+			{
 				while(entityVM.BattleState != BattleState.WAITING)
 					yield return new WaitForSeconds(0.5f);
-
+				//Debug.Log ("EntityVM: " + entityVM + "Point: " + entityVM.CurrentPointLocation);
+			}
+			
 			yield return StartCoroutine(entityView.Move(Map[pathList[i]], Map[pathList[i+1]], move));
+			
+			if(entityVM != null)
+				entityVM.CurrentPointLocation = pathList[i+1];
 		}
 
 		if(entityVM != null)
+		{
 			entityVM.Moving = false;
+		}
 		/*
 		//Please change battleState here
 		if(entityVM != null)
@@ -372,6 +410,33 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		*/
 	}
 
+/*
+	public void CheckNeighborandAttack(FlatHexPoint currentPoint, int range, EntityView entityView, EntityViewModel entityVM)
+	{
+		var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(currentPoint) < range);
+		//var _counter = 0;
+		
+		foreach (var neighbor in neighborhoodPoints)
+		{
+			//if (entityView is SoldierView) _counter = SoldierVM.Count;
+			//else _counter = TargetVM.Count;
+			if (entityView is SoldierView)
+				for(int a = 0; a < TargetVM[a].Count; a++)
+					//check here enemy feinted by soldier?
+					if(neighbor == TargetVM[a].CurrentPointLocation)
+				    {
+		
+					//TargetVM[j].BattleState = BattleState.FIGHTING;
+					MainGameController.StartBattle(TargetVM[a], entityVM , TargetV[a], entityView, ActionStyle.ATTACK);
+					Debug.Log("Enemy Attack when Soldier moving");
+				
+					//while(entityVM.BattleState != BattleState.WAITING)
+					//yield return new WaitForSeconds(0.5f);
+				   }
+		}
+	}	
+*/
+	
 	/// <summary>
 	/// Run the playlist and call StartBattle
 	/// </summary>
@@ -386,25 +451,31 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 		for(int j = 0; j < SoldierVM[i].playlist.Count; j++)
 		{
-			//Move State
+			///-------------------Move State-----------------///	
 			if(j==0)
 				start = SoldierVM[i].CurrentPointLocation;
 			else
 				start = SoldierVM[i].playlist[j-1].SavePointLocation;
 			
 			finish = SoldierVM[i].playlist[j].SavePointLocation;
-			SoldierVM[i].CurrentPointLocation = SoldierVM[i].playlist[j].SavePointLocation;
+			SoldierVM[i].CurrentPointLocation = finish;
 
-
-			if(j == 0) 
-				SoldierVM[i].Action = SoldierVM[i].playlist[0].SaveAction;
-			else
-				SoldierVM[i].Action = SoldierVM[i].playlist[j-1].SaveAction;
+			//if(j == 0) 
+			//	SoldierVM[i].Action = SoldierVM[i].playlist[0].SaveAction;
+			//else
+			//	SoldierVM[i].Action = SoldierVM[i].playlist[j-1].SaveAction;
+			
+			if(j != 0 && SoldierVM[i].playlist[j-1].SaveAction == ActionStyle.FEINT)
+				SoldierVM[i].playlist[j-1].SaveEnemyVM.Action = ActionStyle.FEINT;
 
 			PathFinding(start, finish, SoldierVM[i].playlist[j].SaveMove, SoldierV[i], SoldierVM[i]);
-
-			//if Feint, let the enemy follow the corresponding soldier, may be need to check
-			if( j != 0 && SoldierVM[i] != null && SoldierVM[i].Action == ActionStyle.FEINT)
+			
+			
+			///--------------------Attack Style : Feint-----------------///
+			SoldierVM[i].Action = SoldierVM[i].playlist[j].SaveAction;
+			
+			///if Feint, let the enemy follow the corresponding soldier, may be need to check
+			if( j >= 1 && SoldierVM[i] != null && SoldierVM[i].playlist[j-1].SaveAction == ActionStyle.FEINT)
 			{
 				//if(SoldierVM[i].playlist[j-1].SaveEnemyVM != null && SoldierVM[i].playlist[j-1].SaveEnemyVM.BattleState == BattleState.WAITING)
 				if(SoldierVM[i].playlist[j-1].SaveEnemyVM != null)
@@ -412,23 +483,68 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 					var eStart = SoldierVM[i].playlist[j-1].SaveEnemyVM.CurrentPointLocation;
 					if(SoldierVM[i].playlist[j-1].SavePointLocation != null)
 					{
-						Debug.Log ("Feint: Enemy follow the soldier");
+						Debug.Log (i + " Feint: Enemy follow the soldier");
 						//SoldierVM[i].playlist[j-1].SaveEnemyVM.Action == ActionStyle.FEINT;
-						var eFinish = finish - new FlatHexPoint(0, 1);
+						var eFinish = SoldierVM[i].playlist[j].SavePointLocation + new FlatHexPoint(1 , 0);
+						//var eFinish = new FlatHexPoint(1 , 0);
 						SoldierVM[i].playlist[j-1].SaveEnemyVM.CurrentPointLocation = eFinish;
 						PathFinding(eStart, eFinish, SoldierVM[i].playlist[j].SaveMove, SoldierVM[i].playlist[j-1].SaveEnemyView, SoldierVM[i].playlist[j-1].SaveEnemyVM);
 					}
 				}
 			}
 
-			//TODO: Waiting the move state finish
+			///--------------------Wait Moving Finish-----------------///
 			while (SoldierVM[i].Moving)
 			{
 				//Debug.Log("Waiting Attack");
 				yield return new WaitForSeconds(0.2f);
 			}
-
-			//Attack state
+			
+			///--------------------Attack State-----------------///
+			
+			///--------------------Attack Style : A_ATK-----------------///
+			if (SoldierVM[i].playlist[j].SaveAction == ActionStyle.A_ATK)
+			{
+				//SoldierVM[i].CurrentPointLocation = SoldierVM[i].playlist[j+1].SavePointLocation;
+				Debug.Log (SoldierVM[i].CurrentPointLocation);
+			}
+			
+			/*
+			if (SoldierVM[i].playlist[j].SaveAction == ActionStyle.A_ATK)
+			{
+				var aNeighborPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[i].playlist[j].SavePointLocation) < 2);
+				bool discover = false;
+				
+				Observable.Interval(System.TimeSpan.FromSeconds(0.05f)).Where(_ => discover == false).Subscribe(_ => 
+				                                                                                                {
+					Debug.Log ("AATK");
+					foreach (var neighbor in aNeighborPoints)
+					{
+						for(int y = 0 ; y < TargetVM.Count ; y++)
+						{
+							//check here enemy feinted by soldier?
+							if(neighbor == TargetVM[y].CurrentPointLocation)
+							{
+								//TargetVM[y].BattleState = BattleState.FIGHTING;
+								Debug.Log("Soldier Attack when Enemy moving");
+								MainGameController.StartBattle(SoldierVM[i], TargetVM[y], SoldierV[i], TargetV[y], ActionStyle.ATTACK);
+								discover = true;
+							}
+						}
+					}
+				});
+			}
+			*/
+			
+			/*
+			while (SoldierVM[i].BattleState == BattleState.FIGHTING)
+			{
+				//Debug.Log("Waiting Attack");
+				yield return new WaitForSeconds(0.2f);
+			}
+			*/
+			
+			///--------------------Attack Style : YAWP----------------///
 			//use this check attack style and check the logic!!!
 			/*
 			//YAWP
@@ -450,11 +566,15 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				}
 				
 			}
-			*/
-
-			if( j != 0 && SoldierVM[i].playlist[j].SaveEnemyVM == null && SoldierVM[i].Action == ActionStyle.FEINT)
-				MainGameController.StartBattle(SoldierVM[i].playlist[j-1].SaveEnemyVM, SoldierVM[i], SoldierVM[i].playlist[j-1].SaveEnemyView, SoldierV[i],  ActionStyle.ATTACK);
+			*/				
 			
+			if( j != 0 && SoldierVM[i].playlist[j].SaveEnemyVM == null && SoldierVM[i].Action == ActionStyle.FEINT)
+			{
+				Debug.Log ("Feint Attack");
+				MainGameController.StartBattle(SoldierVM[i].playlist[j-1].SaveEnemyVM, SoldierVM[i], SoldierVM[i].playlist[j-1].SaveEnemyView, SoldierV[i],  ActionStyle.ATTACK);
+			}
+			
+			///--------------------Attack Style : Basic Attack - ATTACK and ASSULT and PIN----------------///
 			if(SoldierVM[i].playlist[j].SaveEnemyVM != null)
 			{
 				SoldierVM[i].playlist[j].SaveEnemyVM.PlayList = SoldierVM[i].playlist[j];
@@ -462,7 +582,10 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				//this check maybe not good, please find another way to repalce it
 				//while(SoldierVM[i].playlist[j].SaveEnemyVM.Health > 0 && SoldierVM[i].Health > 0 && SoldierVM[i].TimeStarted == true)
 				if( j != 0 && SoldierVM[i] != null && SoldierVM[i].Action == ActionStyle.FEINT)
+				{
+					Debug.Log ("Feint Attack");
 					MainGameController.StartBattle(SoldierVM[i].playlist[j-1].SaveEnemyVM, SoldierVM[i], SoldierVM[i].playlist[j-1].SaveEnemyView, SoldierV[i],  ActionStyle.ATTACK);
+				}
 
 				while(SoldierVM[i].BattleState != BattleState.WAITING)
 				{
@@ -470,13 +593,13 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 					yield return new WaitForSeconds(1/SoldierVM[i].AttackSpeed);
 				}
 			}
-
+			
 			SoldierVM[i].BattleState = BattleState.WAITING;
-
 			//Enemy Logic
 			yield return new WaitForSeconds(0.5f);
 		}
 	}
+	
 	/// <summary>
 	/// check the cell is walkable or not
 	/// </summary>
@@ -526,9 +649,9 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		Play_Btn.interactable = false;
 		EndTurn_Btn.interactable = false;
 		
-		SoldierVM[0].SoldierState = SoldierState.PLAY;
 		for(int i = 0; i < SoldierVM.Count; i++)
 		{
+			SoldierVM[i].SoldierState = SoldierState.PLAY;
 			SoldierV[i].RendererColor(Color.white);
 			StartCoroutine(PlayPlayList(i));
 		}
