@@ -393,7 +393,22 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			yield return StartCoroutine(entityView.Move(Map[pathList[i]], Map[pathList[i+1]], move));
 			
 			if(entityVM != null)
+			{
+				if(entityVM is EnemyViewModel)
+				{
+					walkableGrid[entityVM.CurrentPointLocation].IsWalkable = true;
+					Debug.Log (entityVM.CurrentPointLocation + "isWalkable: " + walkableGrid[entityVM.CurrentPointLocation].IsWalkable);
+				}
+					
 				entityVM.CurrentPointLocation = pathList[i+1];
+				
+				if(entityVM is EnemyViewModel)
+				{
+					walkableGrid[entityVM.CurrentPointLocation].IsWalkable = false;
+					Debug.Log (entityVM.CurrentPointLocation + "isWalkable: " + walkableGrid[entityVM.CurrentPointLocation].IsWalkable);
+				}
+				
+			}
 		}
 
 		if(entityVM != null)
@@ -465,7 +480,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			//else
 			//	SoldierVM[i].Action = SoldierVM[i].playlist[j-1].SaveAction;
 			
-			if(j != 0 && SoldierVM[i].playlist[j-1].SaveAction == ActionStyle.FEINT)
+			if(j != 0 &&     SoldierVM[i].playlist[j-1].SaveAction == ActionStyle.FEINT)
 				SoldierVM[i].playlist[j-1].SaveEnemyVM.Action = ActionStyle.FEINT;
 
 			PathFinding(start, finish, SoldierVM[i].playlist[j].SaveMove, SoldierV[i], SoldierVM[i]);
@@ -487,7 +502,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 						//SoldierVM[i].playlist[j-1].SaveEnemyVM.Action == ActionStyle.FEINT;
 						var eFinish = SoldierVM[i].playlist[j].SavePointLocation + new FlatHexPoint(1 , 0);
 						//var eFinish = new FlatHexPoint(1 , 0);
-						SoldierVM[i].playlist[j-1].SaveEnemyVM.CurrentPointLocation = eFinish;
+						//SoldierVM[i].playlist[j-1].SaveEnemyVM.CurrentPointLocation = eFinish;
 						PathFinding(eStart, eFinish, SoldierVM[i].playlist[j].SaveMove, SoldierVM[i].playlist[j-1].SaveEnemyView, SoldierVM[i].playlist[j-1].SaveEnemyVM);
 					}
 				}
@@ -568,7 +583,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			}
 			*/				
 			
-			if( j != 0 && SoldierVM[i].playlist[j].SaveEnemyVM == null && SoldierVM[i].Action == ActionStyle.FEINT)
+			if( j != 0 && SoldierVM[i].playlist[j].SaveEnemyVM == null && SoldierVM[i].playlist[j-1].SaveAction == ActionStyle.FEINT)
 			{
 				Debug.Log ("Feint Attack");
 				MainGameController.StartBattle(SoldierVM[i].playlist[j-1].SaveEnemyVM, SoldierVM[i], SoldierVM[i].playlist[j-1].SaveEnemyView, SoldierV[i],  ActionStyle.ATTACK);
