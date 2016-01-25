@@ -28,3 +28,6 @@ public partial class GameOverCommand : uFrame.MVVM.ViewModelCommand {
 
 public partial class ChangeActionStyleCommand : uFrame.MVVM.ViewModelCommand {
 }
+
+public partial class ChangeBattleStateCommand : uFrame.MVVM.ViewModelCommand {
+}

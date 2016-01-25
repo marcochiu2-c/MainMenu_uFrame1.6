@@ -26,28 +26,4 @@ public class EnemyView : EnemyViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
     }
-
-    public override void BattleStateChanged(BattleState bState) {
-		//ExecuteBattleStateCommand();
-		/*
-		gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent<GSHexGridManager>();
-
-		//gSHexGridManager.callFunctionTest();
-
-		if(bState == BattleState.WAITING)
-			if(this.Enemy.Opponent != null && this.Enemy.PlayList.SaveAction == ActionStyle.FEINT)
-			{
-				//follow the soldier
-				FlatHexPoint start = this.Enemy.CurrentPointLocation;
-				FlatHexPoint finish = new FlatHexPoint(10,10);
-				Debug.Log(start + " " + finish);
-				this.Enemy.CurrentPointLocation = finish;
-				if(gSHexGridManager != null)
-				{
-					Debug.Log ("gSHexGridManager get");
-					gSHexGridManager.PathFinding(start, finish, MoveStyle.FAST, this);
-				}
-			}
-	*/
-	}
 }

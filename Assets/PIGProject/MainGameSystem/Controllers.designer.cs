@@ -506,11 +506,19 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
     
     public virtual void InitializeEntity(EntityViewModel viewModel) {
         // This is called when a EntityViewModel is created
+        viewModel.ChangeBattleState.Action = this.ChangeBattleStateHandler;
         EntityViewModelManager.Add(viewModel);
     }
     
     public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
         base.DisposingViewModel(viewModel);
         EntityViewModelManager.Remove(viewModel);
+    }
+    
+    public virtual void ChangeBattleState(EntityViewModel viewModel) {
+    }
+    
+    public virtual void ChangeBattleStateHandler(ChangeBattleStateCommand command) {
+        this.ChangeBattleState(command.Sender as EntityViewModel);
     }
 }

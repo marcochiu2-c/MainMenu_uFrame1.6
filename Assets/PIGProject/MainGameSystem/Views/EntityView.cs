@@ -96,4 +96,8 @@ public class EntityView : EntityViewBase {
 		if(health <= 1)
 		this.transform.DOShakeScale(0.4f, 80).OnComplete(() => this.gameObject.SetActive(false));
     }
+
+    public override void BattleStateChanged(BattleState bState) {
+		ExecuteChangeBattleState();
+    }
 }

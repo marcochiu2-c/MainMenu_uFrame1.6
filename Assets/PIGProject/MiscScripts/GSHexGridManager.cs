@@ -15,6 +15,7 @@ using uFrame.MVVM;
 using uFrame.Serialization;
 using UnityEngine.EventSystems;
 using System.Timers;
+using Random = UnityEngine.Random;
 
 public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
@@ -480,7 +481,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			//else
 			//	SoldierVM[i].Action = SoldierVM[i].playlist[j-1].SaveAction;
 			
-			if(j != 0 &&     SoldierVM[i].playlist[j-1].SaveAction == ActionStyle.FEINT)
+			if(j != 0 &&  SoldierVM[i].playlist[j-1].SaveAction == ActionStyle.FEINT)
 				SoldierVM[i].playlist[j-1].SaveEnemyVM.Action = ActionStyle.FEINT;
 
 			PathFinding(start, finish, SoldierVM[i].playlist[j].SaveMove, SoldierV[i], SoldierVM[i]);
@@ -592,6 +593,29 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			///--------------------Attack Style : Basic Attack - ATTACK and ASSULT and PIN----------------///
 			if(SoldierVM[i].playlist[j].SaveEnemyVM != null)
 			{
+				
+				///----------------Attack Style : ASSULT -----------------------///
+				/*
+				if (SoldierVM[i].playlist[j].SaveAction == ActionStyle.ASSAULT)
+				{
+					float prob = Random.value;
+					
+
+					if(prob < 0.5 && prob >= 0.5f)
+						SoldierVM[i].BattleState = BattleState.CONFUSING;
+						
+					else if(prob >= 0.25f)
+							SoldierVM[i].playlist[j].SaveEnemyVM.BattleState = BattleState.CONFUSING;
+						
+					else if(prob < 0.5f && prob >= 0.75f)
+					{
+						SoldierVM[i].BattleState = BattleState.CONFUSING;
+						SoldierVM[i].playlist[j].SaveEnemyVM.BattleState = BattleState.CONFUSING;
+					}
+					
+				}
+				*/
+				
 				SoldierVM[i].playlist[j].SaveEnemyVM.PlayList = SoldierVM[i].playlist[j];
 				MainGameController.StartBattle(SoldierVM[i], SoldierVM[i].playlist[j].SaveEnemyVM, SoldierV[i], SoldierVM[i].playlist[j].SaveEnemyView, SoldierVM[i].playlist[j].SaveAction); 
 				//this check maybe not good, please find another way to repalce it

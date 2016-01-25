@@ -9,17 +9,38 @@ using uFrame.IOC;
 using UniRx;
 using UnityEngine;
 using System.Timers;
+using UnityEngine.UI;
 
 public class EntityController : EntityControllerBase {
 	public object[] param;
+	public Text panelText;
+	
     public override void InitializeEntity(EntityViewModel viewModel) {
         base.InitializeEntity(viewModel);
+		panelText = GameObject.Find("Text_Target").GetComponent<Text>();
 	}
 
 	public void StartWar(object source, System.Timers.ElapsedEventArgs e)	{
 		//Result (caller);
 		
 	}
+	
+	public override void ChangeBattleState(EntityViewModel viewModel) {
+		base.ChangeBattleState(viewModel);	
+		if(viewModel.BattleState == BattleState.CONFUSING)
+		{
+			Debug.Log(viewModel.Name + "is confusing");
+			var DoDamage = Observable.Interval(TimeSpan.FromSeconds(1))
+				.Subscribe(_ => 
+				{
+					viewModel.Health -= 100;
+					Debug.Log (viewModel.Name + " is confusing and hit themselves");
+					panelText.text = viewModel.Name + " is confusing and hit themselves";
+				}); 
+			Observable.Timer(TimeSpan.FromSeconds(5)).Subscribe(_ => DoDamage.Dispose());
+		}
+	}
+	
 	/*
 	public int getGCDOfAttackSpeed(EntityViewModel viewModel){
 			int Remainder;
@@ -95,5 +116,4 @@ public class EntityController : EntityControllerBase {
 			return viewModel.InitialMorale * (200f + (viewModel.Prestige - viewModel.Opponent.Prestige)) * (100f + viewModel.Formation.Morale)/20000f;
 		}
 	*/
-
 }

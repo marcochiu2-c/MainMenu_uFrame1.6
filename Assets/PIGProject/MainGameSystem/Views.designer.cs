@@ -129,10 +129,6 @@ public class SoldierViewBase : EntityView {
     [UnityEngine.Serialization.FormerlySerializedAsAttribute("_SoldierStateonlyWhenChanged")]
     protected bool _SoldierStateOnlyWhenChanged;
     
-    [UFToggleGroup("ChangeActionStyle")]
-    [UnityEngine.HideInInspector()]
-    public bool _BindChangeActionStyle = true;
-    
     [UFToggleGroup("Action")]
     [UnityEngine.HideInInspector()]
     public bool _BindAction = true;
@@ -178,18 +174,12 @@ public class SoldierViewBase : EntityView {
         if (_BindSoldierState) {
             this.BindProperty(this.Soldier.SoldierStateProperty, this.SoldierStateChanged, _SoldierStateOnlyWhenChanged);
         }
-        if (_BindChangeActionStyle) {
-            this.BindCommandExecuted(this.Soldier.ChangeActionStyle, this.ChangeActionStyleExecuted);
-        }
         if (_BindAction) {
             this.BindProperty(this.Soldier.ActionProperty, this.ActionChanged, _ActionOnlyWhenChanged);
         }
     }
     
     public virtual void SoldierStateChanged(SoldierState arg1) {
-    }
-    
-    public virtual void ChangeActionStyleExecuted(ChangeActionStyleCommand command) {
     }
     
     public virtual void ActionChanged(ActionStyle arg1) {
@@ -206,16 +196,6 @@ public class SoldierViewBase : EntityView {
 }
 
 public class EnemyViewBase : EntityView {
-    
-    [UFToggleGroup("BattleState")]
-    [UnityEngine.HideInInspector()]
-    public bool _BindBattleState = true;
-    
-    [UFGroup("BattleState")]
-    [UnityEngine.SerializeField()]
-    [UnityEngine.HideInInspector()]
-    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_BattleStateonlyWhenChanged")]
-    protected bool _BattleStateOnlyWhenChanged;
     
     public override string DefaultIdentifier {
         get {
@@ -247,12 +227,6 @@ public class EnemyViewBase : EntityView {
         // Use this.Enemy to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
-        if (_BindBattleState) {
-            this.BindProperty(this.Enemy.BattleStateProperty, this.BattleStateChanged, _BattleStateOnlyWhenChanged);
-        }
-    }
-    
-    public virtual void BattleStateChanged(BattleState arg1) {
     }
 }
 
@@ -433,6 +407,16 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.Serialization.FormerlySerializedAsAttribute("_HealthonlyWhenChanged")]
     protected bool _HealthOnlyWhenChanged;
     
+    [UFToggleGroup("BattleState")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindBattleState = true;
+    
+    [UFGroup("BattleState")]
+    [UnityEngine.SerializeField()]
+    [UnityEngine.HideInInspector()]
+    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_BattleStateonlyWhenChanged")]
+    protected bool _BattleStateOnlyWhenChanged;
+    
     public override string DefaultIdentifier {
         get {
             return base.DefaultIdentifier;
@@ -500,8 +484,23 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
         if (_BindHealth) {
             this.BindProperty(this.Entity.HealthProperty, this.HealthChanged, _HealthOnlyWhenChanged);
         }
+        if (_BindBattleState) {
+            this.BindProperty(this.Entity.BattleStateProperty, this.BattleStateChanged, _BattleStateOnlyWhenChanged);
+        }
     }
     
     public virtual void HealthChanged(Single arg1) {
+    }
+    
+    public virtual void BattleStateChanged(BattleState arg1) {
+    }
+    
+    public virtual void ExecuteChangeBattleState() {
+        Entity.ChangeBattleState.OnNext(new ChangeBattleStateCommand() { Sender = Entity });
+    }
+    
+    public virtual void ExecuteChangeBattleState(ChangeBattleStateCommand command) {
+        command.Sender = Entity;
+        Entity.ChangeBattleState.OnNext(command);
     }
 }

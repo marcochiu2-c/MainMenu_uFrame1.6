@@ -180,9 +180,6 @@ public class SoldierView : SoldierViewBase {
 
     }
 
-    public override void ChangeActionStyleExecuted(ChangeActionStyleCommand action) {
-    }
-
     public override void ActionChanged(ActionStyle action) {
 		if (action == ActionStyle.A_ATK)
 		{

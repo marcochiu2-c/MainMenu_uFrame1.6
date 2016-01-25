@@ -97,6 +97,22 @@ public class MainGameRootController : MainGameRootControllerBase {
 		//if(soldiers[1] != null)
 		//	soldiers[1].TimeStarted = true;
 		_battleFinished = false;
+		
+		if(action == ActionStyle.ASSAULT)
+		{
+			float prob = Random.value;
+			
+			if(prob >= 0.25f)
+				P1.BattleState = BattleState.CONFUSING;
+			else if(prob < 0.5 && prob >= 0.5f)
+				P2.BattleState = BattleState.CONFUSING;
+			else if(prob < 0.5f && prob >= 0.75f)
+			{
+				P1.BattleState = BattleState.CONFUSING;
+				P2.BattleState = BattleState.CONFUSING;
+			}
+			
+		}
 
 		//Observable.EveryUpdate().Where (_ => soldiers[0].TimeStarted == true && soldiers[1].TimeStarted).Subscribe(_ => 
 		Observable.EveryUpdate().Subscribe(_ => 
@@ -137,6 +153,7 @@ public class MainGameRootController : MainGameRootControllerBase {
 				{
 					if (soldiers[i].TimeStarted  && soldiers[i].Opponent != null && Time.time - soldiers[i].starttime >= 1f / soldiers[i].AttackSpeed) 
 					{
+						
 						Result (WarStartTime, soldiers[i], soldiersView[i], action);
 						soldiers[i].starttime = Time.time;
 					}
@@ -164,6 +181,7 @@ public class MainGameRootController : MainGameRootControllerBase {
 		*/
 
 		//AcionStyle
+		/*
 		if(action == ActionStyle.ASSAULT)
 		{
 			float prob = Random.value;
@@ -179,7 +197,9 @@ public class MainGameRootController : MainGameRootControllerBase {
 			}
 
 		}
-
+		*/
+		
+		/*
 		else if(action == ActionStyle.RAID)
 		{
 			float prob = Random.value; 
@@ -187,8 +207,9 @@ public class MainGameRootController : MainGameRootControllerBase {
 			if(prob >= 0.5f)
 				p.Opponent.BattleState = BattleState.CONFUSING;
 		}
+		*/
 
-		else if(action == ActionStyle.FEINT)
+		if(action == ActionStyle.FEINT)
 		{
 			if(timeDiff >= 0.8f)
 			{
