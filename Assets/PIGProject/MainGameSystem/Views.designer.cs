@@ -26,22 +26,32 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public String _State;
+    public GameState _GameState;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
     public String _HexGridMatching;
     
-    [UFToggleGroup("State")]
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public bool _BindState = true;
+    public Int32 _SoldierCount;
     
-    [UFGroup("State")]
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _EnemyCount;
+    
+    [UFToggleGroup("GameState")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindGameState = true;
+    
+    [UFGroup("GameState")]
     [UnityEngine.SerializeField()]
     [UnityEngine.HideInInspector()]
-    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_StateonlyWhenChanged")]
-    protected bool _StateOnlyWhenChanged;
+    [UnityEngine.Serialization.FormerlySerializedAsAttribute("_GameStateonlyWhenChanged")]
+    protected bool _GameStateOnlyWhenChanged;
     
     public override string DefaultIdentifier {
         get {
@@ -67,8 +77,10 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
         // var vm = model as MainGameRootViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
         var maingamerootview = ((MainGameRootViewModel)model);
-        maingamerootview.State = this._State;
+        maingamerootview.GameState = this._GameState;
         maingamerootview.HexGridMatching = this._HexGridMatching;
+        maingamerootview.SoldierCount = this._SoldierCount;
+        maingamerootview.EnemyCount = this._EnemyCount;
     }
     
     public override void Bind() {
@@ -76,12 +88,12 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
         // Use this.MainGameRoot to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
-        if (_BindState) {
-            this.BindProperty(this.MainGameRoot.StateProperty, this.StateChanged, _StateOnlyWhenChanged);
+        if (_BindGameState) {
+            this.BindProperty(this.MainGameRoot.GameStateProperty, this.GameStateChanged, _GameStateOnlyWhenChanged);
         }
     }
     
-    public virtual void StateChanged(String arg1) {
+    public virtual void GameStateChanged(GameState arg1) {
     }
     
     public virtual void ExecuteGoToMenu() {
@@ -499,8 +511,17 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
         Entity.ChangeBattleState.OnNext(new ChangeBattleStateCommand() { Sender = Entity });
     }
     
+    public virtual void ExecuteChangeHealth() {
+        Entity.ChangeHealth.OnNext(new ChangeHealthCommand() { Sender = Entity });
+    }
+    
     public virtual void ExecuteChangeBattleState(ChangeBattleStateCommand command) {
         command.Sender = Entity;
         Entity.ChangeBattleState.OnNext(command);
+    }
+    
+    public virtual void ExecuteChangeHealth(ChangeHealthCommand command) {
+        command.Sender = Entity;
+        Entity.ChangeHealth.OnNext(command);
     }
 }

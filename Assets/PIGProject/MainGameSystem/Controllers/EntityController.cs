@@ -14,16 +14,20 @@ using UnityEngine.UI;
 public class EntityController : EntityControllerBase {
 	public object[] param;
 	public Text panelText;
+	public MainGameRootViewModel MainGameVM;
 	
     public override void InitializeEntity(EntityViewModel viewModel) {
         base.InitializeEntity(viewModel);
 		panelText = GameObject.Find("Text_Target").GetComponent<Text>();
+		MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
+		//Debug.Log (MainGameVM== null ? "MainGameVM is null" : MainGameVM.Identifier);
 	}
 
 	public void StartWar(object source, System.Timers.ElapsedEventArgs e)	{
 		//Result (caller);
 		
 	}
+	
 	
 	public override void ChangeBattleState(EntityViewModel viewModel) {
 		base.ChangeBattleState(viewModel);	
@@ -39,6 +43,19 @@ public class EntityController : EntityControllerBase {
 				}); 
 			Observable.Timer(TimeSpan.FromSeconds(5)).Subscribe(_ => DoDamage.Dispose());
 		}
+	}
+	
+	public override void ChangeHealth(EntityViewModel viewModel) {
+		base.ChangeBattleState(viewModel);
+		//MainGameVM.GameState = GameState.GameOver;
+		if(viewModel is SoldierViewModel)
+			MainGameVM.SoldierCount -= 1;
+		else
+			MainGameVM.EnemyCount -= 1;
+			
+		if(MainGameVM.EnemyCount == 0 || MainGameVM.SoldierCount == 0)
+			MainGameVM.GameState = GameState.GameOver;
+
 	}
 	
 	/*

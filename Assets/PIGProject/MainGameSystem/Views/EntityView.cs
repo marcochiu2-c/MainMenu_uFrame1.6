@@ -15,6 +15,7 @@ using DG.Tweening;
 
 public class EntityView : EntityViewBase {
 	public GameObject healthBar;
+	private bool _destroy = false;
 
 	public EntityView OpponentView 
 	{
@@ -80,10 +81,10 @@ public class EntityView : EntityViewBase {
 		yield return null;
 		
 		if(move == MoveStyle.SLOW)
-			yield return new WaitForSeconds(0.2f);
+			yield return new WaitForSeconds(1f);
 		
 		else if(move == MoveStyle.NORMAL)
-			yield return new WaitForSeconds(0.1f);
+			yield return new WaitForSeconds(0.5f);
 		
 		else if(move == MoveStyle.FAST)
 			yield return new WaitForSeconds(0.05f);
@@ -93,8 +94,18 @@ public class EntityView : EntityViewBase {
 	}
 
     public override void HealthChanged(Single health) {
-		if(health <= 1)
+		if(health < 1 && !_destroy)
+		{
 		this.transform.DOShakeScale(0.4f, 80).OnComplete(() => this.gameObject.SetActive(false));
+		ExecuteChangeHealth();
+		_destroy = true;
+		/*
+		 if(this is SoldierView)
+				MainGameRootViewModel.SoldierCount -=1;
+		 else
+				MainGameRootViewModel.EnemyCount -=1;
+		*/
+		}
     }
 
     public override void BattleStateChanged(BattleState bState) {

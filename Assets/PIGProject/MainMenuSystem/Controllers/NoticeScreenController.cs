@@ -24,7 +24,7 @@ public class NoticeScreenController : NoticeScreenControllerBase {
 		        {
 			ConversationName = "daughter"
 		});
-
+		
 		Debug.Log("You have signed");
 	}
 }

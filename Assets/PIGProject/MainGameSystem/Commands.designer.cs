@@ -31,3 +31,6 @@ public partial class ChangeActionStyleCommand : uFrame.MVVM.ViewModelCommand {
 
 public partial class ChangeBattleStateCommand : uFrame.MVVM.ViewModelCommand {
 }
+
+public partial class ChangeHealthCommand : uFrame.MVVM.ViewModelCommand {
+}

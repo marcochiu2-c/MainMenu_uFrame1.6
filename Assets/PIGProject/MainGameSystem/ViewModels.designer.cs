@@ -23,13 +23,17 @@ using UniRx;
 
 public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
     
-    private P<String> _StateProperty;
+    private P<GameState> _GameStateProperty;
     
     private P<String> _HexGridMatchingProperty;
     
-    private ModelCollection<String> _Soldier;
+    private P<Int32> _SoldierCountProperty;
     
-    private ModelCollection<String> _Enemy;
+    private P<Int32> _EnemyCountProperty;
+    
+    private ModelCollection<SoldierViewModel> _Soldier;
+    
+    private ModelCollection<EnemyViewModel> _Enemy;
     
     private ModelCollection<EntityViewModel> _Memebers;
     
@@ -43,12 +47,12 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
             base(aggregator) {
     }
     
-    public virtual P<String> StateProperty {
+    public virtual P<GameState> GameStateProperty {
         get {
-            return _StateProperty;
+            return _GameStateProperty;
         }
         set {
-            _StateProperty = value;
+            _GameStateProperty = value;
         }
     }
     
@@ -61,12 +65,30 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual String State {
+    public virtual P<Int32> SoldierCountProperty {
         get {
-            return StateProperty.Value;
+            return _SoldierCountProperty;
         }
         set {
-            StateProperty.Value = value;
+            _SoldierCountProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> EnemyCountProperty {
+        get {
+            return _EnemyCountProperty;
+        }
+        set {
+            _EnemyCountProperty = value;
+        }
+    }
+    
+    public virtual GameState GameState {
+        get {
+            return GameStateProperty.Value;
+        }
+        set {
+            GameStateProperty.Value = value;
         }
     }
     
@@ -79,7 +101,25 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual ModelCollection<String> Soldier {
+    public virtual Int32 SoldierCount {
+        get {
+            return SoldierCountProperty.Value;
+        }
+        set {
+            SoldierCountProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 EnemyCount {
+        get {
+            return EnemyCountProperty.Value;
+        }
+        set {
+            EnemyCountProperty.Value = value;
+        }
+    }
+    
+    public virtual ModelCollection<SoldierViewModel> Soldier {
         get {
             return _Soldier;
         }
@@ -88,7 +128,7 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual ModelCollection<String> Enemy {
+    public virtual ModelCollection<EnemyViewModel> Enemy {
         get {
             return _Enemy;
         }
@@ -138,10 +178,12 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         this.GoToMenu = new Signal<GoToMenuCommand>(this);
         this.Play = new Signal<PlayCommand>(this);
         this.GameOver = new Signal<GameOverCommand>(this);
-        _StateProperty = new P<String>(this, "State");
+        _GameStateProperty = new P<GameState>(this, "GameState");
         _HexGridMatchingProperty = new P<String>(this, "HexGridMatching");
-        _Soldier = new ModelCollection<String>(this, "Soldier");
-        _Enemy = new ModelCollection<String>(this, "Enemy");
+        _SoldierCountProperty = new P<Int32>(this, "SoldierCount");
+        _EnemyCountProperty = new P<Int32>(this, "EnemyCount");
+        _Soldier = new ModelCollection<SoldierViewModel>(this, "Soldier");
+        _Enemy = new ModelCollection<EnemyViewModel>(this, "Enemy");
         _Memebers = new ModelCollection<EntityViewModel>(this, "Memebers");
     }
     
@@ -159,8 +201,18 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
     
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
-        this.State = stream.DeserializeString("State");;
+        this.GameState = (GameState)stream.DeserializeInt("GameState");;
         this.HexGridMatching = stream.DeserializeString("HexGridMatching");;
+        this.SoldierCount = stream.DeserializeInt("SoldierCount");;
+        this.EnemyCount = stream.DeserializeInt("EnemyCount");;
+        if (stream.DeepSerialize) {
+            this.Soldier.Clear();
+            this.Soldier.AddRange(stream.DeserializeObjectArray<SoldierViewModel>("Soldier"));
+        }
+        if (stream.DeepSerialize) {
+            this.Enemy.Clear();
+            this.Enemy.AddRange(stream.DeserializeObjectArray<EnemyViewModel>("Enemy"));
+        }
         if (stream.DeepSerialize) {
             this.Memebers.Clear();
             this.Memebers.AddRange(stream.DeserializeObjectArray<EntityViewModel>("Memebers"));
@@ -169,8 +221,12 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
     
     public override void Write(ISerializerStream stream) {
         base.Write(stream);
-        stream.SerializeString("State", this.State);
+        stream.SerializeInt("GameState", (int)this.GameState);;
         stream.SerializeString("HexGridMatching", this.HexGridMatching);
+        stream.SerializeInt("SoldierCount", this.SoldierCount);
+        stream.SerializeInt("EnemyCount", this.EnemyCount);
+        if (stream.DeepSerialize) stream.SerializeArray("Soldier", this.Soldier);
+        if (stream.DeepSerialize) stream.SerializeArray("Enemy", this.Enemy);
         if (stream.DeepSerialize) stream.SerializeArray("Memebers", this.Memebers);
     }
     
@@ -184,11 +240,15 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
         base.FillProperties(list);
         // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_StateProperty, false, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_GameStateProperty, false, false, true, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_HexGridMatchingProperty, false, false, false, false));
-        list.Add(new ViewModelPropertyInfo(_Soldier, false, true, false, false));
-        list.Add(new ViewModelPropertyInfo(_Enemy, false, true, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_SoldierCountProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_EnemyCountProperty, false, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_Soldier, true, true, false, false));
+        list.Add(new ViewModelPropertyInfo(_Enemy, true, true, false, false));
         list.Add(new ViewModelPropertyInfo(_Memebers, true, true, false, false));
     }
 }
@@ -392,6 +452,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     private P<SenseStyle> _SenseProperty;
     
     private Signal<ChangeBattleStateCommand> _ChangeBattleState;
+    
+    private Signal<ChangeHealthCommand> _ChangeHealth;
     
     public EntityViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
@@ -1000,9 +1062,19 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual Signal<ChangeHealthCommand> ChangeHealth {
+        get {
+            return _ChangeHealth;
+        }
+        set {
+            _ChangeHealth = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
         this.ChangeBattleState = new Signal<ChangeBattleStateCommand>(this);
+        this.ChangeHealth = new Signal<ChangeHealthCommand>(this);
         _HealthProperty = new P<Single>(this, "Health");
         _Max_HealthProperty = new P<Single>(this, "Max_Health");
         _AttackSpeedProperty = new P<Int32>(this, "AttackSpeed");
@@ -1040,6 +1112,10 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     
     public virtual void ExecuteChangeBattleState() {
         this.ChangeBattleState.OnNext(new ChangeBattleStateCommand());
+    }
+    
+    public virtual void ExecuteChangeHealth() {
+        this.ChangeHealth.OnNext(new ChangeHealthCommand());
     }
     
     public override void Read(ISerializerStream stream) {
@@ -1115,6 +1191,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
         base.FillCommands(list);
         list.Add(new ViewModelCommandInfo("ChangeBattleState", ChangeBattleState) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("ChangeHealth", ChangeHealth) { ParameterType = typeof(void) });
     }
     
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {

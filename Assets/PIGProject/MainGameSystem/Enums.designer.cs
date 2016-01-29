@@ -82,3 +82,10 @@ public enum SenseStyle {
     
     IGNORE,
 }
+
+public enum GameState {
+    
+    Playing,
+    
+    GameOver,
+}

@@ -507,6 +507,7 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
     public virtual void InitializeEntity(EntityViewModel viewModel) {
         // This is called when a EntityViewModel is created
         viewModel.ChangeBattleState.Action = this.ChangeBattleStateHandler;
+        viewModel.ChangeHealth.Action = this.ChangeHealthHandler;
         EntityViewModelManager.Add(viewModel);
     }
     
@@ -518,7 +519,14 @@ public class EntityControllerBase : uFrame.MVVM.Controller {
     public virtual void ChangeBattleState(EntityViewModel viewModel) {
     }
     
+    public virtual void ChangeHealth(EntityViewModel viewModel) {
+    }
+    
     public virtual void ChangeBattleStateHandler(ChangeBattleStateCommand command) {
         this.ChangeBattleState(command.Sender as EntityViewModel);
+    }
+    
+    public virtual void ChangeHealthHandler(ChangeHealthCommand command) {
+        this.ChangeHealth(command.Sender as EntityViewModel);
     }
 }

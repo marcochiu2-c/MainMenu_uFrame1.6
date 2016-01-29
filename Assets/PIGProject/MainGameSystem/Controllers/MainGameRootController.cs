@@ -34,6 +34,7 @@ public class MainGameRootController : MainGameRootControllerBase {
 
     public override void GameOver(MainGameRootViewModel viewModel) {
         base.GameOver(viewModel);
+        Debug.Log ("Gameover");
     }
 
 	// P1 = Soldier
