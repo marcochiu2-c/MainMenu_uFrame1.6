@@ -24,7 +24,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public List<EnemyViewModel> TargetVM = new List<EnemyViewModel>();
 	public List<EnemyView> TargetV = new List<EnemyView>();
 	public List<SoldierView> SoldierV = new List<SoldierView>();
-
 	public SoldierViewModel SelectedSodlierVM;
 	
 	public MainGameRootController MainGameController;
@@ -34,7 +33,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public Button EndTurn_Btn;
 	public Button Restart_Btn;
 
-
 	public SpriteCell pathPrefab;
 	public SpriteCell markNode;
 	public GameObject pathRoot;
@@ -42,7 +40,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public bool selectPoint = false;
 
 	public AudioSource audio;
-
+	
 	private FlatHexPoint start;
 	private FlatHexPoint finish;
 	private FlatHexPoint _savePoint;
@@ -52,12 +50,11 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	private bool _targetSelected = false;
 	private FlatHexGrid<GSCell> walkableGrid;
 	
-	
 	/// Call when Kernel have been loaded
 	public override void KernelLoaded()
 	{
 		base.KernelLoaded();
-
+		
 		for (int i = 1; i <= 5; i++)
 		{
 			// Get the Controllers, ViewModels and Views from Kernel
@@ -85,10 +82,19 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 		InitPosition();
 		
-		Observable.EveryUpdate().Where(_ => SoldierVM[_sNum].SoldierState == SoldierState.ATTACK && SoldierVM[_sNum].Action == ActionStyle.STANDBY).Subscribe(_=> {
+		//Auto Call Onclick for the actionstyle without select target
+		Observable.EveryUpdate()
+		.Where(_ => SoldierVM[_sNum].SoldierState == SoldierState.ATTACK && (
+			       SoldierVM[_sNum].Action == ActionStyle.STANDBY ||
+			       SoldierVM[_sNum].Action == ActionStyle.YAWP ||
+			       SoldierVM[_sNum].Action == ActionStyle.SEARCH ||
+			       SoldierVM[_sNum].Action == ActionStyle.A_ATK))
+		.Subscribe(_=> {
 		OnClick (SoldierVM[_sNum].CurrentPointLocation);
 		});
-		//audio.Play();
+		
+		//BGM
+		audio.Play();
 	}
 	
 	/// <summary>
@@ -247,8 +253,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			else if (SoldierVM[_sNum].SoldierState == SoldierState.ATTACK)
 			{
 				
-				//Do Nothing
-				if(SoldierVM[_sNum].Action == ActionStyle.STANDBY)
+				//No need to select target
+				if (SoldierVM[_sNum].Action == ActionStyle.STANDBY || SoldierVM[_sNum].Action == ActionStyle.YAWP || SoldierVM[_sNum].Action == ActionStyle.SEARCH || SoldierVM[_sNum].Action == ActionStyle.A_ATK)
 				{
 					goto EndofAttack;
 				}
@@ -303,7 +309,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 					    SoldierVM[_sNum].playlist.Insert((int)SoldierVM[_sNum].Counter, new PlayList(SoldierVM[_sNum].CurrentPointLocation, SoldierVM[_sNum].Movement ,SoldierVM[_sNum].Action, null, null));
 					    SoldierVM[_sNum].Counter++;
 					    
-					if (SoldierVM[_sNum].Action == ActionStyle.STANDBY)
+					if (SoldierVM[_sNum].Action == ActionStyle.STANDBY || SoldierVM[_sNum].Action == ActionStyle.YAWP || SoldierVM[_sNum].Action == ActionStyle.SEARCH || SoldierVM[_sNum].Action == ActionStyle.A_ATK)
 						myText.text = "OK, Please Move";
 					else
 						myText.text = "You can't Attack, Please Move";

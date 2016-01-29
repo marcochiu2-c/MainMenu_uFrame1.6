@@ -81,10 +81,10 @@ public class EntityView : EntityViewBase {
 		yield return null;
 		
 		if(move == MoveStyle.SLOW)
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(0.3f);
 		
 		else if(move == MoveStyle.NORMAL)
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(0.1f);
 		
 		else if(move == MoveStyle.FAST)
 			yield return new WaitForSeconds(0.05f);
