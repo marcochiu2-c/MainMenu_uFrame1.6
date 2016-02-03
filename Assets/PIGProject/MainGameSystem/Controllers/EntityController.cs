@@ -13,21 +13,18 @@ using UnityEngine.UI;
 
 public class EntityController : EntityControllerBase {
 	public object[] param;
-	public Text panelText;
 	public MainGameRootViewModel MainGameVM;
-	
+
     public override void InitializeEntity(EntityViewModel viewModel) {
         base.InitializeEntity(viewModel);
-		panelText = GameObject.Find("Text_Target").GetComponent<Text>();
 		MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
 		//Debug.Log (MainGameVM== null ? "MainGameVM is null" : MainGameVM.Identifier);
 	}
-
+	
 	public void StartWar(object source, System.Timers.ElapsedEventArgs e)	{
-		//Result (caller);
+		//Result (caller)
 		
 	}
-	
 	
 	public override void ChangeBattleState(EntityViewModel viewModel) {
 		base.ChangeBattleState(viewModel);	
@@ -39,7 +36,6 @@ public class EntityController : EntityControllerBase {
 				{
 					viewModel.Health -= 100;
 					Debug.Log (viewModel.Name + " is confusing and hit themselves");
-					panelText.text = viewModel.Name + " is confusing and hit themselves";
 				}); 
 			Observable.Timer(TimeSpan.FromSeconds(5)).Subscribe(_ => DoDamage.Dispose());
 		}
@@ -57,7 +53,6 @@ public class EntityController : EntityControllerBase {
 			MainGameVM.GameState = GameState.GameOver;
 
 	}
-	
 	/*
 	public int getGCDOfAttackSpeed(EntityViewModel viewModel){
 			int Remainder;

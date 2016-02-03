@@ -35,7 +35,7 @@ public class SceneFlowService : SceneFlowServiceBase {
 
         this.Publish(new LoadSceneCommand() // Load AssetsLoadingScene
         {
-            SceneName = "AssetsLoadingScene"
+			SceneName = "AssetsLoadingScene"
         });
 
     }
@@ -57,7 +57,7 @@ public class SceneFlowService : SceneFlowServiceBase {
 
         this.Publish(new LoadSceneCommand() // Load MainMenuScene
         {
-            SceneName = "MainMenuScene"
+            SceneName = "MainGameScene"
         });
     }
 

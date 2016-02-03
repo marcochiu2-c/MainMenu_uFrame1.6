@@ -212,7 +212,7 @@ public class MainGameRootController : MainGameRootControllerBase {
 
 		if(action == ActionStyle.FEINT)
 		{
-			if(timeDiff >= 0.8f)
+			if(timeDiff >= 1f)
 			{
 				p.TimeStarted = false;
 				p.Counter++;

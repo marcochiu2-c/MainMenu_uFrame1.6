@@ -52,21 +52,21 @@ public class CommandList : MonoBehaviour {
 
 	public void WalkStyle_Fast()
 	{
-		player.walkStyle = 0 ;
+		//player.walkStyle = 0 ;
 	}
 
 	public void WalkStyle_Normal()
 	{
-		player.walkStyle = 1 ;
+		//player.walkStyle = 1 ;
 	}
 
 	public void WalkStyle_Slow()
 	{
-		player.walkStyle = 2 ;
+		//player.walkStyle = 2 ;
 	}
 
 	public void WalkStyle_Wait()
 	{
-		player.walkStyle = 3 ;
+		//player.walkStyle = 3 ;
 	}
 }

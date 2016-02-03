@@ -58,6 +58,8 @@ public enum SoldierState {
     PLAY,
     
     NOTMYTURN,
+    
+    FINISH,
 }
 
 public enum BattleState {

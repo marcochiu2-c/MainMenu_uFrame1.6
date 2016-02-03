@@ -69,7 +69,7 @@ public class NotificationService : NotificationServiceBase {
 		//uiItem.transform.DOScale(Vector3.one, 2f).SetEase(Ease.InOutBack);
 		uiItem.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(() => uiItem.SetActive(true));
 
-		yield return new WaitForSeconds(1);
+		yield return new WaitForSeconds(2);
 
 		uiItem.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(() => Destroy(uiItem));
 

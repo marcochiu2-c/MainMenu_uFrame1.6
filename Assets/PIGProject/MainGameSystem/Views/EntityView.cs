@@ -11,11 +11,13 @@ using UniRx;
 using UnityEngine;
 using Gamelogic.Grids;
 using DG.Tweening;
+using UnityEngine.UI;
 
 
 public class EntityView : EntityViewBase {
 	public GameObject healthBar;
 	private bool _destroy = false;
+	public Text panelText;
 
 	public EntityView OpponentView 
 	{
@@ -70,7 +72,7 @@ public class EntityView : EntityViewBase {
 			float x = Mathf.Lerp(currentPoint.x, endPoint.x, time / totalTime);
 			float y = Mathf.Lerp(currentPoint.y, endPoint.y, time / totalTime);
 			
-			//y -= 20;
+			y -= 18;
 			
 			transform.position = new Vector3(x, y);
 			time += Time.deltaTime;
@@ -109,6 +111,11 @@ public class EntityView : EntityViewBase {
     }
 
     public override void BattleStateChanged(BattleState bState) {
+		
+		if(bState == BattleState.CONFUSING)
+		{
+			panelText.text = this.Entity.Identifier + " is confusing and hit himself";
+		}
 		ExecuteChangeBattleState();
     }
 }
