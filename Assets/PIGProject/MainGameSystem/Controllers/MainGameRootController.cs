@@ -162,8 +162,8 @@ public class MainGameRootController : MainGameRootControllerBase {
 					if (!soldiers[i].TimeStarted)
 					{
 						Debug.Log ("Waiting from GameController");
-						if(P1 != null) P1.BattleState = BattleState.WAITING;
-						if(P2 != null) P2.BattleState = BattleState.WAITING;
+						if(P1 != null && P1.BattleState != BattleState.DEAD) P1.BattleState = BattleState.WAITING;
+						if(P2 != null && P2.BattleState != BattleState.DEAD) P2.BattleState = BattleState.WAITING;
 						_battleFinished = true;
 						soldiers.Clear ();
 					}
@@ -225,18 +225,6 @@ public class MainGameRootController : MainGameRootControllerBase {
 		{
 			factor = 0.5f;
 		}
-
-
-		else if(action == ActionStyle.SEARCH)
-		{
-			
-		} 
-
-		else if(action == ActionStyle.YAWP)
-		{
-			
-		} 
-
 		
 		float health = p.Opponent.Health * Mathf.Pow (p.Opponent.noHurt, p.Health / (float)p.Opponent.Health);
 		float d = p.Opponent.Health - Mathf.Pow (p.Opponent.noHurt + p.Opponent.hurt, p.Health / (float)p.Opponent.Health) * p.Opponent.Health;

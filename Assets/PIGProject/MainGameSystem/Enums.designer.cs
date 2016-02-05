@@ -69,6 +69,8 @@ public enum BattleState {
     FIGHTING,
     
     CONFUSING,
+    
+    DEAD,
 }
 
 public enum Career {

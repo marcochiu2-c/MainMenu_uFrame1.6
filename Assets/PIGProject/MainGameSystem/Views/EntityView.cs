@@ -112,6 +112,8 @@ public class EntityView : EntityViewBase {
 
     public override void BattleStateChanged(BattleState bState) {
 		
+		//Debug.Log (this.Identifier + "BattleState: " + bState);
+		
 		if(bState == BattleState.CONFUSING)
 		{
 			panelText.text = this.Entity.Identifier + " is confusing and hit himself";

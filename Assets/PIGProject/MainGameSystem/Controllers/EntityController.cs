@@ -27,7 +27,8 @@ public class EntityController : EntityControllerBase {
 	}
 	
 	public override void ChangeBattleState(EntityViewModel viewModel) {
-		base.ChangeBattleState(viewModel);	
+		base.ChangeBattleState(viewModel);
+		
 		if(viewModel.BattleState == BattleState.CONFUSING)
 		{
 			Debug.Log(viewModel.Name + "is confusing");
@@ -44,6 +45,11 @@ public class EntityController : EntityControllerBase {
 	public override void ChangeHealth(EntityViewModel viewModel) {
 		base.ChangeBattleState(viewModel);
 		//MainGameVM.GameState = GameState.GameOver;
+		
+		viewModel.BattleState = BattleState.DEAD;
+				
+		Debug.Log("I Die la~~~~~~~~~~~~~~~~~~~" + viewModel.BattleState);
+		
 		if(viewModel is SoldierViewModel)
 			MainGameVM.SoldierCount -= 1;
 		else
