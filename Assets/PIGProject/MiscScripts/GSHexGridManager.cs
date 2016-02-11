@@ -414,7 +414,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		//}
 	}
 	
-	
 	/// <summary>
 	/// Update the position for the related entityView and check in every move
 	/// </summary>
