@@ -20,6 +20,8 @@ public class MenuScreenView : MenuScreenViewBase
     public Button ExitButton;
 	public Button NoticeButton;
 	public Button HeadButton;
+	public Button CardButton;
+	public Button SetBattleButton;
 	//public Image TestArea;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
@@ -64,6 +66,27 @@ public class MenuScreenView : MenuScreenViewBase
 			Publish(evt);
 		});
 
+		this.BindButtonToHandler(CardButton, () =>
+			{
+				evt.ScreenType = typeof(CardScreenViewModel);
+				Publish(evt);
+			});
+
+		//Temp use
+		this.BindButtonToHandler(SetBattleButton, () =>
+			{
+				Publish(new UnloadSceneCommand()
+					{
+						SceneName = "MainMenuScene" // Unload  main menu scene
+					});
+
+				Publish(new LoadSceneCommand()
+					{
+						//SceneName = arg.LevelScene // Load level scene
+						SceneName = "MainGameScene" // Load level scene
+					});
+			});
+		
         // This follows the same logic, but we use Method Group syntax.
         // And we do not publish event. We just quit.
 		this.BindButtonToHandler(ExitButton, Application.Quit);

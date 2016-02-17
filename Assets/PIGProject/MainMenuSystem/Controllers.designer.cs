@@ -490,3 +490,53 @@ public class SampleScreenControllerBase : SubScreenController {
         SampleScreenViewModelManager.Remove(viewModel);
     }
 }
+
+public class CardScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _CardScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("CardScreen")]
+    public uFrame.MVVM.IViewModelManager CardScreenViewModelManager {
+        get {
+            return _CardScreenViewModelManager;
+        }
+        set {
+            _CardScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<CardScreenViewModel> CardScreenViewModels {
+        get {
+            return CardScreenViewModelManager.OfType<CardScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeCardScreen(((CardScreenViewModel)(viewModel)));
+    }
+    
+    public virtual CardScreenViewModel CreateCardScreen() {
+        return ((CardScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new CardScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeCardScreen(CardScreenViewModel viewModel) {
+        // This is called when a CardScreenViewModel is created
+        CardScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        CardScreenViewModelManager.Remove(viewModel);
+    }
+}

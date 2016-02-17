@@ -34,6 +34,23 @@ public class TouchCameraControl : MonoBehaviour
 			moveSensitivityY = _camera.orthographicSize / 3.0f;
 		}
 
+		//#if UNITY_EDITOR || UNITY_EDITOR_64 || UNITY_EDITOR_OSX
+		float mx = Input.GetAxis ("Mouse X");
+		float my = Input.GetAxis ("Mouse Y");
+		float speed=5000.0f;
+
+		if (mx != 0 || my != 0) 
+		{
+			//滑鼠左鍵
+			if (Input.GetMouseButton (0)) 
+			{
+				//移動攝影機位置
+				Camera.main.transform.Translate (new Vector3 (-mx * Time.deltaTime * speed, -my * Time.deltaTime * speed, 0));
+			}
+		}
+
+
+		//#else
 		Touch[] touches = Input.touches;
 
 		if (touches.Length > 0)
@@ -76,6 +93,7 @@ public class TouchCameraControl : MonoBehaviour
 				CalculateMapBounds ();
 			}
 		}
+		//#endif
 	}
 
 	void CalculateMapBounds() 

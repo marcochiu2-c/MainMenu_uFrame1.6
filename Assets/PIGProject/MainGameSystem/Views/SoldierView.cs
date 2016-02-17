@@ -53,6 +53,7 @@ public class SoldierView : SoldierViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
+		//MoveStyle
 		this.BindButtonToHandler(SlowButton, () => {
 			this.Soldier.Movement = MoveStyle.SLOW;
 			//this.Soldier.SoldierState = SoldierState.ATTACK;
@@ -69,6 +70,7 @@ public class SoldierView : SoldierViewBase {
 			gSHexGridManager.selectPoint = true;
 		});
 
+		//ActionStyle
 		this.BindButtonToHandler(AssaultButton, () => {
 			this.Soldier.Action = ActionStyle.ASSAULT;
 			//this.Soldier.SoldierState = SoldierState.MOVE;
@@ -141,13 +143,14 @@ public class SoldierView : SoldierViewBase {
 		myText.text = state + " State";
 
 		//Change the Panel to Attack Panel
+
 		if (state == SoldierState.ATTACK)
 		{
 			//Active Action btns
 			//Debug.Log ("Attack !!");
 			if (MovePanel.gameObject.activeSelf && !ActionPanel.gameObject.activeSelf)
 			{
-				//Debug.Log("Change to Action Panel");
+				//Debug.Log("Change to Action Panel");       
 				MovePanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y + 50.0f), 1).SetEase(Ease.OutSine).OnComplete(() => MovePanel.gameObject.SetActive(false));
 				ActionPanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y - 8.0f), 1).SetEase(Ease.OutSine).OnStart(() => ActionPanel.gameObject.SetActive(true));
 				//MovePanel.transform.DOLocalMoveY(1.0f, 1).SetEase(Ease.OutSine).OnComplete(() => MovePanel.gameObject.SetActive(false));
@@ -172,6 +175,7 @@ public class SoldierView : SoldierViewBase {
 				//ActionPanel.transform.DOLocalMoveY(1.0f, 1).SetEase(Ease.OutSine).OnComplete(() => ActionPanel.gameObject.SetActive(false));
 			}
 		}
+
 
 		if (state == SoldierState.PLAY)
 		{

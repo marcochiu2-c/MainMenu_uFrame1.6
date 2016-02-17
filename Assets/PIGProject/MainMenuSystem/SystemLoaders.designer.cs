@@ -37,6 +37,8 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private SampleScreenController _SampleScreenController;
     
+    private CardScreenController _CardScreenController;
+    
     [uFrame.IOC.InjectAttribute("MainMenuRoot")]
     public virtual MainMenuRootViewModel MainMenuRoot {
         get {
@@ -153,6 +155,19 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
         }
     }
     
+    [uFrame.IOC.InjectAttribute()]
+    public virtual CardScreenController CardScreenController {
+        get {
+            if (_CardScreenController==null) {
+                _CardScreenController = Container.CreateInstance(typeof(CardScreenController)) as CardScreenController;;
+            }
+            return _CardScreenController;
+        }
+        set {
+            _CardScreenController = value;
+        }
+    }
+    
     public override void Load() {
         Container.RegisterViewModelManager<MainMenuRootViewModel>(new ViewModelManager<MainMenuRootViewModel>());
         Container.RegisterController<MainMenuRootController>(MainMenuRootController);
@@ -170,6 +185,8 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
         Container.RegisterController<NoticeScreenController>(NoticeScreenController);
         Container.RegisterViewModelManager<SampleScreenViewModel>(new ViewModelManager<SampleScreenViewModel>());
         Container.RegisterController<SampleScreenController>(SampleScreenController);
+        Container.RegisterViewModelManager<CardScreenViewModel>(new ViewModelManager<CardScreenViewModel>());
+        Container.RegisterController<CardScreenController>(CardScreenController);
         Container.RegisterViewModel<MainMenuRootViewModel>(MainMenuRoot, "MainMenuRoot");
     }
 }
