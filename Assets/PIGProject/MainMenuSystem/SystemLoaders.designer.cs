@@ -39,6 +39,8 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private CardScreenController _CardScreenController;
     
+    private SetBattleScreenController _SetBattleScreenController;
+    
     [uFrame.IOC.InjectAttribute("MainMenuRoot")]
     public virtual MainMenuRootViewModel MainMenuRoot {
         get {
@@ -168,6 +170,19 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
         }
     }
     
+    [uFrame.IOC.InjectAttribute()]
+    public virtual SetBattleScreenController SetBattleScreenController {
+        get {
+            if (_SetBattleScreenController==null) {
+                _SetBattleScreenController = Container.CreateInstance(typeof(SetBattleScreenController)) as SetBattleScreenController;;
+            }
+            return _SetBattleScreenController;
+        }
+        set {
+            _SetBattleScreenController = value;
+        }
+    }
+    
     public override void Load() {
         Container.RegisterViewModelManager<MainMenuRootViewModel>(new ViewModelManager<MainMenuRootViewModel>());
         Container.RegisterController<MainMenuRootController>(MainMenuRootController);
@@ -187,6 +202,8 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
         Container.RegisterController<SampleScreenController>(SampleScreenController);
         Container.RegisterViewModelManager<CardScreenViewModel>(new ViewModelManager<CardScreenViewModel>());
         Container.RegisterController<CardScreenController>(CardScreenController);
+        Container.RegisterViewModelManager<SetBattleScreenViewModel>(new ViewModelManager<SetBattleScreenViewModel>());
+        Container.RegisterController<SetBattleScreenController>(SetBattleScreenController);
         Container.RegisterViewModel<MainMenuRootViewModel>(MainMenuRoot, "MainMenuRoot");
     }
 }

@@ -540,3 +540,53 @@ public class CardScreenControllerBase : SubScreenController {
         CardScreenViewModelManager.Remove(viewModel);
     }
 }
+
+public class SetBattleScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _SetBattleScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("SetBattleScreen")]
+    public uFrame.MVVM.IViewModelManager SetBattleScreenViewModelManager {
+        get {
+            return _SetBattleScreenViewModelManager;
+        }
+        set {
+            _SetBattleScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<SetBattleScreenViewModel> SetBattleScreenViewModels {
+        get {
+            return SetBattleScreenViewModelManager.OfType<SetBattleScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeSetBattleScreen(((SetBattleScreenViewModel)(viewModel)));
+    }
+    
+    public virtual SetBattleScreenViewModel CreateSetBattleScreen() {
+        return ((SetBattleScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new SetBattleScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeSetBattleScreen(SetBattleScreenViewModel viewModel) {
+        // This is called when a SetBattleScreenViewModel is created
+        SetBattleScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        SetBattleScreenViewModelManager.Remove(viewModel);
+    }
+}

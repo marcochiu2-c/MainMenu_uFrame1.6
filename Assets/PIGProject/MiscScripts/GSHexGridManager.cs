@@ -29,15 +29,13 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public List<SoldierView> SoldierV = new List<SoldierView>();
 	public SoldierViewModel SelectedSodlierVM;
 
-	public GameObject MovePanel;
-	public GameObject ActionPanel;
-
 	public MainGameRootController MainGameController;
 	public MainGameRootViewModel MainGameVM;
 	
 	public Button Play_Btn;
 	public Button EndTurn_Btn;
 	public Button Restart_Btn;
+	public Button Redo_Btn;
 	public Button NextEnemy_Btn;
 	public GameObject InfoPanel;
 
@@ -46,18 +44,15 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public GameObject pathRoot;
 	
 	public Text myText;
-	public bool selectPoint = false;
-
 	public AudioSource audio;
 	public Touch[] touches;
+	public int sNum = 0;	//index for SoldierVM and SoldierV List
+	public bool selectPoint = false;
 
-	
 	private FlatHexPoint start;
 	private FlatHexPoint finish;
 	private FlatHexPoint _savePoint;
 	private Vector3 tempPoint;
-	private int step = 0;
-	private int _sNum = 0;	//index for SoldierVM and SoldierV List
 	private bool _targetSelected = false;
 	private FlatHexGrid<GSCell> walkableGrid;
 	private int _soldierCount = 0;
@@ -73,10 +68,10 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		{
 			// Get the Controllers, ViewModels and Views from Kernel
 			MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
-			//Debug.Log (MainGameVM== null ? "MainGameVM is null" : MainGameVM.Identifier);
 			MainGameController = uFrameKernel.Container.Resolve<MainGameRootController>();
 			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
 			TargetVM.Add(uFrameKernel.Container.Resolve<EnemyViewModel>("Enemy" + i));
+			//Debug.Log (MainGameVM== null ? "MainGameVM is null" : MainGameVM.Identifier);
 			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
 			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM.ActualHit() + " and " + SoldierVM.ActualDodge() + " and " + SoldierVM.ActualMorale());
 			
@@ -92,11 +87,13 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		foreach (var point in walkableGrid)
 		{
 			walkableGrid[point].IsWalkable = true;
+			walkableGrid[point].IsEnemy = false;
 		}
 		
 		InitPosition();
 		
 		//Auto Call Onclick for the actionstyle without select target
+		/*
 		Observable.EveryUpdate()
 			.Where(_ => SoldierVM[_sNum].SoldierState == SoldierState.ATTACK && (
 				SoldierVM[_sNum].Action == ActionStyle.STANDBY ||
@@ -106,9 +103,10 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				.Subscribe(_=> {
 					OnClick (SoldierVM[_sNum].CurrentPointLocation);
 				});
+		*/
 		
 		//BGM
-		//audio.Play();
+		audio.Play();
 
 		ProCamera2D.enabled = false;
 		InfoPanel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad).OnComplete(() => InfoPanel.SetActive(false));
@@ -127,20 +125,19 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			//walkableGrid[SoldierVM[i].CurrentPointLocation].IsWalkable = false;
 			SoldierV[i].transform.position = Map[SoldierVM[i].CurrentPointLocation] + new Vector3(0, -18);
 		}
+
 		//Random the Enemy position later
 		TargetVM[0].CurrentPointLocation = new FlatHexPoint(6, 0);
 		TargetVM[1].CurrentPointLocation = new FlatHexPoint(8, 5);
 		TargetVM[2].CurrentPointLocation = new FlatHexPoint(11, 1);
 		TargetVM[3].CurrentPointLocation = new FlatHexPoint(25, -8);
 		TargetVM[4].CurrentPointLocation = new FlatHexPoint(28, -6);
-		
-		
+		//Set Layer for the enemy manually
 		TargetV[0].GetComponent<Renderer>().sortingOrder = 6;
-		TargetV[0].GetComponent<Renderer>().sortingOrder = 1;
-		TargetV[0].GetComponent<Renderer>().sortingOrder = 2;
-		TargetV[0].GetComponent<Renderer>().sortingOrder = 5;
-		TargetV[0].GetComponent<Renderer>().sortingOrder = 2;
-		
+		TargetV[1].GetComponent<Renderer>().sortingOrder = 1;
+		TargetV[2].GetComponent<Renderer>().sortingOrder = 2;
+		TargetV[3].GetComponent<Renderer>().sortingOrder = 5;
+		TargetV[4].GetComponent<Renderer>().sortingOrder = 2;
 		
 		//Set the river to logic false
 		walkableGrid[new FlatHexPoint(0, 7)].IsWalkable = false;
@@ -153,7 +150,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		walkableGrid[new FlatHexPoint(4, 3)].IsWalkable = false;
 		walkableGrid[new FlatHexPoint(4, 2)].IsWalkable = false;
 		walkableGrid[new FlatHexPoint(4, 1)].IsWalkable = false;
-		
+		 
 		walkableGrid[new FlatHexPoint(5, -1)].IsWalkable = false;
 		walkableGrid[new FlatHexPoint(6, -2)].IsWalkable = false;
 		walkableGrid[new FlatHexPoint(6, -3)].IsWalkable = false;
@@ -174,21 +171,24 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		walkableGrid[new FlatHexPoint(19, -7)].IsWalkable = false;
 		walkableGrid[new FlatHexPoint(19, -8)].IsWalkable = false;
 		walkableGrid[new FlatHexPoint(19, -9)].IsWalkable = false;
-		
+
 		walkableGrid[new FlatHexPoint(27, -6)].IsWalkable = false;
 		walkableGrid[new FlatHexPoint(27, -7)].IsWalkable = false;
-		
-		//Set Enemy Touch Logic fasle
-		for(int i = 0; i < TargetVM.Count; i++)
-			walkableGrid[TargetVM[i].CurrentPointLocation].IsWalkable = false;
-		
+
+
+		for(int i = 0; i < SoldierVM.Count; i++)
+		{
+			walkableGrid[SoldierVM[i].CurrentPointLocation].IsSoldier = true;
+			walkableGrid[TargetVM[i].CurrentPointLocation].IsEnemy = true;
+		}
+
+		//set better position
 		for(int i = 0; i < TargetV.Count; i++)
 		{
 			TargetV[i].transform.position = Map[TargetVM[i].CurrentPointLocation] + new Vector3(0, -18);
 		}
 		
-		start = SoldierVM[_sNum].CurrentPointLocation;
-		
+		start = SoldierVM[sNum].CurrentPointLocation;
 		TargetV[1].gameObject.SetActive(false);
 	}
 	
@@ -214,46 +214,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	}
 	
 	/// <summary>
-	/// Find Enemy
-	/// </summary>
-	public void FindEnemyBtn()
-	{
-		ProCamera2D.enabled = true;
-		
-		if (Cinematics.IsActive)
-		{
-			Cinematics.Stop();
-			NextEnemy_Btn.transform.DOMove(new Vector3(NextEnemy_Btn.transform.position.x - 50, NextEnemy_Btn.transform.position.y), 0.5f).SetEase(Ease.OutSine).OnComplete(() => NextEnemy_Btn.gameObject.SetActive(false));
-			
-		}
-		else
-		{
-			Cinematics.Play();
-			NextEnemy_Btn.transform.DOMove(new Vector3(NextEnemy_Btn.transform.position.x + 50, NextEnemy_Btn.transform.position.y), 0.5f).SetEase(Ease.OutSine).OnStart(() => NextEnemy_Btn.gameObject.SetActive(true));
-			
-		}
-		//Cinematics.GoToNextTarget();		
-		//ProCamera2D.enabled = false;
-	}
-	
-	public void NextEnemyBtn()
-	{
-		//if (Cinematics.IsActive)
-		Cinematics.GoToNextTarget();
-		//StartCoroutine(FindEnemy());
-	}
-
-	public IEnumerator FindEnemy()
-	{
-		//ProCamera2D.enabled = true;
-		
-		Cinematics.GoToNextTarget();
-		yield return new WaitForSeconds(0.6f);
-		//ProCamera2D.enabled = false;
-	}
-	
-	/// <summary>
-	/// Call once a point has been clicked
+	/// Check Touch.Phase and Gameover
 	/// </summary>
 	void Update()
 	{
@@ -266,81 +227,66 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 		else if (touches.Length == 1){
 			_touchPosition = touches[0].deltaPosition.magnitude;
-			Debug.Log("touch.deltaPosition: " + _touchPosition);
+			//Debug.Log("touch.deltaPosition: " + _touchPosition);
 
 			if(touches[0].phase == TouchPhase.Ended)
 			if(touches[0].phase == TouchPhase.Stationary || _touchPosition < 1f || Input.GetMouseButton (0))
 				{
 					Debug.Log("Clicked");
 					_clicking = true;
-					
-				//Active Move/Action Panel
-				/*
-				if (SoldierVM[_sNum].SoldierState == SoldierState.ATTACK)
-				{
-
-					//if (MovePanel.gameObject.activeSelf && !ActionPanel.gameObject.activeSelf)
-					{
-						//Debug.Log("Change to Action Panel");
-						ActionPanel.transform.position = touches[0].position + new Vector2(0, 50);
-						MovePanel.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InOutBack).OnComplete(() => MovePanel.gameObject.SetActive(false));
-						ActionPanel.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InOutBack).SetEase(Ease.OutSine).OnStart(() => ActionPanel.gameObject.SetActive(true));
-
-					}
-
-				}
-
-				if (SoldierVM[_sNum].SoldierState == SoldierState.MOVE)
-				{
-					//if (!MovePanel.gameObject.activeSelf && ActionPanel.gameObject.activeSelf)
-					{
-						MovePanel.transform.position = touches[0].position + new Vector2(0, 50);
-						MovePanel.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InOutBack).OnStart(() => MovePanel.gameObject.SetActive(true));
-						ActionPanel.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InOutBack).OnComplete(() => ActionPanel.gameObject.SetActive(false));
-					}
-				}
-				*/
-
 				}
 			else
 				_clicking = false;
 		}
 
-
-		if(selectPoint && SoldierVM[_sNum].SoldierState == SoldierState.MOVE)
+		//After all Soldiers Finished their command
+		if(_soldierCount == 5 && MainGameVM != null)
 		{
-			start = SoldierVM[_sNum].CurrentPointLocation;
-			finish = _savePoint;
-			SoldierVM[_sNum].CurrentPointLocation = _savePoint;
-			PathFinding(start, finish, SoldierVM[_sNum].Movement, SoldierV[_sNum], SoldierVM[_sNum]);
-			
-			//Change state from move to attack after move
-			SoldierVM[_sNum].SoldierState = SoldierState.ATTACK;
-			selectPoint = false;
+			MainGameVM.SoldierCount = 0;
+			MainGameVM.GameState = GameState.GameOver;
+			StopAllCoroutines();
+			_soldierCount = 0;
 		}
-			
+	}
 
-		if(selectPoint && SoldierVM[_sNum].SoldierState == SoldierState.ATTACK)
+	public void MoveOrAttackPointSelected()
+	{
+		if(selectPoint && SoldierVM[sNum].SoldierState == SoldierState.MOVE)
 		{
-			if (SoldierVM[_sNum].Action == ActionStyle.STANDBY || SoldierVM[_sNum].Action == ActionStyle.YAWP || SoldierVM[_sNum].Action == ActionStyle.SEARCH || SoldierVM[_sNum].Action == ActionStyle.A_ATK)
+			start = SoldierVM[sNum].CurrentPointLocation;
+			finish = _savePoint;
+			SoldierVM[sNum].CurrentPointLocation = _savePoint;
+			DelPrePathNodes();
+			PathFinding(start, finish, SoldierVM[sNum].Movement, SoldierV[sNum], SoldierVM[sNum], null);
+
+			//Change state from move to attack after move
+			SoldierVM[sNum].SoldierState = SoldierState.ATTACK;
+			selectPoint = false;
+		}// End of Move State
+
+		//Point selected and Soldier in AttackState
+		else if(selectPoint && SoldierVM[sNum].SoldierState == SoldierState.ATTACK)
+		{
+
+			var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
+
+			if (SoldierVM[sNum].Action == ActionStyle.STANDBY || SoldierVM[sNum].Action == ActionStyle.YAWP || SoldierVM[sNum].Action == ActionStyle.SEARCH || SoldierVM[sNum].Action == ActionStyle.A_ATK)
 			{
 				goto EndofAttack;
 			}
 			//Range of Attack:
 			//Swordman < 2
 			//Archer < 3
-			var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[_sNum].CurrentPointLocation) < 2);
-
-			switch (SoldierVM[_sNum].Career)
+			switch (SoldierVM[sNum].Career)
 			{
 			case Career.Swordman:
-				neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[_sNum].CurrentPointLocation) < 2);
+				neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
 				break;
 			case Career.Archer:
-				neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[_sNum].CurrentPointLocation) < 3);
+				neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 3);
 				break;
 			default:
-				neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[_sNum].CurrentPointLocation) < 2);
+				neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
 				break;
 			}
 
@@ -360,8 +306,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 						myText.text = "Target Selected";
 
 						//Save the information into playlist
-						SoldierVM[_sNum].playlist.Insert((int)SoldierVM[_sNum].Counter, new PlayList(SoldierVM[_sNum].CurrentPointLocation, SoldierVM[_sNum].Movement ,SoldierVM[_sNum].Action, TargetVM[j], TargetV[j]));
-						SoldierVM[_sNum].Counter++;
+						SoldierVM[sNum].playlist.Insert((int)SoldierVM[sNum].Counter, new PlayList(SoldierVM[sNum].CurrentPointLocation, SoldierVM[sNum].Movement ,SoldierVM[sNum].Action, TargetVM[j], TargetV[j]));
+						SoldierVM[sNum].Counter++;
 						_targetSelected = true;
 						goto EndofAttack; //break the foreach
 					}
@@ -372,44 +318,31 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			if(!_targetSelected)
 			{
 				//Save the information into playlist without target
-				SoldierVM[_sNum].playlist.Insert((int)SoldierVM[_sNum].Counter, new PlayList(SoldierVM[_sNum].CurrentPointLocation, SoldierVM[_sNum].Movement ,SoldierVM[_sNum].Action, null, null));
-				SoldierVM[_sNum].Counter++;
+				SoldierVM[sNum].playlist.Insert((int)SoldierVM[sNum].Counter, new PlayList(SoldierVM[sNum].CurrentPointLocation, SoldierVM[sNum].Movement ,SoldierVM[sNum].Action, null, null));
+				SoldierVM[sNum].Counter++;
 
-				if (SoldierVM[_sNum].Action == ActionStyle.STANDBY || SoldierVM[_sNum].Action == ActionStyle.YAWP || SoldierVM[_sNum].Action == ActionStyle.SEARCH || SoldierVM[_sNum].Action == ActionStyle.A_ATK)
+				if (SoldierVM[sNum].Action == ActionStyle.STANDBY || SoldierVM[sNum].Action == ActionStyle.YAWP || SoldierVM[sNum].Action == ActionStyle.SEARCH || SoldierVM[sNum].Action == ActionStyle.A_ATK)
 					myText.text = "OK, Please Move";
 				else
-					myText.text = "You can't Attack, Please Move";
+				{
+					myText.text = "You can't Attack, Please select another Point";
+					return;
+				}
 			}
 			//Change state from move to move after attack and thus check the panel
-			SoldierVM[_sNum].SoldierState = SoldierState.MOVE;
+			SoldierVM[sNum].SoldierState = SoldierState.MOVE;
 			selectPoint = false;
+
+			//var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(_savePoint) < 2);
+			foreach (var neighbor in neighborhoodPoints)
+			{
+				if(walkableGrid[neighbor].IsWalkable)
+					walkableGrid[neighbor].Color = Color.white;
+			}
+
 		}//End of ATTACK State
-
-		if(_soldierCount == 5 && MainGameVM != null)
-		{
-			MainGameVM.SoldierCount = 0;
-			MainGameVM.GameState = GameState.GameOver;
-			StopAllCoroutines();
-			_soldierCount = 0;
-		}
-
-		/*
-		//StandBy
-		if(SoldierVM[_sNum] != null && SoldierVM[_sNum].Action == ActionStyle.STANDBY)
-		{
-			myText.text = "OK, Please Move";
-			SoldierVM[_sNum].playlist.Insert((int)SoldierVM[_sNum].Counter, new PlayList(SoldierVM[_sNum].CurrentPointLocation, SoldierVM[_sNum].Movement ,SoldierVM[_sNum].Action, null, null));
-			SoldierVM[_sNum].Counter++;
-			SoldierVM[_sNum].SoldierState = SoldierState.MOVE;
-			_targetSelected = false;
-			selectPoint = false;
-
-			//OnClick(SoldierVM[_sNum].CurrentPointLocation)
-		}
-		*/
 	}
-
-	
+		
 	/// <summary>
 	/// Get the Grid point, 
 	/// SoldierState.MOVE -> update the point graphically
@@ -417,37 +350,34 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	/// </summary>
 	public void OnClick(FlatHexPoint point)
 	{
+
+		ProCamera2D.enabled = false;
+
 		if(_clicking == false) return;
 
 		if(EventSystem.current.IsPointerOverGameObject()) return;
 
-		ProCamera2D.enabled = false;
-
-		myText.text = "Please Move";
-
-		if (walkableGrid[point].IsWalkable == false && SoldierVM[_sNum].SoldierState == SoldierState.MOVE)
+		if (walkableGrid[point].IsWalkable == false || walkableGrid[point].IsEnemy == true && SoldierVM[sNum].SoldierState == SoldierState.MOVE)
 		{
 			myText.text = "Please Select Another Point";
 			return;
 		}
-		
+
 		for(int i=0; i < SoldierVM.Count; i++)
 		{
 			if(point == SoldierVM[i].CurrentPointLocation)
 			{
-				//_sNum = i;
+				//sNum = i;
 				Debug.Log ("Soldier Selected");
 				point += new FlatHexPoint(1,0);
 			}
 		}
-
-		if(_clicking == false) return;
-
-		if(SoldierV[_sNum] != null)
+			
+		if(SoldierV[sNum] != null)
 		{
 			_clicking = false;
 			//Clicked on Move State, a red markNode will be created
-			if(SoldierVM[_sNum].SoldierState == SoldierState.MOVE)
+			if(SoldierVM[sNum].SoldierState == SoldierState.MOVE)
 			{
 				if(markNode == null) 
 					markNode = Instantiate(pathPrefab);
@@ -457,12 +387,13 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				markNode.transform.localPosition = Map[point];
 				markNode.Color = ExampleUtils.Colors[3];
 				_savePoint = point;
+
+				myText.text = "Please Select Move Style";
 			}
 			
 			//Clicked on Attack State, a blue markNode will be created
-			else if (SoldierVM[_sNum].SoldierState == SoldierState.ATTACK)
+			else if (SoldierVM[sNum].SoldierState == SoldierState.ATTACK)
 			{
-				
 				//
 				if(markNode == null) 
 					markNode = Instantiate(pathPrefab);
@@ -470,9 +401,11 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				markNode.transform.parent = pathRoot.transform;
 				markNode.transform.localScale = Vector3.one * 0.3f;
 				markNode.transform.localPosition = Map[point];
+				markNode.FindChild("Sprite").GetComponent<Renderer>().sortingOrder = 20;
 				markNode.Color = ExampleUtils.Colors[0];
 				_savePoint = point;
 
+				myText.text = "Please Select Action Style";
 				/*
 				//No need to select target
 				if (SoldierVM[_sNum].Action == ActionStyle.STANDBY || SoldierVM[_sNum].Action == ActionStyle.YAWP || SoldierVM[_sNum].Action == ActionStyle.SEARCH || SoldierVM[_sNum].Action == ActionStyle.A_ATK)
@@ -537,15 +470,16 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				SoldierVM[_sNum].SoldierState = SoldierState.MOVE;
 			}//End of ATTACK State
 		*/
-		}
+			}
 		_targetSelected = false;
 		selectPoint = false;
 		}
 	}
+
 	/// <summary>
 	/// Update the position for the related entityView and check in every move
 	/// </summary>
-	public IEnumerator MovePath(IEnumerable<FlatHexPoint> path, MoveStyle move, EntityView entityView, EntityViewModel entityVM)
+	public IEnumerator MovePath(IEnumerable<FlatHexPoint> path, MoveStyle move, EntityView entityView, EntityViewModel entityVM, EntityViewModel oppVM)
 	{
 		//Debug.Log ("Moving from " + entityView);
 		var pathList = path.ToList();
@@ -599,18 +533,17 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 					{
 						for(int j = 0; j < TargetVM.Count; j++)
 						{
-							//check here enemy feinted by soldier
 							if(neighbor == TargetVM[j].CurrentPointLocation)
 							{		  
 								//TargetVM[j].BattleState = BattleState.FIGHTING;
-								if(TargetVM[j].Action != ActionStyle.FEINT && TargetVM[j].Action != ActionStyle.A_ATK && TargetV[j].gameObject.activeSelf)
+								//check here enemy feinted by soldier or target
+							if(TargetVM[j].Action != ActionStyle.FEINT && TargetVM[j].Action != ActionStyle.A_ATK && TargetV[j].gameObject.activeSelf && oppVM != TargetVM[j])
 								{	
 									Debug.Log(TargetVM[j] +  " " + TargetVM[j].Action);
 									MainGameController.StartBattle(entityVM, TargetVM[j], entityView, TargetV[j], ActionStyle.ATTACK);
 									//MainGameController.StartBattle(TargetVM[j], entityVM , TargetV[j], entityView, ActionStyle.ATTACK);
 									Debug.Log("Enemy Attack when Soldier moving");
 								}
-								
 								//while(entityVM.BattleState != BattleState.WAITING)
 								//yield return new WaitForSeconds(0.5f);
 							}
@@ -632,8 +565,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 							}
 						} // Enf of for loop
 					} // End of if Enemy
-				
-				
 				} // End of foreach
 				
 				while(entityVM.BattleState != BattleState.WAITING && entityVM.BattleState != BattleState.DEAD)
@@ -672,25 +603,50 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			
 			yield return StartCoroutine(entityView.Move(Map[pathList[i]], Map[pathList[i+1]], move));
 			
+
+			/// Set Grid isSoldier isEnemy CurerentPosition
 			if(entityVM is EnemyViewModel)
 			{
-				walkableGrid[entityVM.CurrentPointLocation].IsWalkable = true;
+				walkableGrid[entityVM.CurrentPointLocation].IsEnemy = true;
 				//Debug.Log (entityVM.CurrentPointLocation + "isWalkable: " + walkableGrid[entityVM.CurrentPointLocation].IsWalkable);
 			}
+
+			else if(entityVM is SoldierViewModel)
+			{
+				walkableGrid[entityVM.CurrentPointLocation].IsSoldier = true;
+			} 
 			
 			entityVM.CurrentPointLocation = pathList[i+1];
 			
 			if(entityVM is EnemyViewModel)
 			{
-				walkableGrid[entityVM.CurrentPointLocation].IsWalkable = false;
+				walkableGrid[entityVM.CurrentPointLocation].IsEnemy = false;
 				//Debug.Log (entityVM.CurrentPointLocation + "isWalkable: " + walkableGrid[entityVM.CurrentPointLocation].IsWalkable);
 			}
+
+			else if(entityVM is SoldierViewModel)
+			{
+				walkableGrid[entityVM.CurrentPointLocation].IsSoldier = false;
+			} 
+			
+
 			while(entityVM.BattleState != BattleState.WAITING)
 				yield return new WaitForSeconds(0.5f);
 			//Debug.Log ("EntityVM: " + entityVM + "Point: " + entityVM.CurrentPointLocation);	
 		}//End for path for loop
 		
 		entityVM.Moving = false;
+		
+		//[ForSoldier]Display the range
+		if(Play_Btn.interactable == true && entityVM is SoldierViewModel)
+		{
+		var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(entityVM.CurrentPointLocation) < 2);
+			foreach (var neighbor in neighborhoodPoints)
+			{
+				if(walkableGrid[neighbor].IsWalkable)
+					walkableGrid[neighbor].Color = ExampleUtils.Colors[3];
+			}
+		}
 		
 		//[forEnemy]Check neighhborPoinr whether Soldier is here
 		if(Play_Btn.interactable == false && entityVM is EnemyViewModel)
@@ -713,7 +669,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		}	
 	}
 	
-	/*
+/*
 	public void CheckNeighborandAttack(FlatHexPoint currentPoint, int range, EntityView entityView, EntityViewModel entityVM)
 	{
 		var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(currentPoint) < range);
@@ -768,7 +724,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			//if(j != 0 &&  SoldierVM[i].playlist[j-1].SaveAction == ActionStyle.FEINT)
 			//	SoldierVM[i].playlist[j-1].SaveEnemyVM.Action = ActionStyle.FEINT;
 			
-			PathFinding(start, finish, SoldierVM[i].playlist[j].SaveMove, SoldierV[i], SoldierVM[i]);
+			PathFinding(start, finish, SoldierVM[i].playlist[j].SaveMove, SoldierV[i], SoldierVM[i], SoldierVM[i].playlist[j].SaveEnemyVM);
 			
 			
 			///--------------------Attack Style : Feint-----------------///
@@ -784,11 +740,11 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 					if(SoldierVM[i].playlist[j-1].SavePointLocation != null)
 					{
 						Debug.Log (i + " Feint: Enemy follow the soldier");
-						var eFinish = SoldierVM[i].playlist[j].SavePointLocation + DirectionPoint(SoldierVM[i].playlist[j-1].SavePointLocation, SoldierVM[i].playlist[j-1].SaveEnemyVM.CurrentPointLocation);
+						var eFinish = NearPoint(SoldierVM[i].playlist[j].SavePointLocation, 2);
 						//if eFinish doesn't exist
 						//var eFinish = new FlatHexPoint(1 , 0);
 						//SoldierVM[i].playlist[j-1].SaveEnemyVM.CurrentPointLocation = eFinish;
-						PathFinding(eStart, eFinish, SoldierVM[i].playlist[j].SaveMove, SoldierVM[i].playlist[j-1].SaveEnemyView, SoldierVM[i].playlist[j-1].SaveEnemyVM);
+						PathFinding(eStart, eFinish, SoldierVM[i].playlist[j].SaveMove, SoldierVM[i].playlist[j-1].SaveEnemyView, SoldierVM[i].playlist[j-1].SaveEnemyVM, null);
 					}
 				}
 			}
@@ -801,6 +757,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			}
 			
 			///--------------------Attack State-------------------------///
+			/// 
 			///--------------------Attack Style : A_ATK-----------------///
 			if (SoldierVM[i].playlist[j].SaveAction == ActionStyle.A_ATK)
 			{
@@ -825,7 +782,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 						myText.text = SoldierVM[i].Name + " YAWP!!!";
 						yield return new WaitForSeconds(0.3f);
 						var finishPoint = SoldierVM[i].playlist[j].SavePointLocation + DirectionPoint(SoldierVM[i].playlist[j].SavePointLocation, TargetVM[x].CurrentPointLocation);
-						PathFinding(TargetVM[x].CurrentPointLocation, finishPoint, MoveStyle.FAST, TargetV[x], TargetVM[x]);
+						PathFinding(TargetVM[x].CurrentPointLocation, finishPoint, MoveStyle.FAST, TargetV[x], TargetVM[x], null);
 						
 						if(!TargetV[x].gameObject.activeSelf)
 						{
@@ -869,7 +826,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 						}
 						//TargetV[x].gameObject.GetComponent<Renderer>().sortingOrder = 12;
 						
-						PathFinding(SoldierVM[i].CurrentPointLocation, finishPoint, MoveStyle.FAST, SoldierV[i], SoldierVM[i]);
+						PathFinding(SoldierVM[i].CurrentPointLocation, finishPoint, MoveStyle.FAST, SoldierV[i], SoldierVM[i], SoldierVM[i].playlist[j].SaveEnemyVM);
 						
 						while(TargetVM[x].Moving == true)
 							yield return new WaitForSeconds(0.2f);
@@ -884,7 +841,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 					}
 				}
 			}
-			
 			/*
 			if( j != 0 && SoldierVM[i].playlist[j].SaveEnemyVM == null && SoldierVM[i].playlist[j-1].SaveAction == ActionStyle.FEINT)
 			{
@@ -949,35 +905,54 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public FlatHexPoint DirectionPoint(FlatHexPoint targetPoint, FlatHexPoint currentPoint)
 	{
 		//NorthEast, North, NorthWest, SouthWest, South, SouthEast
-		FlatHexPoint point = currentPoint - targetPoint;
 		
+		FlatHexPoint point = currentPoint - targetPoint;
+		FlatHexPoint finalDirectionPoint;
 		//N, NE, E, S
+
 		if(point.X >= 0)
 		{
 			if(point.Y > 0)
-				return FlatHexPoint.North;
+				finalDirectionPoint = FlatHexPoint.North;
 			else if (point.Y == 0)
-				return FlatHexPoint.NorthEast;
+				finalDirectionPoint = FlatHexPoint.NorthEast;
 			else
 			{
 				if(point.X == 0)
-					return FlatHexPoint.South;
+					finalDirectionPoint = FlatHexPoint.South;
 				else
-					return FlatHexPoint.SouthEast;
+					finalDirectionPoint = FlatHexPoint.SouthEast;
 			}
 		}
-		
 		//NW, SW
 		else
 		{
 			if(point.Y > 0)
-				return FlatHexPoint.NorthWest;
+				finalDirectionPoint = FlatHexPoint.NorthWest;
 			else
-				return FlatHexPoint.SouthWest;
+				finalDirectionPoint = FlatHexPoint.SouthWest;
 		}
+
+		return finalDirectionPoint;
 	}
+
+	/// <summary>
+	/// reutrn the near point from targetPoint
+	/// </summary>
+	public FlatHexPoint NearPoint(FlatHexPoint targetPoint, int range)
+	{
+		var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(targetPoint) < range);
+
+		foreach (var neighour in neighborhoodPoints)
+		{
+			if(walkableGrid[neighour].IsWalkable && !walkableGrid[neighour].IsEnemy)
+				return neighour;
+		}
+
+		return FlatHexPoint.Zero;
+	} 
 	
-	public void PathFinding(FlatHexPoint s,  FlatHexPoint f, MoveStyle moveStyle, EntityView entityView, EntityViewModel entityVM)
+	public void PathFinding(FlatHexPoint s,  FlatHexPoint f, MoveStyle moveStyle, EntityView entityView, EntityViewModel entityVM, EntityViewModel oppVM)
 	{
 		
 		//var path = Algorithms.AStar(Grid, s, f);
@@ -986,7 +961,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			s,
 			f,
 			(p,q) => p.DistanceFrom(q),
-			c => ((GSCell) c).IsWalkable, //accessing your custom bool from the GSCell
+			c => ((GSCell) c).IsWalkable && !((GSCell) c).IsEnemy, //accessing your custom bool from the GSCell
 			(p, q) => 1);
 		
 		//Debug.Log(entityView.name + "PathFinding" + path);
@@ -996,31 +971,48 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			return; //then there is no path between the start and goal.
 		}
 		
-		StartCoroutine(MovePath(path, moveStyle, entityView, entityVM));
+		StartCoroutine(MovePath(path, moveStyle, entityView, entityVM, oppVM));
 	}
+
+	public void DelPrePathNodes()
+	{
+		foreach (Transform child in pathRoot.transform)
+			GameObject.Destroy(child.gameObject);
+	}
+
+	/// <summary>
+	/// All Button Functions
+	/// </summary>
 	
 	public void EndTurn()
 	{
-		SoldierV[_sNum].RendererColor(Color.grey);
-		if (_sNum < 4)
-			_sNum++;
+		
+		var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
+		foreach (var neighbor in neighborhoodPoints)
+		{
+			if(walkableGrid[neighbor].IsWalkable)
+				walkableGrid[neighbor].Color = Color.white;
+		}
+
+		SoldierV[sNum].RendererColor(Color.grey);
+		if (sNum < 4)
+			sNum++;
 		else
 		{
 			myText.text = "Please Click Play Button";
 			return;
 		}
 
-		SoldierVM[_sNum].SoldierState = SoldierState.MOVE;
+		SoldierVM[sNum].SoldierState = SoldierState.MOVE;
 		selectPoint = false;
-		myText.text = ("Please Move Soldier" + (_sNum + 1));
+		myText.text = ("Please Move Soldier" + (sNum + 1));
 		
 		//Debug.Log (Cinematics.CinematicTargets);
 		//Cinematics.GoToNextTarget();
 		ProCamera2D.enabled = true;
-		ProCamera2D.RemoveCameraTarget(SoldierV[_sNum-1].transform);
-		ProCamera2D.AddCameraTarget(SoldierV[_sNum].transform);
+		ProCamera2D.RemoveCameraTarget(SoldierV[sNum-1].transform);
+		ProCamera2D.AddCameraTarget(SoldierV[sNum].transform);
 	}
-	
 	
 	public void PlayBtn()
 	{
@@ -1029,6 +1021,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		
 		Play_Btn.interactable = false;
 		EndTurn_Btn.interactable = false;
+		Redo_Btn.interactable = false;
+		Restart_Btn.interactable = false;
 		
 		StopAllCoroutines();
 		//ProCamera2D.enabled = false;
@@ -1044,22 +1038,35 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public void RedoBtn()
 	{
 		//del the pre. playlist
-		if(SoldierVM[_sNum].playlist.Count > 1)
+		var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
+		foreach (var neighbor in neighborhoodPoints)
 		{
-			SoldierVM[_sNum].playlist.RemoveAt(SoldierVM[_sNum].playlist.Count - 1);
-			SoldierV[_sNum].transform.position = Map[SoldierVM[_sNum].playlist[SoldierVM[_sNum].playlist.Count - 1].SavePointLocation] + new Vector3(0, -18);
+			if(walkableGrid[neighbor].IsWalkable)
+				walkableGrid[neighbor].Color = Color.white;
+		}
+
+		if(SoldierVM[sNum].playlist.Count > 1)
+		{
+			if (SoldierVM[sNum].SoldierState == SoldierState.MOVE)
+			{
+				SoldierVM[sNum].playlist.RemoveAt(SoldierVM[sNum].playlist.Count - 1);
+				SoldierVM[sNum].Counter--;
+			}
+		
+			SoldierVM[sNum].CurrentPointLocation = SoldierVM[sNum].playlist[SoldierVM[sNum].playlist.Count - 1].SavePointLocation;
+			SoldierV[sNum].transform.position = Map[SoldierVM[sNum].CurrentPointLocation] + new Vector3(0, -18);
 		}
 		
 		else
 		{
-			SoldierVM[_sNum].CurrentPointLocation = new FlatHexPoint(_sNum, 0);
-			SoldierV[_sNum].transform.position = Map[SoldierVM[_sNum].CurrentPointLocation];
+			SoldierVM[sNum].CurrentPointLocation = new FlatHexPoint(sNum, 0);
+			SoldierV[sNum].transform.position = Map[SoldierVM[sNum].CurrentPointLocation];
 			myText.text = "Not more action redo";
 		}
 
-		SoldierVM[_sNum].SoldierState = SoldierState.MOVE;
+		SoldierVM[sNum].SoldierState = SoldierState.MOVE;
 		selectPoint = false;
-		
+		DelPrePathNodes();
 	}
 	
 	//Testing use only
@@ -1072,9 +1079,35 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		}
 		
 		Application.LoadLevel ("MainGameScene");
+  
 	}
-	
-	/// This is the distance function used by the path algorithm.
+
+	public void FindEnemyBtn()
+	{
+		ProCamera2D.enabled = true;
+
+		if (Cinematics.IsActive)
+		{
+			Cinematics.Stop();
+			NextEnemy_Btn.transform.DOMove(new Vector3(NextEnemy_Btn.transform.position.x - 50, NextEnemy_Btn.transform.position.y), 0.5f).SetEase(Ease.OutSine).OnComplete(() => NextEnemy_Btn.gameObject.SetActive(false));
+		}
+		else
+		{
+			Cinematics.Play();
+			NextEnemy_Btn.transform.DOMove(new Vector3(NextEnemy_Btn.transform.position.x + 50, NextEnemy_Btn.transform.position.y), 0.5f).SetEase(Ease.OutSine).OnStart(() => NextEnemy_Btn.gameObject.SetActive(true));
+		}
+	//Cinematics.GoToNextTarget();		
+	//ProCamera2D.enabled = false;
+	}
+
+	public void NextEnemyBtn()
+	{
+		//if (Cinematics.IsActive)
+		Cinematics.GoToNextTarget();
+		//StartCoroutine(FindEnemy());
+	}
+
+/// This is the distance function used by the path algorithm.
 	private float EuclideanDistance(FlatHexPoint p, FlatHexPoint q)
 	{
 		float distance = (Map[p] - Map[q]).magnitude;

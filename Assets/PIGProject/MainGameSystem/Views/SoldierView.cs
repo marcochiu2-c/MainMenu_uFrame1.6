@@ -17,6 +17,7 @@ public class SoldierView : SoldierViewBase {
 
 	public GSHexGridManager gSHexGridManager;
 
+	/*
 	public Button SlowButton; 
 	public Button NormalButton; 
 	public Button FastButton;
@@ -31,6 +32,7 @@ public class SoldierView : SoldierViewBase {
 	public Button StandByButton;
 
 	public Button PlayButton; 
+	*/
 
 	public Text myText;
 	public GameObject MovePanel;
@@ -53,11 +55,13 @@ public class SoldierView : SoldierViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
+		/*
 		//MoveStyle
 		this.BindButtonToHandler(SlowButton, () => {
 			this.Soldier.Movement = MoveStyle.SLOW;
 			//this.Soldier.SoldierState = SoldierState.ATTACK;
 			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});	
 		this.BindButtonToHandler(NormalButton, () => {
 			this.Soldier.Movement = MoveStyle.NORMAL;
@@ -68,6 +72,7 @@ public class SoldierView : SoldierViewBase {
 			this.Soldier.Movement = MoveStyle.FAST;
 			//this.Soldier.SoldierState = SoldierState.ATTACK;
 			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 
 		//ActionStyle
@@ -76,24 +81,28 @@ public class SoldierView : SoldierViewBase {
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
 			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 		this.BindButtonToHandler(AttackButton, () => {
 			this.Soldier.Action = ActionStyle.ATTACK;
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 		    ExecuteChangeActionStyle();
 			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 		this.BindButtonToHandler(FeintButton, () => {
 			this.Soldier.Action = ActionStyle.FEINT;
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
 			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 		this.BindButtonToHandler(PinButton, () => {
 			this.Soldier.Action = ActionStyle.PIN;
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
 			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 
 		this.BindButtonToHandler(YawpButton, () => {
@@ -101,12 +110,14 @@ public class SoldierView : SoldierViewBase {
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
 			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 		this.BindButtonToHandler(SearchButton, () => {
 			this.Soldier.Action = ActionStyle.SEARCH;
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
 			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 		
 		this.BindButtonToHandler(AATKButton, () => {
@@ -114,6 +125,7 @@ public class SoldierView : SoldierViewBase {
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
 			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 		
 		this.BindButtonToHandler(StandByButton, () => {
@@ -121,8 +133,9 @@ public class SoldierView : SoldierViewBase {
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 			ExecuteChangeActionStyle();
 			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});
-
+		*/
 		//this.BindButtonToHandler(PlayButton, () => PlayBattle());
 
     }
