@@ -75,6 +75,7 @@ public class MenuScreenView : MenuScreenViewBase
 		//Temp use
 		this.BindButtonToHandler(SetBattleButton, () =>
 			{
+				
 				Publish(new UnloadSceneCommand()
 					{
 						SceneName = "MainMenuScene" // Unload  main menu scene
@@ -85,6 +86,8 @@ public class MenuScreenView : MenuScreenViewBase
 						//SceneName = arg.LevelScene // Load level scene
 						SceneName = "MainGameScene" // Load level scene
 					});
+				
+				//Publish(new MainMenuFinishedEvent());
 			});
 		
         // This follows the same logic, but we use Method Group syntax.

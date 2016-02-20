@@ -43,7 +43,7 @@ public class IntroSceneFlow : uFrameComponent
         while (progress < 1f)
         {
             Logo.color = Color.Lerp(transparentColor, solidColor, progress);
-            progress += 0.5f*Time.deltaTime;
+            progress += 0.5f * Time.deltaTime;
             yield return null;
         }
 

@@ -19,9 +19,9 @@ public class MainScene : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		silverFeatherText  = GameObject.Find ("/Canvas/HeaderHolder/SilverFeatherPanel/SilverFeatherText").GetComponents<Text>() [0];
-		resourceText = GameObject.Find ("/Canvas/HeaderHolder/ResourcesPanel/ResourcesText").GetComponents<Text> () [0];
-		starDustText = GameObject.Find ("/Canvas/HeaderHolder/StardustPanel/StardustText").GetComponents<Text> () [0];
+		silverFeatherText  = GameObject.Find ("/Canvas/MainUIHolder/HeaderHolder/SilverFeatherPanel/SilverFeatherText").GetComponents<Text>() [0];
+		resourceText = GameObject.Find ("/Canvas/MainUIHolder/HeaderHolder/ResourcesPanel/ResourcesText").GetComponents<Text> () [0];
+		starDustText = GameObject.Find ("/Canvas/MainUIHolder/HeaderHolder/StardustPanel/StardustText").GetComponents<Text> () [0];
 		game = new Game ();
 		wsc = WsClient.Instance;
 		int userId = 3;

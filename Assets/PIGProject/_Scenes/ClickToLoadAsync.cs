@@ -9,16 +9,18 @@ public class ClickToLoadAsync : MonoBehaviour {
 
 	private AsyncOperation async;
 
-	public void ClickAsync(int level){
+	public void ClickAsync(int level)
+	{
 		loadingImage.SetActive (true);
 		StartCoroutine (LoadLevelWithBar (level));
 	
 	}
 
-	IEnumerator LoadLevelWithBar (int level){
+	IEnumerator LoadLevelWithBar (int level)
+	{
 		async = Application.LoadLevelAsync(level);
-		while(!async.isDone){
-
+		while(!async.isDone)
+		{
 			loadingBar.value=async.progress;
 			yield return null;
 		}

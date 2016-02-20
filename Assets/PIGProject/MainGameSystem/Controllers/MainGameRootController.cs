@@ -64,11 +64,11 @@ public class MainGameRootController : MainGameRootControllerBase {
 		//Need to check if not the first guy, prevent to run these script
 		//if(P1.BattleState == BattleState.WAITING)
 		//{
-	   		soldiers[0].Opponent = soldiers[1];
-			soldiersView[0].OpponentView = soldiersView[1];
-			soldiers[0].TimeStarted = true;
+	   	soldiers[0].Opponent = soldiers[1];
+		soldiersView[0].OpponentView = soldiersView[1];
+		soldiers[0].TimeStarted = true;
 
-			P1.BattleState = BattleState.FIGHTING;
+		P1.BattleState = BattleState.FIGHTING;
 		//}
 
 

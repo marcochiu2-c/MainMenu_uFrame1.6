@@ -44,6 +44,7 @@ public class noticetext : MonoBehaviour {
 		
 	}
 
+
 	// Use this for initialization
 	void Start () {
 		theText = GameObject.Find ("/Canvas/NoticeHolder/NoticeHolder/NoticeMask/Text").GetComponent <Text>();

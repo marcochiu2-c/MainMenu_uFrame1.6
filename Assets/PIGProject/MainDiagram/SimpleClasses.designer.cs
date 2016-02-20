@@ -167,3 +167,53 @@ public class DialogueCommandBase : object {
         var node = JSON.Parse(json);
     }
 }
+
+public class MainMenuFinishedEventBase : object {
+    
+    public virtual string Serialize() {
+        var jsonObject = new JSONClass();
+        return jsonObject.ToString();
+    }
+    
+    public virtual void Deserialize(string json) {
+        var node = JSON.Parse(json);
+    }
+}
+
+public class AssetLoadingGameProgressEventBase : object {
+    
+    private Single _Progress;
+    
+    private String _Message;
+    
+    public Single Progress {
+        get {
+            return _Progress;
+        }
+        set {
+            _Progress = value;
+        }
+    }
+    
+    public String Message {
+        get {
+            return _Message;
+        }
+        set {
+            _Message = value;
+        }
+    }
+    
+    public virtual string Serialize() {
+        var jsonObject = new JSONClass();
+        jsonObject.Add("Progress", new JSONData(this.Progress));
+        return jsonObject.ToString();
+    }
+    
+    public virtual void Deserialize(string json) {
+        var node = JSON.Parse(json);
+        if (node["Progress"] != null) {
+            this.Progress = node["Progress"].AsFloat;
+        }
+    }
+}

@@ -40,10 +40,26 @@ public class SceneFlowService : SceneFlowServiceBase {
 
     }
 
+	public override void MainMenuFinishedEventHandler(MainMenuFinishedEvent data)
+	{
+		base.MainMenuFinishedEventHandler(data);
+
+		this.Publish(new UnloadSceneCommand() //Unload Intro scene
+			{
+				SceneName = "MainMenuScene"
+			});
+
+		this.Publish(new LoadSceneCommand() // Load AssetsLoadingScene
+			{
+				SceneName = "AssetsLoadingScene"
+			});
+	}
+
     /*
      * We handle this event to get the moment, when asset loading is finished, so we can move to
      * Main Menu scene
      */
+
     public override void AssetLoadingProgressEventHandler(AssetLoadingProgressEvent data)
     {
         base.AssetLoadingProgressEventHandler(data);
@@ -57,12 +73,29 @@ public class SceneFlowService : SceneFlowServiceBase {
 
         this.Publish(new LoadSceneCommand() // Load MainMenuScene
         {
-            SceneName = "MainGameScene"
+            SceneName = "MainMenuScene"
         });
     }
 
-}
+	public override void AssetLoadingGameProgressEventHandler(AssetLoadingGameProgressEvent data)
+	{
+		base.AssetLoadingGameProgressEventHandler(data);
 
+		if (data.Progress != 1f) return; //This is the key part: we check that asset loading procedure is finished
+
+		this.Publish(new UnloadSceneCommand() //Unload AssetsLoadingScene
+			{
+				SceneName = "AssetsLoadingScene"
+			});
+
+		this.Publish(new LoadSceneCommand() // Load MainMenuScene
+			{
+				SceneName = "MainGameScene"
+			});
+	}
+
+}
+	
 public class LoadScenesWithScreenCommand
 {
     public List<string> ScenesToLoad;

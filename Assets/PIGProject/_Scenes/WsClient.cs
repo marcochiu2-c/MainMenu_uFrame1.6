@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Text;
 using WebSocketSharp;
+using System.Net.Sockets;
+using System.Net;
 
 
 public class WsClient {
@@ -10,6 +12,8 @@ public class WsClient {
 	public WebSocket conn;
 	string table = "";
 	string result = "";
+	private string ip = "192.168.100.64";
+	private int port = 8000; 
 	// Use this for initialization
 
 	private static readonly WsClient s_Instance = new WsClient();
@@ -22,22 +26,34 @@ public class WsClient {
 		}
 	}
 
-	public WsClient (String s="wss://192.168.100.64:8000/") {
-		server = s;
-		using (conn = new WebSocket (server,"game"));
-		conn.Connect ();
+	public bool healthCheck(){
+		return true;
+	}
 
-		conn.OnOpen += (sender, e) => conn.Send ("Server Connected");
+	public WsClient () {
 
-		conn.OnError += (sender, e) => {
-			conn.Close();
-		};
+		bool success = TestConnection();
+		if (success) {
+			Debug.Log ("Server check ok");
+			string server = String.Format("wss://{0}:{1}/",  ip,  port );
+			using (conn = new WebSocket (server,"game"));
+			conn.Connect ();
 
-		conn.OnClose += (sender, e) => {
-			conn.Close();
-		};
+			conn.OnOpen += (sender, e) => conn.Send ("Server Connected");
 
+			conn.OnError += (sender, e) => {
+				Debug.Log("Websocket Error");
+				conn.Close ();
+			};
 
+			conn.OnClose += (sender, e) => {
+				Debug.Log("Websocket Close");
+				conn.Close ();
+			};
+		} else {
+			Debug.Log ("Server check failed");
+			return;
+		}
 
 		conn.SslConfiguration.ServerCertificateValidationCallback =
 			(sender, certificate, chain, sslPolicyErrors) => {
@@ -56,11 +72,30 @@ public class WsClient {
 	
 	}
 
+	private bool TestConnection(){
+		TcpClient client = new TcpClient(); 
+		bool result = false;
+		try
+		{
+			client.BeginConnect(ip, port, null, null).AsyncWaitHandle.WaitOne(3000); 
+			result = client.Connected;
+		}
 
+
+		catch { }
+		finally {
+			client.Close ();
+		}
+		return result;
+	}
 
 	public void Send(String json){
 		Debug.Log ("Sending Command");
 		conn.Send (json);
+	}
+
+	public void OnConnectionFailed(){
+		Debug.Log( "Connection lost");
 	}
 
 	public String UnixTimestampToDateTime(long timestamp,int tz)

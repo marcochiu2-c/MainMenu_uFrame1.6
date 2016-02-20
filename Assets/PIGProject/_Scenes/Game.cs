@@ -20,7 +20,15 @@ public class Game {
 	public List<PrivateMessage> privateMessages { get; set; }
 	public List<Storage> storage { get; set; }
 
-
+	private static readonly Game s_Instance = new Game();
+	
+	public static Game Instance
+	{
+		get
+		{
+			return s_Instance;
+		}
+	}
 
 	public Game(){
 		login = new Login ();
@@ -182,6 +190,19 @@ public class Login {
 	public string country { get; set; }
 	public string deviceID { get; set; }
 
+	public Login(){
+	}
+	//{"player_id":"3","device_id":"","sns_type":1,"sns_url":"10153232082329123","country":"HK","register_time":1437706124,"last_login_time":1437713377,"last_login_ip":3232235781,"total_login_time":622037,"status":1,"exp":1043,"war_credits":1124,"battle_started_time":"2016-02-02T02:53:00.000Z"}
+	public Login (SimpleJSON.JSONClass j){
+		id = j ["user_id"].AsInt;
+		name = j ["name"];
+		snsType = j ["sns_type"].AsInt;
+		snsURL = j ["sns_url"];
+		exp = j ["exp"].AsInt;
+		warCredit = j ["war_credit"].AsInt;
+		country = j ["country"];
+		deviceID = j ["device_id"];
+	}
 	public JSONClass toJSON(){
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
@@ -470,6 +491,13 @@ public class Storage{
 		productId = pi;
 		type = t;
 		quantity = q;
+	}
+
+	public Storage (SimpleJSON.JSONClass j){
+		id = j["id"].AsInt;
+		productId = j ["prod_id"].AsInt;
+		type = j["prod_type"].AsInt;
+		quantity = j["quantity"].AsInt;
 	}
 
 	public JSONClass toJSON(){
