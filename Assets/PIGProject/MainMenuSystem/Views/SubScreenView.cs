@@ -51,29 +51,37 @@ public class SubScreenView : SubScreenViewBase
 		///</summary>
 		//Debug.Log(ScreenUIContainer.name);
 		
-
+		/*
 		if(ScreenUIContainer.name == "LoginScreenPanel"){
 			ScreenUIContainer.gameObject.SetActive(active);
 		}
+		*/
 
 		//if(LocalUser != null && LocalUser.AuthorizationState == AuthorizationState.Authorized){
 
+		/*
 		if (ScreenUIContainer.name == "MainMenuPanel"){
 				ScreenUIContainer.gameObject.SetActive(true);
 				//Debug.Log ("Hello from MainMenuPanel codition");
 			}
+		
 
-		else if (ScreenUIContainer.name == "LevelSelectPanel"){
-				ScreenUIContainer.gameObject.SetActive(active);
+		if (ScreenUIContainer.name == "LevelSelectPanel"){
+			ScreenUIContainer.gameObject.SetActive(active);
 				//Debug.Log ("Hello from MainMenuPanel codition");
 		}
+		*/
 
-		else if(active){
-				ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>ScreenUIContainer.gameObject.SetActive(true));
+		if(active)
+		{
+			if (ScreenUIContainer.name == "MainUIHolder") return;
+			ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>ScreenUIContainer.gameObject.SetActive(true));
 			//Debug.Log (ScreenUIContainer.name + " actived");
 		}
-		else{
-				ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
+		else
+		{
+			if (ScreenUIContainer.name == "MainUIHolder") return;
+			ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
 		}
 		//}						
 	}

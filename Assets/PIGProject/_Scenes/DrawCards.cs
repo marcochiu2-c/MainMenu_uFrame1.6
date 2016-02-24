@@ -101,7 +101,9 @@ enum jsonFuncNumberEnum {
 	updateBuilding = 241,
 };
 
-/*
+
+
+
 public class DrawCards : MonoBehaviour {
 	WsClient wsc;
 	Game game;
@@ -252,5 +254,4 @@ public class DrawCards : MonoBehaviour {
 
 	// TODO: add method OnButtonDrawSingleCardWithCard
 }
-*/
 

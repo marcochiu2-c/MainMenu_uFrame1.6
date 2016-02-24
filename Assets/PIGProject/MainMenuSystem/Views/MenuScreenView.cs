@@ -22,6 +22,18 @@ public class MenuScreenView : MenuScreenViewBase
 	public Button HeadButton;
 	public Button CardButton;
 	public Button SetBattleButton;
+	public Button CharPageButton;
+	public Button ShopButton;
+	public Button AcademyButton;
+	public Button ArtisanButton;
+	public Button TrainButton;
+	public Button ConferenceButton;
+	public Button ParallelButton;
+	public Button CompanionButton;
+	public Button TechnologyTreeButton;
+	public Button StorageButton;
+
+	public Button SampleButton;
 	//public Image TestArea;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
@@ -72,10 +84,66 @@ public class MenuScreenView : MenuScreenViewBase
 				Publish(evt);
 			});
 
+		this.BindButtonToHandler(CharPageButton, () =>
+			{
+				evt.ScreenType = typeof(CharPageScreenViewModel);
+				Publish(evt);
+			});
+		
+		this.BindButtonToHandler(ShopButton, () =>
+			{
+				evt.ScreenType = typeof(ShopScreenViewModel);
+				Publish(evt);
+			});
+
+		this.BindButtonToHandler(AcademyButton, () =>
+			{
+				evt.ScreenType = typeof(AcademyScreenViewModel);
+				Publish(evt);
+			});
+
+		this.BindButtonToHandler(ArtisanButton, () =>
+			{
+				evt.ScreenType = typeof(ArtisanScreenViewModel);
+				Publish(evt);
+			});
+		
+		this.BindButtonToHandler(TrainButton, () =>
+			{
+				evt.ScreenType = typeof(TrainScreenViewModel);
+				Publish(evt);
+			});
+
+		this.BindButtonToHandler(ConferenceButton, () =>
+			{
+				evt.ScreenType = typeof(ConferenceScreenViewModel);
+				Publish(evt);
+			});
+
+		this.BindButtonToHandler(ParallelButton, () =>
+			{
+				evt.ScreenType = typeof(ParallelScreenViewModel);
+				Publish(evt);
+			});
+
+		this.BindButtonToHandler(CompanionButton, () =>
+			{
+				evt.ScreenType = typeof(CompanionScreenViewModel);
+				Publish(evt);
+			});
+
+		this.BindButtonToHandler(TechnologyTreeButton, () =>
+			{
+				evt.ScreenType = typeof(TechnologyTreeScreenViewModel);
+				Publish(evt);
+			});
 		//Temp use
 		this.BindButtonToHandler(SetBattleButton, () =>
 			{
-				
+
+				evt.ScreenType = typeof(SetBattleScreenViewModel);
+				Publish(evt);
+				/*
 				Publish(new UnloadSceneCommand()
 					{
 						SceneName = "MainMenuScene" // Unload  main menu scene
@@ -86,10 +154,16 @@ public class MenuScreenView : MenuScreenViewBase
 						//SceneName = arg.LevelScene // Load level scene
 						SceneName = "MainGameScene" // Load level scene
 					});
+				*/
 				
 				//Publish(new MainMenuFinishedEvent());
 			});
-		
+
+		this.BindButtonToHandler(SampleButton, () =>
+			{
+				evt.ScreenType = typeof(SampleScreenViewModel);
+				Publish(evt);
+			});
         // This follows the same logic, but we use Method Group syntax.
         // And we do not publish event. We just quit.
 		this.BindButtonToHandler(ExitButton, Application.Quit);

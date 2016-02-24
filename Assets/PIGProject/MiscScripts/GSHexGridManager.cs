@@ -353,8 +353,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	/// </summary>
 	public void OnClick(FlatHexPoint point)
 	{
-
-		ProCamera2D.enabled = false;
+		//ProCamera2D.enabled = false;
 
 		if(_clicking == false) return;
 
@@ -808,7 +807,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 							MainGameController.StartBattle(SoldierVM[i], TargetVM[x], SoldierV[i], TargetV[x], ActionStyle.ATTACK);
 							
-							while(SoldierVM[i].BattleState != BattleState.WAITING)
+							while(SoldierVM[i].BattleState != BattleState.WAITING && SoldierVM[i].BattleState != BattleState.DEAD)
 							{
 								//Debug.Log ("Wating finish Battle");
 								yield return new WaitForSeconds(1/SoldierVM[i].AttackSpeed);
@@ -850,7 +849,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 							MainGameController.StartBattle(SoldierVM[i], TargetVM[x], SoldierV[i], TargetV[x], ActionStyle.ATTACK);
 						
-							while(SoldierVM[i].BattleState != BattleState.WAITING)
+							while(SoldierVM[i].BattleState != BattleState.WAITING && SoldierVM[i].BattleState != BattleState.DEAD)
 							{
 								//Debug.Log ("Wating finish Battle");
 								yield return new WaitForSeconds(1/SoldierVM[i].AttackSpeed);

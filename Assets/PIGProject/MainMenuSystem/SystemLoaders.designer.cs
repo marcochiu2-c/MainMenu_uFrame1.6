@@ -41,6 +41,28 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private SetBattleScreenController _SetBattleScreenController;
     
+    private CharPageScreenController _CharPageScreenController;
+    
+    private ConferenceScreenController _ConferenceScreenController;
+    
+    private ParallelScreenController _ParallelScreenController;
+    
+    private CompanionScreenController _CompanionScreenController;
+    
+    private TechnologyTreeScreenController _TechnologyTreeScreenController;
+    
+    private StorageScreenController _StorageScreenController;
+    
+    private ShopScreenController _ShopScreenController;
+    
+    private SchoolFieldScreenController _SchoolFieldScreenController;
+    
+    private AcademyScreenController _AcademyScreenController;
+    
+    private ArtisanScreenController _ArtisanScreenController;
+    
+    private TrainScreenController _TrainScreenController;
+    
     [uFrame.IOC.InjectAttribute("MainMenuRoot")]
     public virtual MainMenuRootViewModel MainMenuRoot {
         get {
@@ -183,6 +205,149 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
         }
     }
     
+    [uFrame.IOC.InjectAttribute()]
+    public virtual CharPageScreenController CharPageScreenController {
+        get {
+            if (_CharPageScreenController==null) {
+                _CharPageScreenController = Container.CreateInstance(typeof(CharPageScreenController)) as CharPageScreenController;;
+            }
+            return _CharPageScreenController;
+        }
+        set {
+            _CharPageScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual ConferenceScreenController ConferenceScreenController {
+        get {
+            if (_ConferenceScreenController==null) {
+                _ConferenceScreenController = Container.CreateInstance(typeof(ConferenceScreenController)) as ConferenceScreenController;;
+            }
+            return _ConferenceScreenController;
+        }
+        set {
+            _ConferenceScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual ParallelScreenController ParallelScreenController {
+        get {
+            if (_ParallelScreenController==null) {
+                _ParallelScreenController = Container.CreateInstance(typeof(ParallelScreenController)) as ParallelScreenController;;
+            }
+            return _ParallelScreenController;
+        }
+        set {
+            _ParallelScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual CompanionScreenController CompanionScreenController {
+        get {
+            if (_CompanionScreenController==null) {
+                _CompanionScreenController = Container.CreateInstance(typeof(CompanionScreenController)) as CompanionScreenController;;
+            }
+            return _CompanionScreenController;
+        }
+        set {
+            _CompanionScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual TechnologyTreeScreenController TechnologyTreeScreenController {
+        get {
+            if (_TechnologyTreeScreenController==null) {
+                _TechnologyTreeScreenController = Container.CreateInstance(typeof(TechnologyTreeScreenController)) as TechnologyTreeScreenController;;
+            }
+            return _TechnologyTreeScreenController;
+        }
+        set {
+            _TechnologyTreeScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual StorageScreenController StorageScreenController {
+        get {
+            if (_StorageScreenController==null) {
+                _StorageScreenController = Container.CreateInstance(typeof(StorageScreenController)) as StorageScreenController;;
+            }
+            return _StorageScreenController;
+        }
+        set {
+            _StorageScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual ShopScreenController ShopScreenController {
+        get {
+            if (_ShopScreenController==null) {
+                _ShopScreenController = Container.CreateInstance(typeof(ShopScreenController)) as ShopScreenController;;
+            }
+            return _ShopScreenController;
+        }
+        set {
+            _ShopScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual SchoolFieldScreenController SchoolFieldScreenController {
+        get {
+            if (_SchoolFieldScreenController==null) {
+                _SchoolFieldScreenController = Container.CreateInstance(typeof(SchoolFieldScreenController)) as SchoolFieldScreenController;;
+            }
+            return _SchoolFieldScreenController;
+        }
+        set {
+            _SchoolFieldScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual AcademyScreenController AcademyScreenController {
+        get {
+            if (_AcademyScreenController==null) {
+                _AcademyScreenController = Container.CreateInstance(typeof(AcademyScreenController)) as AcademyScreenController;;
+            }
+            return _AcademyScreenController;
+        }
+        set {
+            _AcademyScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual ArtisanScreenController ArtisanScreenController {
+        get {
+            if (_ArtisanScreenController==null) {
+                _ArtisanScreenController = Container.CreateInstance(typeof(ArtisanScreenController)) as ArtisanScreenController;;
+            }
+            return _ArtisanScreenController;
+        }
+        set {
+            _ArtisanScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual TrainScreenController TrainScreenController {
+        get {
+            if (_TrainScreenController==null) {
+                _TrainScreenController = Container.CreateInstance(typeof(TrainScreenController)) as TrainScreenController;;
+            }
+            return _TrainScreenController;
+        }
+        set {
+            _TrainScreenController = value;
+        }
+    }
+    
     public override void Load() {
         Container.RegisterViewModelManager<MainMenuRootViewModel>(new ViewModelManager<MainMenuRootViewModel>());
         Container.RegisterController<MainMenuRootController>(MainMenuRootController);
@@ -204,6 +369,28 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
         Container.RegisterController<CardScreenController>(CardScreenController);
         Container.RegisterViewModelManager<SetBattleScreenViewModel>(new ViewModelManager<SetBattleScreenViewModel>());
         Container.RegisterController<SetBattleScreenController>(SetBattleScreenController);
+        Container.RegisterViewModelManager<CharPageScreenViewModel>(new ViewModelManager<CharPageScreenViewModel>());
+        Container.RegisterController<CharPageScreenController>(CharPageScreenController);
+        Container.RegisterViewModelManager<ConferenceScreenViewModel>(new ViewModelManager<ConferenceScreenViewModel>());
+        Container.RegisterController<ConferenceScreenController>(ConferenceScreenController);
+        Container.RegisterViewModelManager<ParallelScreenViewModel>(new ViewModelManager<ParallelScreenViewModel>());
+        Container.RegisterController<ParallelScreenController>(ParallelScreenController);
+        Container.RegisterViewModelManager<CompanionScreenViewModel>(new ViewModelManager<CompanionScreenViewModel>());
+        Container.RegisterController<CompanionScreenController>(CompanionScreenController);
+        Container.RegisterViewModelManager<TechnologyTreeScreenViewModel>(new ViewModelManager<TechnologyTreeScreenViewModel>());
+        Container.RegisterController<TechnologyTreeScreenController>(TechnologyTreeScreenController);
+        Container.RegisterViewModelManager<StorageScreenViewModel>(new ViewModelManager<StorageScreenViewModel>());
+        Container.RegisterController<StorageScreenController>(StorageScreenController);
+        Container.RegisterViewModelManager<ShopScreenViewModel>(new ViewModelManager<ShopScreenViewModel>());
+        Container.RegisterController<ShopScreenController>(ShopScreenController);
+        Container.RegisterViewModelManager<SchoolFieldScreenViewModel>(new ViewModelManager<SchoolFieldScreenViewModel>());
+        Container.RegisterController<SchoolFieldScreenController>(SchoolFieldScreenController);
+        Container.RegisterViewModelManager<AcademyScreenViewModel>(new ViewModelManager<AcademyScreenViewModel>());
+        Container.RegisterController<AcademyScreenController>(AcademyScreenController);
+        Container.RegisterViewModelManager<ArtisanScreenViewModel>(new ViewModelManager<ArtisanScreenViewModel>());
+        Container.RegisterController<ArtisanScreenController>(ArtisanScreenController);
+        Container.RegisterViewModelManager<TrainScreenViewModel>(new ViewModelManager<TrainScreenViewModel>());
+        Container.RegisterController<TrainScreenController>(TrainScreenController);
         Container.RegisterViewModel<MainMenuRootViewModel>(MainMenuRoot, "MainMenuRoot");
     }
 }

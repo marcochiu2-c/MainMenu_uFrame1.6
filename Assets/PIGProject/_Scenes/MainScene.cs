@@ -19,6 +19,7 @@ public class MainScene : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		/*
 		silverFeatherText  = GameObject.Find ("/Canvas/MainUIHolder/HeaderHolder/SilverFeatherPanel/SilverFeatherText").GetComponents<Text>() [0];
 		resourceText = GameObject.Find ("/Canvas/MainUIHolder/HeaderHolder/ResourcesPanel/ResourcesText").GetComponents<Text> () [0];
 		starDustText = GameObject.Find ("/Canvas/MainUIHolder/HeaderHolder/StardustPanel/StardustText").GetComponents<Text> () [0];
@@ -43,12 +44,13 @@ public class MainScene : MonoBehaviour {
 			rValue = wealthList[1].value.ToString ();
 			sdValue = wealthList[2].value.ToString ();
 		};
+		*/
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		silverFeatherText.text = sValue;
-		resourceText.text = rValue;
-		starDustText.text = sdValue;
+		//silverFeatherText.text = sValue;
+		//resourceText.text = rValue;
+		//starDustText.text = sdValue;
 	}
 }
