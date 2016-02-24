@@ -16,13 +16,27 @@ using DG.Tweening;
 public class MainGameRootView : MainGameRootViewBase {
     
 	public Text gameOverText;
-	
+	public GSHexGridManager gSHexGridManager;
+
 	public Button InfoButton;
 	public Button InfoCloseButton;
 	public Button InfoAtkButton;
 	public Button InfoMoveButton;
 	public Button InfoMissionButton;
 	public Button StartBattleButton;
+
+	public Button SlowButton; 
+	public Button NormalButton; 
+	public Button FastButton;
+
+	public Button AttackButton;
+	public Button AssaultButton;
+	public Button FeintButton;
+	public Button PinButton;
+	public Button YawpButton;
+	public Button SearchButton;
+	public Button AATKButton;
+	public Button StandByButton;
 	
 	public TextAsset atkInfo;
 	public TextAsset moveInfo;
@@ -30,6 +44,8 @@ public class MainGameRootView : MainGameRootViewBase {
 	public GameObject InfoPanel;
 	public GameObject BlockPanel;
 	public Text InfoText;
+
+	public List<SoldierViewModel> SoldierVM = new List<SoldierViewModel>();
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -40,6 +56,12 @@ public class MainGameRootView : MainGameRootViewBase {
         // var vm = model as MainGameRootViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
 		InfoText.text = missionInfo.text;
+		gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent<GSHexGridManager>();
+
+		for (int i = 1; i <= 5; i++)
+			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
+
+
 	}
 	
 	public override void Bind() {
@@ -78,17 +100,92 @@ public class MainGameRootView : MainGameRootViewBase {
 			InfoPanel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad).OnComplete(() => InfoPanel.SetActive(false));
 			BlockPanel.SetActive(false);
 		});
-		
+
 		this.BindButtonToHandler(InfoAtkButton, () => { 
 			InfoText.text = atkInfo.text;
 		});
-		
+
 		this.BindButtonToHandler(InfoMoveButton, () => { 
 			InfoText.text = moveInfo.text;
 		});
-		
+
 		this.BindButtonToHandler(InfoMissionButton, () => { 
 			InfoText.text = missionInfo.text;
+		});
+
+		//Batte Start la
+		//MoveStyle
+		this.BindButtonToHandler(SlowButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Movement = MoveStyle.SLOW;
+			//this.Soldier.SoldierState = SoldierState.ATTACK;
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
+		});	
+		this.BindButtonToHandler(NormalButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Movement = MoveStyle.NORMAL;
+			//this.Soldier.SoldierState = SoldierState.ATTACK;
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
+		});	
+		this.BindButtonToHandler(FastButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Movement= MoveStyle.FAST;
+			//this.Soldier.SoldierState = SoldierState.ATTACK;
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
+		});
+
+		//ActionStyle
+		this.BindButtonToHandler(AssaultButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.ASSAULT;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
+			//ExecuteChangeActionStyle();
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
+		});
+		this.BindButtonToHandler(AttackButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.ATTACK;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
+		});
+		this.BindButtonToHandler(FeintButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.FEINT;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
+		});
+		this.BindButtonToHandler(PinButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.PIN;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
+		});
+
+		this.BindButtonToHandler(YawpButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.YAWP;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
+		});
+		this.BindButtonToHandler(SearchButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.SEARCH;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
+		});
+
+		this.BindButtonToHandler(AATKButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.A_ATK;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
+		});
+
+		this.BindButtonToHandler(StandByButton, () => {
+			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.STANDBY;
+			//this.Soldier.SoldierState = SoldierState.MOVE;
+			gSHexGridManager.selectPoint = true;
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 		
     }

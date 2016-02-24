@@ -29,6 +29,8 @@ public class SceneFlowServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
         base.Setup();
         this.OnEvent<IntroFinishedEvent>().Subscribe(this.IntroFinishedEventHandler);
         this.OnEvent<AssetLoadingProgressEvent>().Subscribe(this.AssetLoadingProgressEventHandler);
+        this.OnEvent<MainMenuFinishedEvent>().Subscribe(this.MainMenuFinishedEventHandler);
+        this.OnEvent<AssetLoadingGameProgressEvent>().Subscribe(this.AssetLoadingGameProgressEventHandler);
     }
     
     /// <summary>
@@ -43,6 +45,22 @@ public class SceneFlowServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
     // This method is executed when using this.Publish(new AssetLoadingProgressEvent())
     /// </summary>
     public virtual void AssetLoadingProgressEventHandler(AssetLoadingProgressEvent data) {
+        // Process the commands information.  Also, you can publish new events by using the line below.
+        // this.Publish(new AnotherEvent())
+    }
+    
+    /// <summary>
+    // This method is executed when using this.Publish(new MainMenuFinishedEvent())
+    /// </summary>
+    public virtual void MainMenuFinishedEventHandler(MainMenuFinishedEvent data) {
+        // Process the commands information.  Also, you can publish new events by using the line below.
+        // this.Publish(new AnotherEvent())
+    }
+    
+    /// <summary>
+    // This method is executed when using this.Publish(new AssetLoadingGameProgressEvent())
+    /// </summary>
+    public virtual void AssetLoadingGameProgressEventHandler(AssetLoadingGameProgressEvent data) {
         // Process the commands information.  Also, you can publish new events by using the line below.
         // this.Publish(new AnotherEvent())
     }

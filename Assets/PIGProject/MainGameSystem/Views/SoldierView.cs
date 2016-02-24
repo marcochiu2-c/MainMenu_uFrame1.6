@@ -17,6 +17,7 @@ public class SoldierView : SoldierViewBase {
 
 	public GSHexGridManager gSHexGridManager;
 
+	/*
 	public Button SlowButton; 
 	public Button NormalButton; 
 	public Button FastButton;
@@ -31,6 +32,7 @@ public class SoldierView : SoldierViewBase {
 	public Button StandByButton;
 
 	public Button PlayButton; 
+	*/
 
 	public Text myText;
 	public GameObject MovePanel;
@@ -53,76 +55,6 @@ public class SoldierView : SoldierViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
-		this.BindButtonToHandler(SlowButton, () => {
-			this.Soldier.Movement = MoveStyle.SLOW;
-			//this.Soldier.SoldierState = SoldierState.ATTACK;
-			gSHexGridManager.selectPoint = true;
-		});	
-		this.BindButtonToHandler(NormalButton, () => {
-			this.Soldier.Movement = MoveStyle.NORMAL;
-			//this.Soldier.SoldierState = SoldierState.ATTACK;
-			gSHexGridManager.selectPoint = true;
-		});	
-		this.BindButtonToHandler(FastButton, () => {
-			this.Soldier.Movement = MoveStyle.FAST;
-			//this.Soldier.SoldierState = SoldierState.ATTACK;
-			gSHexGridManager.selectPoint = true;
-		});
-
-		this.BindButtonToHandler(AssaultButton, () => {
-			this.Soldier.Action = ActionStyle.ASSAULT;
-			//this.Soldier.SoldierState = SoldierState.MOVE;
-			ExecuteChangeActionStyle();
-			gSHexGridManager.selectPoint = true;
-		});
-		this.BindButtonToHandler(AttackButton, () => {
-			this.Soldier.Action = ActionStyle.ATTACK;
-			//this.Soldier.SoldierState = SoldierState.MOVE;
-		    ExecuteChangeActionStyle();
-			gSHexGridManager.selectPoint = true;
-		});
-		this.BindButtonToHandler(FeintButton, () => {
-			this.Soldier.Action = ActionStyle.FEINT;
-			//this.Soldier.SoldierState = SoldierState.MOVE;
-			ExecuteChangeActionStyle();
-			gSHexGridManager.selectPoint = true;
-		});
-		this.BindButtonToHandler(PinButton, () => {
-			this.Soldier.Action = ActionStyle.PIN;
-			//this.Soldier.SoldierState = SoldierState.MOVE;
-			ExecuteChangeActionStyle();
-			gSHexGridManager.selectPoint = true;
-		});
-
-		this.BindButtonToHandler(YawpButton, () => {
-			this.Soldier.Action = ActionStyle.YAWP;
-			//this.Soldier.SoldierState = SoldierState.MOVE;
-			ExecuteChangeActionStyle();
-			gSHexGridManager.selectPoint = true;
-		});
-		this.BindButtonToHandler(SearchButton, () => {
-			this.Soldier.Action = ActionStyle.SEARCH;
-			//this.Soldier.SoldierState = SoldierState.MOVE;
-			ExecuteChangeActionStyle();
-			gSHexGridManager.selectPoint = true;
-		});
-		
-		this.BindButtonToHandler(AATKButton, () => {
-			this.Soldier.Action = ActionStyle.A_ATK;
-			//this.Soldier.SoldierState = SoldierState.MOVE;
-			ExecuteChangeActionStyle();
-			gSHexGridManager.selectPoint = true;
-		});
-		
-		this.BindButtonToHandler(StandByButton, () => {
-			this.Soldier.Action = ActionStyle.STANDBY;
-			//this.Soldier.SoldierState = SoldierState.MOVE;
-			ExecuteChangeActionStyle();
-			gSHexGridManager.selectPoint = true;
-		});
-
-		//this.BindButtonToHandler(PlayButton, () => PlayBattle());
-
     }
 
 	//the LIst that save the move and command
@@ -141,13 +73,14 @@ public class SoldierView : SoldierViewBase {
 		myText.text = state + " State";
 
 		//Change the Panel to Attack Panel
+
 		if (state == SoldierState.ATTACK)
 		{
 			//Active Action btns
 			//Debug.Log ("Attack !!");
 			if (MovePanel.gameObject.activeSelf && !ActionPanel.gameObject.activeSelf)
 			{
-				//Debug.Log("Change to Action Panel");
+				//Debug.Log("Change to Action Panel");       
 				MovePanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y + 50.0f), 1).SetEase(Ease.OutSine).OnComplete(() => MovePanel.gameObject.SetActive(false));
 				ActionPanel.transform.DOMove(new Vector3(MovePanel.transform.position.x, MovePanel.transform.position.y - 8.0f), 1).SetEase(Ease.OutSine).OnStart(() => ActionPanel.gameObject.SetActive(true));
 				//MovePanel.transform.DOLocalMoveY(1.0f, 1).SetEase(Ease.OutSine).OnComplete(() => MovePanel.gameObject.SetActive(false));
@@ -172,6 +105,7 @@ public class SoldierView : SoldierViewBase {
 				//ActionPanel.transform.DOLocalMoveY(1.0f, 1).SetEase(Ease.OutSine).OnComplete(() => ActionPanel.gameObject.SetActive(false));
 			}
 		}
+
 
 		if (state == SoldierState.PLAY)
 		{

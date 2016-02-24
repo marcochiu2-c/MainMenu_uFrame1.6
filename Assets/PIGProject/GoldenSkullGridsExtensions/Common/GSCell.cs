@@ -216,5 +216,21 @@ namespace Gamelogic.Grids.GoldenSkull
 			get { return isWalkable; }
 			set { isWalkable = value; }
 		}
+
+		private bool isEnemy = false;
+
+		public bool IsEnemy
+		{
+			get { return isEnemy; }
+			set { isEnemy = value; }
+		}
+
+		private bool isSoldier = false;
+
+		public bool IsSoldier
+		{
+			get { return isSoldier; }
+			set { isSoldier = value; }
+		}
 	}
 }

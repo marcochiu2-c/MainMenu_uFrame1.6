@@ -3,9 +3,10 @@ using System.Collections;
 
 public class TouchCameraControl : MonoBehaviour 
 {
-	public float moveSensitivityX = 1.0f;
-	public float moveSensitivityY = 1.0f;
-	public bool updateZoomSensitivity = true;
+	public float moveSensitivityX = 100.0f;
+	public float moveSensitivityY = 100.0f;
+	public float mouseSpeed = 1000.0f;
+	public bool updateZoomSensitivity = false;
 	public float orthoZoomSpeed = 10.0f;
 	public float minZoom = 20.0f;
 	public float maxZoom = 537.0f;
@@ -34,6 +35,25 @@ public class TouchCameraControl : MonoBehaviour
 			moveSensitivityY = _camera.orthographicSize / 3.0f;
 		}
 
+		/*
+		#if UNITY_EDITOR || UNITY_EDITOR_64 || UNITY_EDITOR_OSX
+		float mx = Input.GetAxis ("Mouse X");
+		float my = Input.GetAxis ("Mouse Y");
+		//float speed = 1000.0f;
+
+		if (mx != 0 || my != 0) 
+		{
+			//滑鼠左鍵
+			if (Input.GetMouseButton (0)) 
+			{
+				//移動攝影機位置
+				Camera.main.transform.Translate (new Vector3 (-mx * Time.deltaTime * mouseSpeed, -my * Time.deltaTime * mouseSpeed, 0));
+			}
+		}
+		#endif
+		*/
+
+		//#else
 		Touch[] touches = Input.touches;
 
 		if (touches.Length > 0)
@@ -76,6 +96,7 @@ public class TouchCameraControl : MonoBehaviour
 				CalculateMapBounds ();
 			}
 		}
+		//#endif
 	}
 
 	void CalculateMapBounds() 

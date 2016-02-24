@@ -490,3 +490,653 @@ public class SampleScreenControllerBase : SubScreenController {
         SampleScreenViewModelManager.Remove(viewModel);
     }
 }
+
+public class CardScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _CardScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("CardScreen")]
+    public uFrame.MVVM.IViewModelManager CardScreenViewModelManager {
+        get {
+            return _CardScreenViewModelManager;
+        }
+        set {
+            _CardScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<CardScreenViewModel> CardScreenViewModels {
+        get {
+            return CardScreenViewModelManager.OfType<CardScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeCardScreen(((CardScreenViewModel)(viewModel)));
+    }
+    
+    public virtual CardScreenViewModel CreateCardScreen() {
+        return ((CardScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new CardScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeCardScreen(CardScreenViewModel viewModel) {
+        // This is called when a CardScreenViewModel is created
+        CardScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        CardScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class SetBattleScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _SetBattleScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("SetBattleScreen")]
+    public uFrame.MVVM.IViewModelManager SetBattleScreenViewModelManager {
+        get {
+            return _SetBattleScreenViewModelManager;
+        }
+        set {
+            _SetBattleScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<SetBattleScreenViewModel> SetBattleScreenViewModels {
+        get {
+            return SetBattleScreenViewModelManager.OfType<SetBattleScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeSetBattleScreen(((SetBattleScreenViewModel)(viewModel)));
+    }
+    
+    public virtual SetBattleScreenViewModel CreateSetBattleScreen() {
+        return ((SetBattleScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new SetBattleScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeSetBattleScreen(SetBattleScreenViewModel viewModel) {
+        // This is called when a SetBattleScreenViewModel is created
+        SetBattleScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        SetBattleScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class CharPageScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _CharPageScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("CharPageScreen")]
+    public uFrame.MVVM.IViewModelManager CharPageScreenViewModelManager {
+        get {
+            return _CharPageScreenViewModelManager;
+        }
+        set {
+            _CharPageScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<CharPageScreenViewModel> CharPageScreenViewModels {
+        get {
+            return CharPageScreenViewModelManager.OfType<CharPageScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeCharPageScreen(((CharPageScreenViewModel)(viewModel)));
+    }
+    
+    public virtual CharPageScreenViewModel CreateCharPageScreen() {
+        return ((CharPageScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new CharPageScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeCharPageScreen(CharPageScreenViewModel viewModel) {
+        // This is called when a CharPageScreenViewModel is created
+        CharPageScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        CharPageScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class ConferenceScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _ConferenceScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("ConferenceScreen")]
+    public uFrame.MVVM.IViewModelManager ConferenceScreenViewModelManager {
+        get {
+            return _ConferenceScreenViewModelManager;
+        }
+        set {
+            _ConferenceScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<ConferenceScreenViewModel> ConferenceScreenViewModels {
+        get {
+            return ConferenceScreenViewModelManager.OfType<ConferenceScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeConferenceScreen(((ConferenceScreenViewModel)(viewModel)));
+    }
+    
+    public virtual ConferenceScreenViewModel CreateConferenceScreen() {
+        return ((ConferenceScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new ConferenceScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeConferenceScreen(ConferenceScreenViewModel viewModel) {
+        // This is called when a ConferenceScreenViewModel is created
+        ConferenceScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        ConferenceScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class ParallelScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _ParallelScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("ParallelScreen")]
+    public uFrame.MVVM.IViewModelManager ParallelScreenViewModelManager {
+        get {
+            return _ParallelScreenViewModelManager;
+        }
+        set {
+            _ParallelScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<ParallelScreenViewModel> ParallelScreenViewModels {
+        get {
+            return ParallelScreenViewModelManager.OfType<ParallelScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeParallelScreen(((ParallelScreenViewModel)(viewModel)));
+    }
+    
+    public virtual ParallelScreenViewModel CreateParallelScreen() {
+        return ((ParallelScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new ParallelScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeParallelScreen(ParallelScreenViewModel viewModel) {
+        // This is called when a ParallelScreenViewModel is created
+        ParallelScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        ParallelScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class CompanionScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _CompanionScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("CompanionScreen")]
+    public uFrame.MVVM.IViewModelManager CompanionScreenViewModelManager {
+        get {
+            return _CompanionScreenViewModelManager;
+        }
+        set {
+            _CompanionScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<CompanionScreenViewModel> CompanionScreenViewModels {
+        get {
+            return CompanionScreenViewModelManager.OfType<CompanionScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeCompanionScreen(((CompanionScreenViewModel)(viewModel)));
+    }
+    
+    public virtual CompanionScreenViewModel CreateCompanionScreen() {
+        return ((CompanionScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new CompanionScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeCompanionScreen(CompanionScreenViewModel viewModel) {
+        // This is called when a CompanionScreenViewModel is created
+        CompanionScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        CompanionScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class TechnologyTreeScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _TechnologyTreeScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("TechnologyTreeScreen")]
+    public uFrame.MVVM.IViewModelManager TechnologyTreeScreenViewModelManager {
+        get {
+            return _TechnologyTreeScreenViewModelManager;
+        }
+        set {
+            _TechnologyTreeScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<TechnologyTreeScreenViewModel> TechnologyTreeScreenViewModels {
+        get {
+            return TechnologyTreeScreenViewModelManager.OfType<TechnologyTreeScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeTechnologyTreeScreen(((TechnologyTreeScreenViewModel)(viewModel)));
+    }
+    
+    public virtual TechnologyTreeScreenViewModel CreateTechnologyTreeScreen() {
+        return ((TechnologyTreeScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new TechnologyTreeScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeTechnologyTreeScreen(TechnologyTreeScreenViewModel viewModel) {
+        // This is called when a TechnologyTreeScreenViewModel is created
+        TechnologyTreeScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        TechnologyTreeScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class StorageScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _StorageScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("StorageScreen")]
+    public uFrame.MVVM.IViewModelManager StorageScreenViewModelManager {
+        get {
+            return _StorageScreenViewModelManager;
+        }
+        set {
+            _StorageScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<StorageScreenViewModel> StorageScreenViewModels {
+        get {
+            return StorageScreenViewModelManager.OfType<StorageScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeStorageScreen(((StorageScreenViewModel)(viewModel)));
+    }
+    
+    public virtual StorageScreenViewModel CreateStorageScreen() {
+        return ((StorageScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new StorageScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeStorageScreen(StorageScreenViewModel viewModel) {
+        // This is called when a StorageScreenViewModel is created
+        StorageScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        StorageScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class ShopScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _ShopScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("ShopScreen")]
+    public uFrame.MVVM.IViewModelManager ShopScreenViewModelManager {
+        get {
+            return _ShopScreenViewModelManager;
+        }
+        set {
+            _ShopScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<ShopScreenViewModel> ShopScreenViewModels {
+        get {
+            return ShopScreenViewModelManager.OfType<ShopScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeShopScreen(((ShopScreenViewModel)(viewModel)));
+    }
+    
+    public virtual ShopScreenViewModel CreateShopScreen() {
+        return ((ShopScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new ShopScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeShopScreen(ShopScreenViewModel viewModel) {
+        // This is called when a ShopScreenViewModel is created
+        ShopScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        ShopScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class SchoolFieldScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _SchoolFieldScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("SchoolFieldScreen")]
+    public uFrame.MVVM.IViewModelManager SchoolFieldScreenViewModelManager {
+        get {
+            return _SchoolFieldScreenViewModelManager;
+        }
+        set {
+            _SchoolFieldScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<SchoolFieldScreenViewModel> SchoolFieldScreenViewModels {
+        get {
+            return SchoolFieldScreenViewModelManager.OfType<SchoolFieldScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeSchoolFieldScreen(((SchoolFieldScreenViewModel)(viewModel)));
+    }
+    
+    public virtual SchoolFieldScreenViewModel CreateSchoolFieldScreen() {
+        return ((SchoolFieldScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new SchoolFieldScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeSchoolFieldScreen(SchoolFieldScreenViewModel viewModel) {
+        // This is called when a SchoolFieldScreenViewModel is created
+        SchoolFieldScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        SchoolFieldScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class AcademyScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _AcademyScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("AcademyScreen")]
+    public uFrame.MVVM.IViewModelManager AcademyScreenViewModelManager {
+        get {
+            return _AcademyScreenViewModelManager;
+        }
+        set {
+            _AcademyScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<AcademyScreenViewModel> AcademyScreenViewModels {
+        get {
+            return AcademyScreenViewModelManager.OfType<AcademyScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeAcademyScreen(((AcademyScreenViewModel)(viewModel)));
+    }
+    
+    public virtual AcademyScreenViewModel CreateAcademyScreen() {
+        return ((AcademyScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new AcademyScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeAcademyScreen(AcademyScreenViewModel viewModel) {
+        // This is called when a AcademyScreenViewModel is created
+        AcademyScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        AcademyScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class ArtisanScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _ArtisanScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("ArtisanScreen")]
+    public uFrame.MVVM.IViewModelManager ArtisanScreenViewModelManager {
+        get {
+            return _ArtisanScreenViewModelManager;
+        }
+        set {
+            _ArtisanScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<ArtisanScreenViewModel> ArtisanScreenViewModels {
+        get {
+            return ArtisanScreenViewModelManager.OfType<ArtisanScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeArtisanScreen(((ArtisanScreenViewModel)(viewModel)));
+    }
+    
+    public virtual ArtisanScreenViewModel CreateArtisanScreen() {
+        return ((ArtisanScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new ArtisanScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeArtisanScreen(ArtisanScreenViewModel viewModel) {
+        // This is called when a ArtisanScreenViewModel is created
+        ArtisanScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        ArtisanScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class TrainScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _TrainScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("TrainScreen")]
+    public uFrame.MVVM.IViewModelManager TrainScreenViewModelManager {
+        get {
+            return _TrainScreenViewModelManager;
+        }
+        set {
+            _TrainScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<TrainScreenViewModel> TrainScreenViewModels {
+        get {
+            return TrainScreenViewModelManager.OfType<TrainScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeTrainScreen(((TrainScreenViewModel)(viewModel)));
+    }
+    
+    public virtual TrainScreenViewModel CreateTrainScreen() {
+        return ((TrainScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new TrainScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeTrainScreen(TrainScreenViewModel viewModel) {
+        // This is called when a TrainScreenViewModel is created
+        TrainScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        TrainScreenViewModelManager.Remove(viewModel);
+    }
+}

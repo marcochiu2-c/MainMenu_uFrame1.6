@@ -14,7 +14,7 @@ using UnityEngine.UI;
 
 public class NoticeScreenView : NoticeScreenViewBase {
 
-	public Button SignButton;
+	//public Button SignButton;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -23,6 +23,7 @@ public class NoticeScreenView : NoticeScreenViewBase {
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
     }
     
+	/*
     public override void Bind() {
         base.Bind();
         // Use this.NoticeScreen to access the viewmodel.
@@ -36,4 +37,5 @@ public class NoticeScreenView : NoticeScreenViewBase {
 			});
 		});
 	}
+	*/
 }
