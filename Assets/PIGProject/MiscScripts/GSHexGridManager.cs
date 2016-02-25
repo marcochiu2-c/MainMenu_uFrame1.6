@@ -353,8 +353,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	/// </summary>
 	public void OnClick(FlatHexPoint point)
 	{
-		if(ProCamera2D.enabled == true)
-			ProCamera2D.enabled = false;
+		//ProCamera2D.enabled = false;
 
 		if(_clicking == false) return;
 
@@ -640,7 +639,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			} 
 			
 
-			while(entityVM.BattleState != BattleState.WAITING && entityVM.BattleState != BattleState.DEAD)
+			while(entityVM.BattleState != BattleState.WAITING)
 				yield return new WaitForSeconds(0.5f);
 			//Debug.Log ("EntityVM: " + entityVM + "Point: " + entityVM.CurrentPointLocation);	
 		}//End for path for loop
