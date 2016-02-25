@@ -57,11 +57,11 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private SchoolFieldScreenController _SchoolFieldScreenController;
     
-    private AcademyScreenController _AcademyScreenController;
-    
     private ArtisanScreenController _ArtisanScreenController;
     
     private TrainScreenController _TrainScreenController;
+    
+    private AcademyScreenController _AcademyScreenController;
     
     [uFrame.IOC.InjectAttribute("MainMenuRoot")]
     public virtual MainMenuRootViewModel MainMenuRoot {
@@ -310,19 +310,6 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
     }
     
     [uFrame.IOC.InjectAttribute()]
-    public virtual AcademyScreenController AcademyScreenController {
-        get {
-            if (_AcademyScreenController==null) {
-                _AcademyScreenController = Container.CreateInstance(typeof(AcademyScreenController)) as AcademyScreenController;;
-            }
-            return _AcademyScreenController;
-        }
-        set {
-            _AcademyScreenController = value;
-        }
-    }
-    
-    [uFrame.IOC.InjectAttribute()]
     public virtual ArtisanScreenController ArtisanScreenController {
         get {
             if (_ArtisanScreenController==null) {
@@ -345,6 +332,19 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
         }
         set {
             _TrainScreenController = value;
+        }
+    }
+    
+    [uFrame.IOC.InjectAttribute()]
+    public virtual AcademyScreenController AcademyScreenController {
+        get {
+            if (_AcademyScreenController==null) {
+                _AcademyScreenController = Container.CreateInstance(typeof(AcademyScreenController)) as AcademyScreenController;;
+            }
+            return _AcademyScreenController;
+        }
+        set {
+            _AcademyScreenController = value;
         }
     }
     
@@ -385,12 +385,12 @@ public class MainMenuSystemLoaderBase : uFrame.Kernel.SystemLoader {
         Container.RegisterController<ShopScreenController>(ShopScreenController);
         Container.RegisterViewModelManager<SchoolFieldScreenViewModel>(new ViewModelManager<SchoolFieldScreenViewModel>());
         Container.RegisterController<SchoolFieldScreenController>(SchoolFieldScreenController);
-        Container.RegisterViewModelManager<AcademyScreenViewModel>(new ViewModelManager<AcademyScreenViewModel>());
-        Container.RegisterController<AcademyScreenController>(AcademyScreenController);
         Container.RegisterViewModelManager<ArtisanScreenViewModel>(new ViewModelManager<ArtisanScreenViewModel>());
         Container.RegisterController<ArtisanScreenController>(ArtisanScreenController);
         Container.RegisterViewModelManager<TrainScreenViewModel>(new ViewModelManager<TrainScreenViewModel>());
         Container.RegisterController<TrainScreenController>(TrainScreenController);
+        Container.RegisterViewModelManager<AcademyScreenViewModel>(new ViewModelManager<AcademyScreenViewModel>());
+        Container.RegisterController<AcademyScreenController>(AcademyScreenController);
         Container.RegisterViewModel<MainMenuRootViewModel>(MainMenuRoot, "MainMenuRoot");
     }
 }

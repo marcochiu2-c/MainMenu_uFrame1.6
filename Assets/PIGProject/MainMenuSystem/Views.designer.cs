@@ -748,41 +748,6 @@ public class SchoolFieldScreenViewBase : SubScreenView {
     }
 }
 
-public class AcademyScreenBase : SubScreenView {
-    
-    public override string DefaultIdentifier {
-        get {
-            return base.DefaultIdentifier;
-        }
-    }
-    
-    public override System.Type ViewModelType {
-        get {
-            return typeof(AcademyScreenViewModel);
-        }
-    }
-    
-    public AcademyScreenViewModel AcademyScreen {
-        get {
-            return (AcademyScreenViewModel)ViewModelObject;
-        }
-    }
-    
-    protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
-        base.InitializeViewModel(model);
-        // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
-        // var vm = model as AcademyScreenViewModel;
-        // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
-    }
-    
-    public override void Bind() {
-        base.Bind();
-        // Use this.AcademyScreen to access the viewmodel.
-        // Use this method to subscribe to the view-model.
-        // Any designer bindings are created in the base implementation.
-    }
-}
-
 public class ArtisanScreenViewBase : SubScreenView {
     
     public override string DefaultIdentifier {
@@ -1023,6 +988,41 @@ public class StorageScreenViewBase : SubScreenView {
     public override void Bind() {
         base.Bind();
         // Use this.StorageScreen to access the viewmodel.
+        // Use this method to subscribe to the view-model.
+        // Any designer bindings are created in the base implementation.
+    }
+}
+
+public class AcademyScreenViewBase : SubScreenView {
+    
+    public override string DefaultIdentifier {
+        get {
+            return base.DefaultIdentifier;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(AcademyScreenViewModel);
+        }
+    }
+    
+    public AcademyScreenViewModel AcademyScreen {
+        get {
+            return (AcademyScreenViewModel)ViewModelObject;
+        }
+    }
+    
+    protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
+        base.InitializeViewModel(model);
+        // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
+        // var vm = model as AcademyScreenViewModel;
+        // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        // Use this.AcademyScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
     }

@@ -11,7 +11,7 @@ using UniRx;
 using UnityEngine;
 
 
-public class AcademyScreen : AcademyScreenBase {
+public class AcademyScreenView : AcademyScreenViewBase {
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);

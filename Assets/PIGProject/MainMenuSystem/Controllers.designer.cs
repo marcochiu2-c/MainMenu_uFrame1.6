@@ -991,56 +991,6 @@ public class SchoolFieldScreenControllerBase : SubScreenController {
     }
 }
 
-public class AcademyScreenControllerBase : SubScreenController {
-    
-    private uFrame.MVVM.IViewModelManager _AcademyScreenViewModelManager;
-    
-    [uFrame.IOC.InjectAttribute("AcademyScreen")]
-    public uFrame.MVVM.IViewModelManager AcademyScreenViewModelManager {
-        get {
-            return _AcademyScreenViewModelManager;
-        }
-        set {
-            _AcademyScreenViewModelManager = value;
-        }
-    }
-    
-    public IEnumerable<AcademyScreenViewModel> AcademyScreenViewModels {
-        get {
-            return AcademyScreenViewModelManager.OfType<AcademyScreenViewModel>();
-        }
-    }
-    
-    public override void Setup() {
-        base.Setup();
-        // This is called when the controller is created
-    }
-    
-    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
-        base.Initialize(viewModel);
-        // This is called when a viewmodel is created
-        this.InitializeAcademyScreen(((AcademyScreenViewModel)(viewModel)));
-    }
-    
-    public virtual AcademyScreenViewModel CreateAcademyScreen() {
-        return ((AcademyScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
-    }
-    
-    public override uFrame.MVVM.ViewModel CreateEmpty() {
-        return new AcademyScreenViewModel(this.EventAggregator);
-    }
-    
-    public virtual void InitializeAcademyScreen(AcademyScreenViewModel viewModel) {
-        // This is called when a AcademyScreenViewModel is created
-        AcademyScreenViewModelManager.Add(viewModel);
-    }
-    
-    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
-        base.DisposingViewModel(viewModel);
-        AcademyScreenViewModelManager.Remove(viewModel);
-    }
-}
-
 public class ArtisanScreenControllerBase : SubScreenController {
     
     private uFrame.MVVM.IViewModelManager _ArtisanScreenViewModelManager;
@@ -1138,5 +1088,55 @@ public class TrainScreenControllerBase : SubScreenController {
     public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
         base.DisposingViewModel(viewModel);
         TrainScreenViewModelManager.Remove(viewModel);
+    }
+}
+
+public class AcademyScreenControllerBase : SubScreenController {
+    
+    private uFrame.MVVM.IViewModelManager _AcademyScreenViewModelManager;
+    
+    [uFrame.IOC.InjectAttribute("AcademyScreen")]
+    public uFrame.MVVM.IViewModelManager AcademyScreenViewModelManager {
+        get {
+            return _AcademyScreenViewModelManager;
+        }
+        set {
+            _AcademyScreenViewModelManager = value;
+        }
+    }
+    
+    public IEnumerable<AcademyScreenViewModel> AcademyScreenViewModels {
+        get {
+            return AcademyScreenViewModelManager.OfType<AcademyScreenViewModel>();
+        }
+    }
+    
+    public override void Setup() {
+        base.Setup();
+        // This is called when the controller is created
+    }
+    
+    public override void Initialize(uFrame.MVVM.ViewModel viewModel) {
+        base.Initialize(viewModel);
+        // This is called when a viewmodel is created
+        this.InitializeAcademyScreen(((AcademyScreenViewModel)(viewModel)));
+    }
+    
+    public virtual AcademyScreenViewModel CreateAcademyScreen() {
+        return ((AcademyScreenViewModel)(this.Create(Guid.NewGuid().ToString())));
+    }
+    
+    public override uFrame.MVVM.ViewModel CreateEmpty() {
+        return new AcademyScreenViewModel(this.EventAggregator);
+    }
+    
+    public virtual void InitializeAcademyScreen(AcademyScreenViewModel viewModel) {
+        // This is called when a AcademyScreenViewModel is created
+        AcademyScreenViewModelManager.Add(viewModel);
+    }
+    
+    public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
+        base.DisposingViewModel(viewModel);
+        AcademyScreenViewModelManager.Remove(viewModel);
     }
 }

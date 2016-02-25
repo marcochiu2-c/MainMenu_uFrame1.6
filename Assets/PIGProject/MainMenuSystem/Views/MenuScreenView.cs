@@ -96,11 +96,13 @@ public class MenuScreenView : MenuScreenViewBase
 				Publish(evt);
 			});
 
+		/*
 		this.BindButtonToHandler(AcademyButton, () =>
 			{
 				evt.ScreenType = typeof(AcademyScreenViewModel);
 				Publish(evt);
 			});
+		*/
 
 		this.BindButtonToHandler(ArtisanButton, () =>
 			{
