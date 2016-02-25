@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class AcademyScreen : AcademyScreenBase {
+public class AcademyScreeView : AcademyScreenViewBase {
 
 	public Button IQButton;
 	public Button CommandedButton;
