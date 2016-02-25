@@ -353,8 +353,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	/// </summary>
 	public void OnClick(FlatHexPoint point)
 	{
-		if(ProCamera2D.enabled == true)
-			ProCamera2D.enabled = false;
+		//ProCamera2D.enabled = false;
 
 		if(_clicking == false) return;
 
@@ -613,6 +612,7 @@ public IEnumerator MovePath(IEnumerable<FlatHexPoint> path, MoveStyle move, Enti
 
 		yield return StartCoroutine(entityView.Move(Map[pathList[i]], Map[pathList[i+1]], move));
 
+<<<<<<< HEAD
 
 		/// Set Grid isSoldier isEnemy CurerentPosition
 		if(entityVM is EnemyViewModel)
@@ -635,6 +635,17 @@ public IEnumerator MovePath(IEnumerable<FlatHexPoint> path, MoveStyle move, Enti
 		}
 
 		else if(entityVM is SoldierViewModel)
+=====
+			while(entityVM.BattleState != BattleState.WAITING)
+				yield return new WaitForSeconds(0.5f);
+			//Debug.Log ("EntityVM: " + entityVM + "Point: " + entityVM.CurrentPointLocation);	
+		}//End for path for loop
+		
+		entityVM.Moving = false;
+		
+		//[ForSoldier]Display the range
+		if(Play_Btn.interactable == true && entityVM is SoldierViewModel)
+>>>>>>> 1b0a7a467960a47dbc9d733b60baa7a1beff24a1
 		{
 			walkableGrid[entityVM.CurrentPointLocation].IsSoldier = true;
 		} 

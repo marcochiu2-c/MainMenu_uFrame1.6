@@ -9,9 +9,16 @@ using uFrame.MVVM.Bindings;
 using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class ArtisanScreenView : ArtisanScreenViewBase {
+
+	public Button ArmsButton;
+	public Button ArmorButton;
+
+	public GameObject ArmsPopup;
+	public GameObject ArmorPopup;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -25,5 +32,16 @@ public class ArtisanScreenView : ArtisanScreenViewBase {
         // Use this.ArtisanScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+
+		this.BindButtonToHandler (ArmsButton, () => {
+			ArmsPopup.gameObject.SetActive (true);
+			ArmorPopup.gameObject.SetActive (false);
+		});
+
+		this.BindButtonToHandler (ArmorButton, () => {
+			ArmsPopup.gameObject.SetActive (false);
+			ArmorPopup.gameObject.SetActive (true);
+		});
+
     }
 }
