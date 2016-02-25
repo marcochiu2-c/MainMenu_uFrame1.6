@@ -748,7 +748,7 @@ public class SchoolFieldScreenViewBase : SubScreenView {
     }
 }
 
-public class AcademyScreenBase : SubScreenView {
+public class AcademyScreenViewBase : SubScreenView {
     
     public override string DefaultIdentifier {
         get {
