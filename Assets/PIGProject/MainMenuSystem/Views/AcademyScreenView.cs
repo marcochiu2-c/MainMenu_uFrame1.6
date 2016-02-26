@@ -19,11 +19,16 @@ public class AcademyScreenView : AcademyScreenViewBase {
 	public Button KnowledgeButton;
 	public Button FightingButton;
 
-	public GameObject IQPopup;
-	public GameObject CommandedPopup;
-	public GameObject KnowledgePopup;
-	public GameObject FightingPopup;
-    
+	public Button SelfStudyButton;
+	public Button TeachButton;
+
+	public GameObject QAHolder;
+
+	public GameObject SelfStudyHolder;
+	public GameObject TeachHolder;
+	//public GameObject KnowledgePopup;
+	//public GameObject FightingPopup;
+	    
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
@@ -37,32 +42,34 @@ public class AcademyScreenView : AcademyScreenViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
-		this.BindButtonToHandler (IQButton, () => {
-			IQPopup.gameObject.SetActive (true);
-			CommandedPopup.gameObject.SetActive (false);
-			KnowledgePopup.gameObject.SetActive (false);
-			FightingPopup.gameObject.SetActive (false);
+		this.BindButtonToHandler (IQButton, () =>
+		{
+			QAHolder.gameObject.SetActive (true);
 		});
 
-		this.BindButtonToHandler (CommandedButton, () => {
-			IQPopup.gameObject.SetActive (false);
-			CommandedPopup.gameObject.SetActive (true);
-			KnowledgePopup.gameObject.SetActive (false);
-			FightingPopup.gameObject.SetActive (false);
+		this.BindButtonToHandler (CommandedButton, () =>
+		{
+			QAHolder.gameObject.SetActive (true);
 		});
 
-		this.BindButtonToHandler (KnowledgeButton, () => {
-			IQPopup.gameObject.SetActive (false);
-			CommandedPopup.gameObject.SetActive (false);
-			KnowledgePopup.gameObject.SetActive (true);
-			FightingPopup.gameObject.SetActive (false);
+		this.BindButtonToHandler (KnowledgeButton, () =>
+		{
+			QAHolder.gameObject.SetActive (true);
 		});
 
-		this.BindButtonToHandler (FightingButton, () => {
-			IQPopup.gameObject.SetActive (false);
-			CommandedPopup.gameObject.SetActive (false);
-			KnowledgePopup.gameObject.SetActive (false);
-			FightingPopup.gameObject.SetActive (true);
+		this.BindButtonToHandler (FightingButton, () =>
+		{
+			QAHolder.gameObject.SetActive (true);
+		});
+
+		this.BindButtonToHandler (SelfStudyButton, () =>
+		{
+			SelfStudyHolder.gameObject.SetActive (true);
+		});
+
+		this.BindButtonToHandler (TeachButton, () =>
+		{
+			TeachHolder.gameObject.SetActive (true);
 		});
 
     }
