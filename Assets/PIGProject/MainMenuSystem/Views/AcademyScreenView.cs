@@ -14,6 +14,8 @@ using UnityEngine.UI;
 
 public class AcademyScreenView : AcademyScreenViewBase {
 
+	public Button BackButton;
+
 	public Button IQButton;
 	public Button CommandedButton;
 	public Button KnowledgeButton;
@@ -41,6 +43,13 @@ public class AcademyScreenView : AcademyScreenViewBase {
         // Use this.AcademyScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+
+		this.BindButtonToHandler (BackButton, () =>
+		{
+			SelfStudyHolder.gameObject.SetActive (false);
+			TeachHolder.gameObject.SetActive (false);
+			QAHolder.gameObject.SetActive (false);
+		});
 
 		this.BindButtonToHandler (IQButton, () =>
 		{
