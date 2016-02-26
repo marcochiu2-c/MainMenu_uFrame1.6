@@ -32,6 +32,10 @@ public class MenuScreenView : MenuScreenViewBase
 	public Button CompanionButton;
 	public Button TechnologyTreeButton;
 	public Button StorageButton;
+	public Button BuySFButton;
+	public Button BuyRButton;
+	public Button BuySDButton;
+	public Button SchoolFieldButton;
 
 	public Button SampleButton;
 	//public Image TestArea;
@@ -96,13 +100,29 @@ public class MenuScreenView : MenuScreenViewBase
 				Publish(evt);
 			});
 
-		/*
+		this.BindButtonToHandler(BuySFButton, () =>
+			{
+				evt.ScreenType = typeof(ShopScreenViewModel);
+				Publish(evt);
+			});
+
+		this.BindButtonToHandler(BuyRButton, () =>
+			{
+				evt.ScreenType = typeof(ShopScreenViewModel);
+				Publish(evt);
+			});
+
+		this.BindButtonToHandler(BuySDButton, () =>
+			{
+				evt.ScreenType = typeof(ShopScreenViewModel);
+				Publish(evt);
+			});
+		
 		this.BindButtonToHandler(AcademyButton, () =>
 			{
 				evt.ScreenType = typeof(AcademyScreenViewModel);
 				Publish(evt);
 			});
-		*/
 
 		this.BindButtonToHandler(ArtisanButton, () =>
 			{
@@ -139,6 +159,19 @@ public class MenuScreenView : MenuScreenViewBase
 				evt.ScreenType = typeof(TechnologyTreeScreenViewModel);
 				Publish(evt);
 			});
+
+		this.BindButtonToHandler (StorageButton, () => 
+			{
+				evt.ScreenType = typeof(StorageScreenViewModel);
+				Publish (evt);
+			});
+
+		this.BindButtonToHandler (SchoolFieldButton, () => 
+			{
+				evt.ScreenType = typeof(SchoolFieldScreenViewModel);
+				Publish (evt);
+			});
+		
 		//Temp use
 		this.BindButtonToHandler(SetBattleButton, () =>
 			{

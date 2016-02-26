@@ -9,9 +9,20 @@ using uFrame.MVVM.Bindings;
 using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class AcademyScreenView : AcademyScreenViewBase {
+
+	public Button IQButton;
+	public Button CommandedButton;
+	public Button KnowledgeButton;
+	public Button FightingButton;
+
+	public GameObject IQPopup;
+	public GameObject CommandedPopup;
+	public GameObject KnowledgePopup;
+	public GameObject FightingPopup;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -25,5 +36,34 @@ public class AcademyScreenView : AcademyScreenViewBase {
         // Use this.AcademyScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+
+		this.BindButtonToHandler (IQButton, () => {
+			IQPopup.gameObject.SetActive (true);
+			CommandedPopup.gameObject.SetActive (false);
+			KnowledgePopup.gameObject.SetActive (false);
+			FightingPopup.gameObject.SetActive (false);
+		});
+
+		this.BindButtonToHandler (CommandedButton, () => {
+			IQPopup.gameObject.SetActive (false);
+			CommandedPopup.gameObject.SetActive (true);
+			KnowledgePopup.gameObject.SetActive (false);
+			FightingPopup.gameObject.SetActive (false);
+		});
+
+		this.BindButtonToHandler (KnowledgeButton, () => {
+			IQPopup.gameObject.SetActive (false);
+			CommandedPopup.gameObject.SetActive (false);
+			KnowledgePopup.gameObject.SetActive (true);
+			FightingPopup.gameObject.SetActive (false);
+		});
+
+		this.BindButtonToHandler (FightingButton, () => {
+			IQPopup.gameObject.SetActive (false);
+			CommandedPopup.gameObject.SetActive (false);
+			KnowledgePopup.gameObject.SetActive (false);
+			FightingPopup.gameObject.SetActive (true);
+		});
+
     }
 }

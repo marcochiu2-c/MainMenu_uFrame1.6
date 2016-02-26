@@ -9,9 +9,20 @@ using uFrame.MVVM.Bindings;
 using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class SetBattleScreenView : SetBattleScreenViewBase {
+
+	public Button DailyBattleButton;
+	public Button SpecialBattleButton;
+	public Button LimitedBattleButton;
+	public Button HolidayBattleButton;
+
+	public GameObject DailyMission;
+	public GameObject SpecialMission;
+	public GameObject LimitedMission;
+	public GameObject HolidayMission;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -25,5 +36,34 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
         // Use this.SetBattleScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+
+		this.BindButtonToHandler (DailyBattleButton, () => {
+			DailyMission.gameObject.SetActive (true);
+			SpecialMission.gameObject.SetActive (false);
+			LimitedMission.gameObject.SetActive (false);
+			HolidayMission.gameObject.SetActive (false);
+		});
+
+		this.BindButtonToHandler (SpecialBattleButton, () => {
+			DailyMission.gameObject.SetActive (false);
+			SpecialMission.gameObject.SetActive (true);
+			LimitedMission.gameObject.SetActive (false);
+			HolidayMission.gameObject.SetActive (false);
+		});
+
+		this.BindButtonToHandler (LimitedBattleButton, () => {
+			DailyMission.gameObject.SetActive (false);
+			SpecialMission.gameObject.SetActive (false);
+			LimitedMission.gameObject.SetActive (true);
+			HolidayMission.gameObject.SetActive (false);
+		});
+
+		this.BindButtonToHandler (HolidayBattleButton, () => {
+			DailyMission.gameObject.SetActive (false);
+			SpecialMission.gameObject.SetActive (false);
+			LimitedMission.gameObject.SetActive (false);
+			HolidayMission.gameObject.SetActive (true);
+		});
+
     }
 }

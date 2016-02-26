@@ -14,9 +14,9 @@ using UnityEngine.UI;
 
 public class CharPageScreenView : CharPageScreenViewBase {
 
-	public Button MainCharButton;
+	//public Button loadButton;
 
-	public GameObject CharPageHolder;
+	//public GameObject senceHolder;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -31,8 +31,8 @@ public class CharPageScreenView : CharPageScreenViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
-		this.BindButtonToHandler (MainCharButton, () => {
-			CharPageHolder.gameObject.SetActive (true);
-		});
+		/*this.BindButtonToHandler (loadButton, () => {
+			senceHolder.gameObject.SetActive (true);
+		});*/
     }
 }

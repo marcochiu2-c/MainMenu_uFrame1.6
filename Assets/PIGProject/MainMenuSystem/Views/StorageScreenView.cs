@@ -14,15 +14,15 @@ using UnityEngine.UI;
 
 public class StorageScreenView : StorageScreenViewBase {
 
-	public Button WeaponButton;
-	public Button ArmorButton;
-	public Button SheildButton;
-	public Button MountsButton;
+	public Button weaponButton;
+	public Button armorButton;
+	public Button sheildButton;
+	public Button mountsButton;
 
-	public GameObject WeaponGridList;
-	public GameObject ArmorGridList;
-	public GameObject SheildGridList;
-	public GameObject MountsGridList;
+	public GameObject weaponGrid;
+	public GameObject armorGrid;
+	public GameObject sheildGrid;
+	public GameObject mountsGrid;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -37,34 +37,33 @@ public class StorageScreenView : StorageScreenViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
-		this.BindButtonToHandler (WeaponButton, () => {
-			WeaponGridList.gameObject.SetActive (true);
-			ArmorGridList.gameObject.SetActive (false);
-			SheildGridList.gameObject.SetActive (false);
-			MountsGridList.gameObject.SetActive (false);
+		this.BindButtonToHandler (weaponButton, () => {
+			weaponGrid.gameObject.SetActive (true);
+			armorGrid.gameObject.SetActive (false);
+			sheildGrid.gameObject.SetActive (false);
+			mountsGrid.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (ArmorButton, () => {
-			WeaponGridList.gameObject.SetActive (false);
-			ArmorGridList.gameObject.SetActive (true);
-			SheildGridList.gameObject.SetActive (false);
-			MountsGridList.gameObject.SetActive (false);
+		this.BindButtonToHandler (armorButton, () => {
+			weaponGrid.gameObject.SetActive (false);
+			armorGrid.gameObject.SetActive (true);
+			sheildGrid.gameObject.SetActive (false);
+			mountsGrid.gameObject.SetActive (false);
 		});
 
-
-		this.BindButtonToHandler (SheildButton, () => {
-			WeaponGridList.gameObject.SetActive (false);
-			ArmorGridList.gameObject.SetActive (false);
-			SheildGridList.gameObject.SetActive (true);
-			MountsGridList.gameObject.SetActive (false);
+		this.BindButtonToHandler (sheildButton, () => {
+			weaponGrid.gameObject.SetActive (false);
+			armorGrid.gameObject.SetActive (false);
+			sheildGrid.gameObject.SetActive (true);
+			mountsGrid.gameObject.SetActive (false);
 		});
 
-
-		this.BindButtonToHandler (MountsButton, () => {
-			WeaponGridList.gameObject.SetActive (false);
-			ArmorGridList.gameObject.SetActive (false);
-			SheildGridList.gameObject.SetActive (false);
-			MountsGridList.gameObject.SetActive (true);
+		this.BindButtonToHandler (mountsButton, () => {
+			weaponGrid.gameObject.SetActive (false);
+			armorGrid.gameObject.SetActive (false);
+			sheildGrid.gameObject.SetActive (false);
+			mountsGrid.gameObject.SetActive (true);
 		});
+
     }
 }

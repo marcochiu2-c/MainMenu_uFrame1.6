@@ -14,13 +14,13 @@ using UnityEngine.UI;
 
 public class ParallelScreenView : ParallelScreenViewBase {
 
-	public Button Friends;
-	public Button PVP;
-	public Button Guild;
+	public Button friends;
+	public Button pvp;
+	public Button guild;
 
-	public GameObject FriendsPopup;
-	public GameObject PVPPopup;
-	public GameObject Guildpopup;
+	public GameObject Friends;
+	public GameObject PVP;
+	public GameObject Guild;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -35,22 +35,23 @@ public class ParallelScreenView : ParallelScreenViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
-		this.BindButtonToHandler (Friends, () => {
-			FriendsPopup.gameObject.SetActive (true);
-			PVPPopup.gameObject.SetActive (false);
-			Guildpopup.gameObject.SetActive (false);
+		this.BindButtonToHandler (friends, () => {
+			Friends.gameObject.SetActive (true);
+			PVP.gameObject.SetActive (false);
+			Guild.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (PVP, () => {
-			FriendsPopup.gameObject.SetActive (false);
-			PVPPopup.gameObject.SetActive (true);
-			Guildpopup.gameObject.SetActive (false);
+		this.BindButtonToHandler (pvp, () => {
+			Friends.gameObject.SetActive (false);
+			PVP.gameObject.SetActive (true);
+			Guild.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (Guild, () => {
-			FriendsPopup.gameObject.SetActive (false);
-			PVPPopup.gameObject.SetActive (false);
-			Guildpopup.gameObject.SetActive (true);
+		this.BindButtonToHandler (guild, () => {
+			Friends.gameObject.SetActive (false);
+			PVP.gameObject.SetActive (false);
+			Guild.gameObject.SetActive (true);
 		});
+
     }
 }

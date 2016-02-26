@@ -14,11 +14,11 @@ using UnityEngine.UI;
 
 public class ArtisanScreenView : ArtisanScreenViewBase {
 
-	public Button ArmsButton;
-	public Button ArmorButton;
+	public Button armsButton;
+	public Button armorButton;
 
-	public GameObject ArmsPopup;
-	public GameObject ArmorPopup;
+	public GameObject armsPopup;
+	public GameObject armorPopup;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -33,15 +33,16 @@ public class ArtisanScreenView : ArtisanScreenViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
-		this.BindButtonToHandler (ArmsButton, () => {
-			ArmsPopup.gameObject.SetActive (true);
-			ArmorPopup.gameObject.SetActive (false);
+		this.BindButtonToHandler (armsButton, () => {
+			armsPopup.gameObject.SetActive (true);
+			armorPopup.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (ArmorButton, () => {
-			ArmsPopup.gameObject.SetActive (false);
-			ArmorPopup.gameObject.SetActive (true);
+		this.BindButtonToHandler (armorButton, () => {
+			armsPopup.gameObject.SetActive (false);
+			armorPopup.gameObject.SetActive (true);
 		});
+
 
     }
 }

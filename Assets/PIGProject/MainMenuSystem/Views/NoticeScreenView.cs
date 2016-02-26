@@ -14,7 +14,13 @@ using UnityEngine.UI;
 
 public class NoticeScreenView : NoticeScreenViewBase {
 
-	//public Button SignButton;
+	public Button SignButton;
+	public Button NoticeButton;
+	public Button SpecialButton;
+
+	public GameObject SignHolder;
+	public GameObject NoticeHolder;
+	public GameObject SpecialHolder;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -23,19 +29,37 @@ public class NoticeScreenView : NoticeScreenViewBase {
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
     }
     
-	/*
+
     public override void Bind() {
         base.Bind();
         // Use this.NoticeScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
-		this.BindButtonToHandler(SignButton, () =>
+		/*this.BindButtonToHandler(SignButton, () =>
 		{                                           
 			Publish(new NotifyCommand()
 			{
 				Message = "Signed"
 			});
+		});*/
+
+		this.BindButtonToHandler (SignButton, () => {
+			SignHolder.gameObject.SetActive (true);
+			NoticeHolder.gameObject.SetActive (false);
+			SpecialHolder.gameObject.SetActive(false);
+		});
+
+		this.BindButtonToHandler (NoticeButton, () => {
+			SignHolder.gameObject.SetActive (false);
+			NoticeHolder.gameObject.SetActive (true);
+			SpecialHolder.gameObject.SetActive(false);
+		});
+
+		this.BindButtonToHandler (SpecialButton, () => {
+			SignHolder.gameObject.SetActive (false);
+			NoticeHolder.gameObject.SetActive (false);
+			SpecialHolder.gameObject.SetActive (true);
 		});
 	}
-	*/
+
 }

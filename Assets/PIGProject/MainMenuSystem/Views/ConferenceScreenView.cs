@@ -14,17 +14,17 @@ using UnityEngine.UI;
 
 public class ConferenceScreenView : ConferenceScreenViewBase {
 
-	public Button ArmyAttackCompiled;
-	public Button ArmyGarrisonCompiled;
-	public Button MilitaryAdviserAppointAgent;
-	public Button DefensiveLinup;
-	public Button Standings;
+	public Button armyAttack;
+	public Button armyGarrison;
+	public Button militaryAdviser;
+	public Button defensiveLinup;
+	public Button standings;
 
-	public GameObject ArmyAttackCompiledPopup;
-	public GameObject ArmyGarrisonCompiledPopup;
-	public GameObject MilitaryAdviserAppointAgentPopup;
-	public GameObject DefensiveLinupPopup;
-	public GameObject Standingspopup;
+	public GameObject ArmyAttack;
+	public GameObject ArmyGarrison;
+	public GameObject MilitaryAdviser;
+	public GameObject DefensiveLinup;
+	public GameObject Standings;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -39,44 +39,45 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
-		this.BindButtonToHandler (ArmyAttackCompiled, () => {
-			ArmyAttackCompiledPopup.gameObject.SetActive (true);
-			ArmyGarrisonCompiledPopup.gameObject.SetActive (false);
-			MilitaryAdviserAppointAgentPopup.gameObject.SetActive (false);
-			DefensiveLinupPopup.gameObject.SetActive (false);
-			Standingspopup.gameObject.SetActive (false);
+		this.BindButtonToHandler (armyAttack, () => {
+			ArmyAttack.gameObject.SetActive (true);
+			ArmyGarrison.gameObject.SetActive (false);
+			MilitaryAdviser.gameObject.SetActive (false);
+			DefensiveLinup.gameObject.SetActive (false);
+			Standings.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (ArmyGarrisonCompiled, () => {
-			ArmyAttackCompiledPopup.gameObject.SetActive (false);
-			ArmyGarrisonCompiledPopup.gameObject.SetActive (true);
-			MilitaryAdviserAppointAgentPopup.gameObject.SetActive (false);
-			DefensiveLinupPopup.gameObject.SetActive (false);
-			Standingspopup.gameObject.SetActive (false);
+		this.BindButtonToHandler (armyGarrison, () => {
+			ArmyAttack.gameObject.SetActive (false);
+			ArmyGarrison.gameObject.SetActive (true);
+			MilitaryAdviser.gameObject.SetActive (false);
+			DefensiveLinup.gameObject.SetActive (false);
+			Standings.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (MilitaryAdviserAppointAgent, () => {
-			ArmyAttackCompiledPopup.gameObject.SetActive (false);
-			ArmyGarrisonCompiledPopup.gameObject.SetActive (false);
-			MilitaryAdviserAppointAgentPopup.gameObject.SetActive (true);
-			DefensiveLinupPopup.gameObject.SetActive (false);
-			Standingspopup.gameObject.SetActive (false);
+		this.BindButtonToHandler (militaryAdviser, () => {
+			ArmyAttack.gameObject.SetActive (false);
+			ArmyGarrison.gameObject.SetActive (false);
+			MilitaryAdviser.gameObject.SetActive (true);
+			DefensiveLinup.gameObject.SetActive (false);
+			Standings.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (DefensiveLinup, () => {
-			ArmyAttackCompiledPopup.gameObject.SetActive (false);
-			ArmyGarrisonCompiledPopup.gameObject.SetActive (false);
-			MilitaryAdviserAppointAgentPopup.gameObject.SetActive (false);
-			DefensiveLinupPopup.gameObject.SetActive (true);
-			Standingspopup.gameObject.SetActive (false);
+		this.BindButtonToHandler (defensiveLinup, () => {
+			ArmyAttack.gameObject.SetActive (false);
+			ArmyGarrison.gameObject.SetActive (false);
+			MilitaryAdviser.gameObject.SetActive (false);
+			DefensiveLinup.gameObject.SetActive (true);
+			Standings.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (Standings, () => {
-			ArmyAttackCompiledPopup.gameObject.SetActive (false);
-			ArmyGarrisonCompiledPopup.gameObject.SetActive (false);
-			MilitaryAdviserAppointAgentPopup.gameObject.SetActive (false);
-			DefensiveLinupPopup.gameObject.SetActive (false);
-			Standingspopup.gameObject.SetActive (true);
+		this.BindButtonToHandler (standings, () => {
+			ArmyAttack.gameObject.SetActive (false);
+			ArmyGarrison.gameObject.SetActive (false);
+			MilitaryAdviser.gameObject.SetActive (false);
+			DefensiveLinup.gameObject.SetActive (false);
+			Standings.gameObject.SetActive (true);
 		});
+
     }
 }

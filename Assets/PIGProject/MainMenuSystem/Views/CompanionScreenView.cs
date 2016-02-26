@@ -14,11 +14,11 @@ using UnityEngine.UI;
 
 public class CompanionScreenView : CompanionScreenViewBase {
 
-	public Button CounselorsButton;
-	public Button SoldiersButton;
+	public Button counselorsButton;
+	public Button soldiersButton;
 
 	public GameObject CounselorsHolder;
-	public GameObject SolderiersHolder;
+	public GameObject SoldiersHolder;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -33,14 +33,15 @@ public class CompanionScreenView : CompanionScreenViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
-		this.BindButtonToHandler (CounselorsButton, () => {
+		this.BindButtonToHandler (counselorsButton, () => {
 			CounselorsHolder.gameObject.SetActive (true);
-			SolderiersHolder.gameObject.SetActive (false);
+			SoldiersHolder.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (SoldiersButton, () => {
+		this.BindButtonToHandler (counselorsButton, () => {
 			CounselorsHolder.gameObject.SetActive (false);
-			SolderiersHolder.gameObject.SetActive (true);
+			SoldiersHolder.gameObject.SetActive (true);
 		});
+
     }
 }
