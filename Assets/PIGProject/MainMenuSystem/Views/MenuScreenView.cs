@@ -36,7 +36,7 @@ public class MenuScreenView : MenuScreenViewBase
 	public Button BuyRButton;
 	public Button BuySDButton;
 	public Button SchoolFieldButton;
-
+	
 	public Button SampleButton;
 	//public Image TestArea;
 

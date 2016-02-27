@@ -37,7 +37,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
         // var vm = model as AcademyScreenViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
     }
-    
+	    
     public override void Bind() {
         base.Bind();
         // Use this.AcademyScreen to access the viewmodel.
