@@ -29,8 +29,12 @@ public class Academy : MonoBehaviour
 
 
 	public ListView ListView;
-	Button[] buttons = new Button[4];
+	public Button[] buttons = new Button[4];
 	string[] btnName = new string[4];
+	public Button[] qaButtons = new Button[2];
+	string[] qaBtnName = new string[2];
+	public Button closeButton;
+	public Button backButton;
 	WsClient wsc;
 	Game game;
 
@@ -56,8 +60,10 @@ public class Academy : MonoBehaviour
 		btnName [1] = "CommandedButton";
 		btnName [2] = "KnowledgeButton";
 		btnName [3] = "FightingButton";
-		SetDictionary ();
-		AddButtonListener ();
+		qaBtnName [0] = "SelfStudyButton";
+		qaBtnName [0] = "TeachButton";
+//		SetDictionary ();
+//		AddButtonListener ();
 		SetImages ();
 
 		wsc = WsClient.Instance;
@@ -87,35 +93,60 @@ public class Academy : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-	
+
 	}
 
 	void OnGUI()
 	{
 		
 	}
-
+	/*
 	void OnButtonClick(Button btn){
-		GameObject popup = GameObject.Find ("/Canvas/AcademyHolder/Panel/PopupHolder/Popup");
-		popup.SetActive (true);
+		Debug.Log ("Button in Academy clicked");
+//		GameObject selfStudyPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/SelfStudyHolder/");
+//		GameObject teacherPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/TeachHolder/");
+//		selfStudyPopup.SetActive (true);
+//		teacherPopup.SetActive (true);
+		GameObject qaPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/QAHolder/");
+		qaPopup.SetActive (true);
 		Academy.activePopup = activePopupName[btn.name];
-		GameObject.Find ("/Canvas/AcademyHolder/Panel/PopupHolder/Popup/Text").GetComponent<Text>().text = academyCategoryText[btn.name];
+		//GameObject.Find ("/Canvas/AcademyHolder/Panel/PopupHolder/Popup/Text").GetComponent<Text>().text = academyCategoryText[btn.name];
+	}
+
+	void OnQAButtonClick(Button btn){
+		Debug.Log ("QA Button in Academy clicked");
+		//		GameObject selfStudyPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/SelfStudyHolder/");
+		//		GameObject teacherPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/TeachHolder/");
+		//		selfStudyPopup.SetActive (true);
+		//		teacherPopup.SetActive (true);
+		//GameObject qaPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/QAHolder/");
+		//Academy.activePopup = activePopupName[btn.name];
+		GameObject qaPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/QAHolder/");
+		qaPopup.SetActive (false);
+		if (btn.name == "SelfStudyButton") {
+			GameObject.Find ("/Canvas/AcademyHolder/Panel/SelfStudyHolder").SetActive(true);
+		} else {
+			GameObject.Find ("/Canvas/AcademyHolder/Panel/TeachHolder").SetActive(true);
+		}
+		GameObject.Find ("/Canvas/AcademyHolder/Panel/SelfStudyHolder/Popup/Text").GetComponent<Text>().text = academyCategoryText[btn.name];
+		GameObject.Find ("/Canvas/AcademyHolder/Panel/TeachHolder/Popup/Text").GetComponent<Text>().text = academyCategoryText[btn.name];
 	}
 
 	void AddButtonListener(){
 
 		for (var i = 0; i < 4; i++) {
-			buttons[i] = GameObject.Find(btnName[i]).GetComponent<Button>();
 			Transform child = buttons [i].transform;
 			buttons[i].onClick.AddListener(() => { OnButtonClick(child.GetComponent<Button>()); });
 		}
-		GameObject.Find ("/Canvas/AcademyHolder/BackButton").GetComponent<Button> ().onClick.AddListener (() => {
+		backButton.onClick.AddListener (() => {
 			Academy.activePopup = ActivePopupEnum.none;
-			GameObject.Find ("/Canvas/AcademyHolder/Panel/PopupHolder/Popup").SetActive(false);
+			GameObject.Find ("/Canvas/AcademyHolder/Panel/SelfStudyHolder/").SetActive(false);
+			GameObject.Find ("/Canvas/AcademyHolder/Panel/TeachHolder/").SetActive(false);
 		});
-		GameObject.Find ("/Canvas/AcademyHolder/CloseButton").GetComponent<Button> ().onClick.AddListener (() => {
+		closeButton.onClick.AddListener (() => {
 			Academy.activePopup = ActivePopupEnum.none;
-			GameObject.Find ("/Canvas/AcademyHolder/Panel/PopupHolder/Popup").SetActive(false);
+			GameObject.Find ("/Canvas/AcademyHolder/Panel/SelfStudyHolder/").SetActive(false);
+			GameObject.Find ("/Canvas/AcademyHolder/Panel/TeachhHolder/").SetActive(false);
 			GameObject.Find ("AcademyHolder").SetActive(false);
 			MainScene.MainUIHolder.SetActive(true);
 
@@ -132,7 +163,7 @@ public class Academy : MonoBehaviour
 		academyCategoryText.Add (btnName [2], "學問");
 		academyCategoryText.Add (btnName [3], "陣法");
 	}
-
+*/
 	void SetDataGrid(){
 //		int x = (int)ga.transform.position.x;
 //		int y = (int)ga.transform.position.y;
@@ -334,8 +365,8 @@ public class Academy : MonoBehaviour
 	public Sprite MongTim;
 	public Sprite SitYanGwai;
 	public Sprite WaiChing;
-	public Sprite YeunShungWun;
-	public Sprite YeunYingTai;
+	public Sprite YuenShungWun;
+	public Sprite YuenYingTai;
 	public Sprite ChuGotLeung;
 	public Sprite HoYeukBut;
 	public Sprite ChoiSheungA;
@@ -446,8 +477,8 @@ public class Academy : MonoBehaviour
 		imageList.Images.Add("蒙恬", MongTim);
 		imageList.Images.Add("薛仁貴", SitYanGwai);
 		imageList.Images.Add("衛青", WaiChing);
-		imageList.Images.Add("袁崇煥", YeunShungWun);
-		imageList.Images.Add("袁應泰", YeunYingTai);
+		imageList.Images.Add("袁崇煥", YuenShungWun);
+		imageList.Images.Add("袁應泰", YuenYingTai);
 		imageList.Images.Add("諸葛亮", ChuGotLeung);
 		imageList.Images.Add("賀若弼", HoYeukBut);
 		imageList.Images.Add("賽尚阿", ChoiSheungA);
@@ -473,9 +504,9 @@ public class Academy : MonoBehaviour
 
 
 		// Set the listview's image list.
-		this.ListView.SmallImageList = imageList;
+//		this.ListView.SmallImageList = imageList;
 
-		//		this.ListView.SubItemClicked += this.OnSubItemClicked;
+//		this.ListView.SubItemClicked += this.OnSubItemClicked;
 	}
 }
 

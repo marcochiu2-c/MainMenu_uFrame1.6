@@ -34,10 +34,10 @@ public class MainScene : MonoBehaviour {
 	public static JSONNode CounselorInfo = null;
 	public static JSONNode StorageInfo = null;
 	public static JSONNode WarfareInfo = null;
-	public static DateTime GeneralLastUpdate = null;
-	public static DateTime CounselorLastUpdate = null;
-	public static DateTime StorageLastUpdate = null;
-	public static DateTime WarfareLastUpdate = null;
+	public static Nullable<DateTime> GeneralLastUpdate = null;
+	public static Nullable<DateTime> CounselorLastUpdate = null;
+	public static Nullable<DateTime> StorageLastUpdate = null;
+	public static Nullable<DateTime> WarfareLastUpdate = null;
 
 	void Start(){
 		CallMainScene ();
