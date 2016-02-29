@@ -271,6 +271,9 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		{
 
 			var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
+			
+			if (SoldierVM[sNum].Career == Career.Archer)
+				neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 3);
 
 			if (SoldierVM[sNum].Action == ActionStyle.STANDBY || SoldierVM[sNum].Action == ActionStyle.YAWP || SoldierVM[sNum].Action == ActionStyle.SEARCH || SoldierVM[sNum].Action == ActionStyle.A_ATK)
 			{
@@ -279,6 +282,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			//Range of Attack:
 			//Swordman < 2
 			//Archer < 3
+			/*
 			switch (SoldierVM[sNum].Career)
 			{
 			case Career.Swordman:
@@ -291,6 +295,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
 				break;
 			}
+			*/
 
 			foreach (var neighbor in neighborhoodPoints)
 			{
@@ -651,6 +656,9 @@ public IEnumerator MovePath(IEnumerable<FlatHexPoint> path, MoveStyle move, Enti
 	if(Play_Btn.interactable == true && entityVM is SoldierViewModel)
 	{
 		var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(entityVM.CurrentPointLocation) < 2);
+		if (entityVM.Career == Career.Archer)
+			neighborhoodPoints = Grid.Where(p => p.DistanceFrom(entityVM.CurrentPointLocation) < 3);
+			
 		foreach (var neighbor in neighborhoodPoints)
 		{
 			if(walkableGrid[neighbor].IsWalkable)
@@ -662,7 +670,9 @@ public IEnumerator MovePath(IEnumerable<FlatHexPoint> path, MoveStyle move, Enti
 	if(Play_Btn.interactable == false && entityVM is EnemyViewModel)
 	{
 		var neighborhoodEndPoints = Grid.Where(p => p.DistanceFrom(entityVM.CurrentPointLocation) < 2);
-
+		if (entityVM.Career == Career.Archer)
+			neighborhoodEndPoints = Grid.Where(p => p.DistanceFrom(entityVM.CurrentPointLocation) < 3);
+			
 		foreach (var neighbor in neighborhoodEndPoints)
 		{
 			if(walkableGrid[neighbor].IsSoldier)
@@ -867,6 +877,8 @@ public IEnumerator PlayPlayList(int i)
 			//NearPoint
 			var neighborPoint = Grid.Where(p => p.DistanceFrom(SoldierVM[i].playlist[j].SavePointLocation) < 2);
 			foreach (var neighbor in neighborPoint)
+			
+			
 			{
 				if(walkableGrid[neighbor].IsEnemy)
 					MainGameController.StartBattle(SoldierVM[i].playlist[j-1].SaveEnemyVM, SoldierVM[i], SoldierVM[i].playlist[j-1].SaveEnemyView, SoldierV[i],  ActionStyle.ATTACK);
@@ -877,6 +889,14 @@ public IEnumerator PlayPlayList(int i)
 		if(SoldierVM[i].playlist[j].SaveEnemyVM != null && SoldierVM[i].playlist[j].SaveEnemyVM.Action != ActionStyle.A_ATK)
 		{	
 			SoldierVM[i].playlist[j].SaveEnemyVM.PlayList = SoldierVM[i].playlist[j];
+			
+			//if enemy range is not enough, wwaiting until moved
+			if(SoldierVM[i].Career == Career.Archer && SoldierVM[i].playlist[j].SaveEnemyVM.Career == Career.Swordman)
+			{
+					var finishPoint = SoldierVM[i].playlist[j].SaveEnemyVM.CurrentPointLocation + DirectionPoint(SoldierVM[i].playlist[j].SaveEnemyVM.CurrentPointLocation, SoldierVM[i].playlist[j].SavePointLocation);
+					PathFinding(SoldierVM[i].playlist[j].SaveEnemyVM.CurrentPointLocation, finishPoint, MoveStyle.FAST, SoldierVM[i].playlist[j].SaveEnemyView, SoldierVM[i].playlist[j].SaveEnemyVM, SoldierVM[i]);
+			}
+		
 			MainGameController.StartBattle(SoldierVM[i], SoldierVM[i].playlist[j].SaveEnemyVM, SoldierV[i], SoldierVM[i].playlist[j].SaveEnemyView, SoldierVM[i].playlist[j].SaveAction); 
 			//this check maybe not good, please find another way to repalce it
 			//while(SoldierVM[i].playlist[j].SaveEnemyVM.Health > 0 && SoldierVM[i].Health > 0 && SoldierVM[i].TimeStarted == true)
@@ -1004,6 +1024,10 @@ public void EndTurn()
 {
 
 	var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
+	
+	if (SoldierVM[sNum].Career == Career.Archer)
+		neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 3);
+		
 	foreach (var neighbor in neighborhoodPoints)
 	{
 		if(walkableGrid[neighbor].IsWalkable)
@@ -1055,6 +1079,10 @@ public void RedoBtn()
 {
 	//del the pre. playlist
 	var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
+	
+	if (SoldierVM[sNum].Career == Career.Archer)
+		neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 3);
+		
 	foreach (var neighbor in neighborhoodPoints)
 	{
 		if(walkableGrid[neighbor].IsWalkable)
