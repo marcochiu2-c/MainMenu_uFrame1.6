@@ -12,7 +12,8 @@ public class noticetext : MonoBehaviour {
 
 	private IEnumerator Check()
 	{
-		WWW w = new WWW("http://192.168.100.64/Notice.txt");
+		WWW w = new WWW("http://www.shawnyip.info/Notice.txt"); // TODO URL have to be finalized.
+		Debug.Log ("http://www.shawnyip.info/Notice.txt");
 		yield return w;
 		if (w.error != null)
 		{
@@ -47,7 +48,7 @@ public class noticetext : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		theText = GameObject.Find ("/Canvas/NoticeHolder/NoticeHolder/NoticeMask/Text").GetComponent <Text>();
+		//theText = GameObject.Find ("/_MainMenuSceneRoot//Canvas/NoticeHolder/NoticeHolder/NoticeMask/Text").GetComponent <Text>();
 		StartCoroutine (Check ());
 	}
 }
