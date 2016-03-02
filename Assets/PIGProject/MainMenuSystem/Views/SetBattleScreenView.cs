@@ -23,6 +23,11 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 	public GameObject SpecialMission;
 	public GameObject LimitedMission;
 	public GameObject HolidayMission;
+	
+	public Slider loadingBar;
+	public GameObject loadingImage;
+	
+	private AsyncOperation _async;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -43,7 +48,7 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 			SpecialMission.gameObject.SetActive (false);
 			LimitedMission.gameObject.SetActive (false);
 			HolidayMission.gameObject.SetActive (false);
-			*/
+			
 			
 			Publish(new UnloadSceneCommand()
 			        {
@@ -53,6 +58,10 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 			        {
 				SceneName = "MainGameScene"
 			});
+			*/
+			
+			loadingImage.SetActive (true);
+			StartCoroutine (LoadLevelWithBar ("MainGameScene"));
 			
 		});
 
@@ -78,4 +87,15 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 		});
 
     }
+    
+	IEnumerator LoadLevelWithBar (string level)
+	{
+		_async = Application.LoadLevelAsync(level);
+		while(!_async.isDone)
+		{
+			loadingBar.value=_async.progress;
+			yield return null;
+		}
+		
+	}
 }

@@ -22,6 +22,7 @@ public class SubScreenView : SubScreenViewBase
 {
 
     public GameObject ScreenUIContainer;
+	public AudioSource bgm;
 	[Inject("LocalUser")] public UserViewModel LocalUser;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
@@ -74,14 +75,28 @@ public class SubScreenView : SubScreenViewBase
 
 		if(active)
 		{
-			if (ScreenUIContainer.name == "MainUIHolder") return;
-			ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>ScreenUIContainer.gameObject.SetActive(true));
+			if (ScreenUIContainer.name == "HeaderHolder")
+			{
+				bgm.Play();
+				return;
+			}
+			ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>
+			{
+				ScreenUIContainer.gameObject.SetActive(true);
+				bgm.Play ();
+			});
+			//.OnComplete(() => bgm.Play ());
+			
 			//Debug.Log (ScreenUIContainer.name + " actived");
 		}
 		else
 		{
-			if (ScreenUIContainer.name == "MainUIHolder") return;
-			ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
+			if (ScreenUIContainer.name == "HeaderHolder")
+			{
+				bgm.Stop();
+				return;
+			}
+			ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnStart(() => bgm.Stop ()).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
 		}
 		//}						
 	}
