@@ -24,6 +24,7 @@ public class MainGameRootView : MainGameRootViewBase {
 	public Button InfoMoveButton;
 	public Button InfoMissionButton;
 	public Button StartBattleButton;
+	public Button LeaveButton;
 
 	public Button SlowButton; 
 	public Button NormalButton; 
@@ -38,11 +39,11 @@ public class MainGameRootView : MainGameRootViewBase {
 	public Button AATKButton;
 	public Button StandByButton;
 	
+	public GameObject InfoPanel;
+	public GameObject BlockPanel;
 	public TextAsset atkInfo;
 	public TextAsset moveInfo;
 	public TextAsset missionInfo;
-	public GameObject InfoPanel;
-	public GameObject BlockPanel;
 	public Text InfoText;
 
 	public List<SoldierViewModel> SoldierVM = new List<SoldierViewModel>();
@@ -99,6 +100,18 @@ public class MainGameRootView : MainGameRootViewBase {
 		this.BindButtonToHandler(StartBattleButton, () => { 
 			InfoPanel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad).OnComplete(() => InfoPanel.SetActive(false));
 			BlockPanel.SetActive(false);
+		});
+		
+		this.BindButtonToHandler(LeaveButton, () => { 
+			Publish(new UnloadSceneCommand()
+			{
+				SceneName = "MainGameScene"
+			});
+			
+			//Publish(new LoadSceneCommand()
+			//{
+			//	SceneName = "MainMenuScene"
+			//});
 		});
 
 		this.BindButtonToHandler(InfoAtkButton, () => { 

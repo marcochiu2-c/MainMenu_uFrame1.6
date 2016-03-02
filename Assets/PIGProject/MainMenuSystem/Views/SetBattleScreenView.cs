@@ -38,10 +38,22 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
         // Any designer bindings are created in the base implementation.
 
 		this.BindButtonToHandler (DailyBattleButton, () => {
+			/*
 			DailyMission.gameObject.SetActive (true);
 			SpecialMission.gameObject.SetActive (false);
 			LimitedMission.gameObject.SetActive (false);
 			HolidayMission.gameObject.SetActive (false);
+			*/
+			
+			Publish(new UnloadSceneCommand()
+			        {
+				SceneName = "MainMenuScene"
+			});
+			Publish(new LoadSceneCommand()
+			        {
+				SceneName = "MainGameScene"
+			});
+			
 		});
 
 		this.BindButtonToHandler (SpecialBattleButton, () => {
