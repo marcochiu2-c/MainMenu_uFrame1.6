@@ -11,7 +11,7 @@ using SimpleJSON;
 enum jsonFuncNumberEnum {
 	allData = 0,
 
-	//  1-18 users 
+	//  1-19 users 
 	newUser = 1,
 	updateUser= 2,
 	getUserInformationByUserId = 3,
@@ -27,6 +27,7 @@ enum jsonFuncNumberEnum {
 	newAccountWealth = 13,
 	newAccountBuilding = 14,
 	getUserInformationByDeviceId = 15,
+	getUserInformationBySnsUrl = 16,
 
 	updateAllData = 19,
 
@@ -170,7 +171,7 @@ public class WsClient {
 
 			conn.OnMessage += (sender, e) => { 
 				if (e.Data != "[]"){
-					Debug.Log(e.Data);
+//					Debug.Log(e.Data);
 					handleMessage(JSON.Parse(e.Data));
 				}
 			};
@@ -205,6 +206,9 @@ public class WsClient {
 			break;
 		case jsonFuncNumberEnum.getUserInformationByDeviceId:
 			LoginScreen.user = (JSONClass)j["obj"];
+			break;
+		case jsonFuncNumberEnum.getUserInformationBySnsUrl:
+			LoginScreen.userWithSns = (JSONClass)j["obj"];
 			break;
 		case jsonFuncNumberEnum.getPrivateChatHistories:
 			jArray = (JSONArray)j["obj"];

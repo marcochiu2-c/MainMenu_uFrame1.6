@@ -199,9 +199,11 @@ public class Login {
 	public int exp { get; set; }
 	public int warCredit { get; set; }
 	public string country { get; set; }
+	public string playerID { get; set; }
 	public string deviceID { get; set; }
 
 	public Login(){
+		id = 0;
 	}
 	//{"player_id":"3","device_id":"","sns_type":1,"sns_url":"10153232082329123","country":"HK","register_time":1437706124,"last_login_time":1437713377,"last_login_ip":3232235781,"total_login_time":622037,"status":1,"exp":1043,"war_credits":1124,"battle_started_time":"2016-02-02T02:53:00.000Z"}
 	public Login (SimpleJSON.JSONClass j){
@@ -212,6 +214,7 @@ public class Login {
 		exp = j ["exp"].AsInt;
 		warCredit = j ["war_credit"].AsInt;
 		country = j ["country"];
+		playerID = j ["player_id"];
 		deviceID = j ["device_id"];
 	}
 	public JSONClass toJSON(){
@@ -225,6 +228,7 @@ public class Login {
 		j.Add ("exp", new JSONData(exp));
 		j.Add ("warCredit",new JSONData( warCredit));
 		j ["country"] = country;
+		j ["playerID"] = playerID;
 		j ["deviceID"] = deviceID;
 		return j;
 	}
