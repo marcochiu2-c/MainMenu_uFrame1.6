@@ -11,7 +11,7 @@ using SimpleJSON;
 enum jsonFuncNumberEnum {
 	allData = 0,
 
-	//  1-18 users 
+	//  1-19 users 
 	newUser = 1,
 	updateUser= 2,
 	getUserInformationByUserId = 3,
@@ -24,6 +24,10 @@ enum jsonFuncNumberEnum {
 	getCheckinInfo = 10,
 	setMonthCardExpiryDate = 11,
 	getCheckinGiftInfo = 12,
+	newAccountWealth = 13,
+	newAccountBuilding = 14,
+	getUserInformationByDeviceId = 15,
+	getUserInformationBySnsUrl = 16,
 
 	updateAllData = 19,
 
@@ -66,6 +70,7 @@ enum jsonFuncNumberEnum {
 	requestFriend = 82,
 	confirmFriend = 83,
 	unFriend = 84,
+	getFriendshipInfo = 85,
 
 	// 150-159 Generals
 	addGeneral = 150,
@@ -108,8 +113,8 @@ enum jsonFuncNumberEnum {
 	updateProtectiveEquipment = 223,
 	getWeaponsBySoldierId = 230,
 	getProtectiveEquipmentsBySoldierId = 231,
-	getWeaponByUserId = 232,
-	getProtectiveEquipmentByUserId = 233,
+	getWeaponsByUserId = 232,
+	getProtectiveEquipmentsByUserId = 233,
 
 	// 240-249 Buildings
 	addBuilding = 240,
@@ -123,7 +128,8 @@ public class WsClient {
 	public WebSocket conn;
 	//string table = "";
 	//string result = "";
-	private string ip = "192.168.100.64";
+	private string ip = "23.91.96.158";
+//	private string ip = "192.168.100.64";
 	private int port = 8000; 
 	// Use this for initialization
 
@@ -147,7 +153,7 @@ public class WsClient {
 		var count = 0;
 		if (success) {
 			Debug.Log ("Server check ok");
-			string server = String.Format("wss://{0}:{1}/",  ip,  port );
+			string server = String.Format("ws://{0}:{1}/",  ip,  port );
 			using (conn = new WebSocket (server,"game"));
 			conn.Connect ();
 
@@ -159,79 +165,14 @@ public class WsClient {
 			};
 
 			conn.OnClose += (sender, e) => {
-				Debug.Log("Websocket Close");
+//				Debug.Log("Websocket Close");
 				conn.Close ();
 			};
 
 			conn.OnMessage += (sender, e) => { 
-//				Debug.Log(e.Data);
-				var j = JSON.Parse(e.Data);
-				JSONArray jArray;
-				JSONNode json;
-				switch ((jsonFuncNumberEnum)j["func"].AsInt){
-				case jsonFuncNumberEnum.allData:
-					game.parseJSON(e.Data);
-					break;
-				case jsonFuncNumberEnum.getUserInformationByUserId:
-					game.login = new Login((JSONClass)j["obj"]);
-					break;
-				case jsonFuncNumberEnum.getPrivateChatHistories:
-					jArray = (JSONArray)j["obj"];
-					Debug.Log(j["obj"][1]["message"]);
-					break;
-				case jsonFuncNumberEnum.addGeneral:
-					MainScene.GeneralLastInsertId = j["obj"]["lastInsertId"].AsInt;
-					break;
-				case jsonFuncNumberEnum.addCounselorEntry:
-					MainScene.CounselorLastInsertId = j["obj"]["lastInsertId"].AsInt;
-					break;	
-				case jsonFuncNumberEnum.getGeneralOnly:
-					MainScene.GeneralInfo = j["obj"];
-					break;
-				case jsonFuncNumberEnum.getCounselorInfoByUserId:
-					MainScene.CounselorInfo = j["obj"];
-					break;
-				case jsonFuncNumberEnum.newMultipleStorage:
-					MainScene.GeneralInfo = j["obj"];
-					break;
-				case jsonFuncNumberEnum.newMultipleCounselors:
-					MainScene.CounselorInfo = j["obj"];
-					break;
-				case jsonFuncNumberEnum.getCheckinGiftInfo:
-					var chkin = CheckInContent.Instance;
-					for (int i = 0; i < 30; i++){
-						chkin.giftNumber[i]  =j["obj"][i].AsInt;
-					}
-					break;
-				case jsonFuncNumberEnum.getAllItemsInStorage:
-					MainScene.StorageInfo = j["obj"];
-					break;
-				case jsonFuncNumberEnum.getWarfareInfoByUserId:
-					MainScene.WarfareInfo = j["obj"];
-					break;
-				case jsonFuncNumberEnum.getCheckinInfo:
-					game.checkinStatus = new CheckInStatus((JSONClass)j["obj"]);
-					CheckIn.checkedInDate = game.checkinStatus.days.Count;
-					Debug.Log(e.Data);
-					break;
-				case jsonFuncNumberEnum.getWealth:
-						List<Wealth> wealthList;
-						wealthList = new List<Wealth> ();
-						//SimpleJSON.JSONArray wealths = (SimpleJSON.JSONArray) SimpleJSON.JSON.Parse (e.Data);
-						JSONArray wealths = (SimpleJSON.JSONArray) j["obj"];
-						IEnumerator w = wealths.GetEnumerator ();
-						while (w.MoveNext ()) {
-							wealthList.Add (new Wealth((SimpleJSON.JSONClass) w.Current));
-						}
-						MainScene.sValue = wealthList[0].value.ToString ();
-						MainScene.rValue = wealthList[1].value.ToString ();
-						MainScene.sdValue = wealthList[2].value.ToString ();
-					break;
-				case jsonFuncNumberEnum.updateCheckInStatus:
-					Debug.Log(String.Format("Update Check In Status: {0}",(j["obj"]["success"].AsBool ? "Success" : "Failed")));
-					break;
-				default:
-					break;
+				if (e.Data != "[]"){
+//					Debug.Log(e.Data);
+					handleMessage(JSON.Parse(e.Data));
 				}
 			};
 
@@ -251,7 +192,98 @@ public class WsClient {
 
 
 	}
-	
+
+	void handleMessage(JSONNode j){
+		Game game = Game.Instance;
+		JSONArray jArray;
+		JSONNode json;
+		switch ((jsonFuncNumberEnum)j["func"].AsInt){
+		case jsonFuncNumberEnum.allData:
+//			game.parseJSON(e.Data);
+			break;
+		case jsonFuncNumberEnum.getUserInformationByUserId:
+			game.login = new Login((JSONClass)j["obj"]);
+			break;
+		case jsonFuncNumberEnum.getUserInformationByDeviceId:
+			LoginScreen.user = (JSONClass)j["obj"];
+			break;
+		case jsonFuncNumberEnum.getUserInformationBySnsUrl:
+			LoginScreen.userWithSns = (JSONClass)j["obj"];
+			break;
+		case jsonFuncNumberEnum.getPrivateChatHistories:
+			jArray = (JSONArray)j["obj"];
+			Debug.Log(j["obj"][1]["message"]);
+			break;
+		case jsonFuncNumberEnum.addGeneral:
+			MainScene.GeneralLastInsertId = j["obj"]["lastInsertId"].AsInt;
+			break;
+		case jsonFuncNumberEnum.addCounselorEntry:
+			MainScene.CounselorLastInsertId = j["obj"]["lastInsertId"].AsInt;
+			break;	
+		case jsonFuncNumberEnum.getGeneralOnly: case jsonFuncNumberEnum.newMultipleStorage:
+			MainScene.GeneralInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.getCounselorInfoByUserId: case jsonFuncNumberEnum.newMultipleCounselors:
+			MainScene.CounselorInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.getCheckinGiftInfo:
+			var chkin = CheckInContent.Instance;
+			for (int i = 0; i < 30; i++){
+				chkin.giftNumber[i]  =j["obj"][i].AsInt;
+			}
+			break;
+		case jsonFuncNumberEnum.getAllItemsInStorage:
+			MainScene.StorageInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.getWarfareInfoByUserId:
+			MainScene.WarfareInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.getCheckinInfo:
+			game.checkinStatus = new CheckInStatus((JSONClass)j["obj"]);
+			CheckIn.checkedInDate = game.checkinStatus.days.Count;
+			break;
+		case jsonFuncNumberEnum.getWealth:
+			List<Wealth> wealthList;
+			wealthList = new List<Wealth> ();
+	//					SimpleJSON.JSONArray wealths = (SimpleJSON.JSONArray) SimpleJSON.JSON.Parse (e.Data);
+			JSONArray wealths = (SimpleJSON.JSONArray) j["obj"];
+			IEnumerator w = wealths.GetEnumerator ();
+			while (w.MoveNext ()) {
+				wealthList.Add (new Wealth((SimpleJSON.JSONClass) w.Current));
+			}
+			for (int i = 0; i<3; i++){
+				if (wealthList[i].type == 1){
+					MainScene.rValue = wealthList[i].value.ToString ();
+					MainScene.resourceValue = wealthList[i];
+				}else if (wealthList[i].type == 2){
+					MainScene.sdValue = wealthList[i].value.ToString ();
+					MainScene.stardustValue = wealthList[i];
+				}else if (wealthList[i].type == 3){
+					MainScene.sValue = wealthList[i].value.ToString ();
+					MainScene.silverFeatherValue = wealthList[i];
+				}
+			}
+
+			break;
+		case jsonFuncNumberEnum.getWeaponsBySoldierId: case jsonFuncNumberEnum.getWeaponsByUserId:
+			MainScene.WeaponInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.getProtectiveEquipmentsBySoldierId: case jsonFuncNumberEnum.getProtectiveEquipmentsByUserId:
+			MainScene.ProtectiveEquipmentInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.updateCheckInStatus:
+			Debug.Log(String.Format("Update Check In Status: {0}",(j["obj"]["success"].AsBool ? "Success" : "Failed")));
+			break;
+
+		case jsonFuncNumberEnum.getFriendshipInfo:
+//			Debug.Log(j);
+			MainScene.FriendInfo = j["obj"];
+			break;
+		default:
+			break;
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
 	

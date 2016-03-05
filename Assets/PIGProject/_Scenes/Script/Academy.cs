@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Endgame;
 using WebSocketSharp;
 using SimpleJSON;
+using UnityEngine.EventSystems;
 
 public enum ActivePopupEnum{
 	none,IQPopup,CommandedPopup,KnowledgePopup,FightingPopup
@@ -16,32 +17,34 @@ public enum ActivePopupEnum{
 
 public class Academy : MonoBehaviour
 {
+
+
 	class ItemData
 	{
 		public float SliderValue;
 		public string ImageKey;
 	}
-	void Awake ()
-	{
-		CallAcademy ();
 
-	}
 
 
 	public ListView ListView;
-	public Button[] buttons = new Button[4];
-	string[] btnName = new string[4];
-	public Button[] qaButtons = new Button[2];
-	string[] qaBtnName = new string[2];
+//	public Button[] buttons = new Button[4];
+//	string[] btnName = new string[4];
+//	public Button[] qaButtons = new Button[2];
+//	string[] qaBtnName = new string[2];
 	public Button closeButton;
 	public Button backButton;
+	public GameObject AcademyHolder;
+	public GameObject TeachHolder;
 	WsClient wsc;
 	Game game;
+	public static ListView.ColumnHeaderCollection ListViewColumns;
+	public static ListView.ListViewItemCollection ListViewItems;
 
 	public static ActivePopupEnum activePopup;
 	Dictionary<string,string> academyCategoryText = new Dictionary<string, string>();
 	Dictionary<string,ActivePopupEnum> activePopupName = new Dictionary<string, ActivePopupEnum>();
-	private const int columnWidthCount = 3;
+	private const int columnWidthCount = 5;
 	private int columnCount
 	{
 		get
@@ -52,19 +55,24 @@ public class Academy : MonoBehaviour
 	private int[] columnWidthStates = null;
 
 	// Use this for initialization
-
+	void Awake(){
+		CallAcademy ();
+	}
 
 	public void CallAcademy(){
-		SetDataGrid ();
-		btnName [0] = "IQButton";
-		btnName [1] = "CommandedButton";
-		btnName [2] = "KnowledgeButton";
-		btnName [3] = "FightingButton";
-		qaBtnName [0] = "SelfStudyButton";
-		qaBtnName [0] = "TeachButton";
+		//this.ListView = GameObject.Find ("/_MainMenuSceneRoot/Canvas/AcademyHolder/Panel/TeachHolder/ContentHolder/DataHolder/LeftHolder/ListView").GetComponents<ListView> ()[0];
+		//Debug.Log (GameObject.Find ("/_MainMenuSceneRoot/Canvas/AcademyHolder/Panel/TeachHolder/ContentHolder/DataHolder/LeftHolder/ListView").GetComponents<ListView> ()[0]);
+		SetImages ();
+//		SetDataGrid ();
+//		btnName [0] = "IQButton";
+//		btnName [1] = "CommandedButton";
+//		btnName [2] = "KnowledgeButton";
+//		btnName [3] = "FightingButton";
+//		qaBtnName [0] = "SelfStudyButton";
+//		qaBtnName [0] = "TeachButton";
 //		SetDictionary ();
 //		AddButtonListener ();
-		SetImages ();
+
 
 		wsc = WsClient.Instance;
 		game = Game.Instance;
@@ -103,10 +111,10 @@ public class Academy : MonoBehaviour
 	/*
 	void OnButtonClick(Button btn){
 		Debug.Log ("Button in Academy clicked");
-//		GameObject selfStudyPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/SelfStudyHolder/");
-//		GameObject teacherPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/TeachHolder/");
-//		selfStudyPopup.SetActive (true);
-//		teacherPopup.SetActive (true);
+		GameObject selfStudyPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/SelfStudyHolder/");
+		GameObject teacherPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/TeachHolder/");
+		selfStudyPopup.SetActive (true);
+		teacherPopup.SetActive (true);
 		GameObject qaPopup = GameObject.Find ("/Canvas/AcademyHolder/Panel/QAHolder/");
 		qaPopup.SetActive (true);
 		Academy.activePopup = activePopupName[btn.name];
@@ -164,87 +172,96 @@ public class Academy : MonoBehaviour
 		academyCategoryText.Add (btnName [3], "陣法");
 	}
 */
-	void SetDataGrid(){
-//		int x = (int)ga.transform.position.x;
-//		int y = (int)ga.transform.position.y;
-//		Rect size = ga.GetComponent<RectTransform> ().rect;
-
-//		Debug.Log ("X: "+(size.width));
-//		Debug.Log ("Y: "+size.height);
+	public void SetDataGrid(){	
+		//		int x = (int)ga.transform.position.x;
+		//		int y = (int)ga.transform.position.y;
+		//		Rect size = ga.GetComponent<RectTransform> ().rect;
+		
+		//		Debug.Log ("X: "+(size.width));
+		//		Debug.Log ("Y: "+size.height);
 		//GUI.Label (new Rect (size.height-x, size.width-y, 80, 30), "<size=20>Lau Bei</size>");
 		if (this.ListView != null)
 		{
+			if (this.ListView.Columns != null){
+				Academy.ListViewColumns = this.ListView.Columns;
+			}
 			this.ListView.SuspendLayout();
 			{
-				
+
 				ColumnHeader MasterColumn = new ColumnHeader ();
 				MasterColumn.Text = "師傅";
 				this.ListView.AddColumnToHierarchy (MasterColumn);
-				this.ListView.Columns.Add (MasterColumn);
+				Academy.ListViewColumns.Add (MasterColumn);
 
 				ColumnHeader StudentColumn = new ColumnHeader ();
 				StudentColumn.Text = "徒弟";
-				this.ListView.Columns.Add (StudentColumn);
-
+				Academy.ListViewColumns.Add (StudentColumn);
+				
 				ColumnHeader KnowledgeColumn = new ColumnHeader ();
 				KnowledgeColumn.Text = "學問";
-				this.ListView.Columns.Add (KnowledgeColumn);
-
+				Academy.ListViewColumns.Add (KnowledgeColumn);
+				
 				ColumnHeader TimeColumn = new ColumnHeader ();
 				TimeColumn.Text = "時間";
-				this.ListView.Columns.Add (TimeColumn);
-
+				Academy.ListViewColumns.Add (TimeColumn);
+				
 				ColumnHeader CastColumn = new ColumnHeader ();
 				CastColumn.Text = "角色";
-				this.ListView.Columns.Add (CastColumn);
-
-				this.ListView.Columns[0].Width = 100;
-				this.ListView.Columns[1].Width = 100;
-				this.ListView.Columns[2].Width = 100;
-				this.ListView.Columns[3].Width = 100;
-				this.ListView.Columns[4].Width = 100;
-
+				Academy.ListViewColumns.Add (CastColumn);
+				
+				Academy.ListViewColumns[0].Width = 200;
+				Academy.ListViewColumns[1].Width = 200;
+				Academy.ListViewColumns[2].Width = 200;
+				Academy.ListViewColumns[3].Width = 200;
+				Academy.ListViewColumns[4].Width = 200;
+				
 				this.columnWidthStates = new int[this.columnCount];
 			}
 			this.ListView.ResumeLayout();
 			AddDataGrid ();
+
+
+//			renderer.enabled = false;
+//			renderer = AcademyHolder.transform.GetComponentsInChildren<MeshRenderer>();
+//			renderer.enabled = false;
 
 		}
 	}
 
 	private void AddDataGrid(){
 					AddListViewItem (
-						"ChiuTim","Can't Get Better than this (Original Version)",
+						"史彌堅",
+						"Can't Get Better than this (Original Version)",
 						"Mathew Gil, John Courtidis, Sam Littlemore, Parachute Youth",
 						"5:02",
-						"Can't Get Better Than This","abc"
+						"Can't Get Better Than This"
 					);
-					AddListViewItem ("趙括", "Forever", "Haim", "4:05", "Forever EP","abc" );
-					AddListViewItem ( "趙括","City Boy", "Donkeyboy", "3:25", "City Boy" ,"abc");
-					AddListViewItem ("呂布", "Dance All Night (feat. Matisyahu)", "The Dirty Heads", "3:26", "Cabin By the Sea","abc" );
-					AddListViewItem ("霍去病", "Call it Off", "Washed Out", "3:33", "Within and Without" ,"abc");
-					AddListViewItem ("ChiuTim", "Because Of You", "C2C, Pigeon John", "3:42", "Tetra" ,"abc");
-					AddListViewItem ("ChiuTim", "Flutes", "Hot Chip", "7:05", "In Our Heads","abc" );
+					AddListViewItem ("史彌堅","Forever", "Haim", "4:05", "Forever EP" );
+					AddListViewItem ( "史彌堅","City Boy", "Donkeyboy", "3:25", "City Boy" );
+					AddListViewItem ( "史彌堅","Dance All Night (feat. Matisyahu)", "The Dirty Heads", "3:26", "Cabin By the Sea");
+					AddListViewItem ("史彌堅", "Call it Off", "Washed Out", "3:33", "Within and Without" );
+					AddListViewItem ("史彌堅","Because Of You", "C2C, Pigeon John", "3:42", "Tetra" );
+					AddListViewItem ( "史彌堅","Flutes", "Hot Chip", "7:05", "In Our Heads" );
 					AddListViewItem (
-						"ChiuTim","Get Lucky",
+						"史彌堅",
+						"Get Lucky",
 						"Daft Punk, Pharrell Williams, Nile Rodgers",
 						"6:10",
-						"Random Access Memories","abc"
+						"Random Access Memories"
 					);
-					AddListViewItem ( "ChiuTim","Candy", "Robbie Williams", "3:21", "Candy","abc" );
-					AddListViewItem ("ChiuTim","Body Work", "Morgan Page, Tegan And Sara", "3:53", "In The Air" ,"abc");
-					AddListViewItem ( "ChiuTim","Free to Flee", "OHO", "4:00", "Land of the Happy","abc" );
+					AddListViewItem ("史彌堅" ,"Candy", "Robbie Williams", "3:21", "Candy" );
+					AddListViewItem ("史彌堅","Body Work", "Morgan Page, Tegan And Sara", "3:53", "In The Air" );
+					AddListViewItem ("史彌堅", "Free to Flee", "OHO", "4:00", "Land of the Happy" );
 	}
 
-	private ListViewItem CreateListViewItem(string imageKey, string master, string student, string knowledge, string time, string cast)
+	private ListViewItem CreateListViewItem(string imageKey, string master, string student, string knowledge, string time)
 	{
 		string[] subItemTexts = new string[]
 		{
 			master,
 			student,
 			knowledge,
-			time,
-			cast
+			time
 		};
 
 		ListViewItem item = new ListViewItem(subItemTexts);
@@ -266,18 +283,18 @@ public class Academy : MonoBehaviour
 		return item;
 	}
 
-	private void AddListViewItem(string imageKey, string master, string student, string knowledge, string time, string cast)
+	private void AddListViewItem(string imageKey, string master, string student, string knowledge, string time)
 	{
-		ListViewItem item = CreateListViewItem(imageKey, master, student,knowledge, time, cast);
+		ListViewItem item = CreateListViewItem(imageKey, master, student,knowledge, time);
 
 		this.ListView.Items.Add(item);
 
 	}
 
-	private void RemoveAllItems(){
-		int cnt = this.ListView.Items.Count;
+	public void RemoveAllItems(){
+		int cnt = Academy.ListViewItems.Count;
 		for (int i = 0; i < cnt; i++) {
-			this.ListView.Items.RemoveAt (0);
+			Academy.ListViewItems.RemoveAt (0);
 		}
 
 	}
@@ -377,6 +394,7 @@ public class Academy : MonoBehaviour
 	public Sprite KwokTseYi;
 	public Sprite ChengYanTai;
 	public Sprite ChengShingGong;
+	public Sprite KwanYu;
 	public Sprite ChanHingChi;
 	public Sprite FokHuiBing;
 	public Sprite HonSaiChung;
@@ -388,7 +406,7 @@ public class Academy : MonoBehaviour
 	public Sprite PongDak;
 	public Sprite PongGyun;
 	public Sprite PongTong;
-	public Sprite KwanYu;
+
 
 	private void SetImages(){
 		ImageList imageList = new ImageList();

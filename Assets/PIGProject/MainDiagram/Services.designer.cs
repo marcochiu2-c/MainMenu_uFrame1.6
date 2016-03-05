@@ -136,3 +136,14 @@ public class DialogueServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
         // this.Publish(new AnotherEvent())
     }
 }
+
+public class WsClientServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
+    
+    /// <summary>
+    /// This method is invoked whenever the kernel is loading.
+    /// Since the kernel lives throughout the entire lifecycle of the game, this will only be invoked once.
+    /// </summary>
+    public override void Setup() {
+        base.Setup();
+    }
+}

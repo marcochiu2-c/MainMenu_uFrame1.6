@@ -53,14 +53,16 @@ public class IntroSceneFlow : uFrameComponent
             yield return null;
         }
 
-        yield return new WaitForSeconds(1);
-
+        //yield return new WaitForSeconds(1);
+		
+		/*
         while (progress > 0f)
         {
             Logo.color = Color.Lerp(transparentColor, solidColor, progress);
             progress -= 0.5f * Time.deltaTime;
             yield return null;
         }
+        */
 
 		loadingImage.SetActive (true);
 		StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
