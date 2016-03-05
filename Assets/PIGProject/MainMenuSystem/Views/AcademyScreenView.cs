@@ -18,11 +18,27 @@ public class AcademyScreenView : AcademyScreenViewBase {
 	public Button CommandedButton;
 	public Button KnowledgeButton;
 	public Button FightingButton;
+	public Button BackButton;
+	public Button CloseButton;
+	public Button SelfStudyButton;
+	public Button TeachButton;
 
-	public GameObject IQPopup;
-	public GameObject CommandedPopup;
-	public GameObject KnowledgePopup;
-	public GameObject FightingPopup;
+
+	public GameObject qaHolder;
+
+	public GameObject SelfStudyHolder;
+	public GameObject TeachHolder;
+	public Text SelfStudyPopupTitle;
+	public Text TeachPopupTitle;
+	public Text button5;
+
+	Academy academy;
+
+
+	public GameObject Popup;
+//	public GameObject CommandedPopup;
+//	public GameObject KnowledgePopup;
+//	public GameObject FightingPopup;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -38,32 +54,92 @@ public class AcademyScreenView : AcademyScreenViewBase {
         // Any designer bindings are created in the base implementation.
 
 		this.BindButtonToHandler (IQButton, () => {
-			IQPopup.gameObject.SetActive (true);
-			CommandedPopup.gameObject.SetActive (false);
-			KnowledgePopup.gameObject.SetActive (false);
-			FightingPopup.gameObject.SetActive (false);
+			qaHolder.SetActive(true);
+			SelfStudyPopupTitle.text = "智 商";
+			TeachPopupTitle.text = "智 商";
+			//button5.supportRichText = true;
+			//button5.text = "<color=red>Test</color>";
+
+
+			// TODO: move next statement to Model code
+			Academy.activePopup = ActivePopupEnum.IQPopup;
+//			CommandedPopup.gameObject.SetActive (false);
+//			KnowledgePopup.gameObject.SetActive (false);
+//			FightingPopup.gameObject.SetActive (false);
 		});
 
 		this.BindButtonToHandler (CommandedButton, () => {
-			IQPopup.gameObject.SetActive (false);
-			CommandedPopup.gameObject.SetActive (true);
-			KnowledgePopup.gameObject.SetActive (false);
-			FightingPopup.gameObject.SetActive (false);
+			qaHolder.SetActive(true);
+			SelfStudyPopupTitle.text = "統 率";
+			TeachPopupTitle.text = "統 率";
+
+
+			// TODO: move next statement to Model code
+			Academy.activePopup = ActivePopupEnum.CommandedPopup;
+//			CommandedPopup.gameObject.SetActive (true);
+//			KnowledgePopup.gameObject.SetActive (false);
+//			FightingPopup.gameObject.SetActive (false);
 		});
 
 		this.BindButtonToHandler (KnowledgeButton, () => {
-			IQPopup.gameObject.SetActive (false);
-			CommandedPopup.gameObject.SetActive (false);
-			KnowledgePopup.gameObject.SetActive (true);
-			FightingPopup.gameObject.SetActive (false);
+			qaHolder.SetActive(true);	
+			SelfStudyPopupTitle.text = "學 問";
+			TeachPopupTitle.text = "學 問";
+
+			// TODO: move next statement to model code
+			Academy.activePopup = ActivePopupEnum.KnowledgePopup;
+//			CommandedPopup.gameObject.SetActive (false);
+//			KnowledgePopup.gameObject.SetActive (true);
+//			FightingPopup.gameObject.SetActive (false);
 		});
 
 		this.BindButtonToHandler (FightingButton, () => {
-			IQPopup.gameObject.SetActive (false);
-			CommandedPopup.gameObject.SetActive (false);
-			KnowledgePopup.gameObject.SetActive (false);
-			FightingPopup.gameObject.SetActive (true);
+			qaHolder.SetActive(true);
+			SelfStudyPopupTitle.text = "陣 法";
+			TeachPopupTitle.text = "陣 法";
+
+			// TODO: move next statement to Model code
+			Academy.activePopup = ActivePopupEnum.FightingPopup;
+//			CommandedPopup.gameObject.SetActive (false);
+//			KnowledgePopup.gameObject.SetActive (false);
+//			FightingPopup.gameObject.SetActive (true);
 		});
 
+		this.BindButtonToHandler (BackButton, () => {
+			SelfStudyHolder.SetActive (false);
+			TeachHolder.SetActive (false);
+			// TODO: move next statement to Model code
+			Academy.activePopup = ActivePopupEnum.none;
+		});
+
+		this.BindButtonToHandler (CloseButton, () => {
+			SelfStudyHolder.SetActive (false);
+			TeachHolder.SetActive (false);
+			qaHolder.SetActive(false);
+			
+			// TODO: move next statement to Model code
+			Academy.activePopup = ActivePopupEnum.none;
+		});
+		this.BindButtonToHandler (SelfStudyButton, () => {
+			Debug.Log ("SelfStudyButton clicked");
+			qaHolder.SetActive(false);
+			SelfStudyHolder.SetActive (true);
+
+			//			CommandedPopup.gameObject.SetActive (false);
+			//			KnowledgePopup.gameObject.SetActive (false);
+			//			FightingPopup.gameObject.SetActive (true);
+		});
+		this.BindButtonToHandler (TeachButton, () => {
+			Debug.Log ("TeachButton clicked");
+			qaHolder.SetActive(false);
+			TeachHolder.transform.localScale = new Vector3(1, 1, 1);
+			academy =  new Academy();
+			//academy.SetDataGrid();
+			academy.RemoveAllItems();
+			
+			//			CommandedPopup.gameObject.SetActive (false);
+			//			KnowledgePopup.gameObject.SetActive (false);
+			//			FightingPopup.gameObject.SetActive (true);
+		});
     }
 }

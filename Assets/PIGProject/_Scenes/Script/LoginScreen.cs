@@ -151,7 +151,8 @@ public class LoginScreen : MonoBehaviour {
 			j.Add ("snsType", new JSONData(1));  // For facebook only
 			// TODO if Google+ j.Add ("snsType", new JSONData(2));
 			j.Add ("snsURL", snsURL); 
-			j.Add ("deviceId", SystemInfo.deviceUniqueIdentifier);
+			j.Add ("deviceId", new JSONData(SystemInfo.deviceUniqueIdentifier));
+			j.Add ("name", new JSONData(NewUserSNSAccountName));
 			//j.Add ("name", NewUserSNSAccountName.text )// TODO grab name from UI
 			SubmitUserRegisterData (j);
 		} else {  // Link SNS with old user
@@ -176,6 +177,7 @@ public class LoginScreen : MonoBehaviour {
 		json.Add ("table", new JSONData("users"));
 		json.Add ("data", jData);
 		wsc.conn.Send (json.ToString ());
+		GotoMainUI ();
 	}
 	
 	private void GotoMainUI(){

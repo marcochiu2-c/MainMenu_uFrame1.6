@@ -119,7 +119,7 @@ public class MenuScreenView : MenuScreenViewBase
 			});
 		
 		this.BindButtonToHandler(AcademyButton, () =>
-			{
+		    {
 				evt.ScreenType = typeof(AcademyScreenViewModel);
 				Publish(evt);
 			});
