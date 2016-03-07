@@ -263,7 +263,7 @@ public class WsClient {
 					MainScene.silverFeatherValue = wealthList[i];
 				}
 			}
-
+			game.wealth = wealthList;
 			break;
 		case jsonFuncNumberEnum.getWeaponsBySoldierId: case jsonFuncNumberEnum.getWeaponsByUserId:
 			MainScene.WeaponInfo = j["obj"];

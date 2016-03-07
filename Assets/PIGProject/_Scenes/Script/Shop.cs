@@ -20,21 +20,24 @@ public class ProductDesc{
 
 
 public class Shop : MonoBehaviour {
-	const string STARDUST_500 = "stardust_500";
-	const string STARDUST_1200 = "stardust_1200";
-	const string STARDUST_2500 = "stardust_2500";
-	const string STARDUST_6500 = "stardust_6500";
-	const string STARDUST_14000 = "stardust_14000";
-	const string RESOURCE_500 = "resource_500";
-	const string RESOURCE_1200 = "resource_1200";
-	const string RESOURCE_2500 = "resource_2500";
-	const string RESOURCE_6500 = "resource_6500";
-	const string RESOURCE_14000 = "resource_14000";
-	const string FEATHER_500 = "feather_500";
-	const string FEATHER_1200 = "feather_1200";
-	const string FEATHER_2500 = "feather_2500";
-	const string FEATHER_6500 = "feather_6500";
-	const string FEATHER_14000 = "feather_14000";
+	const string STARDUST_250 = "stardust_250";
+	const string STARDUST_550 = "stardust_550";
+	const string STARDUST_1300 = "stardust_1300";
+	const string STARDUST_2625 = "stardust_2625";
+	const string STARDUST_4000 = "stardust_4000";
+	const string STARDUST_8500 = "stardust_8500";
+	const string RESOURCE_250 = "resource_250";
+	const string RESOURCE_550 = "resource_550";
+	const string RESOURCE_1300 = "resource_1300";
+	const string RESOURCE_2625 = "resource_2625";
+	const string RESOURCE_4000 = "resource_4000";
+	const string RESOURCE_8500 = "resource_8500";
+	const string FEATHER_250 = "feather_250";
+	const string FEATHER_550 = "feather_550";
+	const string FEATHER_1300 = "feather_1300";
+	const string FEATHER_2625 = "feather_2625";
+	const string FEATHER_4000 = "feather_4000";
+	const string FEATHER_8500 = "feather_8500";
 	const string FIRST_CHARGE = "first_charge";
 
 	Dictionary<string,ProductDesc> prodIdDict;
@@ -45,8 +48,14 @@ public class Shop : MonoBehaviour {
 	string _label = "";	
 	Inventory _inventory = null;
 	ProductList prodList = new ProductList();
+//	List<Purchase> UnConsumedInventory;
+//	bool UnConsumedInventoryNewUpdate=false;
+	bool monthlySubscriptionBought = false;
 	bool _isInitialized = false;
 	Game game;
+	WsClient wsc;
+	public Button firstChargeButton;
+	public Button monthlySubscriptionButton;
 
 	string googlePublicKey ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgEEaiFfxugLWAH4CQqXYttXlj3GI2ozlcnWlZDaO2VYkcUhbrAz368FMmw2g40zgIDfyopFqETXf0dMTDw7VH3JOXZID2ATtTfBXaU4hqTf2lSwcY9RXe/Uz0x1nf1oLAf85oWZ7uuXScR747ekzRZB4vb4afm2DsbE30ohZD/WzQ22xByX6583yYE19RdE9yJzFckEPlHuOeMgKOa4WErt11PHB6FTdT5eN96/jjjeEoYhX/NGkOWKW0Y0T0A7CdUC0D4t2xxkzAQHdgLfcRw9+/EIcaysLhncWYiCifJrRBGpqZU1IrNuehrC5FXUN99786c/TwlxNG5nflE6sWwIDAQAB";
 
@@ -59,45 +68,52 @@ public class Shop : MonoBehaviour {
 
 	void CallShop(){
 		game = Game.Instance;
+		wsc = WsClient.Instance;
+
 		prodIdDict = new Dictionary<string, ProductDesc> () {
-			{STARDUST_500,new ProductDesc("stardust",500)} , {STARDUST_1200,new ProductDesc("stardust",1200)} ,
-			{STARDUST_2500,new ProductDesc("stardust",2500)} , {STARDUST_6500,new ProductDesc("stardust",6500)} ,
-			{STARDUST_14000,new ProductDesc("stardust",14000)} ,
-			{FEATHER_500,new ProductDesc("feather",500)} , {FEATHER_1200,new ProductDesc("feather",1200)} ,
-			{FEATHER_2500,new ProductDesc("feather",2500)} , {FEATHER_6500,new ProductDesc("feather",6500)} ,
-			{FEATHER_14000,new ProductDesc("feather",14000)} ,
-			{RESOURCE_500,new ProductDesc("resource",500)} , {RESOURCE_1200,new ProductDesc("resource",1200)} ,
-			{RESOURCE_2500,new ProductDesc("resource",2500)} , {RESOURCE_6500,new ProductDesc("resource",6500)} ,
-			{RESOURCE_14000,new ProductDesc("resource",14000)} 
+			{STARDUST_250,new ProductDesc("stardust",250)} ,{STARDUST_550,new ProductDesc("stardust",550)} ,
+			{STARDUST_1300,new ProductDesc("stardust",1300)} , {STARDUST_2625,new ProductDesc("stardust",2500)} ,
+			{STARDUST_4000,new ProductDesc("stardust",4000)} , {STARDUST_8500,new ProductDesc("stardust",8500)} ,
+			{FEATHER_250,new ProductDesc("feather",250)} , {FEATHER_550,new ProductDesc("feather",550)} ,
+			{FEATHER_1300,new ProductDesc("feather",1300)} , {FEATHER_2625,new ProductDesc("feather",2625)} ,
+			{FEATHER_4000,new ProductDesc("feather",4000)} , {FEATHER_8500,new ProductDesc("feather",8500)} ,
+			{RESOURCE_250,new ProductDesc("resource",250)} , {RESOURCE_550,new ProductDesc("resource",550)} ,
+			{RESOURCE_1300,new ProductDesc("resource",1300)} , {RESOURCE_2625,new ProductDesc("resource",2625)} ,
+			{RESOURCE_4000,new ProductDesc("resource",4000)} , {RESOURCE_8500,new ProductDesc("resource",8500)} ,
 		};
 
 		//Set Currency type
 		currencyDict = new Dictionary<string, int> () {
-			{"stardust",0},{"resource",1},{"feather",2}
+			{"feather",1},{"stardust",2},{"resource",3}
 		};
 		
 		// Map skus for different stores       
-		OpenIAB.mapSku(STARDUST_500, OpenIAB_Android.STORE_GOOGLE, STARDUST_500);
-		OpenIAB.mapSku(STARDUST_1200, OpenIAB_Android.STORE_GOOGLE, STARDUST_1200);
-		OpenIAB.mapSku(STARDUST_2500, OpenIAB_Android.STORE_GOOGLE, STARDUST_2500);
-		OpenIAB.mapSku(STARDUST_6500, OpenIAB_Android.STORE_GOOGLE, STARDUST_6500);
-		OpenIAB.mapSku(STARDUST_14000, OpenIAB_Android.STORE_GOOGLE, STARDUST_14000);
-		OpenIAB.mapSku(RESOURCE_500, OpenIAB_Android.STORE_GOOGLE, RESOURCE_500);
-		OpenIAB.mapSku(RESOURCE_1200, OpenIAB_Android.STORE_GOOGLE, RESOURCE_1200);
-		OpenIAB.mapSku(RESOURCE_2500, OpenIAB_Android.STORE_GOOGLE, RESOURCE_2500);
-		OpenIAB.mapSku(RESOURCE_6500, OpenIAB_Android.STORE_GOOGLE, RESOURCE_6500);
-		OpenIAB.mapSku(RESOURCE_14000, OpenIAB_Android.STORE_GOOGLE, RESOURCE_14000);
-		OpenIAB.mapSku(FEATHER_500, OpenIAB_Android.STORE_GOOGLE, FEATHER_500);
-		OpenIAB.mapSku(FEATHER_1200, OpenIAB_Android.STORE_GOOGLE, FEATHER_1200);
-		OpenIAB.mapSku(FEATHER_2500, OpenIAB_Android.STORE_GOOGLE, FEATHER_2500);
-		OpenIAB.mapSku(FEATHER_6500, OpenIAB_Android.STORE_GOOGLE, FEATHER_6500);
-		OpenIAB.mapSku(FEATHER_14000, OpenIAB_Android.STORE_GOOGLE, FEATHER_14000);
+		OpenIAB.mapSku(STARDUST_250, OpenIAB_Android.STORE_GOOGLE, STARDUST_250);
+		OpenIAB.mapSku(STARDUST_550, OpenIAB_Android.STORE_GOOGLE, STARDUST_550);
+		OpenIAB.mapSku(STARDUST_1300, OpenIAB_Android.STORE_GOOGLE, STARDUST_1300);
+		OpenIAB.mapSku(STARDUST_2625, OpenIAB_Android.STORE_GOOGLE, STARDUST_2625);
+		OpenIAB.mapSku(STARDUST_4000, OpenIAB_Android.STORE_GOOGLE, STARDUST_4000);
+		OpenIAB.mapSku(STARDUST_8500, OpenIAB_Android.STORE_GOOGLE, STARDUST_8500);
+		OpenIAB.mapSku(RESOURCE_250, OpenIAB_Android.STORE_GOOGLE, RESOURCE_250);
+		OpenIAB.mapSku(RESOURCE_550, OpenIAB_Android.STORE_GOOGLE, RESOURCE_550);
+		OpenIAB.mapSku(RESOURCE_1300, OpenIAB_Android.STORE_GOOGLE, RESOURCE_1300);
+		OpenIAB.mapSku(RESOURCE_2625, OpenIAB_Android.STORE_GOOGLE, RESOURCE_2625);
+		OpenIAB.mapSku(RESOURCE_4000, OpenIAB_Android.STORE_GOOGLE, RESOURCE_4000);
+		OpenIAB.mapSku(RESOURCE_8500, OpenIAB_Android.STORE_GOOGLE, RESOURCE_8500);
+		OpenIAB.mapSku(FEATHER_250, OpenIAB_Android.STORE_GOOGLE, FEATHER_250);
+		OpenIAB.mapSku(FEATHER_550, OpenIAB_Android.STORE_GOOGLE, FEATHER_550);
+		OpenIAB.mapSku(FEATHER_1300, OpenIAB_Android.STORE_GOOGLE, FEATHER_1300);
+		OpenIAB.mapSku(FEATHER_2625, OpenIAB_Android.STORE_GOOGLE, FEATHER_2625);
+		OpenIAB.mapSku(FEATHER_4000, OpenIAB_Android.STORE_GOOGLE, FEATHER_4000);
+		OpenIAB.mapSku(FEATHER_8500, OpenIAB_Android.STORE_GOOGLE, FEATHER_8500);
 		OpenIAB.mapSku(FIRST_CHARGE, OpenIAB_Android.STORE_GOOGLE, FIRST_CHARGE);
 		OpenIAB.mapSku(MONTHLY_SUBSCRIPTION, OpenIAB_Android.STORE_GOOGLE, MONTHLY_SUBSCRIPTION);
-		//OpenIAB.mapSku(SKU, OpenIAB_Android.STORE_AMAZON, "sku");
-		//OpenIAB.mapSku(SKU, OpenIAB_Android.STORE_SAMSUNG, "100000105017/samsung_sku");
-		OpenIAB.mapSku(STARDUST_500, OpenIAB_iOS.STORE, STARDUST_500);
-		
+//		OpenIAB.mapSku(SKU, OpenIAB_Android.STORE_AMAZON, "sku");
+//		OpenIAB.mapSku(SKU, OpenIAB_Android.STORE_SAMSUNG, "100000105017/samsung_sku");
+//		OpenIAB.mapSku(STARDUST_500, OpenIAB_iOS.STORE, STARDUST_500);
+
+
+
 		var options = new Options();
 		options.checkInventoryTimeoutMs = Options.INVENTORY_CHECK_TIMEOUT_MS * 2;
 		options.discoveryTimeoutMs = Options.DISCOVER_TIMEOUT_MS * 2;
@@ -112,11 +128,12 @@ public class Shop : MonoBehaviour {
 		
 		// Transmit options and start the service
 		OpenIAB.init(options);
-
+		Invoke (CheckInventory (), 5); // check inventory after IAB initialized.
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
 	
 	}
 
@@ -164,8 +181,16 @@ public class Shop : MonoBehaviour {
 			List<Purchase> prods = inventory.GetAllPurchases();
 			
 			foreach(Purchase p in prods){
-				if (p.Sku !=MONTHLY_SUBSCRIPTION)
+				if (p.Sku !=MONTHLY_SUBSCRIPTION && p.Sku != FIRST_CHARGE){
 					OpenIAB.consumeProduct(p);
+				}else{
+					if (p.Sku == FIRST_CHARGE){
+						firstChargeButton.interactable = false;
+					}else if (p.Sku ==MONTHLY_SUBSCRIPTION){
+						monthlySubscriptionBought = true;
+					}
+//					UnConsumedInventoryNewUpdate = true;
+				}
 			}
 		}
 		
@@ -178,10 +203,41 @@ public class Shop : MonoBehaviour {
 	
 	private void purchaseSucceededEvent(Purchase purchase)
 	{
-		Debug.Log("purchaseSucceededEvent: " + purchase + "East Sun");
+		Debug.Log("purchaseSucceededEvent: " + purchase);
 		_label = "PURCHASED:" + purchase.ToString();
-		if ((purchase.Sku != MONTHLY_SUBSCRIPTION)&&(purchase.Sku != FIRST_CHARGE)) {
+		var j = new JSONClass ();
+		var json = new JSONClass ();
+		var js = new JSONClass ();
+		if ((purchase.Sku != MONTHLY_SUBSCRIPTION) && (purchase.Sku != FIRST_CHARGE)) { // For purchased virtual currency
 			OpenIAB.consumeProduct (purchase);
+
+			j.Add ("Event", "Event: User, " + game.login.id + " has purchased an item.");
+			j ["OriginalJson"] = purchase.OriginalJson;
+			j ["OrderId"] = purchase.OrderId;
+
+			json ["data"] = j;
+			json ["table"] = "log";
+			json ["action"] = "NEW";
+			wsc.Send (json.ToString ());  // log purchases in server
+
+			var item = prodIdDict [purchase.Sku].name;
+			var quantity = prodIdDict [purchase.Sku].quantity;
+			for (int i = 0; i <3; i++) {
+				if (game.wealth [i].type == currencyDict [item]) {
+					game.wealth [i].value += quantity;
+					json ["data"] = game.wealth [i].toJSON ();
+				}
+			}
+
+			json ["table"] = "wealth";
+			json ["action"] = "SET";
+			wsc.Send (json.ToString ());  // update corresponance currency
+		} else {
+			//set gifts.
+
+//			json ["table"] = "storage";
+//			json ["action"] = "NEW";
+//			wsc.Send (json.ToString ())
 		}
 		
 	}
@@ -201,24 +257,36 @@ public class Shop : MonoBehaviour {
 		_label = "Consume Failed: " + error;
 	}
 	
-	public void OnPurchaseVirtualItem(int item,int quantity=1){
-		//update Game Object
-		int type = prodList.products [item].type;
-		int price = prodList.products [item].price;
-		int currencyType = prodList.products [item].currencyType;
-		
-		int numItems = game.storage.Count; 
-		bool isInStorage = false;
-		for (int i=0; i< numItems; i++) { 
-			
+//	public void OnPurchaseVirtualItem(int item,int quantity=1){
+//		//update Game Object
+//		int type = prodList.products [item].type;
+//		int price = prodList.products [item].price;
+//		int currencyType = prodList.products [item].currencyType;
+//		
+//		int numItems = game.storage.Count; 
+//		bool isInStorage = false;
+//		for (int i=0; i< numItems; i++) { 
+//			
+//		}
+//		game.storage.Add (new Storage(item, prodList.products [item].type, 1, quantity));
+//		
+//		//deduct wealth
+//		game.wealth [currencyType].value -= price;
+//		
+//		
+//		// update server
+//	}
+
+	public void OnPurchaseButtonClicked(string product){
+		if (product != MONTHLY_SUBSCRIPTION){
+			OpenIAB.purchaseProduct (product);
+		} else {
+			OpenIAB.purchaseSubscription(product);
 		}
-		game.storage.Add (new Storage(item, prodList.products [item].type, 1, quantity));
-		
-		//deduct wealth
-		game.wealth [currencyType].value -= price;
-		
-		
-		// update server
+	}
+
+	private void CheckInventory(){
+		OpenIAB.queryInventory ();
 	}
 
 }
