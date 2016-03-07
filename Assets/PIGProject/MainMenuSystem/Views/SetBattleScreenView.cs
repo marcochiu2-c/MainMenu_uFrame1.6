@@ -23,6 +23,11 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 	public GameObject SpecialMission;
 	public GameObject LimitedMission;
 	public GameObject HolidayMission;
+	
+	public Slider loadingBar;
+	public GameObject loadingImage;
+	
+	private AsyncOperation _async;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -38,10 +43,26 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
         // Any designer bindings are created in the base implementation.
 
 		this.BindButtonToHandler (DailyBattleButton, () => {
+			/*
 			DailyMission.gameObject.SetActive (true);
 			SpecialMission.gameObject.SetActive (false);
 			LimitedMission.gameObject.SetActive (false);
 			HolidayMission.gameObject.SetActive (false);
+			
+			
+			Publish(new UnloadSceneCommand()
+			        {
+				SceneName = "MainMenuScene"
+			});
+			Publish(new LoadSceneCommand()
+			        {
+				SceneName = "MainGameScene"
+			});
+			*/
+			
+			loadingImage.SetActive (true);
+			StartCoroutine (LoadLevelWithBar ("MainGameScene"));
+			
 		});
 
 		this.BindButtonToHandler (SpecialBattleButton, () => {
@@ -66,4 +87,15 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 		});
 
     }
+    
+	IEnumerator LoadLevelWithBar (string level)
+	{
+		_async = Application.LoadLevelAsync(level);
+		while(!_async.isDone)
+		{
+			loadingBar.value=_async.progress;
+			yield return null;
+		}
+		
+	}
 }

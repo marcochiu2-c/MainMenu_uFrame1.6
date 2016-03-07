@@ -40,7 +40,7 @@ public class AssetLoadingService : AssetLoadingServiceBase {
                 Message = string.Format("Loaded {0}% of game assets...", i),
                 Progress = i/100f
             });
-            yield return new WaitForSeconds(0.03f);
+            yield return new WaitForSeconds(0.02f);
         }
 
         /*
@@ -51,7 +51,6 @@ public class AssetLoadingService : AssetLoadingServiceBase {
             Message = "Loaded 100% of game assets!",
             Progress = 1f
         });
-
     }
 
 }
