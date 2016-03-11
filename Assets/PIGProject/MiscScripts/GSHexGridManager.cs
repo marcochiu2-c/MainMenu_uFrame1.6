@@ -1125,6 +1125,44 @@ public void ReStartBtn()
 	Application.LoadLevel ("MainGameScene");
 }
 
+
+public void ChangeSoldierBtn()
+{
+
+	var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
+		
+	if (SoldierVM[sNum].Career == Career.Archer)
+		neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 3);
+		
+	foreach (var neighbor in neighborhoodPoints)
+	{
+		if(walkableGrid[neighbor].IsWalkable)
+			walkableGrid[neighbor].Color = Color.white;
+	}
+	
+	//Change sNum
+	if (sNum < 4)
+		sNum++;
+	
+	else 
+		sNum = 0;
+	
+	//Change Camera position
+	SoldierVM[sNum].SoldierState = SoldierState.MOVE;
+	selectPoint = false;
+	myText.text = ("Please Move Soldier" + (sNum + 1));
+		
+	//Debug.Log (Cinematics.CinematicTargets);
+	//Cinematics.GoToNextTarget();
+	ProCamera2D.enabled = true;
+	if (sNum == 0)
+		ProCamera2D.RemoveCameraTarget(SoldierV[4].transform);
+	else	
+		ProCamera2D.RemoveCameraTarget(SoldierV[sNum - 1].transform);
+		
+	ProCamera2D.AddCameraTarget(SoldierV[sNum].transform);
+}
+
 public void FindEnemyBtn()
 {
 	ProCamera2D.enabled = true;
@@ -1143,12 +1181,14 @@ public void FindEnemyBtn()
 	//ProCamera2D.enabled = false;
 }
 
+/*
 public void NextEnemyBtn()
 {
 	//if (Cinematics.IsActive)
 	Cinematics.GoToNextTarget();
 	//StartCoroutine(FindEnemy());
 }
+*/
 
 /// This is the distance function used by the path algorithm.
 private float EuclideanDistance(FlatHexPoint p, FlatHexPoint q)

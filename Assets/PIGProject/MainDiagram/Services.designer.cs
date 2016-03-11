@@ -12,11 +12,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UniRx;
 using uFrame.IOC;
 using uFrame.Kernel;
 using uFrame.MVVM;
-using UnityEngine;
 
 
 public class SceneFlowServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
@@ -134,16 +134,5 @@ public class DialogueServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
     public virtual void DialogueCommandHandler(DialogueCommand data) {
         // Process the commands information.  Also, you can publish new events by using the line below.
         // this.Publish(new AnotherEvent())
-    }
-}
-
-public class WsClientServiceBase : uFrame.Kernel.SystemServiceMonoBehavior {
-    
-    /// <summary>
-    /// This method is invoked whenever the kernel is loading.
-    /// Since the kernel lives throughout the entire lifecycle of the game, this will only be invoked once.
-    /// </summary>
-    public override void Setup() {
-        base.Setup();
     }
 }

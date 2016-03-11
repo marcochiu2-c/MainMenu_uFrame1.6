@@ -120,7 +120,6 @@ public class AcademyScreenView : AcademyScreenViewBase {
 			Debug.Log ("SelfStudyButton clicked");
 			qaHolder.SetActive(false);
 			SelfStudyHolder.SetActive (true);
-
 			//			CommandedPopup.gameObject.SetActive (false);
 			//			KnowledgePopup.gameObject.SetActive (false);
 			//			FightingPopup.gameObject.SetActive (true);

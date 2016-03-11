@@ -217,6 +217,7 @@ public class MainGameRootView : MainGameRootViewBase {
     }
 
     public override void GameStateChanged(GameState gameState) {
+    
 		if (gameState == GameState.Playing) return;
 		
 		if (this.MainGameRoot.EnemyCount == 0)

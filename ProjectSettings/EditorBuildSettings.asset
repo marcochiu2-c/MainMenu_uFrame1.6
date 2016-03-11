@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/PIGProject/Scenes/MainMenuScene.unity
   - enabled: 1
     path: Assets/PIGProject/Scenes/MainGameScene.unity
@@ -17,6 +17,8 @@ EditorBuildSettings:
     path: Assets/PIGProject/Scenes/NotificationUIScene.unity
   - enabled: 1
     path: Assets/PIGProject/Scenes/DialogueScene.unity
+  - enabled: 1
+    path: Assets/PIGProject/_Scenes/02_StartUp.unity
   - enabled: 0
     path: Assets/PIGProject/Scenes/IntroScene.unity
   - enabled: 0

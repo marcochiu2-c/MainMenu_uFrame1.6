@@ -6,12 +6,6 @@ using System.Collections.Generic;
 using SimpleJSON;
 using WebSocketSharp;
 
-
-
-
-
-
-
 public class DrawCards : MonoBehaviour {
 	WsClient wsc;
 	Game game;
