@@ -75,13 +75,13 @@ public class SubScreenView : SubScreenViewBase
 		if(active)
 		{
 			if (ScreenUIContainer.name == "MainUIHolder") return;
-			ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>ScreenUIContainer.gameObject.SetActive(true));
+//			ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>ScreenUIContainer.gameObject.SetActive(true));
 			//Debug.Log (ScreenUIContainer.name + " actived");
 		}
 		else
 		{
 			if (ScreenUIContainer.name == "MainUIHolder") return;
-			ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
+//			ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
 		}
 		//}						
 	}

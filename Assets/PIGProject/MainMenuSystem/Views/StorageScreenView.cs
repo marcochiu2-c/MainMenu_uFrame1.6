@@ -23,6 +23,7 @@ public class StorageScreenView : StorageScreenViewBase {
 	public GameObject armorGrid;
 	public GameObject sheildGrid;
 	public GameObject mountsGrid;
+	public GameObject panel;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -42,6 +43,13 @@ public class StorageScreenView : StorageScreenViewBase {
 			armorGrid.gameObject.SetActive (false);
 			sheildGrid.gameObject.SetActive (false);
 			mountsGrid.gameObject.SetActive (false);
+
+//			Debug.Log (text);
+			Debug.Log ("Coordinate X of panel: "+panel.transform.localPosition.x);
+			Debug.Log ("Coordinate Y of panel: "+panel.transform.localPosition.y);
+			//		Debug.Log ("Width of panel: "+panel.transform.);
+			//		Debug.Log ("Height of panel: "+panel.transform.localPosition.y);
+//			return true;
 		});
 
 		this.BindButtonToHandler (armorButton, () => {
@@ -66,4 +74,52 @@ public class StorageScreenView : StorageScreenViewBase {
 		});
 
     }
+
+	public void SetButtons(string panel){
+		Game game = Game.Instance;
+		ProductList pList = new ProductList();
+
+		var count = game.storage.Count;
+//		for (var i = 0; i < count ; i++){
+//			if (panel == "Weapons" && game.storage[i].type>=5000 && game.storage[i].type<6000) {  // Weapons
+//				if(Button(pList.GetProductById(game.storage[i].type).name))
+//				{
+//
+//				}
+//			}else if (panel == "Armors" && game.storage[i].type>=6000 && game.storage[i].type<7000){  // Armors
+//				if(Button(pList.GetProductById(game.storage[i].type).name))
+//				{
+//					
+//				}
+//			}else if (panel == "Shields" && game.storage[i].type>=7000 && game.storage[i].type<8000){  // Shields
+//				if(Button(pList.GetProductById(game.storage[i].type).name))
+//				{
+//					
+//				}
+//			}
+//		}
+	}
+	
+//	private bool Button(string text)
+//	{
+//		float width = Screen.width / 2.0f - X_OFFSET * 2;
+//		float height = (Screen.width >= SMALL_SCREEN_SIZE || Screen.height >= SMALL_SCREEN_SIZE) ? LARGE_HEIGHT : SMALL_HEIGHT;
+//		
+//		bool click = GUI.Button(new Rect(
+//			X_OFFSET + _column * X_OFFSET * 2 + _column * width, 
+//			Y_OFFSET + _row * Y_OFFSET + _row * height, 
+//			width, height),
+//		                        text);
+//		
+//		++_column;
+//		if (_column > 1)
+//		{
+//			_column = 0;
+//			++_row;
+//		}
+//		
+//		return click;
+
+//	}
+
 }
