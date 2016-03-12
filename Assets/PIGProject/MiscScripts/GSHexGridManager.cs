@@ -121,7 +121,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 		for(int i = 0; i < SoldierVM.Count; i++)
 		{
-			SoldierVM[i].CurrentPointLocation = new FlatHexPoint(i, 0);
+			SoldierVM[i].CurrentPointLocation = new FlatHexPoint(0, 0);
 			//walkableGrid[SoldierVM[i].CurrentPointLocation].IsWalkable = false;
 			SoldierV[i].transform.position = Map[SoldierVM[i].CurrentPointLocation] + new Vector3(0, -18);
 		}
@@ -724,7 +724,7 @@ public IEnumerator PlayPlayList(int i)
 {
 	//for(int x = 0; x < SoldierVM.Count; x++)
 	//{
-	SoldierVM[i].CurrentPointLocation = new FlatHexPoint(i, 0);
+	SoldierVM[i].CurrentPointLocation = new FlatHexPoint(0, 0);
 	SoldierV[i].transform.position = Map[SoldierVM[i].CurrentPointLocation];
 
 	SoldierV[i].GetComponent<Renderer>().sortingOrder = 9 - i / 2 ;
@@ -1181,6 +1181,36 @@ public void FindEnemyBtn()
 	}
 	//Cinematics.GoToNextTarget();		
 	//ProCamera2D.enabled = false;
+}
+
+public void SelectSoldierBtn(int i)
+{
+
+	var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
+		
+	if (SoldierVM[sNum].Career == Career.Archer)
+		neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 3);
+		
+	foreach (var neighbor in neighborhoodPoints)
+	{
+		if(walkableGrid[neighbor].IsWalkable)
+			walkableGrid[neighbor].Color = Color.white;
+	}
+		
+		SoldierV[sNum].RendererColor(Color.grey);
+		ProCamera2D.enabled = true;
+		ProCamera2D.RemoveCameraTarget(SoldierV[sNum].transform);
+		
+		sNum = i - 1;
+		
+		ProCamera2D.AddCameraTarget(SoldierV[sNum].transform);
+		
+		SoldierV[sNum].RendererColor(Color.white);
+		
+		//Change Camera position
+		SoldierVM[sNum].SoldierState = SoldierState.MOVE;
+		selectPoint = false;
+		myText.text = ("Please Move Soldier" + (sNum + 1));
 }
 
 /*
