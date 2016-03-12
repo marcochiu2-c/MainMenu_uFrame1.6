@@ -271,7 +271,10 @@ PlayerSettings:
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
   scriptingDefineSymbols:
-    4: 
+    1: SOOMLA_OPEN_SOURCE
+    2: SOOMLA_OPEN_SOURCE
+    4: SOOMLA_OPEN_SOURCE
+    7: SOOMLA_OPEN_SOURCE
   metroPackageName: uFrame_1.6rc2
   metroPackageLogo: 
   metroPackageLogo140: 

@@ -1147,6 +1147,8 @@ public void ChangeSoldierBtn()
 	else 
 		sNum = 0;
 	
+	SoldierV[sNum].RendererColor(Color.white);
+		
 	//Change Camera position
 	SoldierVM[sNum].SoldierState = SoldierState.MOVE;
 	selectPoint = false;

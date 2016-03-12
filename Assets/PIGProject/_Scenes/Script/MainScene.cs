@@ -67,7 +67,8 @@ public class MainScene : MonoBehaviour {
 			starDustText = GameObject.Find ("StardustText").GetComponents<Text> () [0];
 			game = Game.Instance;
 			wsc = WsClient.Instance;
-			MainScene.userId = game.login.id;  // TODO: load userID from DB
+			MainScene.userId = 3;
+			//game.login.id;  // TODO: load userID from DB
 			json = new JSONClass ();
 			json.Add ("data", new JSONData (MainScene.userId));
 			json ["action"] = "GET";
