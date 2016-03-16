@@ -46,8 +46,11 @@ public class MainGameRootView : MainGameRootViewBase {
 	public TextAsset missionInfo;
 	public Text InfoText;
 	
+	private Button _copyInfoButton;
+	
 	public Slider loadingBar;
 	public GameObject loadingImage;
+	public GameObject beginnerGuide;
 	
 	private AsyncOperation _async;
 
@@ -66,8 +69,9 @@ public class MainGameRootView : MainGameRootViewBase {
 
 		for (int i = 1; i <= 5; i++)
 			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
-
-
+		
+		beginnerGuide = GameObject.Find("BeginnerGuide");
+		BeginnerGuide();
 	}
 	
 	public override void Bind() {
@@ -95,6 +99,24 @@ public class MainGameRootView : MainGameRootViewBase {
 				Message = atkInfo.text 
 		    });
 		    */
+		});
+		
+		this.BindButtonToHandler(_copyInfoButton, () => {
+			
+			if(InfoPanel.activeSelf == false)
+			{
+				InfoPanel.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InOutQuad).OnStart(() =>  InfoPanel.SetActive(true));
+				BlockPanel.SetActive(true);
+			}
+			
+			else
+			{
+				InfoPanel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad).OnComplete(() => InfoPanel.SetActive(false));
+				BlockPanel.SetActive(false);	
+			}
+			
+			//beginnerGuide.SetActive(false);
+		
 		});
 		
 		this.BindButtonToHandler(InfoCloseButton, () => { 
@@ -246,5 +268,59 @@ public class MainGameRootView : MainGameRootViewBase {
 			yield return null;
 		}
 		
+	}
+	
+	/// <summary>
+	/// Init all Behavior in the Grid
+	/// </summary>
+	public void BeginnerGuide()
+	{
+		
+		GameObject guideArrow = GameObject.Find ("GuideArrow");
+		guideArrow.transform.localPosition = InfoButton.transform.localPosition + new Vector3(100, 0, 0);
+		//Test only
+		_copyInfoButton = Instantiate(InfoButton) as Button;
+		
+		_copyInfoButton.transform.parent = InfoButton.transform.parent; 
+		
+		_copyInfoButton.transform.localPosition = InfoButton.transform.localPosition ; 
+		_copyInfoButton.transform.localRotation = InfoButton.transform.localRotation ;  
+		_copyInfoButton.transform.localScale    = InfoButton.transform.localScale; 
+		
+		_copyInfoButton.transform.parent = beginnerGuide.transform;
+		
+		guideArrow.transform.DOMoveX(100, 1).SetLoops(-1, LoopType.Yoyo);
+		
+		BlockPanel.SetActive(true);
+		
+		/*
+		GameObject movePanel = GameObject.Find("MovePanel");
+		GameObject actionPanel = GameObject.Find ("ActionPanel");
+		GameObject flowPanel = GameObject.Find("FlowPanel");
+		
+		GameObject copyMovePanel = Instantiate(movePanel);
+		GameObject copyActionPanel = Instantiate(actionPanel);
+		GameObject copyFlowPanel = Instantiate(flowPanel);
+		
+		copyMovePanel.transform.parent = movePanel.transform.parent; 
+		copyActionPanel.transform.parent = movePanel.transform.parent;  
+		copyFlowPanel.transform.parent = movePanel.transform.parent;  
+
+		copyMovePanel.transform.localPosition = movePanel.transform.localPosition ;  
+		copyMovePanel.transform.localRotation = movePanel.transform.localRotation ;  
+		copyMovePanel.transform.localScale    = movePanel.transform.localScale ; 
+		
+		copyActionPanel.transform.localPosition = actionPanel.transform.localPosition ;  
+		copyActionPanel.transform.localRotation = actionPanel.transform.localRotation ;  
+		copyActionPanel.transform.localScale    = actionPanel.transform.localScale ;  
+		
+		copyFlowPanel.transform.localPosition = flowPanel.transform.localPosition ;  
+		copyFlowPanel.transform.localRotation = flowPanel.transform.localRotation ;  
+		copyFlowPanel.transform.localScale    = flowPanel.transform.localScale ;  
+		 
+		copyMovePanel.transform.parent = beginnerGuide.transform;
+		copyActionPanel.transform.parent = beginnerGuide.transform; 
+		copyFlowPanel.transform.parent = beginnerGuide.transform;
+		*/ 
 	}
 }

@@ -48,6 +48,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
     
     public override void Bind() {
         base.Bind();
+        /*
         // Use this.AcademyScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
@@ -133,5 +134,6 @@ public class AcademyScreenView : AcademyScreenViewBase {
 			//			KnowledgePopup.gameObject.SetActive (false);
 			//			FightingPopup.gameObject.SetActive (true);
 		});
+		*/
     }
 }

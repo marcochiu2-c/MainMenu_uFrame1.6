@@ -139,18 +139,18 @@ PlayerSettings:
       m_Size: 0
   - m_BuildTarget: Android
     m_Icons:
-    - m_Icon: {fileID: 2800000, guid: 59c14bb757dfe4bab80b46975e418e6a, type: 3}
-      m_Size: 0
+    - m_Icon: {fileID: 2800000, guid: 5589c76d0777547c89fa9617694ac740, type: 3}
+      m_Size: 192
     - m_Icon: {fileID: 0}
-      m_Size: 0
+      m_Size: 144
     - m_Icon: {fileID: 0}
-      m_Size: 0
+      m_Size: 96
     - m_Icon: {fileID: 0}
-      m_Size: 0
+      m_Size: 72
     - m_Icon: {fileID: 0}
-      m_Size: 0
+      m_Size: 48
     - m_Icon: {fileID: 0}
-      m_Size: 0
+      m_Size: 36
   m_BuildTargetBatching: []
   m_BuildTargetGraphicsAPIs: []
   webPlayerTemplate: APPLICATION:Default

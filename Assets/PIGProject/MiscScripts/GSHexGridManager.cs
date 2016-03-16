@@ -48,6 +48,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public Touch[] touches;
 	public int sNum = 0;	//index for SoldierVM and SoldierV List
 	public bool selectPoint = false;
+	public bool beginner = true;
 
 	private FlatHexPoint start;
 	private FlatHexPoint finish;
@@ -111,8 +112,27 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		ProCamera2D.enabled = false;
 		InfoPanel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad).OnComplete(() => InfoPanel.SetActive(false));
 		StartCoroutine(EnemyShowAnimation());
+		
+		//if(beginner)
+		//	BeginnerGuide();
 	}
 
+	/// <summary>
+	/// Init all Behavior in the Grid
+	/// </summary>
+	/*
+	public void BeginnerGuide()
+	{
+		GameObject Tygame = GameObject.Find("");
+		GameObject CopyObject = Instantiate(Tygame);
+
+		CopyObject.transform.parent = Tygame.transform.parent;  
+		CopyObject.transform.localPosition = Tygame.transform.localPosition ;  
+		CopyObject.transform.localRotation = Tygame.transform.localRotation ;  
+		CopyObject.transform.localScale = Tygame.transform.localScale ;  
+		CopyObject.transform.parent = transform;   
+	}
+	*/
 	/// <summary>
 	/// Init all Behavior in the Grid
 	/// </summary>
@@ -212,7 +232,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 		Cinematics.Stop();
 		ProCamera2D.enabled = false;
-		InfoPanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutExpo).OnStart(() =>  InfoPanel.SetActive(true));
+		//InfoPanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutExpo).OnStart(() =>  InfoPanel.SetActive(true));
 	}
 
 	/// <summary>
