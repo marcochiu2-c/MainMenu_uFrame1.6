@@ -95,7 +95,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		InitPosition();
 
 		//Auto Call Onclick for the actionstyle without select target
-
+		/*
 		Observable.EveryUpdate()
 			.Where(_ => SoldierVM[sNum].SoldierState == SoldierState.ATTACK && (
 				SoldierVM[sNum].Action == ActionStyle.STANDBY ||
@@ -105,6 +105,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			.Subscribe(_=> {
 				OnClick (SoldierVM[sNum].CurrentPointLocation);
 			});
+		*/
 
 		//BGM
 		audio.Play();
@@ -116,23 +117,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		//if(beginner)
 		//	BeginnerGuide();
 	}
-
-	/// <summary>
-	/// Init all Behavior in the Grid
-	/// </summary>
-	/*
-	public void BeginnerGuide()
-	{
-		GameObject Tygame = GameObject.Find("");
-		GameObject CopyObject = Instantiate(Tygame);
-
-		CopyObject.transform.parent = Tygame.transform.parent;  
-		CopyObject.transform.localPosition = Tygame.transform.localPosition ;  
-		CopyObject.transform.localRotation = Tygame.transform.localRotation ;  
-		CopyObject.transform.localScale = Tygame.transform.localScale ;  
-		CopyObject.transform.parent = transform;   
-	}
-	*/
+	
 	/// <summary>
 	/// Init all Behavior in the Grid
 	/// </summary>
@@ -247,7 +232,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			_clicking = false;
 		}
 
-		else if (touches.Length == 1){
+		else if (touches.Length == 1)
+		{
 			_touchPosition = touches[0].deltaPosition.magnitude;
 			//Debug.Log("touch.deltaPosition: " + _touchPosition);
 
@@ -270,7 +256,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			_soldierCount = 0;
 		}
 	}
-
+	
+	//call after mov/attack accommand clicked
 	public void MoveOrAttackPointSelected()
 	{
 		if(selectPoint && SoldierVM[sNum].SoldierState == SoldierState.MOVE)
@@ -287,7 +274,9 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		}// End of Move State
 
 		//Point selected and Soldier in AttackState
-		else if(selectPoint && SoldierVM[sNum].SoldierState == SoldierState.ATTACK)
+		
+		else if(selectPoint && SoldierVM[sNum].SoldierState == SoldierState.ATTACK )
+		//else if(selectPoint && SoldierVM[sNum].SoldierState == SoldierState.ATTACK && SoldierVM[sNum].Action == ActionStyle.STANDBY || SoldierVM[sNum].Action == ActionStyle.YAWP || SoldierVM[sNum].Action == ActionStyle.SEARCH || SoldierVM[sNum].Action == ActionStyle.A_ATK)
 		{
 
 			var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[sNum].CurrentPointLocation) < 2);
@@ -316,7 +305,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				break;
 			}
 			*/
-
+		
+		
 			foreach (var neighbor in neighborhoodPoints)
 			{
 				if(walkableGrid[neighbor].IsEnemy)
@@ -367,8 +357,12 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				if(walkableGrid[neighbor].IsWalkable)
 					walkableGrid[neighbor].Color = Color.white;
 			}
+			
+			_targetSelected = false;
+			selectPoint = false;
 
 		}//End of ATTACK State
+		
 	}
 
 	/// <summary>
@@ -397,7 +391,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			{
 				//sNum = i;
 				Debug.Log ("Soldier Selected");
-				point += new FlatHexPoint(1,0);
+				//point += new FlatHexPoint(1,0);
+				//return;
 			}
 		}
 
@@ -433,72 +428,9 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				markNode.Color = ExampleUtils.Colors[0];
 				_savePoint = point;
 
-				myText.text = "Please Select Action Style";
-				/*
-				//No need to select target
-				if (SoldierVM[_sNum].Action == ActionStyle.STANDBY || SoldierVM[_sNum].Action == ActionStyle.YAWP || SoldierVM[_sNum].Action == ActionStyle.SEARCH || SoldierVM[_sNum].Action == ActionStyle.A_ATK)
-				{
-					goto EndofAttack;
-				}
-				//Range of Attack:
-				//Swordman < 2
-				//Archer < 3
-				var neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[_sNum].CurrentPointLocation) < 2);
+				//myText.text = "Please Select Action Style";
 
-				switch (SoldierVM[_sNum].Career)
-				{
-				case Career.Swordman:
-					neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[_sNum].CurrentPointLocation) < 2);
-					break;
-				case Career.Archer:
-					neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[_sNum].CurrentPointLocation) < 3);
-					break;
-				default:
-					neighborhoodPoints = Grid.Where(p => p.DistanceFrom(SoldierVM[_sNum].CurrentPointLocation) < 2);
-					break;
-				}
-
-				foreach (var neighbor in neighborhoodPoints)
-				{
-					for(int j = 0; j < TargetVM.Count; j++)
-					{
-						if(neighbor == point && neighbor == TargetVM[j].CurrentPointLocation)
-						{
-							//FindNearly cell, get the target
-							//if point is one of neighbour, target = pointtarget
-							//Debug.Log ("Target Selected");
-
-							if(TargetVM[j].Action == ActionStyle.A_ATK || !TargetV[j].gameObject.activeSelf)
-								goto EndofAttack;
-
-							myText.text = "Target Selected";
-
-							//Save the information into playlist
-							SoldierVM[_sNum].playlist.Insert((int)SoldierVM[_sNum].Counter, new PlayList(SoldierVM[_sNum].CurrentPointLocation, SoldierVM[_sNum].Movement ,SoldierVM[_sNum].Action, TargetVM[j], TargetV[j]));
-							SoldierVM[_sNum].Counter++;
-							_targetSelected = true;
-							goto EndofAttack; //break the foreach
-						}
-					}
-				}
-
-				EndofAttack:
-				if(!_targetSelected)
-				{
-					//Save the information into playlist without target
-					SoldierVM[_sNum].playlist.Insert((int)SoldierVM[_sNum].Counter, new PlayList(SoldierVM[_sNum].CurrentPointLocation, SoldierVM[_sNum].Movement ,SoldierVM[_sNum].Action, null, null));
-					SoldierVM[_sNum].Counter++;
-
-					if (SoldierVM[_sNum].Action == ActionStyle.STANDBY || SoldierVM[_sNum].Action == ActionStyle.YAWP || SoldierVM[_sNum].Action == ActionStyle.SEARCH || SoldierVM[_sNum].Action == ActionStyle.A_ATK)
-						myText.text = "OK, Please Move";
-					else
-						myText.text = "You can't Attack, Please Move";
-				}
-				//Change state from move to move after attack and thus check the panel
-				SoldierVM[_sNum].SoldierState = SoldierState.MOVE;
-			}//End of ATTACK State
-			*/
-		}
+			}
 		_targetSelected = false;
 		selectPoint = false;
 	}
@@ -940,8 +872,6 @@ public IEnumerator PlayPlayList(int i)
 
 	//while(SoldierVM[i].BattleState != BattleState.WAITING)
 	//	yield return new WaitForSeconds(0.2f);
-
-	Debug.Log ("Fuck! Fuck you!");
 
 	SoldierVM[i].SoldierState = SoldierState.FINISH;
 	_soldierCount++;

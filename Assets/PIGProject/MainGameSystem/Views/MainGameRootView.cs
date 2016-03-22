@@ -38,7 +38,7 @@ public class MainGameRootView : MainGameRootViewBase {
 	public Button SearchButton;
 	public Button AATKButton;
 	public Button StandByButton;
-	
+
 	public GameObject InfoPanel;
 	public GameObject BlockPanel;
 	public TextAsset atkInfo;
@@ -51,6 +51,7 @@ public class MainGameRootView : MainGameRootViewBase {
 	public Slider loadingBar;
 	public GameObject loadingImage;
 	public GameObject beginnerGuide;
+	public GameObject guideArrow;
 	
 	private AsyncOperation _async;
 
@@ -70,7 +71,7 @@ public class MainGameRootView : MainGameRootViewBase {
 		for (int i = 1; i <= 5; i++)
 			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
 		
-		beginnerGuide = GameObject.Find("BeginnerGuide");
+		//beginnerGuide = GameObject.Find("BeginnerGuide");
 		BeginnerGuide();
 	}
 	
@@ -122,11 +123,13 @@ public class MainGameRootView : MainGameRootViewBase {
 		this.BindButtonToHandler(InfoCloseButton, () => { 
 			InfoPanel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad).OnComplete(() => InfoPanel.SetActive(false));
 			BlockPanel.SetActive(false);
+			beginnerGuide.SetActive(false);
 		});
 		
 		this.BindButtonToHandler(StartBattleButton, () => { 
 			InfoPanel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad).OnComplete(() => InfoPanel.SetActive(false));
 			BlockPanel.SetActive(false);
+			beginnerGuide.SetActive(false);
 		});
 		
 		this.BindButtonToHandler(LeaveButton, () => { 
@@ -219,8 +222,8 @@ public class MainGameRootView : MainGameRootViewBase {
 			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.SEARCH;
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 			gSHexGridManager.selectPoint = true;
-			gSHexGridManager.MoveOrAttackPointSelected();
-		});
+			//gSHexGridManager.MoveOrAttackPointSelected();
+		});//
 
 		this.BindButtonToHandler(AATKButton, () => {
 			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.A_ATK;
@@ -275,8 +278,8 @@ public class MainGameRootView : MainGameRootViewBase {
 	/// </summary>
 	public void BeginnerGuide()
 	{
-		
-		GameObject guideArrow = GameObject.Find ("GuideArrow");
+
+		//GameObject guideArrow = GameObject.Find ("GuideArrow");
 		guideArrow.transform.localPosition = InfoButton.transform.localPosition + new Vector3(100, 0, 0);
 		//Test only
 		_copyInfoButton = Instantiate(InfoButton) as Button;
@@ -289,7 +292,7 @@ public class MainGameRootView : MainGameRootViewBase {
 		
 		_copyInfoButton.transform.parent = beginnerGuide.transform;
 		
-		guideArrow.transform.DOMoveX(100, 1).SetLoops(-1, LoopType.Yoyo);
+		guideArrow.transform.DOLocalMoveX(-450f, 1f).SetLoops(-1, LoopType.Yoyo);
 		
 		BlockPanel.SetActive(true);
 		

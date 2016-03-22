@@ -10,6 +10,7 @@ using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 
 public class SetBattleScreenView : SetBattleScreenViewBase {
@@ -18,16 +19,25 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 	public Button SpecialBattleButton;
 	public Button LimitedBattleButton;
 	public Button HolidayBattleButton;
-
+	
+	public Button MapButton;
+	public Button GoButton;
+	public Button NextButton;
+	public Button PreButton;
+	
 	public GameObject DailyMission;
 	public GameObject SpecialMission;
 	public GameObject LimitedMission;
 	public GameObject HolidayMission;
 	
+	public GameObject TeamSelection;
+	public GameObject SelectionPanel;
+	
 	public Slider loadingBar;
 	public GameObject loadingImage;
 	
 	private AsyncOperation _async;
+	private int _moveCount = 0;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -43,13 +53,13 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
         // Any designer bindings are created in the base implementation.
 
 		this.BindButtonToHandler (DailyBattleButton, () => {
-			/*
+			
 			DailyMission.gameObject.SetActive (true);
 			SpecialMission.gameObject.SetActive (false);
 			LimitedMission.gameObject.SetActive (false);
 			HolidayMission.gameObject.SetActive (false);
 			
-			
+			/*
 			Publish(new UnloadSceneCommand()
 			        {
 				SceneName = "MainMenuScene"
@@ -60,8 +70,10 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 			});
 			*/
 			
+			/*
 			loadingImage.SetActive (true);
 			StartCoroutine (LoadLevelWithBar ("MainGameScene"));
+			*/
 			
 		});
 
@@ -85,6 +97,39 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 			LimitedMission.gameObject.SetActive (false);
 			HolidayMission.gameObject.SetActive (true);
 		});
+		
+		this.BindButtonToHandler (MapButton, () => {
+			TeamSelection.gameObject.SetActive(true);
+		});
+		
+		this.BindButtonToHandler (GoButton, () => {
+			loadingImage.SetActive (true);
+			StartCoroutine (LoadLevelWithBar ("MainGameScene"));
+		});
+		
+		/*
+		this.BindButtonToHandler (NextButton, () => {
+			SelectionPanel.transform.DOMoveX(SelectionPanel.transform.position.x - 645, 0.5f);
+			
+			PreButton.interactable = true;
+			
+			_moveCount++;
+			if(_moveCount == 4)
+				NextButton.interactable = false;
+			
+		});
+		
+		this.BindButtonToHandler (PreButton, () => {
+			SelectionPanel.transform.DOMoveX(SelectionPanel.transform.position.x + 645, 0.5f);
+			
+			NextButton.interactable = true;
+			
+			_moveCount--;
+			if(_moveCount == 0)
+				PreButton.interactable = false;
+			
+		});
+		*/
 
     }
     
