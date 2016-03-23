@@ -31,6 +31,8 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<Int32> _EnemyCountProperty;
     
+    private P<Int32> _PlayerIQProperty;
+    
     private ModelCollection<SoldierViewModel> _Soldier;
     
     private ModelCollection<EnemyViewModel> _Enemy;
@@ -83,6 +85,15 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<Int32> PlayerIQProperty {
+        get {
+            return _PlayerIQProperty;
+        }
+        set {
+            _PlayerIQProperty = value;
+        }
+    }
+    
     public virtual GameState GameState {
         get {
             return GameStateProperty.Value;
@@ -116,6 +127,15 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         }
         set {
             EnemyCountProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 PlayerIQ {
+        get {
+            return PlayerIQProperty.Value;
+        }
+        set {
+            PlayerIQProperty.Value = value;
         }
     }
     
@@ -182,6 +202,7 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         _HexGridMatchingProperty = new P<String>(this, "HexGridMatching");
         _SoldierCountProperty = new P<Int32>(this, "SoldierCount");
         _EnemyCountProperty = new P<Int32>(this, "EnemyCount");
+        _PlayerIQProperty = new P<Int32>(this, "PlayerIQ");
         _Soldier = new ModelCollection<SoldierViewModel>(this, "Soldier");
         _Enemy = new ModelCollection<EnemyViewModel>(this, "Enemy");
         _Memebers = new ModelCollection<EntityViewModel>(this, "Memebers");
@@ -205,6 +226,7 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         this.HexGridMatching = stream.DeserializeString("HexGridMatching");;
         this.SoldierCount = stream.DeserializeInt("SoldierCount");;
         this.EnemyCount = stream.DeserializeInt("EnemyCount");;
+        this.PlayerIQ = stream.DeserializeInt("PlayerIQ");;
         if (stream.DeepSerialize) {
             this.Soldier.Clear();
             this.Soldier.AddRange(stream.DeserializeObjectArray<SoldierViewModel>("Soldier"));
@@ -225,6 +247,7 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         stream.SerializeString("HexGridMatching", this.HexGridMatching);
         stream.SerializeInt("SoldierCount", this.SoldierCount);
         stream.SerializeInt("EnemyCount", this.EnemyCount);
+        stream.SerializeInt("PlayerIQ", this.PlayerIQ);
         if (stream.DeepSerialize) stream.SerializeArray("Soldier", this.Soldier);
         if (stream.DeepSerialize) stream.SerializeArray("Enemy", this.Enemy);
         if (stream.DeepSerialize) stream.SerializeArray("Memebers", this.Memebers);
@@ -247,6 +270,8 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_SoldierCountProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_EnemyCountProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_PlayerIQProperty, false, false, false, false));
         list.Add(new ViewModelPropertyInfo(_Soldier, true, true, false, false));
         list.Add(new ViewModelPropertyInfo(_Enemy, true, true, false, false));
         list.Add(new ViewModelPropertyInfo(_Memebers, true, true, false, false));

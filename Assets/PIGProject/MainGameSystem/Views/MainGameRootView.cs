@@ -222,7 +222,7 @@ public class MainGameRootView : MainGameRootViewBase {
 			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.SEARCH;
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 			gSHexGridManager.selectPoint = true;
-			//gSHexGridManager.MoveOrAttackPointSelected();
+			gSHexGridManager.MoveOrAttackPointSelected();
 		});//
 
 		this.BindButtonToHandler(AATKButton, () => {
@@ -245,7 +245,7 @@ public class MainGameRootView : MainGameRootViewBase {
     
 		if (gameState == GameState.Playing) return;
 		
-		if (this.MainGameRoot.EnemyCount == 0)
+		if (this.MainGameRoot.EnemyCount == -1)
 		{
 			Debug.Log ("You Win");
 			gameOverText.text = "You Win";
@@ -253,7 +253,8 @@ public class MainGameRootView : MainGameRootViewBase {
 			ExecuteGameOver();
 		}
 		
-		else if(this.MainGameRoot.SoldierCount == 0)
+		//else if(this.MainGameRoot.SoldierCount == 0)
+		else
 		{
 			Debug.Log ("You Lose");
 			gameOverText.text = "GameOver";
@@ -292,7 +293,7 @@ public class MainGameRootView : MainGameRootViewBase {
 		
 		_copyInfoButton.transform.parent = beginnerGuide.transform;
 		
-		guideArrow.transform.DOLocalMoveX(-450f, 1f).SetLoops(-1, LoopType.Yoyo);
+		guideArrow.transform.DOLocalMoveX(-450f, 0.8f).SetLoops(-1, LoopType.Yoyo);
 		
 		BlockPanel.SetActive(true);
 		

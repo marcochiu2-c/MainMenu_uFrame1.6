@@ -44,12 +44,15 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public GameObject pathRoot;
 
 	public Text myText;
+	public Text IQDisplay;
 	public AudioSource audio;
 	public Touch[] touches;
 	public int sNum = 0;	//index for SoldierVM and SoldierV List
 	public bool selectPoint = false;
 	public bool beginner = true;
 
+	public FlatHexPoint towerPoint = new FlatHexPoint(29, -5);
+	
 	private FlatHexPoint start;
 	private FlatHexPoint finish;
 	private FlatHexPoint _savePoint;
@@ -64,12 +67,10 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public override void KernelLoaded()
 	{
 		base.KernelLoaded();
-
+		
 		for (int i = 1; i <= 5; i++)
 		{
 			// Get the Controllers, ViewModels and Views from Kernel
-			MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
-			MainGameController = uFrameKernel.Container.Resolve<MainGameRootController>();
 			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
 			TargetVM.Add(uFrameKernel.Container.Resolve<EnemyViewModel>("Enemy" + i));
 			//Debug.Log (MainGameVM== null ? "MainGameVM is null" : MainGameVM.Identifier);
@@ -82,6 +83,12 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			GameObject objSoldier = GameObject.Find("Soldier" + i);
 			SoldierV.Add (objSoldier.GetComponent<SoldierView>() as SoldierView);
 		}
+		
+		MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
+		MainGameController = uFrameKernel.Container.Resolve<MainGameRootController>();
+		
+		//MainGameVM.PlayerIQ = 200;
+		IQDisplay.text = "Player IQ: " + MainGameVM.PlayerIQ;
 
 		walkableGrid = (FlatHexGrid<GSCell>) Grid.CastValues<GSCell, FlatHexPoint>();
 
@@ -246,8 +253,9 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			else
 				_clicking = false;
 		}
-
+		
 		//After all Soldiers Finished their command
+		/*
 		if(_soldierCount == 5 && MainGameVM != null)
 		{
 			MainGameVM.SoldierCount = 0;
@@ -255,12 +263,19 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			StopAllCoroutines();
 			_soldierCount = 0;
 		}
+		*/
 	}
 	
 	//call after mov/attack accommand clicked
 	public void MoveOrAttackPointSelected()
 	{
-		if(selectPoint && SoldierVM[sNum].SoldierState == SoldierState.MOVE)
+		if(MainGameVM.PlayerIQ == 0)
+		{
+			myText.text = "Not enough IQ";
+			return;
+		}
+		
+		else if(selectPoint && SoldierVM[sNum].SoldierState == SoldierState.MOVE)
 		{
 			start = SoldierVM[sNum].CurrentPointLocation;
 			finish = _savePoint;
@@ -360,7 +375,15 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			
 			_targetSelected = false;
 			selectPoint = false;
-
+		
+			MainGameVM.PlayerIQ -= 10;
+			IQDisplay.text = "Player IQ: " + MainGameVM.PlayerIQ;
+			
+			if(MainGameVM.PlayerIQ == 0)
+			{
+				myText.text = "Please Click Play Button";
+			}
+				
 		}//End of ATTACK State
 		
 	}
@@ -569,7 +592,6 @@ public IEnumerator MovePath(IEnumerable<FlatHexPoint> path, MoveStyle move, Enti
 		}
 
 		yield return StartCoroutine(entityView.Move(Map[pathList[i]], Map[pathList[i+1]], move));
-
 
 		/// Set Grid isSoldier isEnemy CurerentPosition
 		if(entityVM is EnemyViewModel)
@@ -863,6 +885,9 @@ public IEnumerator PlayPlayList(int i)
 				//Debug.Log ("Wating finish Battle");
 				yield return new WaitForSeconds(1/SoldierVM[i].AttackSpeed);
 			}
+			
+			if(SoldierVM[i].BattleState == BattleState.DEAD)
+				break;
 		}
 
 		//SoldierVM[i].BattleState = BattleState.WAITING;
@@ -873,6 +898,28 @@ public IEnumerator PlayPlayList(int i)
 	//while(SoldierVM[i].BattleState != BattleState.WAITING)
 	//	yield return new WaitForSeconds(0.2f);
 
+	if(SoldierVM[i].CurrentPointLocation != new FlatHexPoint(29, -5))
+	{
+		PathFinding(SoldierVM[i].CurrentPointLocation, towerPoint, MoveStyle.FAST, SoldierV[i], SoldierVM[i], null);
+		Debug.Log ("Soldier" + i + "moves to the tower");
+	}
+		//PathFinding(start, finish, SoldierVM[i].playlist[j].SaveMove, SoldierV[i], SoldierVM[i], SoldierVM[i].playlist[j].SaveEnemyVM);
+	
+	
+	///--------------------Wait Moving Finish-----------------///
+	while (SoldierVM[i].Moving)
+		yield return new WaitForSeconds(0.2f);
+	
+	//Check the Soldier enter the tower or not
+	if(SoldierVM[i].CurrentPointLocation == towerPoint)
+	{
+		MainGameVM.EnemyCount = -1;
+		MainGameVM.GameState = GameState.GameOver;
+		
+		yield return new WaitForSeconds(2f);
+		StopAllCoroutines();
+	}
+		
 	SoldierVM[i].SoldierState = SoldierState.FINISH;
 	_soldierCount++;
 }
@@ -1045,6 +1092,8 @@ public void RedoBtn()
 		{
 			SoldierVM[sNum].playlist.RemoveAt(SoldierVM[sNum].playlist.Count - 1);
 			SoldierVM[sNum].Counter--;
+			MainGameVM.PlayerIQ +=10;
+			IQDisplay.text = "Player IQ: " + MainGameVM.PlayerIQ;
 		}
 
 		SoldierVM[sNum].CurrentPointLocation = SoldierVM[sNum].playlist[SoldierVM[sNum].playlist.Count - 1].SavePointLocation;
@@ -1057,7 +1106,7 @@ public void RedoBtn()
 		SoldierV[sNum].transform.position = Map[SoldierVM[sNum].CurrentPointLocation];
 		myText.text = "Not more action redo";
 	}
-
+	
 	SoldierVM[sNum].SoldierState = SoldierState.MOVE;
 	selectPoint = false;
 	DelPrePathNodes();

@@ -43,6 +43,11 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.HideInInspector()]
     public Int32 _EnemyCount;
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _PlayerIQ;
+    
     [UFToggleGroup("GameState")]
     [UnityEngine.HideInInspector()]
     public bool _BindGameState = true;
@@ -81,6 +86,7 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
         maingamerootview.HexGridMatching = this._HexGridMatching;
         maingamerootview.SoldierCount = this._SoldierCount;
         maingamerootview.EnemyCount = this._EnemyCount;
+        maingamerootview.PlayerIQ = this._PlayerIQ;
     }
     
     public override void Bind() {
