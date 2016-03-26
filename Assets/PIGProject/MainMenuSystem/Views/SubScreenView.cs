@@ -23,6 +23,7 @@ public class SubScreenView : SubScreenViewBase
 
     public GameObject ScreenUIContainer;
 	public AudioSource bgm;
+	
 	[Inject("LocalUser")] public UserViewModel LocalUser;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {

@@ -33,6 +33,8 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<Int32> _PlayerIQProperty;
     
+    private P<WinCondition> _WinConditionProperty;
+    
     private ModelCollection<SoldierViewModel> _Soldier;
     
     private ModelCollection<EnemyViewModel> _Enemy;
@@ -94,6 +96,15 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<WinCondition> WinConditionProperty {
+        get {
+            return _WinConditionProperty;
+        }
+        set {
+            _WinConditionProperty = value;
+        }
+    }
+    
     public virtual GameState GameState {
         get {
             return GameStateProperty.Value;
@@ -136,6 +147,15 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         }
         set {
             PlayerIQProperty.Value = value;
+        }
+    }
+    
+    public virtual WinCondition WinCondition {
+        get {
+            return WinConditionProperty.Value;
+        }
+        set {
+            WinConditionProperty.Value = value;
         }
     }
     
@@ -203,6 +223,7 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         _SoldierCountProperty = new P<Int32>(this, "SoldierCount");
         _EnemyCountProperty = new P<Int32>(this, "EnemyCount");
         _PlayerIQProperty = new P<Int32>(this, "PlayerIQ");
+        _WinConditionProperty = new P<WinCondition>(this, "WinCondition");
         _Soldier = new ModelCollection<SoldierViewModel>(this, "Soldier");
         _Enemy = new ModelCollection<EnemyViewModel>(this, "Enemy");
         _Memebers = new ModelCollection<EntityViewModel>(this, "Memebers");
@@ -227,6 +248,7 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         this.SoldierCount = stream.DeserializeInt("SoldierCount");;
         this.EnemyCount = stream.DeserializeInt("EnemyCount");;
         this.PlayerIQ = stream.DeserializeInt("PlayerIQ");;
+        this.WinCondition = (WinCondition)stream.DeserializeInt("WinCondition");;
         if (stream.DeepSerialize) {
             this.Soldier.Clear();
             this.Soldier.AddRange(stream.DeserializeObjectArray<SoldierViewModel>("Soldier"));
@@ -248,6 +270,7 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         stream.SerializeInt("SoldierCount", this.SoldierCount);
         stream.SerializeInt("EnemyCount", this.EnemyCount);
         stream.SerializeInt("PlayerIQ", this.PlayerIQ);
+        stream.SerializeInt("WinCondition", (int)this.WinCondition);;
         if (stream.DeepSerialize) stream.SerializeArray("Soldier", this.Soldier);
         if (stream.DeepSerialize) stream.SerializeArray("Enemy", this.Enemy);
         if (stream.DeepSerialize) stream.SerializeArray("Memebers", this.Memebers);
@@ -272,6 +295,8 @@ public partial class MainGameRootViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_EnemyCountProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_PlayerIQProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_WinConditionProperty, false, false, true, false));
         list.Add(new ViewModelPropertyInfo(_Soldier, true, true, false, false));
         list.Add(new ViewModelPropertyInfo(_Enemy, true, true, false, false));
         list.Add(new ViewModelPropertyInfo(_Memebers, true, true, false, false));

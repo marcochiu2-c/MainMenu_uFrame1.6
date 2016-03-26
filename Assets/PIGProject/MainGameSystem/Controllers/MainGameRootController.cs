@@ -22,7 +22,7 @@ public class MainGameRootController : MainGameRootControllerBase {
     public override void InitializeMainGameRoot(MainGameRootViewModel viewModel) {
         base.InitializeMainGameRoot(viewModel);
         // This is called when a MainGameRootViewModel is created
-        viewModel.PlayerIQ = 20;
+        viewModel.PlayerIQ = 200;
     }
 
     public override void GoToMenu(MainGameRootViewModel viewModel) {

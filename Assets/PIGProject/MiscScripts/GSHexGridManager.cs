@@ -87,7 +87,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
 		MainGameController = uFrameKernel.Container.Resolve<MainGameRootController>();
 		
-		//MainGameVM.PlayerIQ = 200;
+		MainGameVM.PlayerIQ = 200;
 		IQDisplay.text = "Player IQ: " + MainGameVM.PlayerIQ;
 
 		walkableGrid = (FlatHexGrid<GSCell>) Grid.CastValues<GSCell, FlatHexPoint>();
@@ -254,16 +254,21 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				_clicking = false;
 		}
 		
-		//After all Soldiers Finished their command
-		/*
-		if(_soldierCount == 5 && MainGameVM != null)
+		
+		
+		if (MainGameVM != null && MainGameVM.WinCondition == WinCondition.Enemies)
 		{
-			MainGameVM.SoldierCount = 0;
-			MainGameVM.GameState = GameState.GameOver;
-			StopAllCoroutines();
-			_soldierCount = 0;
+			//After all Soldiers Finished their command
+			if(_soldierCount == 5 && MainGameVM != null)
+			{
+				MainGameVM.SoldierCount = 0;
+				MainGameVM.GameState = GameState.GameOver;
+				StopAllCoroutines();
+				_soldierCount = 0;
+			}
 		}
-		*/
+		
+		
 	}
 	
 	//call after mov/attack accommand clicked
@@ -897,31 +902,41 @@ public IEnumerator PlayPlayList(int i)
 
 	//while(SoldierVM[i].BattleState != BattleState.WAITING)
 	//	yield return new WaitForSeconds(0.2f);
+	
+	
+	//the following logic is about soldier will move to the tower after all command finished
+	//this is the case that win condition is entering the tower 
+	if(MainGameVM.WinCondition == WinCondition.Tower)
+	{
+			if(SoldierVM[i].CurrentPointLocation != new FlatHexPoint(29, -5))
+			{
+				PathFinding(SoldierVM[i].CurrentPointLocation, towerPoint, MoveStyle.FAST, SoldierV[i], SoldierVM[i], null);
+				Debug.Log ("Soldier" + i + "moves to the tower");
+			}
+			//PathFinding(start, finish, SoldierVM[i].playlist[j].SaveMove, SoldierV[i], SoldierVM[i], SoldierVM[i].playlist[j].SaveEnemyVM);
+	
+	
 
-	if(SoldierVM[i].CurrentPointLocation != new FlatHexPoint(29, -5))
-	{
-		PathFinding(SoldierVM[i].CurrentPointLocation, towerPoint, MoveStyle.FAST, SoldierV[i], SoldierVM[i], null);
-		Debug.Log ("Soldier" + i + "moves to the tower");
-	}
-		//PathFinding(start, finish, SoldierVM[i].playlist[j].SaveMove, SoldierV[i], SoldierVM[i], SoldierVM[i].playlist[j].SaveEnemyVM);
+
+			///--------------------Wait Moving Finish-----------------///
+			while (SoldierVM[i].Moving)
+				yield return new WaitForSeconds(0.2f);
 	
 	
-	///--------------------Wait Moving Finish-----------------///
-	while (SoldierVM[i].Moving)
-		yield return new WaitForSeconds(0.2f);
-	
-	//Check the Soldier enter the tower or not
-	if(SoldierVM[i].CurrentPointLocation == towerPoint)
-	{
-		MainGameVM.EnemyCount = -1;
-		MainGameVM.GameState = GameState.GameOver;
+			//Check the Soldier enter the tower or not
+			if(SoldierVM[i].CurrentPointLocation == towerPoint)
+			{
+				MainGameVM.EnemyCount = -1;
+				MainGameVM.GameState = GameState.GameOver;
 		
-		yield return new WaitForSeconds(2f);
-		StopAllCoroutines();
+				yield return new WaitForSeconds(2f);
+				StopAllCoroutines();
+			}
 	}
-		
+			
 	SoldierVM[i].SoldierState = SoldierState.FINISH;
 	_soldierCount++;
+	
 }
 
 /// <summary>
