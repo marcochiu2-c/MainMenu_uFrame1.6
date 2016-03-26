@@ -17553,7 +17553,7 @@ MonoBehaviour:
   _GameState: 0
   _HexGridMatching: 
   _SoldierCount: 5
-  _EnemyCount: 3
+  _EnemyCount: 4
   _PlayerIQ: 200
   _WinCondition: 1
   _BindGameState: 1
@@ -30005,11 +30005,7 @@ MonoBehaviour:
   LimitMaxVerticalSpeed: 0
   MaxVerticalSpeed: .200000003
   ZoomWithFOV: 0
-  CameraTargets:
-  - TargetTransform: {fileID: 1950298436}
-    TargetInfluenceH: 1
-    TargetInfluenceV: 1
-    TargetOffset: {x: 0, y: 0}
+  CameraTargets: []
   OverallOffset: {x: 0, y: 400}
   UpdateType: 0
   LimitHorizontalCameraDistance: 0
@@ -30035,43 +30031,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProCamera2D: {fileID: 1897612313}
   CinematicTargets:
-  - TargetTransform: {fileID: 169502938}
-    EaseInDuration: 1
+  - TargetTransform: {fileID: 2069357858}
+    EaseInDuration: 2
     HoldDuration: 1
     Zoom: 1
-    EaseType: 1
+    EaseType: 3
     SendMessageName: 
     SendMessageParam: 
-  - TargetTransform: {fileID: 641698986}
-    EaseInDuration: 1
-    HoldDuration: 1
+  - TargetTransform: {fileID: 536858294}
+    EaseInDuration: 2
+    HoldDuration: .5
     Zoom: 1
-    EaseType: 1
-    SendMessageName: 
-    SendMessageParam: 
-  - TargetTransform: {fileID: 2145559073}
-    EaseInDuration: 1
-    HoldDuration: 1
-    Zoom: 1
-    EaseType: 1
-    SendMessageName: 
-    SendMessageParam: 
-  - TargetTransform: {fileID: 1785674584}
-    EaseInDuration: 1
-    HoldDuration: 1
-    Zoom: 1
-    EaseType: 1
-    SendMessageName: 
-    SendMessageParam: 
-  - TargetTransform: {fileID: 1138318506}
-    EaseInDuration: 1
-    HoldDuration: 1
-    Zoom: 1
-    EaseType: 1
+    EaseType: 3
     SendMessageName: 
     SendMessageParam: 
   EndDuration: .5
-  EndEaseType: 1
+  EndEaseType: 3
   UseNumericBoundaries: 0
   UseLetterbox: 1
   LetterboxAmount: .100000001

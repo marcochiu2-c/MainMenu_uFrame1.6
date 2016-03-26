@@ -87,7 +87,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
 		MainGameController = uFrameKernel.Container.Resolve<MainGameRootController>();
 		
-		MainGameVM.PlayerIQ = 200;
+		//MainGameVM.PlayerIQ = 200;
 		IQDisplay.text = "Player IQ: " + MainGameVM.PlayerIQ;
 
 		walkableGrid = (FlatHexGrid<GSCell>) Grid.CastValues<GSCell, FlatHexPoint>();
@@ -138,19 +138,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			SoldierV[i].transform.position = Map[SoldierVM[i].CurrentPointLocation] + new Vector3(0, -18);
 		}
 
-		//Random the Enemy position later
-		TargetVM[0].CurrentPointLocation = new FlatHexPoint(6, 0);
-		TargetVM[1].CurrentPointLocation = new FlatHexPoint(8, 5);
-		TargetVM[2].CurrentPointLocation = new FlatHexPoint(11, 1);
-		TargetVM[3].CurrentPointLocation = new FlatHexPoint(25, -8);
-		TargetVM[4].CurrentPointLocation = new FlatHexPoint(28, -6);
-		//Set Layer for the enemy manually
-		TargetV[0].GetComponent<Renderer>().sortingOrder = 6;
-		TargetV[1].GetComponent<Renderer>().sortingOrder = 1;
-		TargetV[2].GetComponent<Renderer>().sortingOrder = 2;
-		TargetV[3].GetComponent<Renderer>().sortingOrder = 5;
-		TargetV[4].GetComponent<Renderer>().sortingOrder = 2;
-
 		//Set the river to logic false
 		walkableGrid[new FlatHexPoint(0, 7)].IsWalkable = false;
 		walkableGrid[new FlatHexPoint(0, 8)].IsWalkable = false;
@@ -191,20 +178,81 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		for(int i = 0; i < SoldierVM.Count; i++)
 		{
 			walkableGrid[SoldierVM[i].CurrentPointLocation].IsSoldier = true;
-			walkableGrid[TargetVM[i].CurrentPointLocation].IsEnemy = true;
 		}
-
+	
+		/// <summary>
+		/// Set Enemy Position
+		/// case 1: Random all the enemy
+		/// case 2: set unique positon
+		/// </summary>	
+		
+		// Random Enemy Position
+		if (MainGameVM.WinCondition == null)
+		{
+			Debug.Log("MainGameVM is null");
+		}
+		
+		else
+		{
+			Debug.Log("WinCondition: " + MainGameVM.WinCondition + "Player IQ: " + MainGameVM.PlayerIQ);
+		}
+		
+		if (MainGameVM.WinCondition == WinCondition.Enemies)
+		{
+			Debug.Log("MainGameVM.WinCondition == WinCondition.Enemies");
+			for(int i = 0; i <TargetVM.Count; i++)
+			{
+				//Random Point
+				var randomPoint = walkableGrid.RandomItem();
+			
+				while(!walkableGrid[randomPoint].IsWalkable || walkableGrid[randomPoint].IsEnemy || walkableGrid[randomPoint].IsSoldier)
+					randomPoint = walkableGrid.RandomItem();
+			
+				TargetVM[i].CurrentPointLocation = randomPoint;
+				walkableGrid[TargetVM[i].CurrentPointLocation].IsEnemy = true;
+			}
+		
+			//Ambush Enemy2
+			TargetV[1].RendererColor(ExampleUtils.Colors[4]);
+			TargetV[1].FindChild("HealthBarCanvas").gameObject.SetActive(false);
+		}
+		
+		else if (MainGameVM.WinCondition == WinCondition.Boss)
+		{
+			Debug.Log("MainGameVM.WinCondition == WinCondition.Boss");
+			TargetVM[0].CurrentPointLocation = new FlatHexPoint(6, 0);
+			TargetVM[1].CurrentPointLocation = new FlatHexPoint(8, 5);
+			TargetVM[2].CurrentPointLocation = new FlatHexPoint(11, 1);
+			TargetVM[3].CurrentPointLocation = new FlatHexPoint(25, -8);
+			TargetVM[4].CurrentPointLocation = new FlatHexPoint(28, -6);    //Boss
+			
+			
+			TargetV[0].GetComponent<Renderer>().sortingOrder = 6;
+			TargetV[1].GetComponent<Renderer>().sortingOrder = 1;
+			TargetV[2].GetComponent<Renderer>().sortingOrder = 2;
+			TargetV[3].GetComponent<Renderer>().sortingOrder = 5;
+			TargetV[4].GetComponent<Renderer>().sortingOrder = 2;
+			
+			//Ambush Enemy2
+			TargetV[1].RendererColor(ExampleUtils.Colors[4]);
+			TargetV[1].FindChild("HealthBarCanvas").gameObject.SetActive(false);
+		}
+		
+		/*
+		else if (MainGameVM.WinCondition == WinCondition.Tower)
+		{
+			//TODO: not confirm the setting yet
+		}
+		*/
+		
 		//set better position
 		for(int i = 0; i < TargetV.Count; i++)
 		{
-			TargetV[i].transform.position = Map[TargetVM[i].CurrentPointLocation] + new Vector3(0, -18);
+		   TargetV[i].transform.position = Map[TargetVM[i].CurrentPointLocation] + new Vector3(0, -18);
 		}
 
-		start = SoldierVM[sNum].CurrentPointLocation;
-
-		TargetV[1].RendererColor(ExampleUtils.Colors[4]);
-		TargetV[1].FindChild("HealthBarCanvas").gameObject.SetActive(false);
-	}
+		   start = SoldierVM[sNum].CurrentPointLocation;
+	    }
 
 	/// <summary>
 	/// EnemyShow Animation in the beginning
@@ -215,15 +263,15 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 		yield return new WaitForSeconds(0.5f);
 		Cinematics.Play();
+		
+		//yield return new WaitForSeconds(3f);
+		
+		//Cinematics.GoToNextTarget();
+		
+		//yield return new WaitForSeconds(2f);
 
-		for(int i = 0; i < 5; i++)
-		{
-			Cinematics.GoToNextTarget();
-			yield return new WaitForSeconds(0.5f);
-		}
-
-		Cinematics.Stop();
-		ProCamera2D.enabled = false;
+		//Cinematics.Stop();
+		//ProCamera2D.enabled = false;
 		//InfoPanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutExpo).OnStart(() =>  InfoPanel.SetActive(true));
 	}
 
