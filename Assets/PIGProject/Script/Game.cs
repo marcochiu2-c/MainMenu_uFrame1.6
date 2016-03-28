@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SimpleJSON;
+using UnityEngine;
 
 
 [Serializable]
@@ -19,7 +20,7 @@ public class Game{
 	public List<PrivateMessage> privateMessages { get; set; }
 	public List<Storage> storage { get; set; }
 	public CheckInStatus checkinStatus { get; set; }
-
+	public List<Artisans> artisans { get; set; }
 
 	private static readonly Game s_Instance = new Game();
 	
@@ -49,6 +50,7 @@ public class Game{
 		privateMessages = new List<PrivateMessage> ();
 		storage = new List<Storage> ();
 		checkinStatus = new CheckInStatus ();
+		artisans = new List<Artisans> ();
 		//_additionalData = new Dictionary<string, Newtonsoft.Json.Linq.JToken>();
 	}
 
@@ -87,7 +89,7 @@ public class Game{
 		count = j["general"].Count;
 		for (int i=0; i<count; i++) {
 			counselor[i].type = j ["counselor"] ["type"].AsInt;
-			counselor[i].attributes = j ["counselor"] ["attributes"];
+			counselor[i].attributes = (JSONClass)j ["counselor"] ["attributes"];
 		}
 
 		// Set Army(Generals, Soldiers, Weapons, Shields and Armors)
@@ -191,6 +193,7 @@ public class Game{
 [Serializable]
 public class Login {
 	public int id { get; set; }
+	public DateTime registerTime{ get; set; }
 	public DateTime lastLoginTime { get; set; }
 	public DateTime lastActionTime { get; set; }
 	public string name { get; set; }
@@ -201,6 +204,7 @@ public class Login {
 	public string country { get; set; }
 	public string playerID { get; set; }
 	public string deviceID { get; set; }
+	public JSONClass attributes { get; set; }
 
 	public Login(){
 		id = 0;
@@ -211,11 +215,19 @@ public class Login {
 		name = j ["name"];
 		snsType = j ["sns_type"].AsInt;
 		snsURL = j ["sns_url"];
+		registerTime = WsClient.UnixTimestampToDateTime( (long)j ["register_time"].AsInt,8);
+		lastLoginTime = WsClient.UnixTimestampToDateTime( (long)j ["last_login_time"].AsInt,8);
 		exp = j ["exp"].AsInt;
-		warCredit = j ["war_credit"].AsInt;
+		warCredit = j ["war_credits"].AsInt;
 		country = j ["country"];
 		playerID = j ["player_id"];
 		deviceID = j ["device_id"];
+		if (j ["attributes"].ToString ().Length != 0) {
+			attributes = (JSONClass)j ["attributes"];
+		} else {
+			WsClient wsc = WsClient.Instance;
+			wsc.Send ("getUserInformationByDeviceId","GET",new JSONData(SystemInfo.deviceUniqueIdentifier));
+		};
 	}
 	public JSONClass toJSON(){
 		JSONClass j = new JSONClass ();
@@ -230,6 +242,7 @@ public class Login {
 		j ["country"] = country;
 		j ["playerID"] = playerID;
 		j ["deviceID"] = deviceID;
+		j ["attributes"] = attributes;
 		return j;
 	}
 }
@@ -260,6 +273,35 @@ public class Wealth {
 		j.Add ("type", new JSONData (type));
 		j.Add ("value", new JSONData (value));
 		return j;
+	}
+
+	public void Add(int money){
+		value += money;
+		UpdateCurrency ();
+	}
+
+	public void Deduct(int money){
+		value -= money;
+		UpdateCurrency ();
+	}
+
+	void UpdateCurrency(){
+		switch (type) {
+		case 1:
+			MainScene.sValue = value.ToString();
+			break;
+		case 2:
+			MainScene.sdValue = value.ToString();
+			break;
+		case 3:
+			MainScene.rValue = value.ToString();
+			break;
+		}
+		WsClient wsc = WsClient.Instance;
+		JSONClass j = new JSONClass ();
+		j.Add("wealthId",new JSONData(id));
+		j.Add ("value", new JSONData (value));
+		wsc.Send ("wealth", "SET", j);
 	}
 }
 
@@ -305,23 +347,33 @@ public class ChatRoom {
 [Serializable]
 public class Counselor {
 	public int id { get; set; }
-	public string attributes { get; set; }
+	public JSONClass attributes { get; set; }
 	public int type { get; set; }
+	public int status { get; set; }
+	// Status:  0: deleted, 1: active, allow to be trained, not ready for battle
 	
 	public Counselor(){
 	}
 
+	public Counselor(int i, JSONClass attr, int t, int s){
+		id = i;
+		attributes = attr;
+		type = t;
+		status = s;
+	}
+
 	public Counselor (SimpleJSON.JSONNode j){
 		id = j["id"].AsInt;
-		attributes = j ["attributes"];
+		attributes = (JSONClass)j ["attributes"];
 		type = j["attributes"]["type"].AsInt;
+		status = j ["status"].AsInt;
 	}
 	
 	public JSONClass toJSON(){
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData(id));
 		j ["attributes"] = attributes;
-		j.Add ("type", new JSONData (type));
+		j.Add ("status", new JSONData (status));
 		return j;
 	}
 }
@@ -399,12 +451,31 @@ public class Weapon {
 	public int id { get; set; }
 	public int type { get; set; }
 	public int level { get; set; }
+	public int quantity { get; set; }
+
+	public Weapon(){
+	}
+
+	public Weapon(int i, int t, int l, int q){
+		id = i;
+		type = t;
+		level = l;
+		quantity = q;
+	}
+
+	public Weapon(JSONNode j){
+		id = j ["id"].AsInt;
+		type = j ["weapon_type"].AsInt;
+		level = j ["weapon_level"].AsInt;
+		quantity = j ["quantity"].AsInt;
+	}
 
 	public JSONClass toJSON(){
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("type", new JSONData (type));
 		j.Add ("level", new JSONData (level));
+		j.Add ("quantity", new JSONData (quantity));
 		return j;
 	}
 }
@@ -414,12 +485,31 @@ public class Armor {
 	public int id { get; set; }
 	public int type { get; set; }
 	public int level { get; set; }
+	public int quantity { get; set; }
+
+	public Armor(){
+	}
+
+	public Armor(int i, int t, int l, int q){
+		id = i;
+		type = t;
+		level = l;
+		quantity = q;
+	}
+
+	public Armor(JSONNode j){
+		id = j ["id"].AsInt;
+		type = j ["weapon_type"].AsInt;
+		level = j ["weapon_level"].AsInt;
+		quantity = j ["quantity"].AsInt;
+	}
 
 	public JSONClass toJSON(){
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("type", new JSONData (type));
 		j.Add ("level", new JSONData (level));
+		j.Add ("quantity", new JSONData (quantity));
 		return j;
 	}
 }
@@ -429,12 +519,31 @@ public class Shield {
 	public int id { get; set; }
 	public int type { get; set; }
 	public int level { get; set; }
+	public int quantity { get; set; }
+
+	public Shield(){
+	}
+
+	public Shield(int i, int t, int l, int q){
+		id = i;
+		type = t;
+		level = l;
+		quantity = q;
+	}
+
+	public Shield(JSONNode j){
+		id = j ["id"].AsInt;
+		type = j ["weapon_type"].AsInt;
+		level = j ["weapon_level"].AsInt;
+		quantity = j ["quantity"].AsInt;
+	}
 
 	public JSONClass toJSON(){
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("type", new JSONData (type));
 		j.Add ("level", new JSONData (level));
+		j.Add ("quantity", new JSONData (quantity));	
 		return j;
 	}
 }
@@ -443,15 +552,37 @@ public class Shield {
 public class Trainings {
 	public int id { get; set; }
 	public int type { get; set; }
+	public int trainerId { get; set; }
 	public int targetId { get; set; }
 	public DateTime startTimestamp { get; set; }
 	public DateTime etaTimestamp { get; set; }
 	public int status { get; set; }
 
+	public Trainings(int i, int t, int tr, int tid, DateTime sts, DateTime ets, int s){
+		id = i;
+		type = t;
+		trainerId = tr;
+		targetId = tid;
+		startTimestamp = sts;
+		etaTimestamp = ets;
+		status = s;
+	}
+
+	public Trainings(JSONNode j){
+		id = j ["id"].AsInt;
+		type = j ["type"].AsInt;
+		trainerId = j ["trainerId"].AsInt;
+		targetId = j ["targetId"].AsInt;
+		startTimestamp = Convert.ToDateTime(j ["startTimestamp"]);
+		etaTimestamp = Convert.ToDateTime(j ["etaTimestamp"]);
+		status = j ["status"].AsInt;
+	}
+
 	public JSONClass toJSON(){
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("type", new JSONData (type));
+		j.Add ("trainerId", new JSONData (trainerId));
 		j.Add ("targetId", new JSONData (targetId));
 		j ["startTimestamp"] = startTimestamp.ToString();
 		j ["etaTimestamp"] = etaTimestamp.ToString();
@@ -633,3 +764,45 @@ public class CheckInStatus{
 		return j;
 	}
 }
+
+[Serializable]
+public class Artisans {
+	public int id { get; set; }
+	public int targetId { get; set; }
+	public string resources { get; set; }
+	public int metalsmith { get; set; }
+	public int quantity { get; set; }
+	public DateTime startTimestamp { get; set; }
+	public DateTime etaTimestamp { get; set; }
+	public string details { get; set; }
+	public int status { get; set; } // 0:cancelled, 1:ongoing, 2:not started ,3:completed
+	
+	public Artisans(){
+	}
+	
+	public Artisans(JSONNode j){
+		id = j ["artisan_id"].AsInt;
+		targetId = j ["target_id"].AsInt;
+		resources = j ["resources"];
+		metalsmith = j ["metalsmith"].AsInt;
+		quantity = j ["quantity"].AsInt;
+		startTimestamp = Convert.ToDateTime(j ["start_time"]);
+		etaTimestamp = Convert.ToDateTime(j ["eta_time"]);
+		details = j ["details"];
+		status = j ["status"].AsInt;
+	}
+	
+	public JSONClass toJSON(){
+		JSONClass j = new JSONClass ();
+		j.Add ("artisanId", new JSONData (id));
+		j.Add ("targetId", new JSONData (targetId));
+		j ["resources"] = resources;
+		j.Add ("metalsmith", new JSONData (metalsmith));
+		j.Add ("quantity", new JSONData (quantity));
+		j ["startTimestamp"] = startTimestamp.ToString();
+		j ["etaTimestamp"] = etaTimestamp.ToString();
+		j.Add ("status", new JSONData (status));
+		return j;
+	}
+}
+

@@ -1,7 +1,7 @@
 [
   {
     "Name":"姜子牙",
-    "rank":1,
+    "Rank":1,
     "Era":"西周",
     "Type":"謀士",
     "InitialIQ":120,
@@ -18,7 +18,7 @@
   },
   {
     "Name":"吳起",
-    "rank":2,
+    "Rank":2,
     "Era":"戰國",
     "Type":"謀士",
     "InitialIQ":120,
@@ -30,12 +30,12 @@
     "GainLv99Leadership":16795,
     "HighestLeadership":900000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"孫武",
-    "rank":1,
+    "Rank":1,
     "Era":"春秋",
     "Type":"謀士",
     "InitialIQ":130,
@@ -47,12 +47,12 @@
     "GainLv99Leadership":17764,
     "HighestLeadership":1000000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"伍子胥",
-    "rank":5,
+    "Rank":5,
     "Era":"春秋",
     "Type":"謀士",
     "InitialIQ":110,
@@ -64,12 +64,12 @@
     "GainLv99Leadership":9359,
     "HighestLeadership":650000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"曹劌",
-    "rank":5,
+    "Rank":5,
     "Era":"春秋",
     "Type":"謀士",
     "InitialIQ":110,
@@ -81,12 +81,12 @@
     "GainLv99Leadership":10321,
     "HighestLeadership":650000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"管仲",
-    "rank":4,
+    "Rank":4,
     "Era":"春秋",
     "Type":"謀士",
     "InitialIQ":110,
@@ -98,12 +98,12 @@
     "GainLv99Leadership":11603,
     "HighestLeadership":700000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"范蠡",
-    "rank":4,
+    "Rank":4,
     "Era":"春秋",
     "Type":"謀士",
     "InitialIQ":115,
@@ -115,12 +115,12 @@
     "GainLv99Leadership":11314,
     "HighestLeadership":700000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"諸葛亮",
-    "rank":1,
+    "Rank":1,
     "Era":"三國",
     "Type":"謀士",
     "InitialIQ":125,
@@ -132,12 +132,12 @@
     "GainLv99Leadership":18429,
     "HighestLeadership":1000000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"孫臏",
-    "rank":2,
+    "Rank":2,
     "Era":"戰國",
     "Type":"謀士",
     "InitialIQ":120,
@@ -149,12 +149,12 @@
     "GainLv99Leadership":16154,
     "HighestLeadership":900000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"張良",
-    "rank":3,
+    "Rank":3,
     "Era":"西漢",
     "Type":"謀士",
     "InitialIQ":115,
@@ -166,12 +166,12 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"劉基",
-    "rank":3,
+    "Rank":3,
     "Era":"明",
     "Type":"謀士",
     "InitialIQ":115,
@@ -183,12 +183,12 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"范增",
-    "rank":3,
+    "Rank":3,
     "Era":"西漢",
     "Type":"謀士",
     "InitialIQ":115,
@@ -200,12 +200,12 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"苗訓",
-    "rank":4,
+    "Rank":4,
     "Era":"宋",
     "Type":"謀士",
     "InitialIQ":115,
@@ -217,12 +217,12 @@
     "GainLv99Leadership":11314,
     "HighestLeadership":700000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"劉秉忠",
-    "rank":4,
+    "Rank":4,
     "Era":"南宋",
     "Type":"謀士",
     "InitialIQ":115,
@@ -234,12 +234,12 @@
     "GainLv99Leadership":11314,
     "HighestLeadership":700000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"耶律楚材",
-    "rank":3,
+    "Rank":3,
     "Era":"南宋",
     "Type":"謀士",
     "InitialIQ":115,
@@ -251,12 +251,12 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"范文程",
-    "rank":5,
+    "Rank":5,
     "Era":"清",
     "Type":"謀士",
     "InitialIQ":110,
@@ -268,12 +268,12 @@
     "GainLv99Leadership":10321,
     "HighestLeadership":650000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"曾國藩",
-    "rank":4,
+    "Rank":4,
     "Era":"清",
     "Type":"謀士",
     "InitialIQ":110,
@@ -285,12 +285,12 @@
     "GainLv99Leadership":11603,
     "HighestLeadership":700000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
-    "Name":"圮上老人/黃石公",
-    "rank":2,
+    "Name":"黃石公",
+    "Rank":2,
     "Era":"秦",
     "Type":"謀士",
     "InitialIQ":120,
@@ -302,12 +302,12 @@
     "GainLv99Leadership":16154,
     "HighestLeadership":900000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"尉繚子",
-    "rank":2,
+    "Rank":2,
     "Era":"戰國",
     "Type":"謀士",
     "InitialIQ":115,
@@ -319,12 +319,12 @@
     "GainLv99Leadership":15160,
     "HighestLeadership":850000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"田穰苴",
-    "rank":4,
+    "Rank":4,
     "Era":"戰國",
     "Type":"謀士",
     "InitialIQ":115,
@@ -336,12 +336,12 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"龐涓",
-    "rank":3,
+    "Rank":3,
     "Era":"戰國",
     "Type":"謀士",
     "InitialIQ":115,
@@ -353,12 +353,12 @@
     "GainLv99Leadership":15160,
     "HighestLeadership":850000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"龐統",
-    "rank":2,
+    "Rank":2,
     "Era":"三國",
     "Type":"謀士",
     "InitialIQ":115,
@@ -370,12 +370,12 @@
     "GainLv99Leadership":15160,
     "HighestLeadership":850000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"司馬懿",
-    "rank":2,
+    "Rank":2,
     "Era":"三國",
     "Type":"謀士",
     "InitialIQ":110,
@@ -387,12 +387,12 @@
     "GainLv99Leadership":15449,
     "HighestLeadership":850000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"周瑜",
-    "rank":2,
+    "Rank":2,
     "Era":"東漢",
     "Type":"謀士",
     "InitialIQ":115,
@@ -404,12 +404,12 @@
     "GainLv99Leadership":15160,
     "HighestLeadership":850000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"于謙",
-    "rank":3,
+    "Rank":3,
     "Era":"明",
     "Type":"謀士",
     "InitialIQ":115,
@@ -421,12 +421,12 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"楊國忠",
-    "rank":7,
+    "Rank":7,
     "Era":"唐",
     "Type":"謀士",
     "InitialIQ":85,
@@ -438,12 +438,12 @@
     "GainLv99Leadership":7917,
     "HighestLeadership":500000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"趙括",
-    "rank":6,
+    "Rank":6,
     "Era":"戰國",
     "Type":"謀士",
     "InitialIQ":100,
@@ -455,12 +455,12 @@
     "GainLv99Leadership":9615,
     "HighestLeadership":600000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"朱般懟",
-    "rank":7,
+    "Rank":7,
     "Era":"盤古",
     "Type":"謀士",
     "InitialIQ":80,
@@ -472,12 +472,12 @@
     "GainLv99Leadership":8205,
     "HighestLeadership":500000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   },
   {
     "Name":"辰漾守",
-    "rank":1,
+    "Rank":1,
     "Era":"盤古",
     "Type":"謀士",
     "InitialIQ":115,
@@ -489,7 +489,7 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "InitialPrestige":0,
-    "KnownFormation":"",
-    "KnownKnowledge":""
+    "KnownFormation":" ",
+    "KnownKnowledge":" "
   }
 ]

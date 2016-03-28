@@ -1,7 +1,7 @@
 [
   {
     "Name":"陳慶之",
-    "Rank":0,
+    "Rank":4,
     "Era":"南北朝",
     "Type":"將士",
     "InitialIQ":110,
@@ -26,7 +26,7 @@
   },
   {
     "Name":"花木蘭",
-    "Rank":0,
+    "Rank":3,
     "Era":"南北朝",
     "Type":"將士",
     "InitialIQ":105,
@@ -51,7 +51,7 @@
   },
   {
     "Name":"樂毅",
-    "Rank":0,
+    "Rank":3,
     "Era":"魏",
     "Type":"將士",
     "InitialIQ":105,
@@ -76,7 +76,7 @@
   },
   {
     "Name":"蒙恬",
-    "Rank":0,
+    "Rank":3,
     "Era":"秦",
     "Type":"將士",
     "InitialIQ":105,
@@ -101,7 +101,7 @@
   },
   {
     "Name":"趙奢",
-    "Rank":0,
+    "Rank":4,
     "Era":"戰國",
     "Type":"將士",
     "InitialIQ":105,
@@ -126,7 +126,7 @@
   },
   {
     "Name":"白起",
-    "Rank":0,
+    "Rank":2,
     "Era":"秦",
     "Type":"將士",
     "InitialIQ":105,
@@ -151,7 +151,7 @@
   },
   {
     "Name":"廉頗",
-    "Rank":0,
+    "Rank":2,
     "Era":"戰國",
     "Type":"將士",
     "InitialIQ":105,
@@ -176,7 +176,7 @@
   },
   {
     "Name":"李牧",
-    "Rank":0,
+    "Rank":3,
     "Era":"戰國",
     "Type":"將士",
     "InitialIQ":105,
@@ -201,7 +201,7 @@
   },
   {
     "Name":"王翦",
-    "Rank":0,
+    "Rank":2,
     "Era":"戰國",
     "Type":"將士",
     "InitialIQ":105,
@@ -226,7 +226,7 @@
   },
   {
     "Name":"項羽",
-    "Rank":0,
+    "Rank":7,
     "Era":"戰國",
     "Type":"將士",
     "InitialIQ":100,
@@ -251,7 +251,7 @@
   },
   {
     "Name":"周亞夫",
-    "Rank":0,
+    "Rank":3,
     "Era":"西漢",
     "Type":"將士",
     "InitialIQ":105,
@@ -276,7 +276,7 @@
   },
   {
     "Name":"衛青",
-    "Rank":0,
+    "Rank":4,
     "Era":"西漢",
     "Type":"將士",
     "InitialIQ":105,
@@ -301,7 +301,7 @@
   },
   {
     "Name":"霍去病",
-    "Rank":0,
+    "Rank":4,
     "Era":"西漢",
     "Type":"將士",
     "InitialIQ":105,
@@ -326,7 +326,7 @@
   },
   {
     "Name":"關羽",
-    "Rank":0,
+    "Rank":7,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":105,
@@ -351,7 +351,7 @@
   },
   {
     "Name":"張飛",
-    "Rank":0,
+    "Rank":7,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":85,
@@ -376,7 +376,7 @@
   },
   {
     "Name":"趙雲",
-    "Rank":0,
+    "Rank":6,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":105,
@@ -401,7 +401,7 @@
   },
   {
     "Name":"馬超",
-    "Rank":0,
+    "Rank":6,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":105,
@@ -426,7 +426,7 @@
   },
   {
     "Name":"黃忠",
-    "Rank":0,
+    "Rank":6,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":105,
@@ -451,7 +451,7 @@
   },
   {
     "Name":"呂布",
-    "Rank":0,
+    "Rank":6,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":100,
@@ -476,7 +476,7 @@
   },
   {
     "Name":"夏侯惇",
-    "Rank":0,
+    "Rank":6,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":105,
@@ -501,7 +501,7 @@
   },
   {
     "Name":"龐德",
-    "Rank":0,
+    "Rank":5,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":100,
@@ -526,7 +526,7 @@
   },
   {
     "Name":"張郃",
-    "Rank":0,
+    "Rank":4,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":105,
@@ -551,7 +551,7 @@
   },
   {
     "Name":"甘寧",
-    "Rank":0,
+    "Rank":5,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":100,
@@ -576,7 +576,7 @@
   },
   {
     "Name":"李世績/徐懋功",
-    "Rank":0,
+    "Rank":3,
     "Era":"唐",
     "Type":"將士",
     "InitialIQ":105,
@@ -601,7 +601,7 @@
   },
   {
     "Name":"尉遲敬德",
-    "Rank":0,
+    "Rank":5,
     "Era":"唐",
     "Type":"將士",
     "InitialIQ":105,
@@ -626,7 +626,7 @@
   },
   {
     "Name":"薜仁貴",
-    "Rank":0,
+    "Rank":5,
     "Era":"唐",
     "Type":"將士",
     "InitialIQ":105,
@@ -651,7 +651,7 @@
   },
   {
     "Name":"安祿山",
-    "Rank":0,
+    "Rank":5,
     "Era":"唐",
     "Type":"將士",
     "InitialIQ":100,
@@ -676,7 +676,7 @@
   },
   {
     "Name":"史思明",
-    "Rank":0,
+    "Rank":4,
     "Era":"唐",
     "Type":"將士",
     "InitialIQ":100,
@@ -701,7 +701,7 @@
   },
   {
     "Name":"郭子儀",
-    "Rank":0,
+    "Rank":4,
     "Era":"唐",
     "Type":"將士",
     "InitialIQ":105,
@@ -726,7 +726,7 @@
   },
   {
     "Name":"楊業",
-    "Rank":0,
+    "Rank":3,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -751,7 +751,7 @@
   },
   {
     "Name":"狄青",
-    "Rank":0,
+    "Rank":3,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -776,7 +776,7 @@
   },
   {
     "Name":"岳飛",
-    "Rank":0,
+    "Rank":6,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -801,7 +801,7 @@
   },
   {
     "Name":"穆桂英",
-    "Rank":0,
+    "Rank":5,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -826,7 +826,7 @@
   },
   {
     "Name":"韓世忠",
-    "Rank":0,
+    "Rank":4,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -851,7 +851,7 @@
   },
   {
     "Name":"哲別",
-    "Rank":0,
+    "Rank":4,
     "Era":"金",
     "Type":"將士",
     "InitialIQ":100,
@@ -876,7 +876,7 @@
   },
   {
     "Name":"徐達",
-    "Rank":0,
+    "Rank":5,
     "Era":"明",
     "Type":"將士",
     "InitialIQ":105,
@@ -901,7 +901,7 @@
   },
   {
     "Name":"李文忠",
-    "Rank":0,
+    "Rank":2,
     "Era":"明",
     "Type":"將士",
     "InitialIQ":105,
@@ -926,7 +926,7 @@
   },
   {
     "Name":"常遇春",
-    "Rank":0,
+    "Rank":3,
     "Era":"明",
     "Type":"將士",
     "InitialIQ":105,
@@ -951,7 +951,7 @@
   },
   {
     "Name":"戚繼光",
-    "Rank":0,
+    "Rank":3,
     "Era":"明",
     "Type":"將士",
     "InitialIQ":105,
@@ -976,7 +976,7 @@
   },
   {
     "Name":"袁崇煥",
-    "Rank":0,
+    "Rank":3,
     "Era":"明",
     "Type":"將士",
     "InitialIQ":105,
@@ -1001,7 +1001,7 @@
   },
   {
     "Name":"鄭成功",
-    "Rank":0,
+    "Rank":3,
     "Era":"明",
     "Type":"將士",
     "InitialIQ":105,
@@ -1326,7 +1326,7 @@
   },
   {
     "Name":"吴三桂",
-    "Rank":0,
+    "Rank":3,
     "Era":"清",
     "Type":"將士",
     "InitialIQ":105,
@@ -1351,7 +1351,7 @@
   },
   {
     "Name":"李自成",
-    "Rank":0,
+    "Rank":2,
     "Era":"明",
     "Type":"將士",
     "InitialIQ":100,
@@ -1376,7 +1376,7 @@
   },
   {
     "Name":"周秀英",
-    "Rank":0,
+    "Rank":3,
     "Era":"清",
     "Type":"將士",
     "InitialIQ":105,
@@ -1401,7 +1401,7 @@
   },
   {
     "Name":"秦良玉",
-    "Rank":0,
+    "Rank":2,
     "Era":"明",
     "Type":"將士",
     "InitialIQ":105,
@@ -1426,7 +1426,7 @@
   },
   {
     "Name":"李秀寧",
-    "Rank":0,
+    "Rank":3,
     "Era":"唐",
     "Type":"將士",
     "InitialIQ":105,
@@ -1451,7 +1451,7 @@
   },
   {
     "Name":"冼英",
-    "Rank":0,
+    "Rank":2,
     "Era":"南北",
     "Type":"將士",
     "InitialIQ":105,
@@ -1476,7 +1476,7 @@
   },
   {
     "Name":"王異",
-    "Rank":0,
+    "Rank":3,
     "Era":"三國",
     "Type":"將士",
     "InitialIQ":105,
@@ -1501,7 +1501,7 @@
   },
   {
     "Name":"張世傑",
-    "Rank":0,
+    "Rank":333,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1526,7 +1526,7 @@
   },
   {
     "Name":"施琅",
-    "Rank":0,
+    "Rank":2,
     "Era":"清",
     "Type":"將士",
     "InitialIQ":105,
@@ -1551,7 +1551,7 @@
   },
   {
     "Name":"畢再遇",
-    "Rank":0,
+    "Rank":2,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1576,7 +1576,7 @@
   },
   {
     "Name":"宗澤",
-    "Rank":0,
+    "Rank":1,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1601,7 +1601,7 @@
   },
   {
     "Name":"鄭仁泰",
-    "Rank":0,
+    "Rank":3,
     "Era":"唐",
     "Type":"將士",
     "InitialIQ":105,
@@ -1626,7 +1626,7 @@
   },
   {
     "Name":"張叔夜",
-    "Rank":0,
+    "Rank":2,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1651,7 +1651,7 @@
   },
   {
     "Name":"史彌堅",
-    "Rank":0,
+    "Rank":1,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1676,7 +1676,7 @@
   },
   {
     "Name":"慕容延釗",
-    "Rank":0,
+    "Rank":3,
     "Era":"宋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1701,7 +1701,7 @@
   },
   {
     "Name":"先軫",
-    "Rank":0,
+    "Rank":2,
     "Era":"春秋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1726,7 +1726,7 @@
   },
   {
     "Name":"王伯當",
-    "Rank":0,
+    "Rank":1,
     "Era":"隋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1751,7 +1751,7 @@
   },
   {
     "Name":"單雄信",
-    "Rank":0,
+    "Rank":1,
     "Era":"隋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1776,7 +1776,7 @@
   },
   {
     "Name":"程咬金",
-    "Rank":0,
+    "Rank":1,
     "Era":"唐",
     "Type":"將士",
     "InitialIQ":105,
@@ -1801,7 +1801,7 @@
   },
   {
     "Name":"飛廉",
-    "Rank":0,
+    "Rank":2,
     "Era":"商",
     "Type":"將士",
     "InitialIQ":85,
@@ -1826,7 +1826,7 @@
   },
   {
     "Name":"惡來",
-    "Rank":0,
+    "Rank":3,
     "Era":"商",
     "Type":"將士",
     "InitialIQ":85,
@@ -1851,7 +1851,7 @@
   },
   {
     "Name":"伯嚭",
-    "Rank":0,
+    "Rank":2,
     "Era":"春秋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1876,7 +1876,7 @@
   },
   {
     "Name":"史萬歲",
-    "Rank":0,
+    "Rank":2,
     "Era":"隋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1901,7 +1901,7 @@
   },
   {
     "Name":"賀若弼",
-    "Rank":0,
+    "Rank":2,
     "Era":"隋",
     "Type":"將士",
     "InitialIQ":105,
@@ -1926,7 +1926,32 @@
   },
   {
     "Name":"楊素",
-    "Rank":0,
+    "Rank":2,
+    "Era":"隋",
+    "Type":"將士",
+    "InitialIQ":105,
+    "GainIQ":0.2551020408,
+    "HighestIQ":130,
+    "InitialLeadership":1600,
+    "GainLv30Leadership":421,
+    "GainLv60Leadership":1347,
+    "GainLv99Leadership":2456,
+    "HighestLeadership":150000,
+    "InitialPrestige":0,
+    "InitialCourage":65,
+    "GainCourage":0.1530612245,
+    "HighestCourage":80,
+    "InitialForce":70,
+    "GainForce":0.3333333333,
+    "HighestForce":80,
+    "InitialPhysical":70,
+    "GainPhysical":0.3333333333,
+    "HighestPhysical":80,
+    "Obedience":60
+  },
+  {
+    "Name":"張遼",
+    "Rank":4,
     "Era":"隋",
     "Type":"將士",
     "InitialIQ":105,
