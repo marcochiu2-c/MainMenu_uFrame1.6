@@ -20,6 +20,9 @@ public class Game{
 	public List<PrivateMessage> privateMessages { get; set; }
 	public List<Storage> storage { get; set; }
 	public CheckInStatus checkinStatus { get; set; }
+	public List<Weapon> weapon { get; set; }
+	public List<Armor> armor { get; set; }
+	public List<Shield> shield { get; set; }
 	public List<Artisans> artisans { get; set; }
 
 	private static readonly Game s_Instance = new Game();
@@ -101,15 +104,6 @@ public class Game{
 			general[i].soldiers.id = j["general"][i]["soldier"]["id"].AsInt;
 			general[i].soldiers.type =  j["general"][i]["soldier"]["type"].AsInt;
 			general[i].soldiers.quantity =  j["general"][i]["soldier"]["quantity"].AsInt;
-			general[i].soldiers.weapons.id =  j["general"][i]["soldier"]["weapons"]["type"].AsInt;
-			general[i].soldiers.weapons.type =  j["general"][i]["soldier"]["weapons"]["type"].AsInt;
-			general[i].soldiers.weapons.level =  j["general"][i]["soldier"]["weapons"]["level"].AsInt;
-			general[i].soldiers.armors.id =  j["general"][i]["soldier"]["armors"]["type"].AsInt;
-			general[i].soldiers.armors.type =  j["general"][i]["soldier"]["armors"]["type"].AsInt;
-			general[i].soldiers.armors.level =  j["general"][i]["soldier"]["armors"]["level"].AsInt;
-			general[i].soldiers.shields.id =  j["general"][i]["soldier"]["shields"]["type"].AsInt;
-			general[i].soldiers.shields.type =  j["general"][i]["soldier"]["shields"]["type"].AsInt;
-			general[i].soldiers.shields.level =  j["general"][i]["soldier"]["shields"]["level"].AsInt;
 		}
 
 		count = j["trainings"].Count;
@@ -423,14 +417,8 @@ public class Soldiers{
 	public string attributes { get; set; }
 	public int type { get; set; }
 	public int quantity { get; set; }
-	public Weapon weapons { get; set; }
-	public Armor armors { get; set; }
-	public Shield shields { get; set; }
 
 	public Soldiers(){
-		weapons = new Weapon ();
-		armors = new Armor ();
-		shields = new Shield ();
 	}
 
 	public JSONClass toJSON(){
@@ -439,9 +427,6 @@ public class Soldiers{
 		j ["attributes"] = attributes;
 		j.Add ("type", new JSONData (type));
 		j.Add ("quantity", new JSONData (quantity));
-		j ["weapons"] = weapons.toJSON ();
-		j ["armors"] = armors.toJSON ();
-		j ["shields"] = shields.toJSON ();
 		return j;
 	}
 }
@@ -464,7 +449,7 @@ public class Weapon {
 	}
 
 	public Weapon(JSONNode j){
-		id = j ["id"].AsInt;
+		id = j ["weapon_id"].AsInt;
 		type = j ["weapon_type"].AsInt;
 		level = j ["weapon_level"].AsInt;
 		quantity = j ["quantity"].AsInt;
@@ -498,9 +483,9 @@ public class Armor {
 	}
 
 	public Armor(JSONNode j){
-		id = j ["id"].AsInt;
-		type = j ["weapon_type"].AsInt;
-		level = j ["weapon_level"].AsInt;
+		id = j ["armor_id"].AsInt;
+		type = j ["armor_type"].AsInt;
+		level = j ["armor_level"].AsInt;
 		quantity = j ["quantity"].AsInt;
 	}
 
@@ -532,9 +517,9 @@ public class Shield {
 	}
 
 	public Shield(JSONNode j){
-		id = j ["id"].AsInt;
-		type = j ["weapon_type"].AsInt;
-		level = j ["weapon_level"].AsInt;
+		id = j ["shield_id"].AsInt;
+		type = j ["shield_type"].AsInt;
+		level = j ["shield_level"].AsInt;
 		quantity = j ["quantity"].AsInt;
 	}
 

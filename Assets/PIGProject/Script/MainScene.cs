@@ -41,7 +41,8 @@ public class MainScene : MonoBehaviour {
 	public static JSONNode StorageInfo = null;
 	public static JSONNode WarfareInfo = null;
 	public static JSONNode WeaponInfo = null;
-	public static JSONNode ProtectiveEquipmentInfo = null;
+	public static JSONNode ArmorInfo = null;
+	public static JSONNode ShieldInfo = null;
 	public static JSONNode FriendInfo = null;
 	public static JSONNode TrainingInfo = null;
 	public static JSONNode ArtisanInfo = null;
@@ -85,6 +86,9 @@ public class MainScene : MonoBehaviour {
 				wsc.Send (json.ToString ());
 				wsc.Send("counselors","GET",new JSONData (MainScene.userId));
 				wsc.Send("generals","GET",new JSONData (MainScene.userId));
+				wsc.Send ("weapon","GET",new JSONData (MainScene.userId));
+				wsc.Send ("armor","GET",new JSONData (MainScene.userId));
+				wsc.Send ("shield","GET",new JSONData (MainScene.userId));
 			}else{
 				Debug.Log ("User Id: "+0);
 			}
@@ -94,7 +98,7 @@ public class MainScene : MonoBehaviour {
 //			wsc.Send (json.ToString ());
 			MainScene.needReloadFromDB = false;
 		}
-		Invoke ("AddS100", 2);
+//		Invoke ("AddS100", 2);
 
 	}
 
@@ -133,7 +137,7 @@ public class MainScene : MonoBehaviour {
 //			Debug.Log (game.login.ToString());
 			MainScene.UserInfo = null;
 //			Debug.Log (MainScene.UserInfo);
-//			Debug.Log (game.login.ToString());
+//			Debug.Log (game.login.id);
 		}
 		if (MainScene.GeneralInfo != null) {
 			game.general = new List<General> ();
@@ -223,6 +227,33 @@ public class MainScene : MonoBehaviour {
 				game.artisans.Add (new Artisans (MainScene.ArtisanInfo[i]));
 			}
 			MainScene.ArtisanInfo = null;
+		}
+		if (MainScene.WeaponInfo != null) {
+			game.weapon = new List<Weapon>();
+			count = MainScene.WeaponInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.weapon.Add (new Weapon (MainScene.WeaponInfo[i]));
+			}
+
+			MainScene.WeaponInfo = null;
+		}
+		if (MainScene.ArmorInfo != null) {
+			game.armor = new List<Armor>();
+			count = MainScene.ArmorInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.armor.Add (new Armor (MainScene.ArmorInfo[i]));
+			}
+			
+			MainScene.ArmorInfo = null;
+		}
+		if (MainScene.ShieldInfo != null) {
+			game.shield = new List<Shield>();
+			count = MainScene.ShieldInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.shield.Add (new Shield (MainScene.ShieldInfo[i]));
+			}
+			
+			MainScene.ShieldInfo = null;
 		}
 		if (MainScene.newUserId != 0) {
 			game.login.id = MainScene.newUserId;

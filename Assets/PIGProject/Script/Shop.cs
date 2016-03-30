@@ -47,7 +47,7 @@ public class Shop : MonoBehaviour {
 	const string SKU="";
 	string _label = "";	
 	Inventory _inventory = null;
-	ProductList prodList = new ProductList();
+//	ProductList prodList = new ProductList();
 //	List<Purchase> UnConsumedInventory;
 //	bool UnConsumedInventoryNewUpdate=false;
 	bool monthlySubscriptionBought = false;

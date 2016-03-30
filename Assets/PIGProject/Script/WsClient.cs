@@ -40,7 +40,6 @@ enum jsonFuncNumberEnum {
 	newMultipleCounselors = 26,
 	newMultipleGenarals = 27,
 
-
 	//  30-39 Gift
 	addReceivedGift = 30,
 	getGiftInfo = 31,
@@ -111,14 +110,16 @@ enum jsonFuncNumberEnum {
 
 	// 220-239 War equipments
 	addWeapon = 220,
-	addProtectiveEquipment = 221,
-	updateWeapon = 222,
-	updateProtectiveEquipment = 223,
-	getWeaponsBySoldierId = 230,
-	getProtectiveEquipmentsBySoldierId = 231,
-	getWeaponsByUserId = 232,
-	getProtectiveEquipmentsByUserId = 233,
+	addArmor  = 221,
+	addShield = 222,
+	updateWeapon = 223,
+	updateArmor  = 224,
+	updateShield = 225,
+	getWeaponsByUserId = 230,
+	getArmorsByUserId  = 231,
+	getShieldsByUserId = 232,
 
+	
 	// 240-249 Buildings
 	addBuilding = 240,
 	updateBuilding = 241,
@@ -313,14 +314,19 @@ public class WsClient {
 //				}
 			}
 			break;
-		case jsonFuncNumberEnum.getWeaponsBySoldierId: case jsonFuncNumberEnum.getWeaponsByUserId:
+		case jsonFuncNumberEnum.getWeaponsByUserId:
 			if (j["obj"]!="[  ]"){
 				MainScene.WeaponInfo = j["obj"];
 			}
 			break;
-		case jsonFuncNumberEnum.getProtectiveEquipmentsBySoldierId: case jsonFuncNumberEnum.getProtectiveEquipmentsByUserId:
+		case jsonFuncNumberEnum.getArmorsByUserId:
 			if (j["obj"]!="[  ]"){
-				MainScene.ProtectiveEquipmentInfo = j["obj"];
+				MainScene.ArmorInfo = j["obj"];
+			}
+			break;
+		case jsonFuncNumberEnum.getShieldsByUserId:
+			if (j["obj"]!="[  ]"){
+				MainScene.ShieldInfo = j["obj"];
 			}
 			break;
 		case jsonFuncNumberEnum.updateCheckInStatus:

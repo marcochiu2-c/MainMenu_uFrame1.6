@@ -130,30 +130,30 @@ public class Academy : MonoBehaviour
 		
 		#region setListOfCounselorStudentCandidate
 		
-		Academy.cStudentList = game.counselor;
-		Debug.Log ("Number of Counselors: "+game.counselor.Count);
-#if TEST
-		Academy.cStudentList.Add (new Counselor(30,new JSONClass(),2,1));
-		Academy.cStudentList.Add (new Counselor(20,new JSONClass(),21,1));
-		Academy.cStudentList.Add (new Counselor(21,new JSONClass(),25,1));
-		Academy.cStudentList.Add (new Counselor(23,(JSONClass) JSON.Parse("{\"skills\":[{\"name\":\"木工\",\"level\":1},{\"name\":\"化學\",\"level\":4}]}"),26,1));
-		Academy.cStudentList.Add (new Counselor(24,new JSONClass(),27,1));
-		Academy.cStudentList.Add (new Counselor(25,new JSONClass(),28,1));
-#endif
-		int cslCount = 0; 
-
-		for (var i = 0 ; i < Academy.cStudentList.Count ; i++){
-			for (var j = 0 ; j < tlCount ; j++){
-				if (tList[j].trainerId == Academy.cStudentList[i].id || tList[j].targetId == Academy.cStudentList[i].id){
-					Debug.Log ("Id of character those are training: "+Academy.cStudentList[i].id);
-					Academy.cStudentList.Remove(Academy.cStudentList[i]);
-				}
-			}
-		}  
-		cslCount = Academy.cStudentList.Count;
-		for (var i = 0 ; i < cslCount ; i++){
-			CreateStudentItem (Academy.cStudentList[i]);
-		}
+//		Academy.cStudentList = game.counselor;
+//		Debug.Log ("Number of Counselors: "+game.counselor.Count);
+//#if TEST
+//		Academy.cStudentList.Add (new Counselor(30,new JSONClass(),2,1));
+//		Academy.cStudentList.Add (new Counselor(20,new JSONClass(),21,1));
+//		Academy.cStudentList.Add (new Counselor(21,new JSONClass(),25,1));
+//		Academy.cStudentList.Add (new Counselor(23,(JSONClass) JSON.Parse("{\"skills\":[{\"name\":\"木工\",\"level\":1},{\"name\":\"化學\",\"level\":4}]}"),26,1));
+//		Academy.cStudentList.Add (new Counselor(24,new JSONClass(),27,1));
+//		Academy.cStudentList.Add (new Counselor(25,new JSONClass(),28,1));
+//#endif
+//		int cslCount = 0; 
+//
+//		for (var i = 0 ; i < Academy.cStudentList.Count ; i++){
+//			for (var j = 0 ; j < tlCount ; j++){
+//				if (tList[j].trainerId == Academy.cStudentList[i].id || tList[j].targetId == Academy.cStudentList[i].id){
+//					Debug.Log ("Id of character those are training: "+Academy.cStudentList[i].id);
+//					Academy.cStudentList.Remove(Academy.cStudentList[i]);
+//				}
+//			}
+//		}  
+//		cslCount = Academy.cStudentList.Count;
+//		for (var i = 0 ; i < cslCount ; i++){
+//			CreateStudentItem (Academy.cStudentList[i]);
+//		}
 		//AcademyStudent.showSkillsOptionPanel("knowledge");
 		#endregion
 //		var num = game.trainings.Count;
@@ -168,6 +168,34 @@ public class Academy : MonoBehaviour
 
 
 		//CreateTeachItems ("IQ", 5);
+	}
+
+	public void SetupStudentPrefabList(){
+				Academy.cStudentList = game.counselor;
+		Debug.Log ("Number of Counselors: "+game.counselor.Count);
+#if TEST
+		Academy.cStudentList.Add (new Counselor(30,new JSONClass(),2,1));
+		Academy.cStudentList.Add (new Counselor(20,new JSONClass(),21,1));
+		Academy.cStudentList.Add (new Counselor(21,new JSONClass(),25,1));
+		Academy.cStudentList.Add (new Counselor(23,(JSONClass) JSON.Parse("{\"skills\":[{\"name\":\"木工\",\"level\":1},{\"name\":\"化學\",\"level\":4}]}"),26,1));
+		Academy.cStudentList.Add (new Counselor(24,new JSONClass(),27,1));
+		Academy.cStudentList.Add (new Counselor(25,new JSONClass(),28,1));
+#endif
+		int cslCount = 0; 
+		List<Trainings> tList = game.trainings;
+		var tlCount = tList.Count;
+		for (var i = 0 ; i < Academy.cStudentList.Count ; i++){
+			for (var j = 0 ; j < tlCount ; j++){
+				if (tList[j].trainerId == Academy.cStudentList[i].id || tList[j].targetId == Academy.cStudentList[i].id){
+					Debug.Log ("Id of character those are training: "+Academy.cStudentList[i].id);
+					Academy.cStudentList.Remove(Academy.cStudentList[i]);
+				}
+			}
+		}  
+		cslCount = Academy.cStudentList.Count;
+		for (var i = 0 ; i < cslCount ; i++){
+			CreateStudentItem (Academy.cStudentList[i]);
+		}
 	}
 
 	public void CreateStudentItem(Counselor character){
@@ -365,6 +393,12 @@ public class Academy : MonoBehaviour
 			gameObject.SetActive(true);
 		});
 		closeButton.onClick.AddListener (() => {
+			var count = AcademyStudent.Students.Count;
+			for (int i = 0 ; i < count ; i++){
+//				GameObject.DestroyImmediate( StudentScrollPanel.transform.GetChild(0).gameObject);
+				GameObject.DestroyImmediate( AcademyStudent.Students[i].gameObject);
+			}
+			AcademyStudent.Students = new List<AcademyStudent>();
 			Academy.activePopup = ActivePopupEnum.none;
 			SelfStudyHolder.SetActive(false);
 			TeachHolder.SetActive(false);

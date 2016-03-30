@@ -27,6 +27,7 @@ public class DrawCards : MonoBehaviour {
 	Dictionary<int,Sprite> imageDict;
 	Dictionary<int,string> nameDict;
 	public Button backButton;
+	public Button closeButton;
 
 	const int rankNeedRedraw = 1;
 	const int rankStopRedraw = 2;
@@ -52,8 +53,8 @@ public class DrawCards : MonoBehaviour {
 
 		Debug.Log ("Number of counselors: " + numberOfCounselors);
 		Debug.Log ("Number of generals: " + numberOfGenerals);
-		Debug.Log ( counselorList[28].Name);
-		Debug.Log ( counselorList[28].Rank);
+//		Debug.Log ( counselorList[28].Name);
+//		Debug.Log ( counselorList[28].Rank);
 
 		wsc.conn.OnError += (sender, e) => {
 			Debug.LogError (e.Message);
@@ -113,6 +114,14 @@ public class DrawCards : MonoBehaviour {
 //			DrawCards.activePopup = ActivePopupEnum.none;
 //			SelfStudyHolder.SetActive(false);
 //			TeachHolder.SetActive(false);
+		});
+
+		closeButton.onClick.AddListener (() => {
+			SingleCardHolder.SetActive(false);
+			gameObject.SetActive(false);
+			TenDrawHolder.SetActive(false);
+			calledByDrawTenCards = false;
+
 		});
 	}
 
