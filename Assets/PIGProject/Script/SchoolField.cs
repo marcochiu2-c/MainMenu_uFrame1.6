@@ -14,16 +14,20 @@ public class SchoolField : MonoBehaviour {
 	public GameObject MountQAHolder;
 	public GameObject ArmorListHolder;
 	public GameObject ArmorQAHolder;
+	public GameObject ShieldListHolder;
+	public GameObject ShieldQAHolder;
 	public GameObject TrainingQHolder;
 	public GameObject TrainingEquHolder;
 	public GameObject TrainingQAHolder;
 
+	public static int AssigningWeaponId;
+	public static int AssigningArmorId;
+	public static int AssigningShieldId;
+
 	Game game;
 	WsClient wsc;
 	Draggable drag;
-	public bool hasTrainingQHolderShown = false;
-	float rtx;
-	float rty;
+//	public bool hasTrainingQHolderShown = false;
 	RectTransform rt;
 	// Use this for initialization
 	void Start () {
@@ -34,36 +38,31 @@ public class SchoolField : MonoBehaviour {
 
 		game = Game.Instance;
 		wsc = WsClient.Instance;
-		Debug.Log (TotalSoldiersAvailable());
+//		Debug.Log (TotalSoldiersAvailable());
 		InvokeRepeating ("ShowTotalSoldiersAvailableText", 0, 60);
-		drag = NewSoldierPanel.transform.GetChild(0).GetComponent ("Draggable") as Draggable;
-		rt = (RectTransform)drag.transform;
-		rtx = rt.localPosition.x; rty = rt.localPosition.y;
-		ShowNewWeaponPanel ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (drag.parentToReturnTo != null) {
-			if (drag.parentToReturnTo == drag.placeholderParent && !hasTrainingQHolderShown &&
-				(drag.placeholderParent.ToString () == "DollPanel (UnityEngine.RectTransform)")) {
-				#region DropTheImageAndInfoCopy
-//				drag.placeholderParent.GetComponent<Image>().sprite = StudentPic;
-				AcademyTeach at = drag.placeholderParent.parent.GetComponent ("AcademyTeach") as AcademyTeach;
-				if (drag.placeholderParent.ToString () == "DollPanel (UnityEngine.RectTransform)") {
-					drag.transform.SetParent(NewSoldierPanel.transform);
-					NewSoldierPanel.transform.GetChild(0).localPosition = new Vector3( rtx,rty,0);
-					TrainingQHolder.SetActive(true);
-					hasTrainingQHolderShown = true;
-				}
-				#endregion
-			}
-			SetHasTrainingQHolderShown();
-		}
+//		if (drag.parentToReturnTo != null) {
+//			if (drag.parentToReturnTo == drag.placeholderParent && !hasTrainingQHolderShown &&
+//				(drag.placeholderParent.ToString () == "DollPanel (UnityEngine.RectTransform)")) {
+//				#region DropTheImageAndInfoCopy
+////				drag.placeholderParent.GetComponent<Image>().sprite = StudentPic;
+//				AcademyTeach at = drag.placeholderParent.parent.GetComponent ("AcademyTeach") as AcademyTeach;
+//				if (drag.placeholderParent.ToString () == "DollPanel (UnityEngine.RectTransform)") {
+//					drag.transform.SetParent(NewSoldierPanel.transform);
+//					NewSoldierPanel.transform.GetChild(0).localPosition = new Vector3( rtx,rty,0);
+//					TrainingQHolder.SetActive(true);
+//					hasTrainingQHolderShown = true;
+//				}
+//				#endregion
+//			}
+//		}
 	}
 
 	#region ShowSoldiersAvailable
-
+	
 	void ShowTotalSoldiersAvailableText(){
 //		Text availSoldiersText = NewSoldierPanel.transform.GetChild (0).GetComponent<Text> ();
 		Text availSoldiersText = NewSoldierPanel.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
@@ -87,7 +86,7 @@ public class SchoolField : MonoBehaviour {
 	#endregion
 
 	public void OnSetNewSoldierNumber(){
-		string s = transform.GetChild (9).GetChild (1).GetChild (0).GetChild (2).GetComponent<Text> ().text;
+		string s = TrainingQHolder.transform.GetChild (1).GetChild (0).GetChild (2).GetComponent<Text> ().text;
 		s = Regex.Replace(s, "[^0-9]", "");
 		if (s != "") {
 			int soldiers = Int32.Parse (s);
@@ -103,11 +102,11 @@ public class SchoolField : MonoBehaviour {
 				Debug.Log (game.login.attributes["TotalDeductedSoldiers"].AsInt );
 				ShowTotalSoldiersAvailableText();
 				//wsc.Send ("users","SET",game.login.toJSON());
-				if (true) { // TODO get weapon number  // not enough weapon
-					ShowIsNeedRecruitArtisanPanel(soldiers);
-				}else{
-
-				}
+//				if (true) { // TODO get weapon number  // not enough weapon
+//					ShowIsNeedRecruitArtisanPanel(soldiers);
+//				}else{
+//
+//				}
 			}
 		} else {
 			return;
@@ -115,22 +114,65 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public void ShowNewWeaponPanel(){
+		DestroySchoolFieldWeaponPanel(ArmyListHolder.transform);
 		ProductDict p = new ProductDict ();
 		var count = game.weapon.Count;
 		Transform panel = ArmyListHolder.transform.GetChild (1).GetChild (1).GetChild (0);
 		for (int i = 0; i < count; i++) {
-			SchoolFieldWeapon obj = Instantiate(Resources.Load("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon>();
-			obj.transform.localScale = new Vector3(0.51f,0.51f,0.51f);
-			obj.SetSchoolFieldWeapon(p.products[game.weapon[i].type].name , 
-			                         game.weapon[i].quantity.ToString(), 
-			                         p.products[game.weapon[i].type].attributes["Category"] ,
-			                         "");
+			SchoolFieldWeapon obj = Instantiate (Resources.Load ("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon> ();
+			obj.transform.localScale = new Vector3 (0.51f, 0.51f, 0.51f);
+			obj.SetSchoolFieldWeapon (game.weapon [i].type,
+								p.products [game.weapon [i].type].name, 
+		                        game.weapon [i].quantity.ToString (), 
+		                        p.products [game.weapon [i].type].attributes ["Category"],
+		                        "");
 
-			obj.transform.SetParent(panel);
+			obj.transform.SetParent (panel);
 		}
-		ArmyListHolder.SetActive (true);
+
+//		ArmyListHolder.SetActive (true);
 	}
 
+	public void ShowNewArmorPanel(){
+		DestroySchoolFieldWeaponPanel(ArmorListHolder.transform);
+		ProductDict p = new ProductDict ();
+		var count = game.armor.Count;
+		Transform panel = ArmorListHolder.transform.GetChild (1).GetChild (1).GetChild (0);
+		for (int i = 0; i < count; i++) {
+			SchoolFieldWeapon obj = Instantiate (Resources.Load ("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon> ();
+			obj.transform.localScale = new Vector3 (0.51f, 0.51f, 0.51f);
+			obj.SetSchoolFieldWeapon (game.armor [i].type,
+			                          p.products [game.armor [i].type].name, 
+			                          game.armor [i].quantity.ToString (), 
+			                          "",
+			                          "");
+			
+			obj.transform.SetParent (panel);
+			
+		}
+//		ArmyListHolder.SetActive (true);
+	}
+
+	public void ShowNewShieldPanel(){
+		DestroySchoolFieldWeaponPanel(ShieldListHolder.transform);
+		ProductDict p = new ProductDict ();
+		var count = game.shield.Count;
+		Transform panel = ShieldListHolder.transform.GetChild (1).GetChild (1).GetChild (0);
+		for (int i = 0; i < count; i++) {
+			SchoolFieldWeapon obj = Instantiate (Resources.Load ("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon> ();
+			obj.transform.localScale = new Vector3 (0.51f, 0.51f, 0.51f);
+			obj.SetSchoolFieldWeapon (game.shield [i].type,
+			                          p.products [game.shield [i].type].name, 
+			                          game.shield [i].quantity.ToString (), 
+			                          "",
+			                          "");
+			
+			obj.transform.SetParent (panel);
+			
+		}
+//		ArmyListHolder.SetActive (true);
+	}
+	
 	public void ShowIsNeedRecruitArtisanPanel(int soldiers){
 		string txt = TrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text;
 		txt = txt.Replace ("%SQ%", soldiers.ToString ());
@@ -138,9 +180,33 @@ public class SchoolField : MonoBehaviour {
 		TrainingEquHolder.SetActive (true);
 	}
 
-	public void SetHasTrainingQHolderShown(){
-		hasTrainingQHolderShown = false;
-		drag.parentToReturnTo = null;
-		drag.placeholderParent = null;
+	public void OnWeaponButtonClicked(){
+		ShowNewWeaponPanel ();
+	}
+
+	public void OnArmorButtonClicked(){
+		ShowNewArmorPanel ();
+
+	}
+
+	public void OnShieldButtonClicked(){
+		ShowNewShieldPanel ();
+
+	}
+	
+	public void OnPanelClose(){
+		#region Destroy List of Weapons
+		DestroySchoolFieldWeaponPanel(ArmyListHolder.transform);
+		DestroySchoolFieldWeaponPanel(ArmorListHolder.transform);
+		DestroySchoolFieldWeaponPanel(ShieldListHolder.transform);
+		#endregion
+	}
+
+	public void DestroySchoolFieldWeaponPanel(Transform panel){
+		Transform t = panel.transform.GetChild (1).GetChild (1).GetChild (0);
+		int count = t.childCount;
+		for (int j = 0; j<count; j++) {
+			GameObject.DestroyImmediate(t.GetChild(0).gameObject);
+		}
 	}
 }

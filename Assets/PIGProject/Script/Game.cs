@@ -24,6 +24,7 @@ public class Game{
 	public List<Armor> armor { get; set; }
 	public List<Shield> shield { get; set; }
 	public List<Artisans> artisans { get; set; }
+	public List<Soldiers> soldiers { get; set; }
 
 	private static readonly Game s_Instance = new Game();
 	
@@ -414,17 +415,24 @@ public class General {
 [Serializable]
 public class Soldiers{
 	public int id { get; set; }
-	public string attributes { get; set; }
+	public JSONClass attributes { get; set; }
 	public int type { get; set; }
 	public int quantity { get; set; }
 
 	public Soldiers(){
 	}
 
+	public Soldiers(JSONNode j){
+		id = j ["weapon_id"].AsInt;
+		attributes = (JSONClass)j ["soldier_json"];
+		type = j ["type"].AsInt;
+		quantity = j ["quantity"].AsInt;
+	}
+	
 	public JSONClass toJSON(){
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
-		j ["attributes"] = attributes;
+		j ["json"] = attributes;
 		j.Add ("type", new JSONData (type));
 		j.Add ("quantity", new JSONData (quantity));
 		return j;

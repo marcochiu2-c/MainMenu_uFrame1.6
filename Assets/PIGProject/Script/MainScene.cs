@@ -46,6 +46,7 @@ public class MainScene : MonoBehaviour {
 	public static JSONNode FriendInfo = null;
 	public static JSONNode TrainingInfo = null;
 	public static JSONNode ArtisanInfo = null;
+	public static JSONNode SoldierInfo = null;
 	public static Nullable<DateTime> GeneralLastUpdate = null;
 	public static Nullable<DateTime> CounselorLastUpdate = null;
 	public static Nullable<DateTime> StorageLastUpdate = null;
@@ -89,6 +90,7 @@ public class MainScene : MonoBehaviour {
 				wsc.Send ("weapon","GET",new JSONData (MainScene.userId));
 				wsc.Send ("armor","GET",new JSONData (MainScene.userId));
 				wsc.Send ("shield","GET",new JSONData (MainScene.userId));
+				wsc.Send ("soldier","GET",new JSONData (MainScene.userId));
 			}else{
 				Debug.Log ("User Id: "+0);
 			}
@@ -254,6 +256,15 @@ public class MainScene : MonoBehaviour {
 			}
 			
 			MainScene.ShieldInfo = null;
+		}
+		if (MainScene.SoldierInfo != null) {
+			game.soldiers = new List<Soldiers>();
+			count = MainScene.SoldierInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.soldiers.Add (new Soldiers (MainScene.SoldierInfo[i]));
+			}
+//			Debug.Log ("Number of training soldiers of First team: "+game.soldiers[0].attributes["trainingSoldiers"]);
+			MainScene.SoldierInfo = null;
 		}
 		if (MainScene.newUserId != 0) {
 			game.login.id = MainScene.newUserId;

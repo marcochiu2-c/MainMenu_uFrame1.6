@@ -28,6 +28,7 @@ enum jsonFuncNumberEnum {
 	newAccountBuilding = 14,
 	getUserInformationByDeviceId = 15,
 	getUserInformationBySnsUrl = 16,
+	newAccountSoldier = 17,
 	updateAllData = 19,
 
 	//  20-29 storage
@@ -81,8 +82,7 @@ enum jsonFuncNumberEnum {
 	updateGeneralTeam = 155,
 	getGeneralOnly = 156,
 	getGeneralTeam = 157,
-
-
+	getSoldier = 158,
 
 	// 160-169 Counselors
 	addCounselorEntry = 160,
@@ -107,7 +107,6 @@ enum jsonFuncNumberEnum {
 	findMatchingPlayerSpecifyCountry = 213,
 	getWholeWarfareInfoByUserId = 214,
 
-
 	// 220-239 War equipments
 	addWeapon = 220,
 	addArmor  = 221,
@@ -118,8 +117,7 @@ enum jsonFuncNumberEnum {
 	getWeaponsByUserId = 230,
 	getArmorsByUserId  = 231,
 	getShieldsByUserId = 232,
-
-	
+		
 	// 240-249 Buildings
 	addBuilding = 240,
 	updateBuilding = 241,
@@ -358,6 +356,11 @@ public class WsClient {
 		case jsonFuncNumberEnum.newUser:
 			if (j["obj"]!="[  ]"){
 				MainScene.newUserId = j["obj"]["lastInsertId"].AsInt;
+			}
+			break;
+		case jsonFuncNumberEnum.getSoldier:
+			if (j["obj"]!="[  ]"){
+				MainScene.SoldierInfo = j["obj"];
 			}
 			break;
 		default:
