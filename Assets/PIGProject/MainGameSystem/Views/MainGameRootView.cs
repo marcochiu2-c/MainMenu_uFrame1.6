@@ -38,6 +38,8 @@ public class MainGameRootView : MainGameRootViewBase {
 	public Button SearchButton;
 	public Button AATKButton;
 	public Button StandByButton;
+	
+	public Button DialogueTestButton;
 
 	public GameObject InfoPanel;
 	public GameObject BlockPanel;
@@ -239,6 +241,14 @@ public class MainGameRootView : MainGameRootViewBase {
 			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 		
+		this.BindButtonToHandler(DialogueTestButton, () => {
+			//TODO
+			Publish(new DialogueCommand()
+			        {
+				ConversationName = "Ch0_1"
+			});
+		});
+		
     }
 
     public override void GameStateChanged(GameState gameState) {
@@ -271,7 +281,6 @@ public class MainGameRootView : MainGameRootViewBase {
 			loadingBar.value=_async.progress;
 			yield return null;
 		}
-		
 	}
 	
 	/// <summary>

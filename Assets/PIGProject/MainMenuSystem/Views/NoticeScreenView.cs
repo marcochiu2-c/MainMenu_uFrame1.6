@@ -47,6 +47,7 @@ public class NoticeScreenView : NoticeScreenViewBase {
 			SignHolder.gameObject.SetActive (true);
 			NoticeHolder.gameObject.SetActive (false);
 			SpecialHolder.gameObject.SetActive(false);
+			ExecuteSign();
 		});
 
 		this.BindButtonToHandler (NoticeButton, () => {
