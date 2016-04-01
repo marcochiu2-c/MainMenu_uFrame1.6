@@ -127,6 +127,12 @@ enum jsonFuncNumberEnum {
 	addArtisanJob = 250,
 	updateArtisanJob = 251,
 	getArtisanJob = 252,
+
+	// 280-289 New Account equipment
+	newAccountWeapon = 280,
+	newAccountArmor  = 281,
+	newAccountShield = 282,
+
 };
 
 
@@ -407,7 +413,7 @@ public class WsClient {
 		return unixRef.AddSeconds(timestamp+tz*60*60);
 	}
 
-	public static long UnixTimeNow(DateTime dt)
+	public static long UnixTimeStamp(DateTime dt)
 	{
 		var timeSpan = (dt - new DateTime(1970, 1, 1, 0, 0, 0));
 		return (long)timeSpan.TotalSeconds;

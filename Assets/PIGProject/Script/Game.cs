@@ -423,7 +423,7 @@ public class Soldiers{
 	}
 
 	public Soldiers(JSONNode j){
-		id = j ["weapon_id"].AsInt;
+		id = j ["soldier_id"].AsInt;
 		attributes = (JSONClass)j ["soldier_json"];
 		type = j ["type"].AsInt;
 		quantity = j ["quantity"].AsInt;
@@ -768,7 +768,7 @@ public class Artisans {
 	public DateTime startTimestamp { get; set; }
 	public DateTime etaTimestamp { get; set; }
 	public string details { get; set; }
-	public int status { get; set; } // 0:cancelled, 1:ongoing, 2:not started ,3:completed
+	public int status { get; set; } // 0:cancelled, 1:ongoing, 2:not started ,3:completed, 4: ongoing, not allow to cancel
 	
 	public Artisans(){
 	}
@@ -792,8 +792,8 @@ public class Artisans {
 		j ["resources"] = resources;
 		j.Add ("metalsmith", new JSONData (metalsmith));
 		j.Add ("quantity", new JSONData (quantity));
-		j ["startTimestamp"] = startTimestamp.ToString();
-		j ["etaTimestamp"] = etaTimestamp.ToString();
+		j ["startTimestamp"] = new JSONData (WsClient.UnixTimeStamp(startTimestamp));
+		j ["etaTimestamp"] = new JSONData (WsClient.UnixTimeStamp(etaTimestamp));
 		j.Add ("status", new JSONData (status));
 		return j;
 	}

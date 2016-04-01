@@ -10,7 +10,7 @@ using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using Endgame;
+//using Endgame;
 
 
 public class MenuScreenView : MenuScreenViewBase
@@ -43,14 +43,14 @@ public class MenuScreenView : MenuScreenViewBase
 	public GameObject StorageHolder;
 //	public Endgame.ListView ItemPanel;
 //	public static Endgame.ListView staticItemPanel;
-	public Endgame.ListView AcademyListView;
-	public static Endgame.ListView staticAcademyListView;
-	public static ListView.ColumnHeaderCollection staticAcademyListViewColumns;
+//	public Endgame.ListView AcademyListView;
+//	public static Endgame.ListView staticAcademyListView;
+//	public static ListView.ColumnHeaderCollection staticAcademyListViewColumns;
 	//public Image TestArea;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
-		MenuScreenView.staticAcademyListViewColumns  = AcademyListView.Columns;
+//		MenuScreenView.staticAcademyListViewColumns  = AcademyListView.Columns;
     }
     
     public override void Bind() {
@@ -130,12 +130,13 @@ public class MenuScreenView : MenuScreenViewBase
 		
 		this.BindButtonToHandler(AcademyButton, () =>
 		    {
-				MenuScreenView.staticAcademyListView = AcademyListView;
+//				MenuScreenView.staticAcademyListView = AcademyListView;
 //				MenuScreenView.staticAcademyListViewColumns  = MenuScreenView.staticAcademyListVie/w.Columns;
-				Academy academy = new Academy();
-				academy.CallAcademy();
+
 				evt.ScreenType = typeof(AcademyScreenViewModel);
 				Publish(evt);
+//			Academy academy = new Academy();
+//			academy.CallAcademy();
 			});
 
 		this.BindButtonToHandler(ArtisanButton, () =>

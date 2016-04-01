@@ -30,7 +30,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
 	public GameObject TeachHolder;
 	public Text SelfStudyPopupTitle;
 	public Text TeachPopupTitle;
-	public Text button5;
+//	public Text button5;
 
 	Academy academy;
 
@@ -133,9 +133,9 @@ public class AcademyScreenView : AcademyScreenViewBase {
 			Debug.Log ("TeachButton clicked");
 			qaHolder.SetActive(false);
 			TeachHolder.transform.localScale = new Vector3(1, 1, 1);
-			academy =  new Academy();
-			//academy.SetDataGrid();
-			academy.RemoveAllItems();
+//			academy =  new Academy();
+//			academy.SetDataGrid();
+//			academy.RemoveAllItems();
 			
 			//			CommandedPopup.gameObject.SetActive (false);
 			//			KnowledgePopup.gameObject.SetActive (false);

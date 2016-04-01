@@ -77,7 +77,7 @@ public class StorageScreenView : StorageScreenViewBase {
 
 	public void SetButtons(string panel){
 		Game game = Game.Instance;
-		ProductList pList = new ProductList();
+//		ProductList pList = new ProductList();
 
 		var count = game.storage.Count;
 //		for (var i = 0; i < count ; i++){
