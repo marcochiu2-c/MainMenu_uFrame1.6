@@ -14,6 +14,7 @@ using UnityEngine.UI;
 
 public class SetBattleScreenView : SetBattleScreenViewBase {
 
+	public Button BackButton;
 	public Button DailyBattleButton;
 	public Button SpecialBattleButton;
 	public Button LimitedBattleButton;
@@ -36,6 +37,13 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
         // Use this.SetBattleScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+
+		this.BindButtonToHandler (BackButton, () => {
+			DailyMission.gameObject.SetActive (false);
+			SpecialMission.gameObject.SetActive (false);
+			LimitedMission.gameObject.SetActive (false);
+			HolidayMission.gameObject.SetActive (false);
+		});
 
 		this.BindButtonToHandler (DailyBattleButton, () => {
 			DailyMission.gameObject.SetActive (true);

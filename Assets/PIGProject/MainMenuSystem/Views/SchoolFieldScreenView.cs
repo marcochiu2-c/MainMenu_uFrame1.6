@@ -38,7 +38,8 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 	public Button ArmorQAHolderCancelButton;
 	public Button ShieldQAHolderCancelButton;
 	public Button closeTrainingButton;
-	
+
+	public GameObject DisablePanel;
 	public GameObject ArmyListHolder;
 	public GameObject MountListHolder;
 	public GameObject ArmorListHolder;
@@ -69,6 +70,7 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
         // Any designer bindings are created in the base implementation.
 
 		this.BindButtonToHandler (BackButton, () => {
+			DisablePanel.SetActive (false);
 			MountListHolder.gameObject.SetActive (false);
 			ArmyListHolder.gameObject.SetActive (false);
 			ArmorListHolder.gameObject.SetActive (false);

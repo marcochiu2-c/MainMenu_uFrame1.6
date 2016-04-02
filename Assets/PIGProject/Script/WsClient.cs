@@ -223,6 +223,7 @@ public class WsClient {
 		case jsonFuncNumberEnum.getUserInformationByDeviceId:
 			if (j["obj"]!="[  ]"){
 				MainScene.UserInfo = (JSONClass)j ["obj"];
+				Debug.Log ("MainScene.UserInfo received");
 				LoginScreen.user = (JSONClass)j ["obj"];
 			}
 			break;
@@ -417,6 +418,11 @@ public class WsClient {
 	{
 		var timeSpan = (dt - new DateTime(1970, 1, 1, 0, 0, 0));
 		return (long)timeSpan.TotalSeconds;
+	}
+
+	public static string JSDate(DateTime dt)
+	{
+		return dt.Year + "-" + dt.Month + "-" + dt.Day + " " + dt.Hour + ":" + dt.Minute + ":" + dt.Second;
 	}
 
 	public void Send(string table,string action, JSONNode j){

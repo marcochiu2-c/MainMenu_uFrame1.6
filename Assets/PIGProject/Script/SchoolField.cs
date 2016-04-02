@@ -39,6 +39,8 @@ public class SchoolField : MonoBehaviour {
 	public static int AssigningSoldier=1;  // 兵種
 	public static int AssigningResources=0;
 	public static int AssigningStarDust=0;
+	public static DateTime AssigningTime;
+	public static int AssigningQuantity = 0;
 	public static int TotalTrainingTime=0;
 	public static int refStarDust = 4200;
 	public static int refResource =550000;
@@ -78,21 +80,7 @@ public class SchoolField : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		if (drag.parentToReturnTo != null) {
-//			if (drag.parentToReturnTo == drag.placeholderParent && !hasTrainingQHolderShown &&
-//				(drag.placeholderParent.ToString () == "DollPanel (UnityEngine.RectTransform)")) {
-//				#region DropTheImageAndInfoCopy
-////				drag.placeholderParent.GetComponent<Image>().sprite = StudentPic;
-//				AcademyTeach at = drag.placeholderParent.parent.GetComponent ("AcademyTeach") as AcademyTeach;
-//				if (drag.placeholderParent.ToString () == "DollPanel (UnityEngine.RectTransform)") {
-//					drag.transform.SetParent(NewSoldierPanel.transform);
-//					NewSoldierPanel.transform.GetChild(0).localPosition = new Vector3( rtx,rty,0);
-//					TrainingQHolder.SetActive(true);
-//					hasTrainingQHolderShown = true;
-//				}
-//				#endregion
-//			}
-//		}
+
 	}
 	
 	void AddButtonListener(){
@@ -524,9 +512,12 @@ public class SchoolField : MonoBehaviour {
 				}
 			}
 		}
+		AssigningQuantity = quantity;
+		AssigningTime = DateTime.Now.Add(time);
 		string msg = "額外%EQ%的裝備需要%SU%物資和時間%TM%，立刻製作嗎？";
 		msg = msg.Replace ("%EQ%", quantity.ToString());
 		msg = msg.Replace ("%SU%", AssigningResources.ToString());
+		Debug.Log (time.ToString ());
 		if (time.TotalMinutes > 59) {
 			msg = msg.Replace ("%TM%", (int)time.TotalHours + ":" + time.Minutes + ":" + time.Seconds);
 		} else {
@@ -536,24 +527,26 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	void OnAddEquipmentConfirmed(){
-		if (!TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text.Contains ("時之星塵不足")) {
+		Text msgText = TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ();
+		if (msgText.text.Contains ("時之星塵不足")) {
 			//TODO change this action of this condition to shop
 			DisablePanel.SetActive (false);
 			TrainingEquConfirmHolder.SetActive (false);
 		}
-		if (!TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text.Contains("資源不足")){
+		if (!msgText.text.Contains("資源不足")&& !msgText.text.Contains ("時之星塵不足")){
 		#region CheckResources
 			if (game.wealth[2].value < AssigningResources){
 				Debug.Log ("AssigningResources: "+AssigningResources);
 				Debug.Log ("Resource own: "+game.wealth[2].value);
 				string msg = "資源不足，要用%SD%時之星塵嗎？";
-				int diff = (int)(Mathf.Round((AssigningResources - game.wealth[2].value)*refStarDust/refResource));
-				if (game.wealth[1].value < diff){
-					msg = "時之星塵不足，請先購買時之星塵"; //TODO change the text to "Buy StarDust"
-					TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
-					return;
-				}
-				msg  = msg.Replace("%SD%",diff.ToString());
+				AssigningStarDust = (int)(Mathf.Round((AssigningResources - game.wealth[2].value)*refStarDust/refResource));
+				Debug.Log ("Need Stardust: "+AssigningStarDust);
+					if (game.wealth[1].value < AssigningStarDust){
+						msg = "時之星塵不足，請先購買時之星塵"; //TODO change the text to "Buy StarDust"
+						TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
+						return;
+					}
+				msg  = msg.Replace("%SD%",AssigningStarDust.ToString());
 				TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
 				return;
 			}
@@ -563,21 +556,25 @@ public class SchoolField : MonoBehaviour {
 		JSONClass j = new JSONClass ();
 		j.Add ("artisan_id", new JSONData (0));
 		if (AssigningWeaponId != 0) {
-			j.Add("target_id", new JSONData(AssigningWeaponId));
+			j.Add("targetId", new JSONData(AssigningWeaponId));
 			game.soldiers [AssigningSoldier - 1].attributes.Add ("weaponProducing", new JSONData (true));
 		} else if (AssigningArmorId != 0) {
-			j.Add("target_id", new JSONData(AssigningArmorId));
+			j.Add("targetId", new JSONData(AssigningArmorId));
 			game.soldiers [AssigningSoldier - 1].attributes.Add ("armorProducing", new JSONData (true));
 		} else if (AssigningShieldId != 0) {
-			j.Add("target_id", new JSONData(AssigningShieldId));
+			j.Add("targetId", new JSONData(AssigningShieldId));
 			game.soldiers [AssigningSoldier - 1].attributes.Add ("shieldProducing", new JSONData (true));
 		}
-		j.Add ("start_time", DateTime.Now.ToString());
-		//		j.Add ("eta_time", TODO assignTime);
+		j.Add ("userId", new JSONData(game.login.id));
+		j.Add ("quantity", new JSONData (AssigningQuantity));
+		j.Add ("start_time", new JSONData (DateTime.Now.ToString()));
+		j.Add ("eta_time",new JSONData (WsClient.JSDate(AssigningTime)));
 		j.Add ("resources", new JSONData (""));
 		j.Add ("metalsmith", new JSONData (0));
 		j.Add ("details", new JSONData (""));
 		j.Add ("status", new JSONData(4));
+		wsc.Send ("artisan", "NEW", j);
+		TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text = "";
 		game.artisans.Add (new Artisans (j));
 
 
@@ -593,10 +590,8 @@ public class SchoolField : MonoBehaviour {
 		}
 		DisablePanel.SetActive (false);
 		TrainingEquConfirmHolder.SetActive (false);
-		Debug.Log(TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text);
-		if (TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text.Contains ("資源不足") ) {
-
-			game.wealth [1].Deduct ((int)(Mathf.Round((AssigningResources - game.wealth[2].value)*refStarDust/refResource)));
+		if (AssigningStarDust>0 ) {
+			game.wealth [1].Deduct (AssigningStarDust);
 			game.wealth [2].Set (0);
 		} else {
 			game.wealth [2].Deduct (AssigningResources);
@@ -607,7 +602,7 @@ public class SchoolField : MonoBehaviour {
 		AssigningStarDust = 0;
 	}
 	void OnSpeedUpProductionClicked(){
-//TODO show 
+//TODO show shop
 
 
 	}
@@ -850,9 +845,21 @@ public class SchoolField : MonoBehaviour {
 		CheckIfTrainingOngoing ();
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
 		data += "\n名稱： 兵種" + AssigningSoldier.ToString ();
-		data += "\n兵器： " + p.products[ j["weapon"].AsInt].name;
-		data += "\n防具： " + p.products[ j["armor"].AsInt].name;
-		data += "\n 盾： " + p.products[ j["shield"].AsInt].name;
+		if (j ["weapon"].AsInt != 0) {
+			data += "\n兵器： " + p.products [j ["weapon"].AsInt].name;
+		} else {
+			data += "\n兵器： 未指派";
+		}
+		if (j ["armor"].AsInt != 0) {
+			data += "\n防具： " + p.products [j ["armor"].AsInt].name;
+		} else {
+			data += "\n防具： 未指派";
+		}
+		if (j ["shield"].AsInt != 0) {
+			data += "\n 盾： " + p.products[ j["shield"].AsInt].name;
+		} else {
+			data += "\n 盾： 未指派";
+		}
 		data += "\n已訓練兵數： " + game.soldiers [AssigningSoldier - 1].quantity;
 		data += "\n未訓練兵數： " + j["trainingSoldiers"];
 		if (j ["ETATrainingTime"] != null) {
