@@ -38,6 +38,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public Button Redo_Btn;
 	public Button NextEnemy_Btn;
 	public GameObject InfoPanel;
+	public GameObject EnemyTower;
 
 	public SpriteCell pathPrefab;
 	public SpriteCell markNode;
@@ -220,30 +221,49 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		else if (MainGameVM.WinCondition == WinCondition.Boss)
 		{
 			Debug.Log("MainGameVM.WinCondition == WinCondition.Boss");
-			TargetVM[0].CurrentPointLocation = new FlatHexPoint(6, 0);
-			TargetVM[1].CurrentPointLocation = new FlatHexPoint(8, 5);
-			TargetVM[2].CurrentPointLocation = new FlatHexPoint(11, 1);
-			TargetVM[3].CurrentPointLocation = new FlatHexPoint(25, -8);
-			TargetVM[4].CurrentPointLocation = new FlatHexPoint(28, -6);    //Boss
+			TargetVM[0].CurrentPointLocation = new FlatHexPoint(26, -6);
+			TargetVM[1].CurrentPointLocation = new FlatHexPoint(26, -7);
+			TargetVM[2].CurrentPointLocation = new FlatHexPoint(27, -8);
+			TargetVM[3].CurrentPointLocation = new FlatHexPoint(28, -8);
+			TargetVM[4].CurrentPointLocation = new FlatHexPoint(27, -7);    //Boss
 			
 			
-			TargetV[0].GetComponent<Renderer>().sortingOrder = 6;
-			TargetV[1].GetComponent<Renderer>().sortingOrder = 1;
-			TargetV[2].GetComponent<Renderer>().sortingOrder = 2;
-			TargetV[3].GetComponent<Renderer>().sortingOrder = 5;
-			TargetV[4].GetComponent<Renderer>().sortingOrder = 2;
+			TargetV[0].GetComponent<Renderer>().sortingOrder = 2;
+			TargetV[1].GetComponent<Renderer>().sortingOrder = 3;
+			TargetV[2].GetComponent<Renderer>().sortingOrder = 4;
+			TargetV[3].GetComponent<Renderer>().sortingOrder = 3;
+			TargetV[4].GetComponent<Renderer>().sortingOrder = 3;
 			
 			//Ambush Enemy2
 			TargetV[1].RendererColor(ExampleUtils.Colors[4]);
 			TargetV[1].FindChild("HealthBarCanvas").gameObject.SetActive(false);
 		}
 		
-		/*
+		
 		else if (MainGameVM.WinCondition == WinCondition.Tower)
 		{
 			//TODO: not confirm the setting yet
+			
+			EnemyTower.gameObject.SetActive(true);
+			TargetVM[0].CurrentPointLocation = new FlatHexPoint(27, -4);
+			TargetVM[1].CurrentPointLocation = new FlatHexPoint(29, -6);
+			TargetVM[2].CurrentPointLocation = new FlatHexPoint(27, -5);
+			TargetVM[3].CurrentPointLocation = new FlatHexPoint(28, -8);
+			TargetVM[4].CurrentPointLocation = new FlatHexPoint(29, -9);    //Boss
+			
+			
+			TargetV[0].GetComponent<Renderer>().sortingOrder = 0;
+			TargetV[1].GetComponent<Renderer>().sortingOrder = 1;
+			TargetV[2].GetComponent<Renderer>().sortingOrder = 1;
+			TargetV[3].GetComponent<Renderer>().sortingOrder = 3;
+			TargetV[4].GetComponent<Renderer>().sortingOrder = 4;
+			
+			
+			
+			TargetV[1].RendererColor(ExampleUtils.Colors[4]);
+			TargetV[1].FindChild("HealthBarCanvas").gameObject.SetActive(false);
 		}
-		*/
+	
 		
 		//set better position
 		for(int i = 0; i < TargetV.Count; i++)

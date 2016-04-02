@@ -23,7 +23,7 @@ public class MainGameRootController : MainGameRootControllerBase {
         base.InitializeMainGameRoot(viewModel);
         // This is called when a MainGameRootViewModel is created
          viewModel.PlayerIQ = 200;
-         viewModel.WinCondition = WinCondition.Enemies;
+         viewModel.WinCondition = WinCondition.Tower;
     }
 
     public override void GoToMenu(MainGameRootViewModel viewModel) {
