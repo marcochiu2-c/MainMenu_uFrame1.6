@@ -264,7 +264,7 @@ public class Wealth {
 
 	public JSONClass toJSON(){
 		JSONClass j = new JSONClass ();
-		j.Add ("id", new JSONData (id));
+		j.Add ("pk", new JSONData (id));
 		j.Add ("type", new JSONData (type));
 		j.Add ("value", new JSONData (value));
 		return j;
@@ -277,6 +277,11 @@ public class Wealth {
 
 	public void Deduct(int money){
 		value -= money;
+		UpdateCurrency ();
+	}
+
+	public void Set (int money){
+		value = money;
 		UpdateCurrency ();
 	}
 
@@ -294,7 +299,7 @@ public class Wealth {
 		}
 		WsClient wsc = WsClient.Instance;
 		JSONClass j = new JSONClass ();
-		j.Add("wealthId",new JSONData(id));
+		j.Add("pk",new JSONData(id));
 		j.Add ("value", new JSONData (value));
 		wsc.Send ("wealth", "SET", j);
 	}
@@ -471,6 +476,19 @@ public class Weapon {
 		j.Add ("quantity", new JSONData (quantity));
 		return j;
 	}
+
+	public void SetQuantity (int q){
+		quantity = q;
+		UpdateQuantity ();
+	}
+	
+	void UpdateQuantity(){
+		WsClient wsc = WsClient.Instance;
+		Game game = Game.Instance;
+		JSONClass j = toJSON ();
+		j.Add ("userId", new JSONData(game.login.id)	);
+		wsc.Send ("weapon", "SET", j);
+	}
 }
 
 [Serializable]
@@ -505,6 +523,19 @@ public class Armor {
 		j.Add ("quantity", new JSONData (quantity));
 		return j;
 	}
+	
+	public void SetQuantity (int q){
+		quantity = q;
+		UpdateQuantity ();
+	}
+	
+	void UpdateQuantity(){
+		WsClient wsc = WsClient.Instance;
+		Game game = Game.Instance;
+		JSONClass j = toJSON ();
+		j.Add ("userId", new JSONData(game.login.id)	);
+		wsc.Send ("armor", "SET", j);
+	}
 }
 
 [Serializable]
@@ -538,6 +569,19 @@ public class Shield {
 		j.Add ("level", new JSONData (level));
 		j.Add ("quantity", new JSONData (quantity));	
 		return j;
+	}
+	
+	public void SetQuantity (int q){
+		quantity = q;
+		UpdateQuantity ();
+	}
+	
+	void UpdateQuantity(){
+		WsClient wsc = WsClient.Instance;
+		Game game = Game.Instance;
+		JSONClass j = toJSON ();
+		j.Add ("userId", new JSONData(game.login.id)	);
+		wsc.Send ("shield", "SET", j);
 	}
 }
 
