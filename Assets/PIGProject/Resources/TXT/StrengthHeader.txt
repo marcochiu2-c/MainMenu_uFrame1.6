@@ -1,0 +1,15 @@
+﻿[StrengthHeader]
+體力訓練
+
+戰場之上，有勇有謀但沒體力，如何指揮千軍萬馬？奔跑吧！武將！
+
+[StrengthEvent1]
+暴走大灰熊
+大灰熊皮堅肉厚，尋常兵器難以令其受傷，若想安然無恙，跑吧！
+（挑戰5分鐘，增加5點體力值）
+
+[StrengthEvent2]
+
+[StrengthEvent3]
+
+[StrengthEvent4]

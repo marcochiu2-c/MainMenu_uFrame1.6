@@ -20,11 +20,11 @@ public class NoticeScreenController : NoticeScreenControllerBase {
 	public override void Sign(NoticeScreenViewModel viewModel) {
 		base.Sign(viewModel);
 		//TODO
-		Publish(new DialogueCommand()
+/*		Publish(new DialogueCommand()
 		        {
 			ConversationName = "daughter"
 		});
 		
-		Debug.Log("You have signed");
+		Debug.Log("You have signed");*/
 	}
 }

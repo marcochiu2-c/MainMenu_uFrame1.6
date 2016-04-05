@@ -30,8 +30,9 @@ public class AcademyScreenView : AcademyScreenViewBase {
 	public GameObject TeachHolder;
 	public Text SelfStudyPopupTitle;
 	public Text TeachPopupTitle;
+//	public Text button5;
 
-	
+	Academy academy;
 
 
 	public GameObject Popup;
@@ -54,8 +55,11 @@ public class AcademyScreenView : AcademyScreenViewBase {
 
 		this.BindButtonToHandler (IQButton, () => {
 			qaHolder.SetActive(true);
-			SelfStudyPopupTitle.text = "智商";
-			TeachPopupTitle.text = "智商";
+			SelfStudyPopupTitle.text = "智 商";
+			TeachPopupTitle.text = "智 商";
+			//button5.supportRichText = true;
+			//button5.text = "<color=red>Test</color>";
+
 
 			// TODO: move next statement to Model code
 			Academy.activePopup = ActivePopupEnum.IQPopup;
@@ -66,8 +70,9 @@ public class AcademyScreenView : AcademyScreenViewBase {
 
 		this.BindButtonToHandler (CommandedButton, () => {
 			qaHolder.SetActive(true);
-			SelfStudyPopupTitle.text = "統率";
-			TeachPopupTitle.text = "統率";
+			SelfStudyPopupTitle.text = "統 率";
+			TeachPopupTitle.text = "統 率";
+
 
 			// TODO: move next statement to Model code
 			Academy.activePopup = ActivePopupEnum.CommandedPopup;
@@ -78,8 +83,8 @@ public class AcademyScreenView : AcademyScreenViewBase {
 
 		this.BindButtonToHandler (KnowledgeButton, () => {
 			qaHolder.SetActive(true);	
-			SelfStudyPopupTitle.text = "學問";
-			TeachPopupTitle.text = "學問";
+			SelfStudyPopupTitle.text = "學 問";
+			TeachPopupTitle.text = "學 問";
 
 			// TODO: move next statement to model code
 			Academy.activePopup = ActivePopupEnum.KnowledgePopup;
@@ -90,8 +95,8 @@ public class AcademyScreenView : AcademyScreenViewBase {
 
 		this.BindButtonToHandler (FightingButton, () => {
 			qaHolder.SetActive(true);
-			SelfStudyPopupTitle.text = "陣法";
-			TeachPopupTitle.text = "陣法";
+			SelfStudyPopupTitle.text = "陣 法";
+			TeachPopupTitle.text = "陣 法";
 
 			// TODO: move next statement to Model code
 			Academy.activePopup = ActivePopupEnum.FightingPopup;
@@ -103,7 +108,6 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		this.BindButtonToHandler (BackButton, () => {
 			SelfStudyHolder.SetActive (false);
 			TeachHolder.SetActive (false);
-
 			// TODO: move next statement to Model code
 			Academy.activePopup = ActivePopupEnum.none;
 		});
@@ -128,7 +132,10 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		this.BindButtonToHandler (TeachButton, () => {
 			Debug.Log ("TeachButton clicked");
 			qaHolder.SetActive(false);
-			TeachHolder.SetActive (true);
+			TeachHolder.transform.localScale = new Vector3(1, 1, 1);
+//			academy =  new Academy();
+//			academy.SetDataGrid();
+//			academy.RemoveAllItems();
 			
 			//			CommandedPopup.gameObject.SetActive (false);
 			//			KnowledgePopup.gameObject.SetActive (false);

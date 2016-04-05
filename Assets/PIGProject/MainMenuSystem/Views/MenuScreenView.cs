@@ -10,16 +10,17 @@ using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+//using Endgame;
 
 
 public class MenuScreenView : MenuScreenViewBase
 {
-	//public GameObject DisablePanel;
-	//public Button LevelSelectButton;
-    //public Button SettingsButton;
-    //public Button ExitButton;
+	public GameObject DisablePanel;
+	public Button LevelSelectButton;
+    public Button SettingsButton;
+    public Button ExitButton;
 	public Button NoticeButton;
-	//public Button HeadButton;
+	public Button HeadButton;
 	public Button CardButton;
 	public Button SetBattleButton;
 	public Button CharPageButton;
@@ -36,12 +37,20 @@ public class MenuScreenView : MenuScreenViewBase
 	public Button BuyRButton;
 	public Button BuySDButton;
 	public Button SchoolFieldButton;
-	
+
 	public Button SampleButton;
+
+	public GameObject StorageHolder;
+//	public Endgame.ListView ItemPanel;
+//	public static Endgame.ListView staticItemPanel;
+//	public Endgame.ListView AcademyListView;
+//	public static Endgame.ListView staticAcademyListView;
+//	public static ListView.ColumnHeaderCollection staticAcademyListViewColumns;
 	//public Image TestArea;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
+//		MenuScreenView.staticAcademyListViewColumns  = AcademyListView.Columns;
     }
     
     public override void Bind() {
@@ -53,8 +62,7 @@ public class MenuScreenView : MenuScreenViewBase
         // RequestMainMenuScreenCommand and pass LevelSelectScreenViewModel type
 		var evt = new RequestMainMenuScreenCommand();
 		var evtPopUp = new NotifyCommand();
-		
-		/*
+
         this.BindButtonToHandler(LevelSelectButton, () =>
         {
 			evt.ScreenType = typeof(LevelSelectScreenViewModel);
@@ -70,21 +78,18 @@ public class MenuScreenView : MenuScreenViewBase
 			evt.ScreenType = typeof(SettingsScreenViewModel);
 			Publish(evt);
         });
-        */
 
 		this.BindButtonToHandler(NoticeButton, () =>
 		{
 			evt.ScreenType = typeof(NoticeScreenViewModel);
 			Publish(evt);
 		});
-		
-		/*
+
 		this.BindButtonToHandler(HeadButton, () =>
 		{
 			evt.ScreenType = typeof(SampleScreenViewModel);
 			Publish(evt);
 		});
-		*/
 
 		this.BindButtonToHandler(CardButton, () =>
 			{
@@ -118,14 +123,20 @@ public class MenuScreenView : MenuScreenViewBase
 
 		this.BindButtonToHandler(BuySDButton, () =>
 			{
+
 				evt.ScreenType = typeof(ShopScreenViewModel);
 				Publish(evt);
 			});
 		
 		this.BindButtonToHandler(AcademyButton, () =>
-			{
+		    {
+//				MenuScreenView.staticAcademyListView = AcademyListView;
+//				MenuScreenView.staticAcademyListViewColumns  = MenuScreenView.staticAcademyListVie/w.Columns;
+
 				evt.ScreenType = typeof(AcademyScreenViewModel);
 				Publish(evt);
+//			Academy academy = new Academy();
+//			academy.CallAcademy();
 			});
 
 		this.BindButtonToHandler(ArtisanButton, () =>
@@ -168,6 +179,7 @@ public class MenuScreenView : MenuScreenViewBase
 			{
 				evt.ScreenType = typeof(StorageScreenViewModel);
 				Publish (evt);
+
 			});
 
 		this.BindButtonToHandler (SchoolFieldButton, () => 
@@ -205,7 +217,7 @@ public class MenuScreenView : MenuScreenViewBase
 			});
         // This follows the same logic, but we use Method Group syntax.
         // And we do not publish event. We just quit.
-		//this.BindButtonToHandler(ExitButton, Application.Quit);
+		this.BindButtonToHandler(ExitButton, Application.Quit);
         //Equivalent to 
         //this.BindButtonToHandler(ExitButton, () => { Application.Quit; });
 

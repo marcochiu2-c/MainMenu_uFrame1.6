@@ -16,9 +16,12 @@ public class ArtisanScreenView : ArtisanScreenViewBase {
 
 	public Button armsButton;
 	public Button armorButton;
+	public Button shieldButton;
+	public Button backButton;
 
 	public GameObject armsPopup;
 	public GameObject armorPopup;
+	public GameObject shieldPopup;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -33,16 +36,22 @@ public class ArtisanScreenView : ArtisanScreenViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
+		this.BindButtonToHandler (backButton, () => {
+			armsPopup.gameObject.SetActive (false);
+			armorPopup.gameObject.SetActive (false);
+			shieldPopup.gameObject.SetActive (false);
+		});
+
 		this.BindButtonToHandler (armsButton, () => {
 			armsPopup.gameObject.SetActive (true);
-			armorPopup.gameObject.SetActive (false);
 		});
 
 		this.BindButtonToHandler (armorButton, () => {
-			armsPopup.gameObject.SetActive (false);
 			armorPopup.gameObject.SetActive (true);
 		});
 
-
+		this.BindButtonToHandler (shieldButton,() => {
+			shieldPopup.gameObject.SetActive(true);
+		});
     }
 }

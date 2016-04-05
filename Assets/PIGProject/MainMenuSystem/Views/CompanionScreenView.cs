@@ -38,7 +38,7 @@ public class CompanionScreenView : CompanionScreenViewBase {
 			SoldiersHolder.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (counselorsButton, () => {
+		this.BindButtonToHandler (soldiersButton, () => {
 			CounselorsHolder.gameObject.SetActive (false);
 			SoldiersHolder.gameObject.SetActive (true);
 		});

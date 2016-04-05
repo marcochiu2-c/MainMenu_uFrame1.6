@@ -1,3 +1,4 @@
+#define TEST
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using UniRx;
 using UnityEngine;
 using DG.Tweening;
 using uFrame.IOC;
+using Utilities;
 
 
 /*
@@ -22,8 +24,9 @@ public class SubScreenView : SubScreenViewBase
 {
 
     public GameObject ScreenUIContainer;
-	public AudioSource bgm;
 	[Inject("LocalUser")] public UserViewModel LocalUser;
+	public AudioSource bgm;
+	float time = 0.5f;
 
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -75,29 +78,39 @@ public class SubScreenView : SubScreenViewBase
 
 		if(active)
 		{
-			if (ScreenUIContainer.name == "HeaderHolder")
-			{
-				bgm.Play();
-				return;
-			}
-			ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>
-			{
+			if (ScreenUIContainer.name == "MainUIHolder") return;
+//			if (ScreenUIContainer.name == "AcademyHolder") return;
+#if (TEST)
+			ScreenUIContainer.transform.DOLocalMoveY(0f, time).SetEase(Ease.InOutBack).OnStart(()=>{
+				Debug.Log ("DoLocalMoveY called");
 				ScreenUIContainer.gameObject.SetActive(true);
 				bgm.Play ();
 			});
-			//.OnComplete(() => bgm.Play ());
-			
+#else
+			//ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>ScreenUIContainer.gameObject.SetActive(true));
 			//Debug.Log (ScreenUIContainer.name + " actived");
+
+#endif
 		}
 		else
 		{
-			if (ScreenUIContainer.name == "HeaderHolder")
-			{
-				bgm.Stop();
-				return;
-			}
-			ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnStart(() => bgm.Stop ()).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
+			if (ScreenUIContainer.name == "MainUIHolder") return;
+//			if (ScreenUIContainer.name == "AcademyHolder") return;
+#if (TEST)	
+//			ShowLog.Log ("SubScreen Close");
+			ScreenUIContainer.transform.DOLocalMoveY(760f, time).SetEase(Ease.InOutBack).OnStart(()=>{
+				bgm.Play ();
+
+				if (ScreenUIContainer.gameObject.ToString()=="AcademyHolder (UnityEngine.GameObject)"){
+					Debug.Log (ScreenUIContainer.gameObject);
+				}else{
+					ScreenUIContainer.gameObject.SetActive(false);
+				}
+			});
+#else
+			//ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
+#endif
 		}
-		//}						
+					
 	}
 }
