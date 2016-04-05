@@ -17,27 +17,41 @@ public class WeaponMaking : MonoBehaviour {
 	public Text Metalsmith;
 	public Text TimeRequire;
 	public Text Details;
+	public int id;
 	DateTime eta;
 	public DateTime etaTimestamp;
+	TimeSpan ts;
+	Color color;
 
 	public static List<WeaponMaking> Weapons = new List<WeaponMaking>();
+	public static List<WeaponMaking> Armors = new List<WeaponMaking>();
+	public static List<WeaponMaking> Shields = new List<WeaponMaking>();
 	// Use this for initialization
 	void Start () {
-	
+		Color.TryParseHexString ("#FFFFF12", out color);
 	}
 
-	public void SetPanel(string wn, int rr, string q, string ms, DateTime endTime, string details){ 
-		WeaponName.text = wn;
-		ResourceRequire.text = rr.ToString ();
-		Quantity.text = q;
-		Metalsmith.text = ms;
+	public void SetPanel(Products p,int q, DateTime endTime){
+//	public void SetPanel(string wn, int rr, string q, string ms, DateTime endTime, string details){ 
+		WeaponName.text = p.name;
+		ResourceRequire.text = p.attributes["NumberOfProductionResources"].ToString ();
+		Quantity.text = q.ToString();
+//		Metalsmith.text = ms;
 		eta = endTime;
 		InvokeRepeating ("UpdateRemainingTime", 0, 1);
-		Details.text = details;
+		id = p.id;
+//		Details.text = details;
 	}
 
 	public void UpdateRemainingTime(){
-		TimeRequire.text = eta.Subtract (DateTime.Now).ToString();
+		if (eta > DateTime.Now) {
+			ts = eta.Subtract (DateTime.Now);
+			TimeRequire.text = string.Format( "{0:D2}:{1:D2}:{2:D2}", ts.Hours, ts.Minutes, ts.Seconds);
+			transform.GetComponent<Image>().color = Color.green;
+		} else {
+			TimeRequire.text = "00:00:00";
+			transform.GetComponent<Image>().color = color;
+		}
 	}
 
 	// Update is called once per frame

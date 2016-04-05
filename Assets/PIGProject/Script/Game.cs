@@ -225,6 +225,7 @@ public class Login {
 		};
 	}
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("name", new JSONData( name));
@@ -238,6 +239,7 @@ public class Login {
 		j ["playerID"] = playerID;
 		j ["deviceID"] = deviceID;
 		j ["attributes"] = attributes;
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 }
@@ -263,10 +265,12 @@ public class Wealth {
 	}
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("pk", new JSONData (id));
 		j.Add ("type", new JSONData (type));
 		j.Add ("value", new JSONData (value));
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 
@@ -323,11 +327,18 @@ public class Friend {
 	}
 
 	public JSONClass toJSON(){	
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("friendId", new JSONData (friendId));
+		j.Add ("userId", new JSONData(game.login.id));
 		return j;
 	}
+
+//		public void UpdateObject(){
+//			WsClient wsc = WsClient.Instance;
+//			wsc.Send ("counselors", "SET", toJSON());
+//		}
 }
 
 [Serializable]
@@ -337,11 +348,18 @@ public class ChatRoom {
 	public string name { get; set; }
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("adminId", new JSONData (adminId));
+		j.Add ("userId", new JSONData(game.login.id));
 		return j;
 	}
+
+//	public void UpdateObject(){
+//		WsClient wsc = WsClient.Instance;
+//		wsc.Send ("counselors", "SET", toJSON());
+//	}
 }
 
 [Serializable]
@@ -370,11 +388,20 @@ public class Counselor {
 	}
 	
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData(id));
 		j ["attributes"] = attributes;
 		j.Add ("status", new JSONData (status));
+		j.Add ("userId", new JSONData(game.login.id));
 		return j;
+	}
+
+	/// <summary>
+	/// Update the Object to database</summary>
+	public void UpdateObject(){
+		WsClient wsc = WsClient.Instance;
+		wsc.Send ("counselors", "SET", toJSON());
 	}
 }
 
@@ -407,13 +434,20 @@ public class General {
 	}
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j ["attributes"] = attributes;
 		j.Add ("type", new JSONData (type));
 		j.Add ("status", new JSONData (status));
 		j ["soldiers"] = soldiers.toJSON ();
+		j.Add ("userId", new JSONData(game.login.id));
 		return j;
+	}
+
+	public void UpdateObject(){
+		WsClient wsc = WsClient.Instance;
+		wsc.Send ("generals", "SET", toJSON());
 	}
 }
 
@@ -435,12 +469,24 @@ public class Soldiers{
 	}
 	
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j ["json"] = attributes;
 		j.Add ("type", new JSONData (type));
 		j.Add ("quantity", new JSONData (quantity));
+		j.Add ("userId", new JSONData(game.login.id));
 		return j;
+	}
+
+	public void SetQuantity (int q){
+		quantity = q;
+		UpdateQuantity ();
+	}
+	
+	void UpdateQuantity(){
+		WsClient wsc = WsClient.Instance;
+		wsc.Send ("soldier", "SET", toJSON());
 	}
 }
 
@@ -469,25 +515,26 @@ public class Weapon {
 	}
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("type", new JSONData (type));
 		j.Add ("level", new JSONData (level));
 		j.Add ("quantity", new JSONData (quantity));
+		j.Add ("userId", new JSONData(game.login.id));
 		return j;
 	}
 
 	public void SetQuantity (int q){
 		quantity = q;
-		UpdateQuantity ();
+		UpdateObject ();
 	}
-	
-	void UpdateQuantity(){
+
+	/// <summary>
+	/// Update the Object to database</summary>
+	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
-		Game game = Game.Instance;
-		JSONClass j = toJSON ();
-		j.Add ("userId", new JSONData(game.login.id)	);
-		wsc.Send ("weapon", "SET", j);
+		wsc.Send ("weapon", "SET", toJSON());
 	}
 }
 
@@ -516,25 +563,24 @@ public class Armor {
 	}
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("type", new JSONData (type));
 		j.Add ("level", new JSONData (level));
 		j.Add ("quantity", new JSONData (quantity));
+		j.Add ("userId", new JSONData(game.login.id));
 		return j;
 	}
 	
 	public void SetQuantity (int q){
 		quantity = q;
-		UpdateQuantity ();
+		UpdateObject ();
 	}
 	
-	void UpdateQuantity(){
+	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
-		Game game = Game.Instance;
-		JSONClass j = toJSON ();
-		j.Add ("userId", new JSONData(game.login.id)	);
-		wsc.Send ("armor", "SET", j);
+		wsc.Send ("armor", "SET", toJSON ());
 	}
 }
 
@@ -563,25 +609,24 @@ public class Shield {
 	}
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("type", new JSONData (type));
 		j.Add ("level", new JSONData (level));
-		j.Add ("quantity", new JSONData (quantity));	
+		j.Add ("quantity", new JSONData (quantity));
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 	
 	public void SetQuantity (int q){
 		quantity = q;
-		UpdateQuantity ();
+		UpdateObject ();
 	}
 	
-	void UpdateQuantity(){
+	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
-		Game game = Game.Instance;
-		JSONClass j = toJSON ();
-		j.Add ("userId", new JSONData(game.login.id)	);
-		wsc.Send ("shield", "SET", j);
+		wsc.Send ("shield", "SET", toJSON());
 	}
 }
 
@@ -616,6 +661,7 @@ public class Trainings {
 	}
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("type", new JSONData (type));
@@ -623,6 +669,7 @@ public class Trainings {
 		j.Add ("targetId", new JSONData (targetId));
 		j ["startTimestamp"] = startTimestamp.ToString();
 		j ["etaTimestamp"] = etaTimestamp.ToString();
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 }
@@ -634,10 +681,12 @@ public class Buildings {
 	public int level{ get; set; }
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("type", new JSONData (type));
 		j.Add ("level", new JSONData (level));
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 }
@@ -668,6 +717,7 @@ public class Warfare {
 	}
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		var aCount = attackerGeneralId.Count;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
@@ -678,6 +728,7 @@ public class Warfare {
 			j["attackerGeneral"].Add ( new JSONData (attackerGeneralId[i]));
 		}
 		j.Add ("result", new JSONData (result));
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 
@@ -691,11 +742,13 @@ public class Message {
 	public string message { get; set; }
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j ["timestamp"] = timestamp.ToString();
 		j.Add ("senderId", new JSONData (senderId));
 		j ["message"] = message;
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 }
@@ -705,12 +758,14 @@ public class PrivateMessage : Message{
 	public bool isTo { get; set; }
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j ["timestamp"] = timestamp.ToString();
 		j.Add ("senderId", new JSONData (senderId));
 		j ["message"] = message;
 		j.Add ("isTo", new JSONData (isTo));
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 }
@@ -741,11 +796,13 @@ public class Storage{
 	}
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("prodId", new JSONData (productId));
 		j.Add ("type", new JSONData (type));
 		j.Add ("quantity", new JSONData (quantity));
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 }
@@ -789,6 +846,7 @@ public class CheckInStatus{
 	}
 
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("id", new JSONData (id));
 		j.Add ("year", new JSONData (year));
@@ -798,6 +856,7 @@ public class CheckInStatus{
 		for (int i = 0; i < count; i++) {
 			j["days"].Add(new JSONData(days[i]));
 		}
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 }
