@@ -26,6 +26,7 @@ public class SchoolField : MonoBehaviour {
 	public GameObject TrainingEquHolder;
 	public GameObject TrainingEquConfirmHolder;
 	public GameObject TrainingQAHolder;
+	public GameObject CannotTrainSoldierPopup;
 
 	public static GameObject staticArmyQAHolder;
 	public static GameObject staticArmorQAHolder;
@@ -137,10 +138,10 @@ public class SchoolField : MonoBehaviour {
 			OnSpeedUpProductionClicked();
 		});
 
-		AdjustSoildersAttribute.transform.GetChild (2).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {
+		AdjustSoildersAttribute.transform.GetChild (8).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {
 			GetAdjustedSoldierValues();
 		});
-		AdjustSoildersAttribute.transform.GetChild (2).GetChild (1).GetComponent<Button> ().onClick.AddListener (() => {
+		AdjustSoildersAttribute.transform.GetChild (8).GetChild (1).GetComponent<Button> ().onClick.AddListener (() => {
 			DisablePanel.SetActive(false);
 			AdjustSoildersAttribute.SetActive(false);
 		});
@@ -441,14 +442,32 @@ public class SchoolField : MonoBehaviour {
 
 		qText = "確定更改%Orig%為%New%嗎？";
 		if (armedCategory == "weapon") {
-			qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
-			qText = qText.Replace ("%New%", p.products [armedType].name);
+			if (game.soldiers[AssigningSoldier-1].attributes["weapon"].AsInt != AssigningWeaponId){
+				qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
+				qText = qText.Replace ("%New%", p.products [armedType].name);
+			}else{
+				staticDisablePanel.SetActive(false);
+				staticArmyQAHolder.SetActive(false);
+				return;
+			}
 		}else if (armedCategory == "armor"){
-			qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
-			qText = qText.Replace ("%New%", p.products [armedType].name);
+			if (game.soldiers[AssigningSoldier-1].attributes["armor"].AsInt != AssigningArmorId){
+				qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
+				qText = qText.Replace ("%New%", p.products [armedType].name);
+			}else{
+				staticDisablePanel.SetActive(false);
+				staticArmorQAHolder.SetActive(false);
+				return;
+			}
 		}else if (armedCategory == "shield"){
-			qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
-			qText = qText.Replace ("%New%", p.products [armedType].name);
+			if (game.soldiers[AssigningSoldier-1].attributes["shield"].AsInt != AssigningShieldId){
+				qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
+				qText = qText.Replace ("%New%", p.products [armedType].name);
+			}else{
+				staticDisablePanel.SetActive(false);
+				staticShieldQAHolder.SetActive(false);
+				return;
+			}
 		}
 		panelDict[armedCategory].transform.GetChild(1).GetComponent<Text>().text = qText;
 	}
@@ -485,6 +504,11 @@ public class SchoolField : MonoBehaviour {
 		int quantity = 0;
 		TimeSpan time = new TimeSpan();
 		if (AssigningWeaponId != 0){
+			if (game.artisans[0].etaTimestamp > DateTime.Now){
+				CannotTrainSoldierPopup.SetActive (true);
+				TrainingEquHolder.SetActive(false);
+				return;
+			}
 			count = game.weapon.Count;
 			for (int i = 0 ; i< count ; i++){
 				if(game.weapon[i].type == AssigningWeaponId){
@@ -494,6 +518,11 @@ public class SchoolField : MonoBehaviour {
 				}
 			}
 		}else if (AssigningArmorId != 0){ 
+			if (game.artisans[1].etaTimestamp > DateTime.Now){
+				CannotTrainSoldierPopup.SetActive (true);
+				TrainingEquHolder.SetActive(false);
+				return;
+			}
 			count = game.armor.Count;
 			for (int i = 0 ; i< count ; i++){
 				if(game.armor[i].type == AssigningArmorId){
@@ -503,6 +532,11 @@ public class SchoolField : MonoBehaviour {
 				}
 			}
 		}else if (AssigningShieldId != 0){ 
+			if (game.artisans[2].etaTimestamp > DateTime.Now){
+				CannotTrainSoldierPopup.SetActive (true);
+				TrainingEquHolder.SetActive(false);
+				return;
+			}
 			count = game.shield.Count;
 			for (int i = 0 ; i< count ; i++){
 				if(game.shield[i].type == AssigningShieldId){
@@ -552,30 +586,26 @@ public class SchoolField : MonoBehaviour {
 			}
 		}
 		#endregion
-
-		JSONClass j = new JSONClass ();
-		j.Add ("artisan_id", new JSONData (0));
+		int type = 0;
 		if (AssigningWeaponId != 0) {
-			j.Add("targetId", new JSONData(AssigningWeaponId));
+			type = 1;
+			game.artisans[0].targetId = AssigningWeaponId;
 			game.soldiers [AssigningSoldier - 1].attributes.Add ("weaponProducing", new JSONData (true));
 		} else if (AssigningArmorId != 0) {
-			j.Add("targetId", new JSONData(AssigningArmorId));
+			type = 2;
+			game.artisans[1].targetId = AssigningArmorId;
 			game.soldiers [AssigningSoldier - 1].attributes.Add ("armorProducing", new JSONData (true));
 		} else if (AssigningShieldId != 0) {
-			j.Add("targetId", new JSONData(AssigningShieldId));
+			type = 3;
+			game.artisans[2].targetId = AssigningShieldId;
 			game.soldiers [AssigningSoldier - 1].attributes.Add ("shieldProducing", new JSONData (true));
 		}
-		j.Add ("userId", new JSONData(game.login.id));
-		j.Add ("quantity", new JSONData (AssigningQuantity));
-		j.Add ("start_time", new JSONData (DateTime.Now.ToString()));
-		j.Add ("eta_time",new JSONData (WsClient.JSDate(AssigningTime)));
-		j.Add ("resources", new JSONData (""));
-		j.Add ("metalsmith", new JSONData (0));
-		j.Add ("details", new JSONData (""));
-		j.Add ("status", new JSONData(4));
-		wsc.Send ("artisan", "NEW", j);
+		game.artisans [type - 1].startTimestamp = DateTime.Now;
+		game.artisans [type - 1].etaTimestamp = AssigningTime;
+		game.artisans [type - 1].quantity = AssigningQuantity;
+		game.artisans [type - 1].status = 4;
+		wsc.Send ("artisan", "SET", game.artisans[type-1].toJSON());
 		TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text = "";
-		game.artisans.Add (new Artisans (j));
 
 
 		// TODO add the ETA time to soldiers if new one is end later

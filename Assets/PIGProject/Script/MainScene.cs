@@ -80,33 +80,34 @@ public class MainScene : MonoBehaviour {
 			wsc = WsClient.Instance;
 			MainScene.userId = game.login.id;  // TODO: load userID from DB
 			if (MainScene.userId != 0){
-				json = new JSONClass ();
-				json.Add ("data", new JSONData (MainScene.userId));
-				json ["action"] = "GET";
-				json ["table"] = "wealth";
-				wsc.Send (json.ToString ());
-				wsc.Send("counselors","GET",new JSONData (MainScene.userId));
-				wsc.Send("generals","GET",new JSONData (MainScene.userId));
-				wsc.Send ("weapon","GET",new JSONData (MainScene.userId));
-				wsc.Send ("armor","GET",new JSONData (MainScene.userId));
-				wsc.Send ("shield","GET",new JSONData (MainScene.userId));
-				wsc.Send ("soldier","GET",new JSONData (MainScene.userId));
+				reloadFromDB();
 			}else{
+				MainScene.needReloadFromDB = true;
 				Debug.Log ("User Id: "+0);
 			}
 			Store.GetStorageInfoFromDB();
 
 //			json ["table"] = "friendship";
 //			wsc.Send (json.ToString ());
-			MainScene.needReloadFromDB = false;
+
 		}
-//		Invoke ("AddS100", 2);
 
 	}
 
-	void AddS100(){
-		game.wealth [1].Add (100);
-		game.wealth [2].Add (100);
+	void reloadFromDB(){
+		json = new JSONClass ();
+		json.Add ("data", new JSONData (MainScene.userId));
+		json ["action"] = "GET";
+		json ["table"] = "wealth";
+		wsc.Send (json.ToString ());
+		wsc.Send("counselors","GET",new JSONData (MainScene.userId));
+		wsc.Send("generals","GET",new JSONData (MainScene.userId));
+		wsc.Send ("weapon","GET",new JSONData (MainScene.userId));
+		wsc.Send ("armor","GET",new JSONData (MainScene.userId));
+		wsc.Send ("shield","GET",new JSONData (MainScene.userId));
+		wsc.Send ("soldier","GET",new JSONData (MainScene.userId));
+		wsc.Send ("artisan","GET", new JSONData (MainScene.userId));
+		MainScene.needReloadFromDB = false;
 	}
 
 	// Update is called once per frame
@@ -138,8 +139,12 @@ public class MainScene : MonoBehaviour {
 			game.login = new Login ((JSONClass)MainScene.UserInfo);
 //			Debug.Log (game.login.ToString());
 			MainScene.UserInfo = null;
-//			Debug.Log (MainScene.UserInfo);
-//			Debug.Log (game.login.id);
+			Debug.Log (MainScene.userId);
+			if (MainScene.userId == 0){
+				MainScene.userId = game.login.id;
+				reloadFromDB();
+			}
+
 		}
 		if (MainScene.GeneralInfo != null) {
 			game.general = new List<General> ();

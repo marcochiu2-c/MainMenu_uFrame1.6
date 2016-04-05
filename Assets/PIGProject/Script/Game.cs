@@ -806,7 +806,7 @@ public class CheckInStatus{
 public class Artisans {
 	public int id { get; set; }
 	public int targetId { get; set; }
-	public string resources { get; set; }
+	public int resources { get; set; }
 	public int metalsmith { get; set; }
 	public int quantity { get; set; }
 	public DateTime startTimestamp { get; set; }
@@ -820,7 +820,7 @@ public class Artisans {
 	public Artisans(JSONNode j){
 		id = j ["artisan_id"].AsInt;
 		targetId = j ["target_id"].AsInt;
-		resources = j ["resources"];
+		resources = j ["resources"].AsInt;
 		metalsmith = j ["metalsmith"].AsInt;
 		quantity = j ["quantity"].AsInt;
 		startTimestamp = Convert.ToDateTime(j ["start_time"]);
@@ -830,15 +830,17 @@ public class Artisans {
 	}
 	
 	public JSONClass toJSON(){
+		Game game = Game.Instance;
 		JSONClass j = new JSONClass ();
 		j.Add ("artisanId", new JSONData (id));
 		j.Add ("targetId", new JSONData (targetId));
-		j ["resources"] = resources;
+		j.Add ("resources",new JSONData( resources));
 		j.Add ("metalsmith", new JSONData (metalsmith));
 		j.Add ("quantity", new JSONData (quantity));
-		j ["startTimestamp"] = new JSONData (WsClient.UnixTimeStamp(startTimestamp));
-		j ["etaTimestamp"] = new JSONData (WsClient.UnixTimeStamp(etaTimestamp));
+		j ["start_time"] = new JSONData (WsClient.JSDate(startTimestamp));
+		j ["eta_time"] = new JSONData (WsClient.JSDate(etaTimestamp));
 		j.Add ("status", new JSONData (status));
+		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
 }

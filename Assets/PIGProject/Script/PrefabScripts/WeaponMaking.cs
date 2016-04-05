@@ -17,7 +17,7 @@ public class WeaponMaking : MonoBehaviour {
 	public Text Metalsmith;
 	public Text TimeRequire;
 	public Text Details;
-
+	DateTime eta;
 	public DateTime etaTimestamp;
 
 	public static List<WeaponMaking> Weapons = new List<WeaponMaking>();
@@ -26,8 +26,18 @@ public class WeaponMaking : MonoBehaviour {
 	
 	}
 
-	public void SetPanel(){ 
+	public void SetPanel(string wn, int rr, string q, string ms, DateTime endTime, string details){ 
+		WeaponName.text = wn;
+		ResourceRequire.text = rr.ToString ();
+		Quantity.text = q;
+		Metalsmith.text = ms;
+		eta = endTime;
+		InvokeRepeating ("UpdateRemainingTime", 0, 1);
+		Details.text = details;
+	}
 
+	public void UpdateRemainingTime(){
+		TimeRequire.text = eta.Subtract (DateTime.Now).ToString();
 	}
 
 	// Update is called once per frame

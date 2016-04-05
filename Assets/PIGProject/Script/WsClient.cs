@@ -127,6 +127,7 @@ enum jsonFuncNumberEnum {
 	addArtisanJob = 250,
 	updateArtisanJob = 251,
 	getArtisanJob = 252,
+	newAccountArtisanJobs = 253,
 
 	// 280-289 New Account equipment
 	newAccountWeapon = 280,
@@ -355,7 +356,7 @@ public class WsClient {
 //			addArtisanJob = 250,
 //			updateArtisanJob = 251,
 //			getArtisanJob = 252,
-		case jsonFuncNumberEnum.getArtisanJob:
+		case jsonFuncNumberEnum.getArtisanJob: case jsonFuncNumberEnum.newAccountArtisanJobs:
 			if (j["obj"]!="[  ]"){
 				MainScene.ArtisanInfo = j["obj"];
 			}

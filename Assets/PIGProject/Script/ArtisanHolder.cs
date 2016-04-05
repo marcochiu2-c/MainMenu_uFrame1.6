@@ -11,7 +11,7 @@ public class ArtisanHolder : MonoBehaviour {
 	Game game;
 	public GameObject ArtisanWeaponPanel;
 	public GameObject ArtisanArmorPanel; // All protective equipments
-
+	static ProductDict p  = new ProductDict();
 	// Use this for initialization
 	void Start () {
 		CallArtisanHolder ();
@@ -19,7 +19,10 @@ public class ArtisanHolder : MonoBehaviour {
 
 	public void CallArtisanHolder(){
 		game = Game.Instance;
-
+		int c = game.artisans.Count;
+		for (int i = 0; i< c; i++) {
+			Debug.Log (game.artisans[i].id);
+		}
 	}
 	
 	// Update is called once per frame
@@ -33,13 +36,15 @@ public class ArtisanHolder : MonoBehaviour {
 		GameObject sp=null;
 		WeaponMaking wobj = null;
 		ArmorMaking aobj = null;
+		Products products;
 		if (panel == "Weapon") {
 			wsi = WeaponMaking.Weapons;
 			sp = ArtisanWeaponPanel;
 			for (var i = 0; i < quantity; i++) { 
 				wobj = Instantiate(Resources.Load("WeaponMakingPrefab") as GameObject).GetComponent<WeaponMaking>();
 				wobj.transform.parent = sp.transform;
-				wobj.ResourceRequire.text = "";
+				products = p.products[game.artisans[i].targetId];
+//				wobj.SetPanel(products.name,);
 
 				RectTransform rTransform = wobj.GetComponent<RectTransform>();
 				wsi.Add (wobj);
