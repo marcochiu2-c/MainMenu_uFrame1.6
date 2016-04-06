@@ -107,6 +107,7 @@ public class MainScene : MonoBehaviour {
 		wsc.Send ("shield","GET",new JSONData (MainScene.userId));
 		wsc.Send ("soldier","GET",new JSONData (MainScene.userId));
 		wsc.Send ("artisan","GET", new JSONData (MainScene.userId));
+		wsc.Send ("getCheckinInfo","GET", new JSONData (MainScene.userId));
 		MainScene.needReloadFromDB = false;
 	}
 
@@ -259,7 +260,6 @@ public class MainScene : MonoBehaviour {
 			for (var i = 0; i < count; i++) {
 				game.shield.Add (new Shield (MainScene.ShieldInfo[i]));
 			}
-			
 			MainScene.ShieldInfo = null;
 		}
 		if (MainScene.SoldierInfo != null) {

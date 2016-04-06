@@ -18,7 +18,7 @@ public class CheckIn : MonoBehaviour
 	Button[] buttons = new Button[30];
 	public static int checkedInDate=0;
 	// Use this for initialization
-
+	enum CheckinWealthEnum {SilverFeather =0 ,Stardust =1, Resources =2};
 	void Start(){  // TODO: Change to uframe start event
 		CallCheckIn ();
 	}
@@ -35,29 +35,8 @@ public class CheckIn : MonoBehaviour
 		checkin.Add ("month", new JSONData (now.Month));
 		checkin.Add ("days", new JSONArray ());
 
-		JSONNode json = new JSONClass ();
+//		wsc.conn.Send ("getCheckinGiftInfo","GET",json.ToString ());
 
-		if (wsc.conn.IsAlive) {
-
-			json ["data"] = "1";
-
-			json ["action"] = "GET";
-			json ["table"] = "users";
-			wsc.conn.Send (json.ToString ());
-			json ["data"] = "";
-
-			json ["action"] = "GET";
-			json ["table"] = "getCheckinGiftInfo";
-//			wsc.conn.Send (json.ToString ());
-
-			json ["data"] = "1";
-
-			json ["action"] = "GET";
-			json ["table"] = "getCheckinInfo";
-			wsc.conn.Send (json.ToString ()); 
-		} else {
-			Debug.Log ("Websocket Connection Lost!");
-		}
 	}
 	
 	// Update is called once per frame
@@ -99,13 +78,14 @@ public class CheckIn : MonoBehaviour
 			Debug.Log ("Checking in as " + DateTime.Now.Day);
 			game.checkinStatus.days.Add (DateTime.Now.Day);
 			JSONNode json = new JSONClass ();
-			json ["data"] = game.checkinStatus.toJSON ();
+//			json ["data"] = game.checkinStatus.toJSON ();
 			Debug.Log (json["data"]);
-			json ["data"].Add ("userId", new JSONData (game.login.id));
-			json ["table"] = "checkin";
-			json ["action"] = "SET";
-			Debug.Log (json.ToString ());
-			wsc.Send (json.ToString ());
+//			json ["table"] = "checkin";
+//			json ["action"] = "SET";
+//			Debug.Log (json.ToString ());
+//			wsc.Send (json.ToString ());
+			game.checkinStatus.UpdateObject();
+			Rewards();
 			DisableDayButton(game.checkinStatus.days.Count-1);
 		}
 //		} else {
@@ -119,6 +99,99 @@ public class CheckIn : MonoBehaviour
 			Transform child = buttons [i].transform;
 			buttons[i].onClick.AddListener(() => { DoCheckIn(child.GetComponent<Button>()); });
 		}
+
+		transform.GetChild(2).GetChild(2).GetComponent<Button>().onClick.AddListener(() => { 
+			HideSignedPopup();
+		});
+	}
+
+	void Rewards(){
+		int day = game.checkinStatus.days.Count;
+		int wealthType = 0;  // 0 - SilverFeather, 1 - Stardust , 2 - Resources   (1 less than definition in DB)
+		int[] sf = new int[]{0,13, 27, 40, 53, 67, 80};
+		int[] sd = new int[]{0, 3, 5, 8, 11, 16, 21};
+		int[] res = new int[]{0, 5333, 10667, 16000, 21333, 32000, 42667};
+		string[] wt = new String[]{"銀羽","時之星塵","資源"};
+		int quantity = 0;
+		switch (day) {
+		case 1: case 8: case 15:  // q: 1
+			wealthType = (int) CheckinWealthEnum.SilverFeather;
+			quantity = sf[1];
+			break;
+		case 2: case 9: case 16:  // q: 2
+			wealthType = (int) CheckinWealthEnum.SilverFeather;
+			quantity = sf[2];
+			break;
+		case 3: case 10: case 17:  // q: 1
+			wealthType = (int) CheckinWealthEnum.Resources;
+			quantity = res[1];
+			break;
+		case 4: case 11: case 18:  // q: 2
+			wealthType = (int) CheckinWealthEnum.Resources;
+			quantity = res[2];
+			break;
+		case 5: case 12: case 19:  // q: 3
+			wealthType = (int) CheckinWealthEnum.Resources;
+			quantity = res[3];
+			break;
+		case 6: case 13: case 20:  // q: 1
+			wealthType = (int) CheckinWealthEnum.Stardust;
+			quantity = sd[1];
+			break;
+		case 7: case 14: case 21:  // q: 2
+			wealthType = (int) CheckinWealthEnum.Stardust;
+			quantity = sd[2];
+			break;
+		case 22:
+			wealthType = (int) CheckinWealthEnum.SilverFeather;  // q: 3
+			quantity = sf[3];
+			break;
+		case 23:
+			wealthType = (int) CheckinWealthEnum.SilverFeather;  // q: 4 
+			quantity = sf[4];
+			break;
+		case 24:
+			wealthType = (int) CheckinWealthEnum.Resources;  // q: 4
+			quantity = res[4];
+			break;
+		case 25:
+			wealthType = (int) CheckinWealthEnum.Resources;  // q: 5
+			quantity = res[5];
+			break;
+		case 26:
+			wealthType = (int) CheckinWealthEnum.Resources;  // q: 6
+			quantity = res[6];
+			break;
+		case 27:
+			wealthType = (int) CheckinWealthEnum.Stardust;  // q: 3
+			quantity = sd[3];
+			break;
+		case 28:
+			wealthType = (int) CheckinWealthEnum.Stardust;  // q: 4
+			quantity = sd[4];
+			break;
+		case 29:
+			wealthType = (int) CheckinWealthEnum.Resources;  // q: 6
+			quantity = res[6];
+			break;
+		case 30:
+			wealthType = (int) CheckinWealthEnum.Stardust;  // q: 6
+			quantity = sd[6];
+			break;
+		}
+		ShowSignedPopup (quantity+" "+wt[wealthType]);
+		game.wealth [wealthType].Add (quantity);
+	}
+
+	void ShowSignedPopup(string rewards){
+		GameObject panel = transform.GetChild (2).gameObject;
+		panel.SetActive (true);
+		panel.transform.GetChild (1).GetComponent<Text> ().text = rewards;
+	}
+
+	void HideSignedPopup(){
+		transform.GetChild (2).gameObject.SetActive (false);
+//		gameObject.SetActive (false);
 	}
 
 }

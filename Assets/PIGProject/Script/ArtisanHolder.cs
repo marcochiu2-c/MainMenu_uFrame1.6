@@ -42,6 +42,7 @@ public class ArtisanHolder : MonoBehaviour {
 			ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive(false);
 			ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive(false);
 			ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive(false);
+			transform.GetChild(0).gameObject.SetActive(true);
 		});
 		CloseButton.onClick.AddListener (() => {
 			ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive(false);
@@ -123,7 +124,11 @@ public class ArtisanHolder : MonoBehaviour {
 	}
 
 	void updateProductionEtaTimeText(){
-		TimeSpan ts = game.artisans [latestEta].etaTimestamp.Subtract (DateTime.Now);
-		transform.GetChild (0).GetChild (2).GetChild (3).GetComponent<Text> ().text = string.Format ("生產中 {0:D2}:{1:D2}:{2:D2} 後完成",ts.Hours, ts.Minutes, ts.Seconds);
+		if (game.artisans [latestEta].etaTimestamp > DateTime.Now) {
+			TimeSpan ts = game.artisans [latestEta].etaTimestamp.Subtract (DateTime.Now);
+			transform.GetChild (0).GetChild (2).GetChild (3).GetComponent<Text> ().text = string.Format ("生產中 {0:D2}:{1:D2}:{2:D2} 後完成", ts.Hours, ts.Minutes, ts.Seconds);
+		} else {
+			transform.GetChild (0).GetChild (2).GetChild (3).GetComponent<Text> ().text = "生產中 00:00:00 後完成";
+		}
 	}
 }

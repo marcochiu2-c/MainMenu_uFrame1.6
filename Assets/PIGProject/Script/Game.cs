@@ -689,6 +689,11 @@ public class Buildings {
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
+
+	public void UpdateObject(){
+		WsClient wsc = WsClient.Instance;
+		wsc.Send ("buildings", "SET", toJSON());
+	}
 }
 
 [Serializable]
@@ -731,7 +736,6 @@ public class Warfare {
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
-
 }
 
 [Serializable]
@@ -805,6 +809,11 @@ public class Storage{
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
+
+	public void UpdateObject(){
+		WsClient wsc = WsClient.Instance;
+		wsc.Send ("storage", "SET", toJSON());
+	}
 }
 
 [Serializable]
@@ -859,6 +868,11 @@ public class CheckInStatus{
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
+
+	public void UpdateObject(){
+		WsClient wsc = WsClient.Instance;
+		wsc.Send ("checkin", "SET", toJSON());
+	}
 }
 
 [Serializable]
@@ -901,6 +915,11 @@ public class Artisans {
 		j.Add ("status", new JSONData (status));
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
+	}
+
+	public void UpdateObject(){
+		WsClient wsc = WsClient.Instance;
+		wsc.Send ("artisans", "SET", toJSON());
 	}
 }
 

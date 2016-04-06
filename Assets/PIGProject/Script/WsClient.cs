@@ -133,6 +133,7 @@ enum jsonFuncNumberEnum {
 	newAccountWeapon = 280,
 	newAccountArmor  = 281,
 	newAccountShield = 282,
+	newAccountCheckIn= 283,
 
 };
 
@@ -280,7 +281,7 @@ public class WsClient {
 				MainScene.WarfareInfo = j["obj"];
 			}
 			break;
-		case jsonFuncNumberEnum.getCheckinInfo:
+		case jsonFuncNumberEnum.getCheckinInfo: case jsonFuncNumberEnum.newAccountCheckIn: 
 			if (j["obj"]!="[  ]"){
 				game.checkinStatus = new CheckInStatus((JSONClass)j["obj"]);
 				CheckIn.checkedInDate = game.checkinStatus.days.Count;
@@ -335,12 +336,11 @@ public class WsClient {
 				MainScene.ShieldInfo = j["obj"];
 			}
 			break;
-		case jsonFuncNumberEnum.updateCheckInStatus:
+		case jsonFuncNumberEnum.updateCheckInStatus: 
 			if (j["obj"]!="[  ]"){
 				Debug.Log(String.Format("Update Check In Status: {0}",(j["obj"]["success"].AsBool ? "Success" : "Failed")));
 			}
 			break;
-
 		case jsonFuncNumberEnum.getFriendshipInfo:
 //			Debug.Log(j);
 			if (j["obj"]!="[  ]"){
@@ -402,6 +402,8 @@ public class WsClient {
 		if (conn.IsAlive) {
 			Debug.Log ("Sending Command");
 			conn.Send (json);
+		} else {
+			Debug.Log ("Websocket Connection Lost!");
 		}
 	}
 
