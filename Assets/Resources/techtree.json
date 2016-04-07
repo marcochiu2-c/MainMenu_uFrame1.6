@@ -1,8 +1,12 @@
 [
   {
     "Name":"兵器工藝",
+<<<<<<< HEAD
     "Important":3,
     "TotalIQ":55862,
+=======
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -14,12 +18,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"東亞兵器工藝",
     "Important":2,
     "TotalIQ":37241,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"東亞兵器工藝",
+    "Importance":2,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":372,
     "Lv2IQ":745,
     "Lv3IQ":1490,
@@ -31,12 +46,23 @@
     "Lv9IQ":6703,
     "Lv10IQ":9310,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"西洋兵器工藝",
     "Important":2,
     "TotalIQ":37241,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"西洋兵器工藝",
+    "Importance":2,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":372,
     "Lv2IQ":745,
     "Lv3IQ":1490,
@@ -48,12 +74,23 @@
     "Lv9IQ":6703,
     "Lv10IQ":9310,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"精細打磨",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"精細打磨",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -65,12 +102,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"加固",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"加固",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -82,12 +130,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"裝備減重",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"裝備減重",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -99,12 +158,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"千錘百鍊",
     "Important":5,
     "TotalIQ":93103,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"千錘百鍊",
+    "Importance":5,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":931,
     "Lv2IQ":1862,
     "Lv3IQ":3724,
@@ -116,12 +186,23 @@
     "Lv9IQ":16759,
     "Lv10IQ":23276,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"陶藝",
     "Important":1,
     "TotalIQ":18621,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":130,
+    "Description":" "
+  },
+  {
+    "Name":"陶藝",
+    "Importance":1,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":186,
     "Lv2IQ":372,
     "Lv3IQ":745,
@@ -133,12 +214,23 @@
     "Lv9IQ":3352,
     "Lv10IQ":4655,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"金屬組件",
     "Important":2,
     "TotalIQ":37241,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"金屬組件",
+    "Importance":2,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":372,
     "Lv2IQ":745,
     "Lv3IQ":1490,
@@ -150,12 +242,23 @@
     "Lv9IQ":6703,
     "Lv10IQ":9310,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"機械",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":100,
+    "Description":" "
+  },
+  {
+    "Name":"機械",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -167,12 +270,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"特殊製作",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":110,
+    "Description":" "
+  },
+  {
+    "Name":"特殊製作",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -184,12 +298,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"縫刃",
     "Important":1,
     "TotalIQ":18621,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"縫刃",
+    "Importance":1,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":186,
     "Lv2IQ":372,
     "Lv3IQ":745,
@@ -201,12 +326,23 @@
     "Lv9IQ":3352,
     "Lv10IQ":4655,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"製革術",
     "Important":1,
     "TotalIQ":18621,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":90,
+    "Description":" "
+  },
+  {
+    "Name":"製革術",
+    "Importance":1,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":186,
     "Lv2IQ":372,
     "Lv3IQ":745,
@@ -218,12 +354,23 @@
     "Lv9IQ":3352,
     "Lv10IQ":4655,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"製甲術",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"製甲術",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -235,12 +382,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"採礦",
     "Important":1,
     "TotalIQ":18621,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"採礦",
+    "Importance":1,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":186,
     "Lv2IQ":372,
     "Lv3IQ":745,
@@ -252,12 +410,23 @@
     "Lv9IQ":3352,
     "Lv10IQ":4655,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"青銅器",
     "Important":1.5,
     "TotalIQ":27931,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"青銅器",
+    "Importance":1.5,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":279,
     "Lv2IQ":559,
     "Lv3IQ":1117,
@@ -269,12 +438,23 @@
     "Lv9IQ":5028,
     "Lv10IQ":6983,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"冶鐵",
     "Important":2,
     "TotalIQ":37241,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":95,
+    "Description":" "
+  },
+  {
+    "Name":"冶鐵",
+    "Importance":2,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":372,
     "Lv2IQ":745,
     "Lv3IQ":1490,
@@ -286,12 +466,23 @@
     "Lv9IQ":6703,
     "Lv10IQ":9310,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"鑄劍術",
     "Important":4,
     "TotalIQ":74483,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"鑄劍術",
+    "Importance":4,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":745,
     "Lv2IQ":1490,
     "Lv3IQ":2979,
@@ -303,12 +494,23 @@
     "Lv9IQ":13407,
     "Lv10IQ":18621,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"槍製作",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":120,
+    "Description":" "
+  },
+  {
+    "Name":"槍製作",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -320,12 +522,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"造箭",
     "Important":2,
     "TotalIQ":37241,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"造箭",
+    "Importance":2,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":372,
     "Lv2IQ":745,
     "Lv3IQ":1490,
@@ -337,12 +550,23 @@
     "Lv9IQ":6703,
     "Lv10IQ":9310,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"製盾術",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"製盾術",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -354,12 +578,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"弓弩製作",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"弓弩製作",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -371,12 +606,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"木工",
     "Important":1,
     "TotalIQ":18621,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"木工",
+    "Importance":1,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":186,
     "Lv2IQ":372,
     "Lv3IQ":745,
@@ -388,12 +634,23 @@
     "Lv9IQ":3352,
     "Lv10IQ":4655,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"幾何",
     "Important":1.5,
     "TotalIQ":27931,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"幾何",
+    "Importance":1.5,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":279,
     "Lv2IQ":559,
     "Lv3IQ":1117,
@@ -405,12 +662,23 @@
     "Lv9IQ":5028,
     "Lv10IQ":6983,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"物理",
     "Important":2,
     "TotalIQ":37241,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"物理",
+    "Importance":2,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":372,
     "Lv2IQ":745,
     "Lv3IQ":1490,
@@ -422,12 +690,23 @@
     "Lv9IQ":6703,
     "Lv10IQ":9310,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"基礎科學",
     "Important":1,
     "TotalIQ":18621,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"基礎科學",
+    "Importance":1,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":186,
     "Lv2IQ":372,
     "Lv3IQ":745,
@@ -439,12 +718,23 @@
     "Lv9IQ":3352,
     "Lv10IQ":4655,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"化學",
     "Important":2,
     "TotalIQ":37241,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"化學",
+    "Importance":2,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":372,
     "Lv2IQ":745,
     "Lv3IQ":1490,
@@ -456,12 +746,23 @@
     "Lv9IQ":6703,
     "Lv10IQ":9310,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"元素表",
     "Important":2,
     "TotalIQ":37241,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"元素表",
+    "Importance":2,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":372,
     "Lv2IQ":745,
     "Lv3IQ":1490,
@@ -473,12 +774,23 @@
     "Lv9IQ":6703,
     "Lv10IQ":9310,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"鎂應用",
     "Important":2,
     "TotalIQ":37241,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"鎂應用",
+    "Importance":2,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":372,
     "Lv2IQ":745,
     "Lv3IQ":1490,
@@ -490,12 +802,23 @@
     "Lv9IQ":6703,
     "Lv10IQ":9310,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"生物學",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"生物學",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -507,12 +830,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"人體結構",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"人體結構",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -524,12 +858,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"運動學",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"運動學",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -541,12 +886,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"營養學",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"營養學",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -558,12 +914,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"科學訓練",
     "Important":4,
     "TotalIQ":74483,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"科學訓練",
+    "Importance":4,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":745,
     "Lv2IQ":1490,
     "Lv3IQ":2979,
@@ -575,12 +942,23 @@
     "Lv9IQ":13407,
     "Lv10IQ":18621,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"煤應用",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"煤應用",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -592,12 +970,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"鍊鋼",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"鍊鋼",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -609,12 +998,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"心理學",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"心理學",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -626,12 +1026,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"讀心術",
     "Important":4,
     "TotalIQ":74483,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"讀心術",
+    "Importance":4,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":745,
     "Lv2IQ":1490,
     "Lv3IQ":2979,
@@ -643,12 +1054,23 @@
     "Lv9IQ":13407,
     "Lv10IQ":18621,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"心靈操控",
     "Important":5,
     "TotalIQ":93103,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"心靈操控",
+    "Importance":5,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":931,
     "Lv2IQ":1862,
     "Lv3IQ":3724,
@@ -660,12 +1082,23 @@
     "Lv9IQ":16759,
     "Lv10IQ":23276,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"造紙術",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"造紙術",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -677,12 +1110,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"印刷術",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"印刷術",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -694,12 +1138,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"指南針",
     "Important":3,
     "TotalIQ":55862,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"指南針",
+    "Importance":3,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":559,
     "Lv2IQ":1117,
     "Lv3IQ":2234,
@@ -711,12 +1166,23 @@
     "Lv9IQ":10055,
     "Lv10IQ":13966,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
   },
   {
     "Name":"易學",
     "Important":7,
     "TotalIQ":130345,
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":-1,
+    "Description":" "
+  },
+  {
+    "Name":"易學",
+    "Importance":7,
+>>>>>>> feature/MainMenu-shawn
     "Lv1IQ":1303,
     "Lv2IQ":2607,
     "Lv3IQ":5214,
@@ -728,6 +1194,13 @@
     "Lv9IQ":23462,
     "Lv10IQ":32586,
     "TechRequirement":-1,
+<<<<<<< HEAD
     "KnowledgeRequirement":-1
+=======
+    "KnowledgeRequirement":-1,
+    "OtherRequirement":-1,
+    "IQRequirement":170,
+    "Description":" "
+>>>>>>> feature/MainMenu-shawn
   }
 ]

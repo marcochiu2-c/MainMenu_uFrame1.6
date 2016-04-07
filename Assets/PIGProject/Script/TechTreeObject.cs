@@ -6,8 +6,12 @@ using SimpleJSON;
 public class TechTreeObject {
 	public int id { get; set; }
 	public string Name { get; set; }
+<<<<<<< HEAD
 	public double Important { get; set; }
 	public int TotalIQ { get; set; }
+=======
+	public double Importance { get; set; }
+>>>>>>> feature/MainMenu-shawn
 	public int Lv1IQ { get; set; }
 	public int Lv2IQ { get; set; }
 	public int Lv3IQ { get; set; }
@@ -20,6 +24,7 @@ public class TechTreeObject {
 	public int Lv10IQ { get; set; }
 	public int TechRequirement { get; set; }
 	public int KnowledgeRequirement { get; set; }
+<<<<<<< HEAD
 
 	public TechTreeObject (int cnt, string n, double i,int ti, int iq1, int iq2, int iq3, int iq4,
 	                       int iq5, int iq6, int iq7, int iq8, int iq9, int iq10,
@@ -28,6 +33,18 @@ public class TechTreeObject {
 		Name = n;
 		Important = i;
 		TotalIQ = ti;
+=======
+	public int OtherRequirement { get; set; }
+	public int IQRequirement { get; set; }
+	public string Description { get; set; }
+
+	public TechTreeObject (int cnt, string n, double i,int ti, int iq1, int iq2, int iq3, int iq4,
+	                       int iq5, int iq6, int iq7, int iq8, int iq9, int iq10,
+	                       int tr, int kr,int or, int iqr,string desc){
+		id = cnt;
+		Name = n;
+		Importance = i;
+>>>>>>> feature/MainMenu-shawn
 		Lv1IQ = iq1;
 		Lv2IQ = iq2;
 		Lv3IQ = iq3;
@@ -40,13 +57,23 @@ public class TechTreeObject {
 		Lv10IQ = iq10;
 		TechRequirement = tr;
 		KnowledgeRequirement = kr;
+<<<<<<< HEAD
+=======
+		OtherRequirement = or;
+		IQRequirement = iqr;
+		Description = desc;
+>>>>>>> feature/MainMenu-shawn
 	}
 
 	public TechTreeObject (SimpleJSON.JSONClass j, int cnt =0){
 		id = cnt;
 		Name = j ["Name"];
+<<<<<<< HEAD
 		Important = j["Important"].AsDouble;
 		TotalIQ = j["TotalIQ"].AsInt;
+=======
+		Importance = j["Important"].AsDouble;
+>>>>>>> feature/MainMenu-shawn
 		Lv1IQ = j["Lv1IQ"].AsInt;
 		Lv2IQ = j["Lv2IQ"].AsInt;
 		Lv3IQ = j["Lv3IQ"].AsInt;
@@ -59,14 +86,25 @@ public class TechTreeObject {
 		Lv10IQ = j["Lv10IQ"].AsInt;
 		TechRequirement = j["TechRequirement"].AsInt;
 		KnowledgeRequirement = j["KnowledgeRequirement"].AsInt;
+<<<<<<< HEAD
+=======
+		OtherRequirement = j["OtherRequirement"].AsInt;
+		IQRequirement = j["IQRequirement"].AsInt;
+		Description = j["Description"];
+		
+>>>>>>> feature/MainMenu-shawn
 	}
 
 	public string toString (){
 		JSONClass j = new JSONClass ();
 		j.Add ("Id",new JSONData (id));
 		j ["Name"] = Name;
+<<<<<<< HEAD
 		j.Add ("Important",new JSONData (Important));
 		j.Add ("TotalIQ", new JSONData(TotalIQ));
+=======
+		j.Add ("Importance",new JSONData (Importance));
+>>>>>>> feature/MainMenu-shawn
 		j.Add ("Lv1IQ", new JSONData(Lv1IQ));
 		j.Add ("Lv2IQ", new JSONData(Lv2IQ));
 		j.Add ("Lv3IQ", new JSONData(Lv3IQ));
@@ -79,6 +117,12 @@ public class TechTreeObject {
 		j.Add ("Lv10IQ", new JSONData (Lv10IQ));
 		j.Add ("TechRequirement", new JSONData (TechRequirement));
 		j.Add ("KnowledgeRequirement", new JSONData (KnowledgeRequirement));
+<<<<<<< HEAD
+=======
+		j.Add ("OtherRequirement", new JSONData (OtherRequirement));
+		j.Add ("IQRequirement", new JSONData (IQRequirement));
+		j.Add ("Description", new JSONData (Description));
+>>>>>>> feature/MainMenu-shawn
 		return j.ToString ();
 	}
 
@@ -86,8 +130,12 @@ public class TechTreeObject {
 		JSONClass j = new JSONClass ();
 		j.Add ("Id",new JSONData (id));
 		j ["Name"] = Name;
+<<<<<<< HEAD
 		j.Add ("Important",new JSONData (Important));
 		j.Add ("TotalIQ", new JSONData(TotalIQ));
+=======
+		j.Add ("Importance",new JSONData (Importance));
+>>>>>>> feature/MainMenu-shawn
 		j.Add ("Lv1IQ", new JSONData(Lv1IQ));
 		j.Add ("Lv2IQ", new JSONData(Lv2IQ));
 		j.Add ("Lv3IQ", new JSONData(Lv3IQ));
@@ -100,6 +148,12 @@ public class TechTreeObject {
 		j.Add ("Lv10IQ", new JSONData (Lv10IQ));
 		j.Add ("TechRequirement", new JSONData (TechRequirement));
 		j.Add ("KnowledgeRequirement", new JSONData (KnowledgeRequirement));
+<<<<<<< HEAD
+=======
+		j.Add ("OtherRequirement", new JSONData (OtherRequirement));
+		j.Add ("IQRequirement", new JSONData (IQRequirement));
+		j.Add ("Description", new JSONData (Description));
+>>>>>>> feature/MainMenu-shawn
 		return j;
 	}
 

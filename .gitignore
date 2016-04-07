@@ -43,4 +43,9 @@ Assets/Gamelogic
 Assets/PixelWeatherFX
 Assets/GoldenSkullStudios
 Assets/FacebookSDK
+<<<<<<< HEAD
 Assets/Plugins
+=======
+Assets/Plugins
+Assets/PIGProject/_Scenes/Characters
+>>>>>>> feature/MainMenu-shawn

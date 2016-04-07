@@ -5,8 +5,12 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using SimpleJSON;
+<<<<<<< HEAD:Assets/PIGProject/Script/MainScene.cs
 //using Endgame;
 //using Facebook.Unity;
+=======
+using Endgame;
+>>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/MainScene.cs
 
 // TODO if anything updated wealth table, pls set MainScene.needReloadFromDB to true
 
@@ -45,6 +49,11 @@ public class MainScene : MonoBehaviour {
 	public static Nullable<DateTime> StorageLastUpdate = null;
 	public static Nullable<DateTime> WarfareLastUpdate = null;
 	public static Nullable<DateTime> FriendLastUpdate = null;
+<<<<<<< HEAD:Assets/PIGProject/Script/MainScene.cs
+=======
+	private Academy academy;
+	public ListView listView;
+>>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/MainScene.cs
 
 	void Start(){
 
@@ -54,11 +63,14 @@ public class MainScene : MonoBehaviour {
 	public void CallMainScene () {
 //		MeshRenderer renderer = listView.transform.GetComponentInChildren<MeshRenderer>();
 //		renderer.enabled = false; 
+<<<<<<< HEAD:Assets/PIGProject/Script/MainScene.cs
 		/*
 		if (FB.IsLoggedIn) {
 			FB.API("me/picture?type=square&height=128&width=128", HttpMethod.GET, FbGetPicture);
 		}
 		*/
+=======
+>>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/MainScene.cs
 
 		if (MainScene.needReloadFromDB) {
 			MainUIHolder = GameObject.Find ("MainUIHolder");
@@ -71,15 +83,22 @@ public class MainScene : MonoBehaviour {
 			starDustText = GameObject.Find ("StardustText").GetComponents<Text> () [0];
 			game = Game.Instance;
 			wsc = WsClient.Instance;
+<<<<<<< HEAD:Assets/PIGProject/Script/MainScene.cs
 			MainScene.userId = 3;//game.login.id;  // TODO: load userID from DB
+=======
+			MainScene.userId = game.login.id;  // TODO: load userID from DB
+>>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/MainScene.cs
 			json = new JSONClass ();
 			json.Add ("data", new JSONData (MainScene.userId));
 			json ["action"] = "GET";
 			json ["table"] = "wealth";
 			wsc.Send (json.ToString ());
 
+<<<<<<< HEAD:Assets/PIGProject/Script/MainScene.cs
 			Store.GetStorageInfoFromDB();
 
+=======
+>>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/MainScene.cs
 //			json ["table"] = "friendship";
 //			wsc.Send (json.ToString ());
 			MainScene.needReloadFromDB = false;

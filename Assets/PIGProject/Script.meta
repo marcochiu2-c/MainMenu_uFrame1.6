@@ -1,7 +1,11 @@
 fileFormatVersion: 2
 guid: cc97bcdf4610041f798db30614172f7a
 folderAsset: yes
+<<<<<<< HEAD:Assets/PIGProject/Script.meta
 timeCreated: 1458198653
+=======
+timeCreated: 1456903207
+>>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script.meta
 licenseType: Free
 DefaultImporter:
   userData: 

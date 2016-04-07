@@ -1,7 +1,11 @@
 fileFormatVersion: 2
-guid: 7720c01217ffc4fd2b72f77da7249828
+guid: 2811a13627b67480b8a494252ddac71f
 folderAsset: yes
+<<<<<<< HEAD
 timeCreated: 1457774224
+=======
+timeCreated: 1456731156
+>>>>>>> feature/MainMenu-shawn
 licenseType: Free
 DefaultImporter:
   userData: 

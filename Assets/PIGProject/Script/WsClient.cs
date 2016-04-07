@@ -171,7 +171,11 @@ public class WsClient {
 
 			conn.OnMessage += (sender, e) => { 
 				if (e.Data != "[]"){
+<<<<<<< HEAD:Assets/PIGProject/Script/WsClient.cs
 					Debug.Log("Received Message: " +e.Data);
+=======
+//					Debug.Log(e.Data);
+>>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/WsClient.cs
 					handleMessage(JSON.Parse(e.Data));
 				}
 			};
@@ -197,11 +201,16 @@ public class WsClient {
 		Game game = Game.Instance;
 		JSONArray jArray;
 		JSONNode json;
+<<<<<<< HEAD:Assets/PIGProject/Script/WsClient.cs
 		switch ((jsonFuncNumberEnum)j ["func"].AsInt) {
+=======
+		switch ((jsonFuncNumberEnum)j["func"].AsInt){
+>>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/WsClient.cs
 		case jsonFuncNumberEnum.allData:
 //			game.parseJSON(e.Data);
 			break;
 		case jsonFuncNumberEnum.getUserInformationByUserId:
+<<<<<<< HEAD:Assets/PIGProject/Script/WsClient.cs
 			if (j["obj"]!="[  ]"){
 				game.login = new Login ((JSONClass)j ["obj"]);
 			}
@@ -307,13 +316,90 @@ public class WsClient {
 			if (j["obj"]!="[  ]"){
 				Debug.Log(String.Format("Update Check In Status: {0}",(j["obj"]["success"].AsBool ? "Success" : "Failed")));
 			}
+=======
+			game.login = new Login((JSONClass)j["obj"]);
+			break;
+		case jsonFuncNumberEnum.getUserInformationByDeviceId:
+			LoginScreen.user = (JSONClass)j["obj"];
+			break;
+		case jsonFuncNumberEnum.getUserInformationBySnsUrl:
+			LoginScreen.userWithSns = (JSONClass)j["obj"];
+			break;
+		case jsonFuncNumberEnum.getPrivateChatHistories:
+			jArray = (JSONArray)j["obj"];
+			Debug.Log(j["obj"][1]["message"]);
+			break;
+		case jsonFuncNumberEnum.addGeneral:
+			MainScene.GeneralLastInsertId = j["obj"]["lastInsertId"].AsInt;
+			break;
+		case jsonFuncNumberEnum.addCounselorEntry:
+			MainScene.CounselorLastInsertId = j["obj"]["lastInsertId"].AsInt;
+			break;	
+		case jsonFuncNumberEnum.getGeneralOnly: case jsonFuncNumberEnum.newMultipleStorage:
+			MainScene.GeneralInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.getCounselorInfoByUserId: case jsonFuncNumberEnum.newMultipleCounselors:
+			MainScene.CounselorInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.getCheckinGiftInfo:
+			var chkin = CheckInContent.Instance;
+			for (int i = 0; i < 30; i++){
+				chkin.giftNumber[i]  =j["obj"][i].AsInt;
+			}
+			break;
+		case jsonFuncNumberEnum.getAllItemsInStorage:
+			MainScene.StorageInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.getWarfareInfoByUserId:
+			MainScene.WarfareInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.getCheckinInfo:
+			game.checkinStatus = new CheckInStatus((JSONClass)j["obj"]);
+			CheckIn.checkedInDate = game.checkinStatus.days.Count;
+			break;
+		case jsonFuncNumberEnum.getWealth:
+			List<Wealth> wealthList;
+			wealthList = new List<Wealth> ();
+	//					SimpleJSON.JSONArray wealths = (SimpleJSON.JSONArray) SimpleJSON.JSON.Parse (e.Data);
+			JSONArray wealths = (SimpleJSON.JSONArray) j["obj"];
+			IEnumerator w = wealths.GetEnumerator ();
+			while (w.MoveNext ()) {
+				wealthList.Add (new Wealth((SimpleJSON.JSONClass) w.Current));
+			}
+			for (int i = 0; i<3; i++){
+				if (wealthList[i].type == 1){
+					MainScene.rValue = wealthList[i].value.ToString ();
+					MainScene.resourceValue = wealthList[i];
+				}else if (wealthList[i].type == 2){
+					MainScene.sdValue = wealthList[i].value.ToString ();
+					MainScene.stardustValue = wealthList[i];
+				}else if (wealthList[i].type == 3){
+					MainScene.sValue = wealthList[i].value.ToString ();
+					MainScene.silverFeatherValue = wealthList[i];
+				}
+			}
+			game.wealth = wealthList;
+			break;
+		case jsonFuncNumberEnum.getWeaponsBySoldierId: case jsonFuncNumberEnum.getWeaponsByUserId:
+			MainScene.WeaponInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.getProtectiveEquipmentsBySoldierId: case jsonFuncNumberEnum.getProtectiveEquipmentsByUserId:
+			MainScene.ProtectiveEquipmentInfo = j["obj"];
+			break;
+		case jsonFuncNumberEnum.updateCheckInStatus:
+			Debug.Log(String.Format("Update Check In Status: {0}",(j["obj"]["success"].AsBool ? "Success" : "Failed")));
+>>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/WsClient.cs
 			break;
 
 		case jsonFuncNumberEnum.getFriendshipInfo:
 //			Debug.Log(j);
+<<<<<<< HEAD:Assets/PIGProject/Script/WsClient.cs
 			if (j["obj"]!="[  ]"){
 				MainScene.FriendInfo = j["obj"];
 			}
+=======
+			MainScene.FriendInfo = j["obj"];
+>>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/WsClient.cs
 			break;
 		default:
 			break;

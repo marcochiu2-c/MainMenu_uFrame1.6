@@ -221,6 +221,7 @@ public class Shop : MonoBehaviour {
 			wsc.Send (json.ToString ());  // log purchases in server
 			
 			var item = prodIdDict [purchase.Sku].name;
+<<<<<<< HEAD
 			var quantity = prodIdDict [purchase.Sku].quantity;
 			for (int i = 0; i <3; i++) {
 				if (game.wealth [i].type == currencyDict [item]) {
@@ -232,6 +233,9 @@ public class Shop : MonoBehaviour {
 			json ["table"] = "wealth";
 			json ["action"] = "SET";
 			wsc.Send (json.ToString ());  // update corresponance currency
+=======
+			game.wealth[currencyDict [item]-1].Add ( prodIdDict [purchase.Sku].quantity );
+>>>>>>> feature/MainMenu-shawn
 		} else {
 			//set gifts.
 			
