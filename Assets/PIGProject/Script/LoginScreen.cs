@@ -10,10 +10,7 @@ using WebSocketSharp;
 //using Facebook.MiniJSON;
 using System;
 using System.IO;
-<<<<<<< HEAD
-=======
 using Facebook.Unity;
->>>>>>> feature/MainMenu-shawn
 
 public class LoginScreen : MonoBehaviour {
 	private Game game;
@@ -29,12 +26,8 @@ public class LoginScreen : MonoBehaviour {
 	public GameObject newUserPanel;
 	public GameObject newFBUserPanel;
 	private bool newFBUserPanelActivated=false;
-<<<<<<< HEAD
-
-=======
 	public Button EnterGameButton;
 	public Button EnterGameFBButton;
->>>>>>> feature/MainMenu-shawn
 //	public bool sentDBSNSCheckRequest = false;
 	bool userCancelledLogin = false;
 
@@ -42,10 +35,7 @@ public class LoginScreen : MonoBehaviour {
 	public static bool isSNSInit = false;
 	public static bool isSNSLoggedIn = false;
 
-<<<<<<< HEAD
-=======
 	public GameObject loadingImageScreen;
->>>>>>> feature/MainMenu-shawn
 
 	// Use this for initialization
 	void Awake() {
@@ -77,11 +67,7 @@ public class LoginScreen : MonoBehaviour {
 //			
 //		};
 //		SoomlaProfile.Initialize ();
-<<<<<<< HEAD
-		/*
-=======
 
->>>>>>> feature/MainMenu-shawn
 		if (!FB.IsInitialized) {
 			// Initialize the Facebook SDK
 			FB.Init(InitCallback, OnHideUnity);
@@ -89,10 +75,6 @@ public class LoginScreen : MonoBehaviour {
 			// Already initialized, signal an app activation App Event
 			FB.ActivateApp();
 		}
-<<<<<<< HEAD
-		*/
-=======
->>>>>>> feature/MainMenu-shawn
 
 		game = Game.Instance;
 		wsc = WsClient.Instance;
@@ -111,38 +93,14 @@ public class LoginScreen : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-<<<<<<< HEAD
-
-		if (user!=null){
-			Debug.Log (user);
-=======
 //		Debug.Log (game.login.snsType);
 		if (user!=null){
 
 //			Debug.Log (user);
->>>>>>> feature/MainMenu-shawn
 			if (user.ToString ()=="{\"success\":false}") {
 				Debug.Log ("user not existed");
 				
 				// TODO else setup account with SNS account  SetupSocialNetworkAccount();
-<<<<<<< HEAD
-			}else{ // user found in DB
-				game.login = new Login(user);
-				if (game.login.snsType==1){  // if account already login with SNS
-					LoginSNS();
-
-				}
-				//                if (game.login.snsType!=0){  // Already registered with SNS
-
-
-//                }else{ // not yet registered with SNS
-				//                    TODO show Facebook register reminder first
-				//                    GotoMainUI();
-//                }
-			}
-			user =null;
-		}
-=======
 			}else if (LoginScreen.user != null) {
 				var j = LoginScreen.user["attributes"];
 				game.login = new Login ((JSONClass)LoginScreen.user);
@@ -162,7 +120,6 @@ public class LoginScreen : MonoBehaviour {
 //
 //			GotoMainUI();
 //		}
->>>>>>> feature/MainMenu-shawn
 		if (userWithSns != null)
 			Debug.Log (snsURL);
 		if (newFBUserPanelActivated) {  // For device not link with SNS account and user choose to link with SNS
@@ -178,10 +135,7 @@ public class LoginScreen : MonoBehaviour {
 						Debug.Log ("SNS account found.");
 						GotoMainUI ();
 					}
-<<<<<<< HEAD
-=======
 					MainScene.UserInfo = userWithSns;
->>>>>>> feature/MainMenu-shawn
 					userWithSns = null;
 				}
 			}
@@ -192,9 +146,6 @@ public class LoginScreen : MonoBehaviour {
 
 	}
 
-<<<<<<< HEAD
-	public void SetupStandaloneAccount(){
-=======
 	public void EnterGameNoSNS(){
 		if (game.login.id != 0) {
 			GotoMainUI ();
@@ -207,7 +158,6 @@ public class LoginScreen : MonoBehaviour {
 		if (NewUserStandAloneName.text.Trim () == "") {
 			return;
 		}
->>>>>>> feature/MainMenu-shawn
 		JSONClass json = new JSONClass ();
 		JSONClass j = new JSONClass ();
 		j.Add ("snsType", new JSONData(0));
@@ -218,12 +168,9 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	public void SetupSocialNetworkAccount(){
-<<<<<<< HEAD
-=======
 		if (NewUserSNSAccountName.text.Trim () == "") {
 			return;
 		}
->>>>>>> feature/MainMenu-shawn
 		if (game.login.id==0) { // Link SNS with new user
 			JSONClass json = new JSONClass ();
 			JSONClass j = new JSONClass ();
@@ -231,22 +178,14 @@ public class LoginScreen : MonoBehaviour {
 			// TODO if Google+ j.Add ("snsType", new JSONData(2));
 			j.Add ("snsURL", snsURL); 
 			j.Add ("deviceId", new JSONData(SystemInfo.deviceUniqueIdentifier));
-<<<<<<< HEAD
-			j.Add ("name", new JSONData(NewUserSNSAccountName));
-=======
 			j.Add ("name", new JSONData(NewUserSNSAccountName.text));
->>>>>>> feature/MainMenu-shawn
 			//j.Add ("name", NewUserSNSAccountName.text )// TODO grab name from UI
 			SubmitUserRegisterData (j);
 		} else {  // Link SNS with old user
 			JSONClass data = new JSONClass ();
 			JSONClass json = new JSONClass ();
 
-<<<<<<< HEAD
-			data.Add ("id",new JSONData(game.login.id));
-=======
 			data.Add ("id",new JSONData(game.login.id));   
->>>>>>> feature/MainMenu-shawn
 			data.Add ("snsType",new JSONData(1)); // For facebook only
 			data.Add ("snsURL", new JSONData(snsURL));
 			data.Add ("deviceId", new JSONData(SystemInfo.deviceUniqueIdentifier));
@@ -254,10 +193,7 @@ public class LoginScreen : MonoBehaviour {
 			json.Add ("action", new JSONData("SET"));
 			json.Add ("table", new JSONData("sns"));
 			json.Add ("data", data);
-<<<<<<< HEAD
-=======
 			Debug.Log (json.ToString ());
->>>>>>> feature/MainMenu-shawn
 			wsc.conn.Send (json.ToString ());
 		}
 	}
@@ -268,10 +204,7 @@ public class LoginScreen : MonoBehaviour {
 		json.Add ("table", new JSONData("users"));
 		json.Add ("data", jData);
 		wsc.conn.Send (json.ToString ());
-<<<<<<< HEAD
-=======
 
->>>>>>> feature/MainMenu-shawn
 		GotoMainUI ();
 	}
 	
@@ -280,30 +213,20 @@ public class LoginScreen : MonoBehaviour {
 //		cla.loadingBar = slider;
 //		cla.loadingImage = loadImage;
 //		cla.ClickAsync(5);
-<<<<<<< HEAD
-=======
 //		loadingImageScreen.SetActive (true);
 		newUserPanel.SetActive (false);
 		newFBUserPanel.SetActive (false);
 		EnterGameButton.gameObject.SetActive (false);
 		EnterGameFBButton.gameObject.SetActive (false);
->>>>>>> feature/MainMenu-shawn
 		Debug.Log ("User ID: "+game.login.id);
 		Application.LoadLevel ("MainMenuScene");
 	}
 
 	private bool LoginSNS(){
-<<<<<<< HEAD
-
-		if (LoginScreen.isSNSInit){
-			var perms = new List<string>(){"public_profile", "email", "user_friends","user_photos"};
-			//FB.LogInWithReadPermissions(perms, AuthCallback);
-=======
 		Debug.Log ("Logging in with SNS");
 		if (LoginScreen.isSNSInit){
 			var perms = new List<string>(){"public_profile", "email", "user_friends","user_photos"};
 			FB.LogInWithReadPermissions(perms, AuthCallback);
->>>>>>> feature/MainMenu-shawn
 
 //			SoomlaProfile.Login(
 //				Provider.FACEBOOK,                        // Social Provider
@@ -320,13 +243,10 @@ public class LoginScreen : MonoBehaviour {
 		LoginSNS ();
 	}
 
-<<<<<<< HEAD
-=======
 	public void CheckUserIn(){
 		wsc.Send ("login", "SET", new JSONData (game.login.id));
 	}
 
->>>>>>> feature/MainMenu-shawn
 	public void CheckUserSNSInDB(){
 //		Debug.Log ("User not linked with SNS");
 		JSONNode json = new JSONClass ();
@@ -336,12 +256,7 @@ public class LoginScreen : MonoBehaviour {
 		wsc.conn.Send (json.ToString ());
 //		sentDBSNSCheckRequest = true;
 	}
-<<<<<<< HEAD
-	
-	/*
-=======
 
->>>>>>> feature/MainMenu-shawn
 	private void InitCallback ()
 	{
 		if (FB.IsInitialized) {
@@ -354,11 +269,7 @@ public class LoginScreen : MonoBehaviour {
 			Debug.Log("Failed to Initialize the Facebook SDK");
 		}
 	}
-<<<<<<< HEAD
-	*/
-=======
 	
->>>>>>> feature/MainMenu-shawn
 	private void OnHideUnity (bool isGameShown)
 	{
 		if (!isGameShown) {
@@ -369,12 +280,7 @@ public class LoginScreen : MonoBehaviour {
 			Time.timeScale = 1;
 		}
 	}
-<<<<<<< HEAD
-	
-	/*
-=======
 
->>>>>>> feature/MainMenu-shawn
 	private void AuthCallback (ILoginResult result) {
 		if (FB.IsLoggedIn) {
 			// AccessToken class will have session details
@@ -389,15 +295,10 @@ public class LoginScreen : MonoBehaviour {
 
 //			StartCoroutine(FbGetPicture(snsURL));
 
-<<<<<<< HEAD
-
-
-=======
 			CheckUserIn();
 			if (game.login.snsType==0){
 				SetupSocialNetworkAccount();
 			}
->>>>>>> feature/MainMenu-shawn
 
 			GotoMainUI();
 			if (game.login.id!=0){
@@ -410,10 +311,6 @@ public class LoginScreen : MonoBehaviour {
 			newFBUserPanel.SetActive(false);
 		}
 	}
-<<<<<<< HEAD
-	*/
-=======
->>>>>>> feature/MainMenu-shawn
 
 
 }

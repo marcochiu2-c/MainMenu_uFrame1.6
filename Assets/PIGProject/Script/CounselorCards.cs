@@ -85,7 +85,7 @@ public class CounselorCards{
 		return j.ToString ();
 	}
 
-	public JSONNode ToJSON (){
+	public JSONClass ToJSON (){
 
 		JSONClass j = new JSONClass ();
 		j.Add ("Id",new JSONData (id));
@@ -104,7 +104,6 @@ public class CounselorCards{
 		j.Add ("InitialPrestige", new JSONData (InitialPrestige));
 		j.Add ("KnownFormation", new JSONData (KnownFormation));
 		j.Add ("KnownKnowledge", new JSONData (KnownKnowledge));
-		Debug.Log (j);
 		return j;
 	}
 

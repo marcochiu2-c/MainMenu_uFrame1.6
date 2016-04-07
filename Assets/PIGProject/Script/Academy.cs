@@ -1,10 +1,6 @@
 ﻿//TODO Delete CommandedPopup, KnowledgePopup and FightingPopup and events in 4 buttons
 
-<<<<<<< HEAD
-#define TEST
-=======
 //#define TEST
->>>>>>> feature/MainMenu-shawn
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,11 +25,6 @@ public class Academy : MonoBehaviour
 		public float SliderValue;
 		public string ImageKey;
 	}
-<<<<<<< HEAD
-
-
-=======
->>>>>>> feature/MainMenu-shawn
 	
 	public Button[] buttons = new Button[4];
 	string[] btnName = new string[4];
@@ -46,46 +37,18 @@ public class Academy : MonoBehaviour
 	public GameObject TeachHolder;
 	public GameObject QAHolder;
 	public Transform TeachScrollPanel;
-<<<<<<< HEAD
-=======
 	public Transform StudentScrollPanel;
 	Dictionary<int,Sprite> imageDict;
 	Dictionary<int,string> nameDict;
 	public static GameObject staticTeachHolder;
 	public static List<Counselor> cStudentList;
 	bool firstCalled = false;
->>>>>>> feature/MainMenu-shawn
 	WsClient wsc;
 	Game game;
 //	public ListView.ColumnHeaderCollection ListViewColumns;
 //	public ListView.ListViewItemCollection ListViewItems;
 
 	public static ActivePopupEnum activePopup;
-<<<<<<< HEAD
-	Dictionary<string,string> academyCategoryText = new Dictionary<string, string>();
-	Dictionary<string,ActivePopupEnum> activePopupName = new Dictionary<string, ActivePopupEnum>();
-	private const int columnWidthCount = 5;
-//	public ListView listView;
-//	public static Endgame.ListView staticAcademyListView;
-//	public static ListView.ColumnHeaderCollection staticAcademyListViewColumns;
-//	private int columnCount
-//	{
-//		get
-//		{
-////			return Academy.staticAcademyListView.Columns.Count;
-//		}
-//	}
-//	private int[] columnWidthStates = null;
-
-	// Use this for initialization
-	void Awake(){
-//		CallAcademy ();
-//		Academy.staticAcademyListView = listView;
-//		ColumnHeader MasterColumn = new ColumnHeader ();
-//		MasterColumn.Text = "師傅";
-//		listView.AddColumnToHierarchy (MasterColumn);
-//		SetDataGrid ();
-=======
 	Dictionary<ActivePopupEnum,string> academyCategoryText = new Dictionary<ActivePopupEnum, string>();
 	Dictionary<string,ActivePopupEnum> activePopupName = new Dictionary<string, ActivePopupEnum>();
 	private const int columnWidthCount = 5;
@@ -94,17 +57,10 @@ public class Academy : MonoBehaviour
 
 	// Use this for initialization
 	void Start(){
->>>>>>> feature/MainMenu-shawn
 		CallAcademy ();
 	}
 
 	public void CallAcademy(){
-<<<<<<< HEAD
-		//this.ListView = GameObject.Find ("/_MainMenuSceneRoot/Canvas/AcademyHolder/Panel/TeachHolder/ContentHolder/DataHolder/LeftHolder/ListView").GetComponents<ListView> ()[0];
-		//Debug.Log (GameObject.Find ("/_MainMenuSceneRoot/Canvas/AcademyHolder/Panel/TeachHolder/ContentHolder/DataHolder/LeftHolder/ListView").GetComponents<ListView> ()[0]);
-//		SetImages ();
-=======
->>>>>>> feature/MainMenu-shawn
 
 		btnName [0] = "IQButton";
 		btnName [1] = "CommandedButton";
@@ -113,15 +69,6 @@ public class Academy : MonoBehaviour
 		qaBtnName [0] = "SelfStudyButton";
 		qaBtnName [0] = "TeachButton";
 		SetDictionary ();
-<<<<<<< HEAD
-		AddButtonListener ();
-
-
-		wsc = WsClient.Instance;
-		game = Game.Instance;
-
-//		JSONNode json = new JSONClass ();
-=======
 		Debug.Log ("Supposed to be AcademyHolder: "+transform);
 		Debug.Log ("Supposed to be base panel of AcademyHolder: "+transform.GetChild(1));
 //		for (var i = 0; i <4; i++) {  // set Buttons array by script
@@ -141,7 +88,6 @@ public class Academy : MonoBehaviour
 		numberOfTech = techTreeList.Count;
 		
 		//		JSONNode json = new JSONClass ();
->>>>>>> feature/MainMenu-shawn
 //
 //		if (wsc.conn.IsAlive) {
 //
@@ -161,12 +107,6 @@ public class Academy : MonoBehaviour
 //			Debug.Log ("Websocket Connection Lost!");
 //		}
 
-<<<<<<< HEAD
-
-
-		AcademyTeach.commonPanel = TeachScrollPanel;
-
-=======
 		SetCharacters ();
 
 		AcademyTeach.commonPanel = TeachScrollPanel;
@@ -216,37 +156,10 @@ public class Academy : MonoBehaviour
 //		}
 		//AcademyStudent.showSkillsOptionPanel("knowledge");
 		#endregion
->>>>>>> feature/MainMenu-shawn
 //		var num = game.trainings.Count;
 //		for (var i = 0; i < num; i++) {
 //			CreateItem(game.trainings[i].type,game.trainings[i].trainerId,game.trainings[i].targetId, game.trainings[i].etaTimestamp);
 //		}
-<<<<<<< HEAD
-		CreateItems ("IQ", 5);
-
-	}
-
-	public void CreateItem(int trainType, int trainerId, int targetId, DateTime etaTime){
-		List<AcademyTeach> si=null;
-		GameObject sp=null;
-		if (trainType >= 0 && trainType <= 100) {
-			si = AcademyTeach.IQTeach;
-		}else if (trainType >= 1001 && trainType <= 2000) {
-			si = AcademyTeach.CommandedTeach;
-		}else if (trainType >= 2001 && trainType <= 3000) {
-			si = AcademyTeach.KnowledgeTeach;
-		}else if (trainType >= 3001 && trainType <= 4000) {
-			si = AcademyTeach.FightingTeach;
-		}
-		AcademyTeach obj = Instantiate(Resources.Load("AcademyTeachPrefab") as GameObject).GetComponent<AcademyTeach>();
-		obj.LeftTimeValue = "";
-		obj.KnowledgeValue = "";
-		si.Add (obj);
-	}
-
-#if TEST
-	public void CreateItems(string panel,int quantity){
-=======
 
 		// Test Data
 
@@ -344,7 +257,6 @@ public class Academy : MonoBehaviour
 
 #if TEST
 	public void CreateTeachItems(string panel,int quantity){
->>>>>>> feature/MainMenu-shawn
 		List<AcademyTeach> si=null;
 		GameObject sp=null;
 		if (panel == "IQ") {
@@ -359,15 +271,6 @@ public class Academy : MonoBehaviour
 		
 		for (var i = 0; i < quantity; i++) { 
 			AcademyTeach obj = Instantiate(Resources.Load("AcademyTeachPrefab") as GameObject).GetComponent<AcademyTeach>();
-<<<<<<< HEAD
-			obj.etaTimestamp = new DateTime(2016,3,20,i,0,0);
-
-			Debug.Log("ETA: "+obj.etaTimestamp);
-			obj.KnowledgeValue = panel;
-			si.Add (obj);
-		}
-		Debug.Log("Now: "+DateTime.Now);
-=======
 			obj.etaTimestamp = new DateTime(2016,3,25,i,0,0);
 			Debug.Log (new DateTime(2016,3,25,i,0,0));
 			obj.KnowledgeText.text = panel;
@@ -377,7 +280,6 @@ public class Academy : MonoBehaviour
 			obj.TeacherImageText.text = nameDict[i+1];
 			obj.StudentImageText.text = nameDict[i+1];
 		}
->>>>>>> feature/MainMenu-shawn
 	}
 #endif
 
@@ -403,11 +305,8 @@ public class Academy : MonoBehaviour
 			AcademyTeach.hidePanelItems(AcademyTeach.KnowledgeTeach);
 			AcademyTeach.showPanelItems(AcademyTeach.FightingTeach);
 		}
-<<<<<<< HEAD
-=======
 		AcademyStudent.showPanelItems(AcademyStudent.Students);
 
->>>>>>> feature/MainMenu-shawn
 	}
 
 
@@ -419,9 +318,6 @@ public class Academy : MonoBehaviour
 
 	void OnGUI()
 	{
-<<<<<<< HEAD
-		
-=======
 //		if (!firstCalled) {
 //			Invoke("CallAcademy",1);
 //		}
@@ -430,7 +326,6 @@ public class Academy : MonoBehaviour
 		AcademyTeach.setDropZone(AcademyTeach.KnowledgeTeach);
 		AcademyTeach.setDropZone(AcademyTeach.FightingTeach);
 
->>>>>>> feature/MainMenu-shawn
 	}
 
 	public void SetPanelParent(string panelToShow){
@@ -446,10 +341,7 @@ public class Academy : MonoBehaviour
 
 
 	void OnButtonClick(Button btn){
-<<<<<<< HEAD
-=======
 //		De
->>>>>>> feature/MainMenu-shawn
 		Debug.Log ("Button in Academy clicked");
 		GameObject selfStudyPopup = GameObject.Find ("SelfStudyHolder");
 		GameObject teacherPopup = GameObject.Find ("TeachHolder");
@@ -458,34 +350,19 @@ public class Academy : MonoBehaviour
 		QAHolder.SetActive (true);
 		Academy.activePopup = activePopupName[btn.name];
 		Debug.Log (Academy.activePopup);
-<<<<<<< HEAD
-		//GameObject.Find ("/Canvas/AcademyHolder/Panel/PopupHolder/Popup/Text").GetComponent<Text>().text = academyCategoryText[btn.name];
 	}
 
 	void OnQAButtonClick(Button btn){
-		Debug.Log ("QA Button in Academy clicked");
-
-=======
-	}
-
-	void OnQAButtonClick(Button btn){
->>>>>>> feature/MainMenu-shawn
 		QAHolder.SetActive (false);
 		if (btn.name == "SelfStudyButton") {
 			SelfStudyHolder.SetActive(true);
 		} else {
 			TeachHolder.SetActive(true);
 		}
-<<<<<<< HEAD
-		SelfStudyHolder.transform.Find("Popup/Text").gameObject.GetComponent<Text>().text = academyCategoryText[btn.name];
-		TeachHolder.transform.Find("Header").gameObject.GetComponent<Text>().text = academyCategoryText[btn.name];
-		Debug.Log (btn.name);
-=======
 
 		SelfStudyHolder.transform.Find("Popup/Text").gameObject.GetComponent<Text>().text = academyCategoryText[Academy.activePopup];
 		TeachHolder.transform.Find("Header").gameObject.GetComponent<Text>().text = academyCategoryText[Academy.activePopup];
 
->>>>>>> feature/MainMenu-shawn
 		if (Academy.activePopup == ActivePopupEnum.IQPopup) {
 			SetPanelActive ("IQ");
 		} else if (Academy.activePopup == ActivePopupEnum.CommandedPopup) {
@@ -503,27 +380,16 @@ public class Academy : MonoBehaviour
 			Transform child = buttons [i].transform;
 			buttons[i].onClick.AddListener(() => { OnButtonClick(child.GetComponent<Button>()); });
 		}
-<<<<<<< HEAD
-		Transform child1 = qaButtons [0].transform;
-		qaButtons[0].onClick.AddListener(() => { OnQAButtonClick(child1.GetComponent<Button>()); });
-		Transform child2= buttons [1].transform;
-		qaButtons[1].onClick.AddListener(() => { OnQAButtonClick(child2.GetComponent<Button>()); });
-=======
 		for (var i = 0; i < 2; i++) {
 			Transform child = qaButtons [i].transform;
 			qaButtons [i].onClick.AddListener (() => {
 				OnQAButtonClick (child.GetComponent<Button> ()); });
 		}
->>>>>>> feature/MainMenu-shawn
 		
 		backButton.onClick.AddListener (() => {
 			Academy.activePopup = ActivePopupEnum.none;
 			SelfStudyHolder.SetActive(false);
 			TeachHolder.SetActive(false);
-<<<<<<< HEAD
-		});
-		closeButton.onClick.AddListener (() => {
-=======
 			gameObject.SetActive(true);
 		});
 		closeButton.onClick.AddListener (() => {
@@ -533,7 +399,6 @@ public class Academy : MonoBehaviour
 				GameObject.DestroyImmediate( AcademyStudent.Students[i].gameObject);
 			}
 			AcademyStudent.Students = new List<AcademyStudent>();
->>>>>>> feature/MainMenu-shawn
 			Academy.activePopup = ActivePopupEnum.none;
 			SelfStudyHolder.SetActive(false);
 			TeachHolder.SetActive(false);
@@ -548,241 +413,6 @@ public class Academy : MonoBehaviour
 		activePopupName.Add (btnName [1], ActivePopupEnum.CommandedPopup);
 		activePopupName.Add (btnName [2], ActivePopupEnum.KnowledgePopup);
 		activePopupName.Add (btnName [3], ActivePopupEnum.FightingPopup);
-<<<<<<< HEAD
-		academyCategoryText.Add (btnName [0], "智商");
-		academyCategoryText.Add (btnName [1], "統率");
-		academyCategoryText.Add (btnName [2], "學問");
-		academyCategoryText.Add (btnName [3], "陣法");
-	}
-
-	public Sprite YaSinTipMukYi;
-	public Sprite YuHim;
-	public Sprite NgTseSeui;
-	public Sprite BakPei;
-	public Sprite SinJan;
-	public Sprite SinYing;
-	public Sprite LauBakWan;
-	public Sprite LauBingChung;
-	public Sprite SiNeiGin;
-	public Sprite SiSiMing;
-	public Sprite SiManShui;
-	public Sprite SiMaYi;
-	public Sprite NgSaamGwai;
-	public Sprite NgHei;
-	public Sprite LuiBo;
-	public Sprite ChowAhFu;
-	public Sprite ChowYu;
-	public Sprite ChowSauYing;
-	public Sprite JitBit;
-	public Sprite SinHongShun;
-	public Sprite WongShekGong;
-	public Sprite HaHouDun;
-	public Sprite GeungTseNga;
-	public Sprite SuenMo;
-	public Sprite SuenBan;
-	public Sprite OnLukShan;
-	public Sprite JungJaak;
-	public Sprite WaiLiuTse;
-	public Sprite WaiChiGingDak;
-	public Sprite NgokFei;
-	public Sprite SheungYuChun;
-	public Sprite LimPaul;
-	public Sprite CheungShukYe;
-	public Sprite CheungLeung;
-	public Sprite CheungLiu;
-	public Sprite CheungHop;
-	public Sprite CheungFei;
-	public Sprite ChuiTat;
-	public Sprite NgouLoi;
-	public Sprite MoYungYinChiu;
-	public Sprite ChikGaiGwong;
-	public Sprite SiLong;
-	public Sprite ChoGwai;
-	public Sprite TsengKwokFan;
-	public Sprite ChuBunDeui;
-	public Sprite LeeSaiJik;
-	public Sprite LeeKwongLee;
-	public Sprite LeeManChung;
-	public Sprite LeeGingLung;
-	public Sprite LeeMuk;
-	public Sprite LeeSauNing;
-	public Sprite LeeJiShing;
-	public Sprite YeungJiCheung;
-	public Sprite YeungKwokChung;
-	public Sprite YeungYip;
-	public Sprite YeungSou;
-	public Sprite YeungHou;
-	public Sprite LokNgai;
-	public Sprite DikChing;
-	public Sprite WongBakDong;
-	public Sprite WongFaChing;
-	public Sprite WongYuenMou;
-	public Sprite WongYi;
-	public Sprite WongChin;
-	public Sprite GumNing;
-	public Sprite TinYeungJeui;
-	public Sprite ButJoiYu;
-	public Sprite PakHei;
-	public Sprite ChunLeungYuk;
-	public Sprite ChingNgauGam;
-	public Sprite MukGwaiYing;
-	public Sprite GunChung;
-	public Sprite YeLuChucai;
-	public Sprite FaMukLan;
-	public Sprite MiuFun;
-	public Sprite FanTseng;
-	public Sprite FanManChing;
-	public Sprite FanManFu;
-	public Sprite FanYi;
-	public Sprite FanYung;
-	public Sprite MongTim;
-	public Sprite SitYanGwai;
-	public Sprite WaiChing;
-	public Sprite YuenShungWun;
-	public Sprite YuenYingTai;
-	public Sprite ChuGotLeung;
-	public Sprite HoYeukBut;
-	public Sprite ChoiSheungA;
-	public Sprite ChiuChe;
-	public Sprite ChiuTim;
-	public Sprite ChiuWan;
-	public Sprite SanYeungSau;
-	public Sprite KwokTseYi;
-	public Sprite ChengYanTai;
-	public Sprite ChengShingGong;
-	public Sprite KwanYu;
-	public Sprite ChanHingChi;
-	public Sprite FokHuiBing;
-	public Sprite HonSaiChung;
-	public Sprite HongYu;
-	public Sprite FeiLim;
-	public Sprite MaChiu;
-	public Sprite SinYuChungTong;
-	public Sprite WongChung;
-	public Sprite PongDak;
-	public Sprite PongGyun;
-	public Sprite PongTong;
-
-
-//	private void SetImages(){
-//		ImageList imageList = new ImageList();
-//		// Add some images.
-//
-//		imageList.Images.Add("也先帖木兒", YaSinTipMukYi);
-//		imageList.Images.Add("于謙", YuHim);
-//		imageList.Images.Add("伍子胥", NgTseSeui);
-//		imageList.Images.Add("伯嚭", BakPei);
-//		imageList.Images.Add("先軫", SinJan);
-//		imageList.Images.Add("冼英", SinYing);
-//		imageList.Images.Add("劉基", LauBakWan);
-//		imageList.Images.Add("劉秉忠", LauBingChung);
-//		imageList.Images.Add("史彌堅", SiNeiGin);
-//		imageList.Images.Add("史思明", SiSiMing);
-//		imageList.Images.Add("史萬歲", SiManShui);
-//		imageList.Images.Add("司馬懿", SiMaYi);
-//		imageList.Images.Add("吳三桂", NgSaamGwai);
-//		imageList.Images.Add("吳起 ", NgHei);
-//		imageList.Images.Add("呂布", LuiBo);
-//		imageList.Images.Add("周亞夫", ChowAhFu);
-//		imageList.Images.Add("周瑜", ChowYu);
-//		imageList.Images.Add("周秀英", ChowSauYing);
-//		imageList.Images.Add("哲別", JitBit);
-//		imageList.Images.Add("單雄信", SinHongShun);
-//		imageList.Images.Add("黃石公", WongShekGong);
-//		imageList.Images.Add("夏侯惇", HaHouDun);
-//		imageList.Images.Add("姜子牙", GeungTseNga);
-//		imageList.Images.Add("孫武", SuenMo);
-//		imageList.Images.Add("孫臏", SuenBan);
-//		imageList.Images.Add("安祿山", OnLukShan);
-//		imageList.Images.Add("宗澤", JungJaak);
-//		imageList.Images.Add("尉繚子", WaiLiuTse);
-//		imageList.Images.Add("尉遲敬德", WaiChiGingDak);
-//		imageList.Images.Add("岳飛", NgokFei);
-//		imageList.Images.Add("常遇春", SheungYuChun);
-//		imageList.Images.Add("廉頗", LimPaul);
-//		imageList.Images.Add("張叔夜", CheungShukYe);
-//		imageList.Images.Add("張良", CheungLeung);
-//		imageList.Images.Add("張遼", CheungLiu);
-//		imageList.Images.Add("張郃", CheungHop);
-//		imageList.Images.Add("張飛", CheungFei);
-//		imageList.Images.Add("徐達", ChuiTat);
-//		imageList.Images.Add("惡來", NgouLoi);
-//		imageList.Images.Add("慕容延釗", MoYungYinChiu);
-//		imageList.Images.Add("戚繼光", ChikGaiGwong);
-//		imageList.Images.Add("施琅", SiLong);
-//		imageList.Images.Add("曹劌", ChoGwai);
-//		imageList.Images.Add("曾國藩", TsengKwokFan);
-//		imageList.Images.Add("朱般懟", ChuBunDeui);
-//		imageList.Images.Add("李勣", LeeSaiJik);
-//		imageList.Images.Add("李廣利", LeeKwongLee);
-//		imageList.Images.Add("李文忠", LeeManChung);
-//		imageList.Images.Add("李景隆", LeeGingLung);
-//		imageList.Images.Add("李牧", LeeMuk);
-//		imageList.Images.Add("李秀寧", LeeSauNing);
-//		imageList.Images.Add("李自成", LeeJiShing);
-//		imageList.Images.Add("楊嗣昌", YeungJiCheung);
-//		imageList.Images.Add("楊國忠", YeungKwokChung);
-//		imageList.Images.Add("楊業", YeungYip);
-//		imageList.Images.Add("楊素", YeungSou);
-//		imageList.Images.Add("楊鎬", YeungHou);
-//		imageList.Images.Add("樂毅", LokNgai);
-//		imageList.Images.Add("狄青", DikChing);
-//		imageList.Images.Add("王伯當", WongBakDong);
-//		imageList.Images.Add("王化貞", WongFaChing);
-//		imageList.Images.Add("楊嗣昌", WongYuenMou);
-//		imageList.Images.Add("王異", WongYi);
-//		imageList.Images.Add("王翦", WongChin);
-//		imageList.Images.Add("甘寧", GumNing);
-//		imageList.Images.Add("田穰苴", TinYeungJeui);
-//		imageList.Images.Add("畢再遇", ButJoiYu);
-//		imageList.Images.Add("白起", PakHei);
-//		imageList.Images.Add("秦良玉", ChunLeungYuk);
-//		imageList.Images.Add("程咬金", ChingNgauGam);
-//		imageList.Images.Add("穆桂英", MukGwaiYing);
-//		imageList.Images.Add("管仲", GunChung);
-//		imageList.Images.Add("耶律楚材", YeLuChucai);
-//		imageList.Images.Add("花木蘭", FaMukLan);
-//		imageList.Images.Add("苗訓", MiuFun);
-//		imageList.Images.Add("范增", FanTseng);
-//		imageList.Images.Add("范文程", FanManChing);
-//		imageList.Images.Add("范文虎", FanManFu);
-//		imageList.Images.Add("范蠡", FanYi);
-//		imageList.Images.Add("范雍", FanYung);
-//		imageList.Images.Add("蒙恬", MongTim);
-//		imageList.Images.Add("薛仁貴", SitYanGwai);
-//		imageList.Images.Add("衛青", WaiChing);
-//		imageList.Images.Add("袁崇煥", YuenShungWun);
-//		imageList.Images.Add("袁應泰", YuenYingTai);
-//		imageList.Images.Add("諸葛亮", ChuGotLeung);
-//		imageList.Images.Add("賀若弼", HoYeukBut);
-//		imageList.Images.Add("賽尚阿", ChoiSheungA);
-//		imageList.Images.Add("趙奢", ChiuChe);
-//		imageList.Images.Add("趙括", ChiuTim);
-//		imageList.Images.Add("趙雲", ChiuWan);
-//		imageList.Images.Add("辰漾守", SanYeungSau);
-//		imageList.Images.Add("郭子儀", KwokTseYi);
-//		imageList.Images.Add("鄭仁泰", ChengYanTai);
-//		imageList.Images.Add("鄭成功", ChengShingGong);
-//		imageList.Images.Add("陳慶之", ChanHingChi);
-//		imageList.Images.Add("霍去病", FokHuiBing);
-//		imageList.Images.Add("韓世忠", HonSaiChung);
-//		imageList.Images.Add("項羽", HongYu);
-//		imageList.Images.Add("飛廉", FeiLim);
-//		imageList.Images.Add("馬超", MaChiu);
-//		imageList.Images.Add("鮮于仲通", SinYuChungTong);
-//		imageList.Images.Add("黃忠", WongChung);
-//		imageList.Images.Add("龐德", PongDak);
-//		imageList.Images.Add("龐涓", PongGyun);
-//		imageList.Images.Add("龐統", PongTong);
-//		imageList.Images.Add("關羽", KwanYu);
-//
-//
-//		// Set the listview's image list.
-////		this.ListView.SmallImageList = imageList;
-//
-////		this.ListView.SubItemClicked += this.OnSubItemClicked;
-//	}
-=======
 		academyCategoryText.Add (ActivePopupEnum.IQPopup, "智商");
 		academyCategoryText.Add (ActivePopupEnum.CommandedPopup, "統率");
 		academyCategoryText.Add (ActivePopupEnum.KnowledgePopup, "學問");
@@ -889,6 +519,5 @@ public class Academy : MonoBehaviour
 		nameDict.Add(29,"辰漾守");
 
 	}
->>>>>>> feature/MainMenu-shawn
 }
 

@@ -24,8 +24,6 @@ public class SubScreenView : SubScreenViewBase
 {
 
     public GameObject ScreenUIContainer;
-	public AudioSource bgm;
-	
 	[Inject("LocalUser")] public UserViewModel LocalUser;
 	public AudioSource bgm;
 	float time = 0.5f;
@@ -80,20 +78,6 @@ public class SubScreenView : SubScreenViewBase
 
 		if(active)
 		{
-<<<<<<< HEAD
-			if (ScreenUIContainer.name == "HeaderHolder")
-			{
-				bgm.Play();
-				return;
-			}
-			ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>
-			{
-				ScreenUIContainer.gameObject.SetActive(true);
-				bgm.Play ();
-			});
-			//.OnComplete(() => bgm.Play ());
-			
-=======
 			if (ScreenUIContainer.name == "MainUIHolder") return;
 //			if (ScreenUIContainer.name == "AcademyHolder") return;
 #if (TEST)
@@ -104,21 +88,12 @@ public class SubScreenView : SubScreenViewBase
 			});
 #else
 			//ScreenUIContainer.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutBack).OnStart(()=>ScreenUIContainer.gameObject.SetActive(true));
->>>>>>> feature/MainMenu-shawn
 			//Debug.Log (ScreenUIContainer.name + " actived");
 
 #endif
 		}
 		else
 		{
-<<<<<<< HEAD
-			if (ScreenUIContainer.name == "HeaderHolder")
-			{
-				bgm.Stop();
-				return;
-			}
-			ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnStart(() => bgm.Stop ()).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
-=======
 			if (ScreenUIContainer.name == "MainUIHolder") return;
 //			if (ScreenUIContainer.name == "AcademyHolder") return;
 #if (TEST)	
@@ -135,7 +110,6 @@ public class SubScreenView : SubScreenViewBase
 #else
 			//ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
 #endif
->>>>>>> feature/MainMenu-shawn
 		}
 					
 	}

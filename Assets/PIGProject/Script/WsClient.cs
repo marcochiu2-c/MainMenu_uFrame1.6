@@ -28,7 +28,7 @@ enum jsonFuncNumberEnum {
 	newAccountBuilding = 14,
 	getUserInformationByDeviceId = 15,
 	getUserInformationBySnsUrl = 16,
-
+	newAccountSoldier = 17,
 	updateAllData = 19,
 
 	//  20-29 storage
@@ -39,6 +39,7 @@ enum jsonFuncNumberEnum {
 	getItemsInStorageByType = 24,
 	newMultipleStorage = 25,
 	newMultipleCounselors = 26,
+	newMultipleGenarals = 27,
 
 	//  30-39 Gift
 	addReceivedGift = 30,
@@ -80,7 +81,8 @@ enum jsonFuncNumberEnum {
 	updateSoldier = 154,
 	updateGeneralTeam = 155,
 	getGeneralOnly = 156,
-
+	getGeneralTeam = 157,
+	getSoldier = 158,
 
 	// 160-169 Counselors
 	addCounselorEntry = 160,
@@ -105,21 +107,34 @@ enum jsonFuncNumberEnum {
 	findMatchingPlayerSpecifyCountry = 213,
 	getWholeWarfareInfoByUserId = 214,
 
-
 	// 220-239 War equipments
 	addWeapon = 220,
-	addProtectiveEquipment = 221,
-	updateWeapon = 222,
-	updateProtectiveEquipment = 223,
-	getWeaponsBySoldierId = 230,
-	getProtectiveEquipmentsBySoldierId = 231,
-	getWeaponsByUserId = 232,
-	getProtectiveEquipmentsByUserId = 233,
-
+	addArmor  = 221,
+	addShield = 222,
+	updateWeapon = 223,
+	updateArmor  = 224,
+	updateShield = 225,
+	getWeaponsByUserId = 230,
+	getArmorsByUserId  = 231,
+	getShieldsByUserId = 232,
+		
 	// 240-249 Buildings
 	addBuilding = 240,
 	updateBuilding = 241,
 	getBuilding = 242,
+
+	// 250-259 Artisans
+	addArtisanJob = 250,
+	updateArtisanJob = 251,
+	getArtisanJob = 252,
+	newAccountArtisanJobs = 253,
+
+	// 280-289 New Account equipment
+	newAccountWeapon = 280,
+	newAccountArmor  = 281,
+	newAccountShield = 282,
+	newAccountCheckIn= 283,
+
 };
 
 
@@ -131,6 +146,7 @@ public class WsClient {
 	private string ip = "23.91.96.158";
 //	private string ip = "192.168.100.64";
 	private int port = 8000; 
+	Game game;
 	// Use this for initialization
 
 	private static readonly WsClient s_Instance = new WsClient();
@@ -148,7 +164,7 @@ public class WsClient {
 	}
 
 	public WsClient () {
-		Game game = Game.Instance;
+		game = Game.Instance;
 		bool success = TestConnection();
 		var count = 0;
 		if (success) {
@@ -171,11 +187,7 @@ public class WsClient {
 
 			conn.OnMessage += (sender, e) => { 
 				if (e.Data != "[]"){
-<<<<<<< HEAD:Assets/PIGProject/Script/WsClient.cs
 					Debug.Log("Received Message: " +e.Data);
-=======
-//					Debug.Log(e.Data);
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/WsClient.cs
 					handleMessage(JSON.Parse(e.Data));
 				}
 			};
@@ -201,27 +213,25 @@ public class WsClient {
 		Game game = Game.Instance;
 		JSONArray jArray;
 		JSONNode json;
-<<<<<<< HEAD:Assets/PIGProject/Script/WsClient.cs
 		switch ((jsonFuncNumberEnum)j ["func"].AsInt) {
-=======
-		switch ((jsonFuncNumberEnum)j["func"].AsInt){
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/WsClient.cs
 		case jsonFuncNumberEnum.allData:
 //			game.parseJSON(e.Data);
 			break;
 		case jsonFuncNumberEnum.getUserInformationByUserId:
-<<<<<<< HEAD:Assets/PIGProject/Script/WsClient.cs
 			if (j["obj"]!="[  ]"){
-				game.login = new Login ((JSONClass)j ["obj"]);
+				MainScene.UserInfo = (JSONClass)j ["obj"];
 			}
 			break;
 		case jsonFuncNumberEnum.getUserInformationByDeviceId:
 			if (j["obj"]!="[  ]"){
+				MainScene.UserInfo = (JSONClass)j ["obj"];
+				Debug.Log ("MainScene.UserInfo received");
 				LoginScreen.user = (JSONClass)j ["obj"];
 			}
 			break;
 		case jsonFuncNumberEnum.getUserInformationBySnsUrl:
 			if (j["obj"]!="[  ]"){
+				MainScene.UserInfo = (JSONClass)j ["obj"];
 				LoginScreen.userWithSns = (JSONClass)j ["obj"];
 			}
 			break;
@@ -271,17 +281,19 @@ public class WsClient {
 				MainScene.WarfareInfo = j["obj"];
 			}
 			break;
-		case jsonFuncNumberEnum.getCheckinInfo:
+		case jsonFuncNumberEnum.getCheckinInfo: case jsonFuncNumberEnum.newAccountCheckIn: 
 			if (j["obj"]!="[  ]"){
 				game.checkinStatus = new CheckInStatus((JSONClass)j["obj"]);
 				CheckIn.checkedInDate = game.checkinStatus.days.Count;
 			}
 			break;
+		case jsonFuncNumberEnum.newAccountWealth:
 		case jsonFuncNumberEnum.getWealth:
-			if (j["obj"]!="[  ]"){
+			if (j["obj"].Count != 0){
 				List<Wealth> wealthList;
 				wealthList = new List<Wealth> ();
 		//					SimpleJSON.JSONArray wealths = (SimpleJSON.JSONArray) SimpleJSON.JSON.Parse (e.Data);
+				Debug.Log (j["obj"]);
 				JSONArray wealths = (SimpleJSON.JSONArray) j["obj"];
 				IEnumerator w = wealths.GetEnumerator ();
 				while (w.MoveNext ()) {
@@ -289,117 +301,75 @@ public class WsClient {
 				}
 				for (int i = 0; i<3; i++){
 					if (wealthList[i].type == 1){
-						MainScene.rValue = wealthList[i].value.ToString ();
-						MainScene.resourceValue = wealthList[i];
+						MainScene.sValue = wealthList[i].value.ToString ();
+						MainScene.silverFeatherValue = wealthList[i];
 					}else if (wealthList[i].type == 2){
 						MainScene.sdValue = wealthList[i].value.ToString ();
 						MainScene.stardustValue = wealthList[i];
 					}else if (wealthList[i].type == 3){
-						MainScene.sValue = wealthList[i].value.ToString ();
-						MainScene.silverFeatherValue = wealthList[i];
+						MainScene.rValue = wealthList[i].value.ToString ();
+						MainScene.resourceValue = wealthList[i];
 					}
 				}
 				game.wealth = wealthList;
+			}else{
+				if (game.login.id!=0){
+					Send ("wealth","GET",new JSONData(game.login.id));
+				}
+//				}else{
+//					Send ("getUserInformationByDeviceId","GET",new JSONData(SystemInfo.deviceUniqueIdentifier));
+//				}
 			}
 			break;
-		case jsonFuncNumberEnum.getWeaponsBySoldierId: case jsonFuncNumberEnum.getWeaponsByUserId:
+		case jsonFuncNumberEnum.getWeaponsByUserId:
 			if (j["obj"]!="[  ]"){
 				MainScene.WeaponInfo = j["obj"];
 			}
 			break;
-		case jsonFuncNumberEnum.getProtectiveEquipmentsBySoldierId: case jsonFuncNumberEnum.getProtectiveEquipmentsByUserId:
+		case jsonFuncNumberEnum.getArmorsByUserId:
 			if (j["obj"]!="[  ]"){
-				MainScene.ProtectiveEquipmentInfo = j["obj"];
+				MainScene.ArmorInfo = j["obj"];
 			}
 			break;
-		case jsonFuncNumberEnum.updateCheckInStatus:
+		case jsonFuncNumberEnum.getShieldsByUserId:
+			if (j["obj"]!="[  ]"){
+				MainScene.ShieldInfo = j["obj"];
+			}
+			break;
+		case jsonFuncNumberEnum.updateCheckInStatus: 
 			if (j["obj"]!="[  ]"){
 				Debug.Log(String.Format("Update Check In Status: {0}",(j["obj"]["success"].AsBool ? "Success" : "Failed")));
 			}
-=======
-			game.login = new Login((JSONClass)j["obj"]);
 			break;
-		case jsonFuncNumberEnum.getUserInformationByDeviceId:
-			LoginScreen.user = (JSONClass)j["obj"];
-			break;
-		case jsonFuncNumberEnum.getUserInformationBySnsUrl:
-			LoginScreen.userWithSns = (JSONClass)j["obj"];
-			break;
-		case jsonFuncNumberEnum.getPrivateChatHistories:
-			jArray = (JSONArray)j["obj"];
-			Debug.Log(j["obj"][1]["message"]);
-			break;
-		case jsonFuncNumberEnum.addGeneral:
-			MainScene.GeneralLastInsertId = j["obj"]["lastInsertId"].AsInt;
-			break;
-		case jsonFuncNumberEnum.addCounselorEntry:
-			MainScene.CounselorLastInsertId = j["obj"]["lastInsertId"].AsInt;
-			break;	
-		case jsonFuncNumberEnum.getGeneralOnly: case jsonFuncNumberEnum.newMultipleStorage:
-			MainScene.GeneralInfo = j["obj"];
-			break;
-		case jsonFuncNumberEnum.getCounselorInfoByUserId: case jsonFuncNumberEnum.newMultipleCounselors:
-			MainScene.CounselorInfo = j["obj"];
-			break;
-		case jsonFuncNumberEnum.getCheckinGiftInfo:
-			var chkin = CheckInContent.Instance;
-			for (int i = 0; i < 30; i++){
-				chkin.giftNumber[i]  =j["obj"][i].AsInt;
-			}
-			break;
-		case jsonFuncNumberEnum.getAllItemsInStorage:
-			MainScene.StorageInfo = j["obj"];
-			break;
-		case jsonFuncNumberEnum.getWarfareInfoByUserId:
-			MainScene.WarfareInfo = j["obj"];
-			break;
-		case jsonFuncNumberEnum.getCheckinInfo:
-			game.checkinStatus = new CheckInStatus((JSONClass)j["obj"]);
-			CheckIn.checkedInDate = game.checkinStatus.days.Count;
-			break;
-		case jsonFuncNumberEnum.getWealth:
-			List<Wealth> wealthList;
-			wealthList = new List<Wealth> ();
-	//					SimpleJSON.JSONArray wealths = (SimpleJSON.JSONArray) SimpleJSON.JSON.Parse (e.Data);
-			JSONArray wealths = (SimpleJSON.JSONArray) j["obj"];
-			IEnumerator w = wealths.GetEnumerator ();
-			while (w.MoveNext ()) {
-				wealthList.Add (new Wealth((SimpleJSON.JSONClass) w.Current));
-			}
-			for (int i = 0; i<3; i++){
-				if (wealthList[i].type == 1){
-					MainScene.rValue = wealthList[i].value.ToString ();
-					MainScene.resourceValue = wealthList[i];
-				}else if (wealthList[i].type == 2){
-					MainScene.sdValue = wealthList[i].value.ToString ();
-					MainScene.stardustValue = wealthList[i];
-				}else if (wealthList[i].type == 3){
-					MainScene.sValue = wealthList[i].value.ToString ();
-					MainScene.silverFeatherValue = wealthList[i];
-				}
-			}
-			game.wealth = wealthList;
-			break;
-		case jsonFuncNumberEnum.getWeaponsBySoldierId: case jsonFuncNumberEnum.getWeaponsByUserId:
-			MainScene.WeaponInfo = j["obj"];
-			break;
-		case jsonFuncNumberEnum.getProtectiveEquipmentsBySoldierId: case jsonFuncNumberEnum.getProtectiveEquipmentsByUserId:
-			MainScene.ProtectiveEquipmentInfo = j["obj"];
-			break;
-		case jsonFuncNumberEnum.updateCheckInStatus:
-			Debug.Log(String.Format("Update Check In Status: {0}",(j["obj"]["success"].AsBool ? "Success" : "Failed")));
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/WsClient.cs
-			break;
-
 		case jsonFuncNumberEnum.getFriendshipInfo:
 //			Debug.Log(j);
-<<<<<<< HEAD:Assets/PIGProject/Script/WsClient.cs
 			if (j["obj"]!="[  ]"){
 				MainScene.FriendInfo = j["obj"];
 			}
-=======
-			MainScene.FriendInfo = j["obj"];
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/WsClient.cs
+			break;
+
+		case jsonFuncNumberEnum.getTraining:
+			if (j["obj"]!="[  ]"){
+				MainScene.TrainingInfo = j["obj"];
+			}
+			break;
+//			addArtisanJob = 250,
+//			updateArtisanJob = 251,
+//			getArtisanJob = 252,
+		case jsonFuncNumberEnum.getArtisanJob: case jsonFuncNumberEnum.newAccountArtisanJobs:
+			if (j["obj"]!="[  ]"){
+				MainScene.ArtisanInfo = j["obj"];
+			}
+			break;
+		case jsonFuncNumberEnum.newUser:
+			if (j["obj"]!="[  ]"){
+				MainScene.newUserId = j["obj"]["lastInsertId"].AsInt;
+			}
+			break;
+		case jsonFuncNumberEnum.getSoldier:
+			if (j["obj"]!="[  ]"){
+				MainScene.SoldierInfo = j["obj"];
+			}
 			break;
 		default:
 			break;
@@ -429,25 +399,46 @@ public class WsClient {
 	}
 
 	public void Send(String json){
-		Debug.Log ("Sending Command");
-		conn.Send (json);
+		if (conn.IsAlive) {
+			Debug.Log ("Sending Command");
+			conn.Send (json);
+		} else {
+			Debug.Log ("Websocket Connection Lost!");
+		}
 	}
 
 	public void OnConnectionFailed(){
 		Debug.Log( "Connection lost");
 	}
 
-	public String UnixTimestampToDateTime(long timestamp,int tz)
+	public static DateTime UnixTimestampToDateTime(long timestamp,int tz)
 	{
 		DateTime unixRef = new DateTime(1970, 1, 1, 0, 0, 0);
-		return unixRef.AddSeconds(timestamp+tz*60*60).ToString();
+		return unixRef.AddSeconds(timestamp+tz*60*60);
 	}
 
-	public long UnixTimeNow(DateTime dt)
+	public static long UnixTimeStamp(DateTime dt)
 	{
 		var timeSpan = (dt - new DateTime(1970, 1, 1, 0, 0, 0));
 		return (long)timeSpan.TotalSeconds;
 	}
+
+	public static string JSDate(DateTime dt)
+	{
+		return dt.Year + "-" + dt.Month + "-" + dt.Day + " " + dt.Hour + ":" + dt.Minute + ":" + dt.Second;
+	}
+
+	public void Send(string table,string action, JSONNode j){
+		if (conn.IsAlive) {
+			JSONClass json = new JSONClass ();
+			json.Add ("action", new JSONData (action));
+			json.Add ("table", new JSONData (table));
+			json.Add ("data", j);
+			Debug.Log (json.ToString ());
+			conn.Send (json.ToString ());
+		}
+	}
+
 
 
 }

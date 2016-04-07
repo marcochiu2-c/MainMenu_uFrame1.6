@@ -2,7 +2,7 @@
 using System.Collections;
 
 namespace Utilities{
-	public class GaemObjectSize : MonoBehaviour {
+	public class GameObjectSize : MonoBehaviour {
 
 		public static Vector2 Size(GameObject og){
 			var rt = og.transform as RectTransform;

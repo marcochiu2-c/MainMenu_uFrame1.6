@@ -30,13 +30,10 @@ public class AcademyScreenView : AcademyScreenViewBase {
 	public GameObject TeachHolder;
 	public Text SelfStudyPopupTitle;
 	public Text TeachPopupTitle;
-<<<<<<< HEAD
-=======
 //	public Text button5;
 
 	Academy academy;
 
->>>>>>> feature/MainMenu-shawn
 
 	public GameObject Popup;
 //	public GameObject CommandedPopup;
@@ -52,23 +49,17 @@ public class AcademyScreenView : AcademyScreenViewBase {
     
     public override void Bind() {
         base.Bind();
-        
         // Use this.AcademyScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 
 		this.BindButtonToHandler (IQButton, () => {
 			qaHolder.SetActive(true);
-<<<<<<< HEAD
-			SelfStudyPopupTitle.text = "智商";
-			TeachPopupTitle.text = "智商";
-=======
 			SelfStudyPopupTitle.text = "智 商";
 			TeachPopupTitle.text = "智 商";
 			//button5.supportRichText = true;
 			//button5.text = "<color=red>Test</color>";
 
->>>>>>> feature/MainMenu-shawn
 
 			// TODO: move next statement to Model code
 			Academy.activePopup = ActivePopupEnum.IQPopup;
@@ -79,14 +70,9 @@ public class AcademyScreenView : AcademyScreenViewBase {
 
 		this.BindButtonToHandler (CommandedButton, () => {
 			qaHolder.SetActive(true);
-<<<<<<< HEAD
-			SelfStudyPopupTitle.text = "統率";
-			TeachPopupTitle.text = "統率";
-=======
 			SelfStudyPopupTitle.text = "統 率";
 			TeachPopupTitle.text = "統 率";
 
->>>>>>> feature/MainMenu-shawn
 
 			// TODO: move next statement to Model code
 			Academy.activePopup = ActivePopupEnum.CommandedPopup;
@@ -97,13 +83,8 @@ public class AcademyScreenView : AcademyScreenViewBase {
 
 		this.BindButtonToHandler (KnowledgeButton, () => {
 			qaHolder.SetActive(true);	
-<<<<<<< HEAD
-			SelfStudyPopupTitle.text = "學問";
-			TeachPopupTitle.text = "學問";
-=======
 			SelfStudyPopupTitle.text = "學 問";
 			TeachPopupTitle.text = "學 問";
->>>>>>> feature/MainMenu-shawn
 
 			// TODO: move next statement to model code
 			Academy.activePopup = ActivePopupEnum.KnowledgePopup;
@@ -114,31 +95,14 @@ public class AcademyScreenView : AcademyScreenViewBase {
 
 		this.BindButtonToHandler (FightingButton, () => {
 			qaHolder.SetActive(true);
-<<<<<<< HEAD
-			SelfStudyPopupTitle.text = "陣法";
-			TeachPopupTitle.text = "陣法";
-=======
 			SelfStudyPopupTitle.text = "陣 法";
 			TeachPopupTitle.text = "陣 法";
->>>>>>> feature/MainMenu-shawn
 
 			// TODO: move next statement to Model code
 			Academy.activePopup = ActivePopupEnum.FightingPopup;
 //			CommandedPopup.gameObject.SetActive (false);
 //			KnowledgePopup.gameObject.SetActive (false);
 //			FightingPopup.gameObject.SetActive (true);
-<<<<<<< HEAD
-		});
-
-		this.BindButtonToHandler (BackButton, () => {
-			SelfStudyHolder.SetActive (false);
-			TeachHolder.SetActive (false);
-
-			// TODO: move next statement to Model code
-			Academy.activePopup = ActivePopupEnum.none;
-		});
-
-=======
 		});
 
 		this.BindButtonToHandler (BackButton, () => {
@@ -148,7 +112,6 @@ public class AcademyScreenView : AcademyScreenViewBase {
 			Academy.activePopup = ActivePopupEnum.none;
 		});
 
->>>>>>> feature/MainMenu-shawn
 		this.BindButtonToHandler (CloseButton, () => {
 			SelfStudyHolder.SetActive (false);
 			TeachHolder.SetActive (false);
@@ -161,10 +124,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
 			Debug.Log ("SelfStudyButton clicked");
 			qaHolder.SetActive(false);
 			SelfStudyHolder.SetActive (true);
-<<<<<<< HEAD
-=======
 
->>>>>>> feature/MainMenu-shawn
 			//			CommandedPopup.gameObject.SetActive (false);
 			//			KnowledgePopup.gameObject.SetActive (false);
 			//			FightingPopup.gameObject.SetActive (true);
@@ -172,22 +132,14 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		this.BindButtonToHandler (TeachButton, () => {
 			Debug.Log ("TeachButton clicked");
 			qaHolder.SetActive(false);
-<<<<<<< HEAD
-			TeachHolder.SetActive (true);
-=======
 			TeachHolder.transform.localScale = new Vector3(1, 1, 1);
 //			academy =  new Academy();
 //			academy.SetDataGrid();
 //			academy.RemoveAllItems();
->>>>>>> feature/MainMenu-shawn
 			
 			//			CommandedPopup.gameObject.SetActive (false);
 			//			KnowledgePopup.gameObject.SetActive (false);
 			//			FightingPopup.gameObject.SetActive (true);
 		});
-<<<<<<< HEAD
-		
-=======
->>>>>>> feature/MainMenu-shawn
     }
 }

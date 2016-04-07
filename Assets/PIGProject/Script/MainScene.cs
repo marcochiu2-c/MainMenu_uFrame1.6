@@ -5,14 +5,11 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using SimpleJSON;
-<<<<<<< HEAD:Assets/PIGProject/Script/MainScene.cs
 //using Endgame;
 //using Facebook.Unity;
-=======
-using Endgame;
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/MainScene.cs
 
 // TODO if anything updated wealth table, pls set MainScene.needReloadFromDB to true
+using Facebook.Unity;
 
 
 
@@ -35,25 +32,27 @@ public class MainScene : MonoBehaviour {
 	public static Wealth resourceValue = null;
 	public static Wealth stardustValue = null;
 	public static Wealth silverFeatherValue = null;
+	public static int newUserId = 0;
 	public static int GeneralLastInsertId = 0;
 	public static int CounselorLastInsertId = 0;
+	public static JSONNode UserInfo = null;
 	public static JSONNode GeneralInfo = null;
 	public static JSONNode CounselorInfo = null;
 	public static JSONNode StorageInfo = null;
 	public static JSONNode WarfareInfo = null;
 	public static JSONNode WeaponInfo = null;
-	public static JSONNode ProtectiveEquipmentInfo = null;
+	public static JSONNode ArmorInfo = null;
+	public static JSONNode ShieldInfo = null;
 	public static JSONNode FriendInfo = null;
+	public static JSONNode TrainingInfo = null;
+	public static JSONNode ArtisanInfo = null;
+	public static JSONNode SoldierInfo = null;
 	public static Nullable<DateTime> GeneralLastUpdate = null;
 	public static Nullable<DateTime> CounselorLastUpdate = null;
 	public static Nullable<DateTime> StorageLastUpdate = null;
 	public static Nullable<DateTime> WarfareLastUpdate = null;
 	public static Nullable<DateTime> FriendLastUpdate = null;
-<<<<<<< HEAD:Assets/PIGProject/Script/MainScene.cs
-=======
-	private Academy academy;
-	public ListView listView;
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/MainScene.cs
+
 
 	void Start(){
 
@@ -63,14 +62,10 @@ public class MainScene : MonoBehaviour {
 	public void CallMainScene () {
 //		MeshRenderer renderer = listView.transform.GetComponentInChildren<MeshRenderer>();
 //		renderer.enabled = false; 
-<<<<<<< HEAD:Assets/PIGProject/Script/MainScene.cs
-		/*
 		if (FB.IsLoggedIn) {
 			FB.API("me/picture?type=square&height=128&width=128", HttpMethod.GET, FbGetPicture);
 		}
-		*/
-=======
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/MainScene.cs
+
 
 		if (MainScene.needReloadFromDB) {
 			MainUIHolder = GameObject.Find ("MainUIHolder");
@@ -83,46 +78,76 @@ public class MainScene : MonoBehaviour {
 			starDustText = GameObject.Find ("StardustText").GetComponents<Text> () [0];
 			game = Game.Instance;
 			wsc = WsClient.Instance;
-<<<<<<< HEAD:Assets/PIGProject/Script/MainScene.cs
-			MainScene.userId = 3;//game.login.id;  // TODO: load userID from DB
-=======
 			MainScene.userId = game.login.id;  // TODO: load userID from DB
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/MainScene.cs
-			json = new JSONClass ();
-			json.Add ("data", new JSONData (MainScene.userId));
-			json ["action"] = "GET";
-			json ["table"] = "wealth";
-			wsc.Send (json.ToString ());
-
-<<<<<<< HEAD:Assets/PIGProject/Script/MainScene.cs
+			if (MainScene.userId != 0){
+				reloadFromDB();
+			}else{
+				MainScene.needReloadFromDB = true;
+				Debug.Log ("User Id: "+0);
+			}
 			Store.GetStorageInfoFromDB();
 
-=======
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/MainScene.cs
 //			json ["table"] = "friendship";
 //			wsc.Send (json.ToString ());
-			MainScene.needReloadFromDB = false;
-		}
-		
 
+		}
+
+	}
+
+	void reloadFromDB(){
+		json = new JSONClass ();
+		json.Add ("data", new JSONData (MainScene.userId));
+		json ["action"] = "GET";
+		json ["table"] = "wealth";
+		wsc.Send (json.ToString ());
+		wsc.Send("counselors","GET",new JSONData (MainScene.userId));
+		wsc.Send("generals","GET",new JSONData (MainScene.userId));
+		wsc.Send ("weapon","GET",new JSONData (MainScene.userId));
+		wsc.Send ("armor","GET",new JSONData (MainScene.userId));
+		wsc.Send ("shield","GET",new JSONData (MainScene.userId));
+		wsc.Send ("soldier","GET",new JSONData (MainScene.userId));
+		wsc.Send ("artisan","GET", new JSONData (MainScene.userId));
+		wsc.Send ("getCheckinInfo","GET", new JSONData (MainScene.userId));
+		MainScene.needReloadFromDB = false;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (MainScene.sValue != "" || MainScene.rValue != "" || MainScene.sdValue != "") {
+		if (MainScene.sValue != "" ) {
 			silverFeatherText.text = MainScene.sValue;
-			resourceText.text = MainScene.rValue;
-			starDustText.text = MainScene.sdValue;
 			MainScene.sValue ="";
+		}
+		if ( MainScene.rValue != "" ) {
+			resourceText.text = MainScene.rValue;
 			MainScene.rValue ="";
+		}
+		if ( MainScene.sdValue != "") {
+			starDustText.text = MainScene.sdValue;
 			MainScene.sdValue ="";
 		}
 
 		SetGameObjectFromServer ();
+
+		if (MainScene.userId == 0) {
+			wsc.Send ("getUserInformationByDeviceId", "GET", new JSONData (SystemInfo.deviceUniqueIdentifier));
+		}
 	}
+
 
 	void SetGameObjectFromServer(){
 		var count = 0;
+		if (MainScene.UserInfo != null) {
+			game.login = new Login ((JSONClass)MainScene.UserInfo);
+//			Debug.Log (game.login.ToString());
+			MainScene.UserInfo = null;
+			Debug.Log (MainScene.userId);
+			if (MainScene.userId == 0){
+				MainScene.userId = game.login.id;
+				reloadFromDB();
+			}
+			MainCharButton.transform.GetChild(0).GetComponent<Text>().text = "等級 "+CharacterPage.UserLevelCalculator(game.login.exp).ToString();
+
+		}
 		if (MainScene.GeneralInfo != null) {
 			game.general = new List<General> ();
 			count = MainScene.GeneralInfo.Count;
@@ -130,7 +155,7 @@ public class MainScene : MonoBehaviour {
 				game.general.Add (new General (MainScene.GeneralInfo[i]));
 			}
 			//			Debug.Log(MainScene.GeneralInfo);
-			//			Debug.Log(game.storage.Count);
+			//			Debug.Log(game.general.Count);
 			MainScene.GeneralInfo = null;
 			MainScene.GeneralLastUpdate = DateTime.Now;
 		}
@@ -196,20 +221,76 @@ public class MainScene : MonoBehaviour {
 			MainScene.FriendInfo = null;
 			MainScene.FriendLastUpdate = DateTime.Now;
 		}
+		if (MainScene.TrainingInfo != null) {
+			game.trainings = new List<Trainings> ();
+			count = MainScene.TrainingInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.trainings.Add (new Trainings (MainScene.TrainingInfo[i]));
+			}
+			MainScene.TrainingInfo = null;
+		}
+		if (MainScene.ArtisanInfo != null) {
+			game.artisans = new List<Artisans> ();
+			count = MainScene.ArtisanInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.artisans.Add (new Artisans (MainScene.ArtisanInfo[i]));
+			}
+			MainScene.ArtisanInfo = null;
+		}
+		if (MainScene.WeaponInfo != null) {
+			game.weapon = new List<Weapon>();
+			count = MainScene.WeaponInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.weapon.Add (new Weapon (MainScene.WeaponInfo[i]));
+			}
+
+			MainScene.WeaponInfo = null;
+		}
+		if (MainScene.ArmorInfo != null) {
+			game.armor = new List<Armor>();
+			count = MainScene.ArmorInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.armor.Add (new Armor (MainScene.ArmorInfo[i]));
+			}
+			
+			MainScene.ArmorInfo = null;
+		}
+		if (MainScene.ShieldInfo != null) {
+			game.shield = new List<Shield>();
+			count = MainScene.ShieldInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.shield.Add (new Shield (MainScene.ShieldInfo[i]));
+			}
+			MainScene.ShieldInfo = null;
+		}
+		if (MainScene.SoldierInfo != null) {
+			game.soldiers = new List<Soldiers>();
+			count = MainScene.SoldierInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.soldiers.Add (new Soldiers (MainScene.SoldierInfo[i]));
+			}
+//			Debug.Log ("Number of training soldiers of First team: "+game.soldiers[0].attributes["trainingSoldiers"]);
+			MainScene.SoldierInfo = null;
+		}
+		if (MainScene.newUserId != 0) {
+			game.login.id = MainScene.newUserId;
+			MainScene.userId = MainScene.newUserId;
+			MainScene.newUserId = 0;
+		}
 	}
 
 
-	/*
+
 	public void FbGetPicture(IGraphResult result){
 		if (result.Error == null) {
+
 //			MainScene.ProfilePictureSprite = Sprite.Create (result.Texture, new Rect (0, 0, 128, 128), new Vector2 ());
-			var sprite = Sprite.Create (result.Texture, new Rect (0, 0, 128, 128), new Vector2 ());
-			MainCharButton.image.sprite = sprite;
+			Sprite avatar = Sprite.Create (result.Texture, new Rect (0, 0, 128, 128), new Vector2 ());
+			MainCharButton.image.sprite = avatar;
 		}else{
 			Debug.Log(result.Error);
 		}
 	}
-	*/
 
 
 }

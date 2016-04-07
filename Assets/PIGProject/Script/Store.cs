@@ -14,11 +14,7 @@ public class Store : MonoBehaviour
 	public GameObject ShieldStorePanel;
 	public GameObject MountStorePanel;
 	//List<GameObject> StorageItem = new List<GameObject> ();
-<<<<<<< HEAD
-	public static int panelCounter=8;
-=======
 
->>>>>>> feature/MainMenu-shawn
 	public Sprite test;
 
 	float prefabWidth = 0f;
@@ -27,13 +23,6 @@ public class Store : MonoBehaviour
 	{
 		var game = Game.Instance;
 		var wsc = WsClient.Instance;
-<<<<<<< HEAD
-		JSONClass json = new JSONClass ();
-		json.Add ("data", new JSONData (game.login.id));
-		json ["table"] = "storage";
-		json ["action"] = "GET";
-		wsc.Send (json.ToString ());
-=======
 		if (game.login.id != 0) {
 			JSONClass json = new JSONClass ();
 			json.Add ("data", new JSONData (game.login.id));
@@ -41,7 +30,6 @@ public class Store : MonoBehaviour
 			json ["action"] = "GET";
 			wsc.Send (json.ToString ());
 		}
->>>>>>> feature/MainMenu-shawn
 	}
 
 	// Use this for initialization

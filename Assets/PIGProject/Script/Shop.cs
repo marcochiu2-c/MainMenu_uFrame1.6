@@ -221,27 +221,16 @@ public class Shop : MonoBehaviour {
 			wsc.Send (json.ToString ());  // log purchases in server
 			
 			var item = prodIdDict [purchase.Sku].name;
-<<<<<<< HEAD
-			var quantity = prodIdDict [purchase.Sku].quantity;
-			for (int i = 0; i <3; i++) {
-				if (game.wealth [i].type == currencyDict [item]) {
-					game.wealth [i].value += quantity;
-					json ["data"] = game.wealth [i].toJSON ();
-				}
-			}
-			
-			json ["table"] = "wealth";
-			json ["action"] = "SET";
-			wsc.Send (json.ToString ());  // update corresponance currency
-=======
 			game.wealth[currencyDict [item]-1].Add ( prodIdDict [purchase.Sku].quantity );
->>>>>>> feature/MainMenu-shawn
-		} else {
+		} else if (purchase.Sku == FIRST_CHARGE) {
 			//set gifts.
 			
 			//            json ["table"] = "storage";
 			//            json ["action"] = "NEW";
 			//            wsc.Send (json.ToString ())
+			game.wealth[0].Add ( 400 );
+			game.wealth[1].Add ( 80 );
+			game.wealth[2].Add ( 160000 );
 		}
 		
 	}

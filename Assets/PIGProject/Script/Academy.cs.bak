@@ -17,21 +17,17 @@ public enum ActivePopupEnum{
 
 public class Academy : MonoBehaviour
 {
-
-
 	class ItemData
 	{
 		public float SliderValue;
 		public string ImageKey;
 	}
-<<<<<<< HEAD:Assets/PIGProject/Script/Academy.cs.bak
 	void Awake ()
 	{
 
 		CallAcademy ();
-=======
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/Academy.cs
 
+	}
 
 
 	public ListView ListView;
@@ -41,15 +37,8 @@ public class Academy : MonoBehaviour
 //	string[] qaBtnName = new string[2];
 	public Button closeButton;
 	public Button backButton;
-<<<<<<< HEAD:Assets/PIGProject/Script/Academy.cs.bak
-=======
-	public GameObject AcademyHolder;
-	public GameObject TeachHolder;
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/Academy.cs
 	WsClient wsc;
 	Game game;
-	public static ListView.ColumnHeaderCollection ListViewColumns;
-	public static ListView.ListViewItemCollection ListViewItems;
 
 	public static ActivePopupEnum activePopup;
 	Dictionary<string,string> academyCategoryText = new Dictionary<string, string>();
@@ -65,12 +54,9 @@ public class Academy : MonoBehaviour
 	private int[] columnWidthStates = null;
 
 	// Use this for initialization
-	void Awake(){
-		CallAcademy ();
-	}
+
 
 	public void CallAcademy(){
-<<<<<<< HEAD:Assets/PIGProject/Script/Academy.cs.bak
 		SetDataGrid ();
 //		btnName [0] = "IQButton";
 //		btnName [1] = "CommandedButton";
@@ -80,21 +66,7 @@ public class Academy : MonoBehaviour
 //		qaBtnName [0] = "TeachButton";
 //		SetDictionary ();
 //		AddButtonListener ();
-=======
-		//this.ListView = GameObject.Find ("/_MainMenuSceneRoot/Canvas/AcademyHolder/Panel/TeachHolder/ContentHolder/DataHolder/LeftHolder/ListView").GetComponents<ListView> ()[0];
-		//Debug.Log (GameObject.Find ("/_MainMenuSceneRoot/Canvas/AcademyHolder/Panel/TeachHolder/ContentHolder/DataHolder/LeftHolder/ListView").GetComponents<ListView> ()[0]);
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/Academy.cs
 		SetImages ();
-//		SetDataGrid ();
-//		btnName [0] = "IQButton";
-//		btnName [1] = "CommandedButton";
-//		btnName [2] = "KnowledgeButton";
-//		btnName [3] = "FightingButton";
-//		qaBtnName [0] = "SelfStudyButton";
-//		qaBtnName [0] = "TeachButton";
-//		SetDictionary ();
-//		AddButtonListener ();
-
 
 		wsc = WsClient.Instance;
 		game = Game.Instance;
@@ -194,11 +166,7 @@ public class Academy : MonoBehaviour
 		academyCategoryText.Add (btnName [3], "陣法");
 	}
 */
-<<<<<<< HEAD:Assets/PIGProject/Script/Academy.cs.bak
 	void SetDataGrid(){
-=======
-	public void SetDataGrid(){	
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/Academy.cs
 		//		int x = (int)ga.transform.position.x;
 		//		int y = (int)ga.transform.position.y;
 		//		Rect size = ga.GetComponent<RectTransform> ().rect;
@@ -208,20 +176,16 @@ public class Academy : MonoBehaviour
 		//GUI.Label (new Rect (size.height-x, size.width-y, 80, 30), "<size=20>Lau Bei</size>");
 		if (this.ListView.Columns != null)
 		{
-			if (this.ListView.Columns != null){
-				Academy.ListViewColumns = this.ListView.Columns;
-			}
 			this.ListView.SuspendLayout();
 			{
-
+				
 				ColumnHeader MasterColumn = new ColumnHeader ();
 				MasterColumn.Text = "師傅";
 				this.ListView.AddColumnToHierarchy (MasterColumn);
-				Academy.ListViewColumns.Add (MasterColumn);
+				this.ListView.Columns.Add (MasterColumn);
 
 				ColumnHeader StudentColumn = new ColumnHeader ();
 				StudentColumn.Text = "徒弟";
-<<<<<<< HEAD:Assets/PIGProject/Script/Academy.cs.bak
 				this.ListView.Columns.Add (StudentColumn);
 				
 				ColumnHeader KnowledgeColumn = new ColumnHeader ();
@@ -241,79 +205,48 @@ public class Academy : MonoBehaviour
 				this.ListView.Columns[2].Width = 100;
 				this.ListView.Columns[3].Width = 100;
 				this.ListView.Columns[4].Width = 100;
-=======
-				Academy.ListViewColumns.Add (StudentColumn);
-				
-				ColumnHeader KnowledgeColumn = new ColumnHeader ();
-				KnowledgeColumn.Text = "學問";
-				Academy.ListViewColumns.Add (KnowledgeColumn);
-				
-				ColumnHeader TimeColumn = new ColumnHeader ();
-				TimeColumn.Text = "時間";
-				Academy.ListViewColumns.Add (TimeColumn);
-				
-				ColumnHeader CastColumn = new ColumnHeader ();
-				CastColumn.Text = "角色";
-				Academy.ListViewColumns.Add (CastColumn);
-				
-				Academy.ListViewColumns[0].Width = 200;
-				Academy.ListViewColumns[1].Width = 200;
-				Academy.ListViewColumns[2].Width = 200;
-				Academy.ListViewColumns[3].Width = 200;
-				Academy.ListViewColumns[4].Width = 200;
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/Academy.cs
 				
 				this.columnWidthStates = new int[this.columnCount];
 			}
 			this.ListView.ResumeLayout();
 			AddDataGrid ();
-<<<<<<< HEAD:Assets/PIGProject/Script/Academy.cs.bak
 			
-=======
-
-
-//			renderer.enabled = false;
-//			renderer = AcademyHolder.transform.GetComponentsInChildren<MeshRenderer>();
-//			renderer.enabled = false;
-
->>>>>>> feature/MainMenu-shawn:Assets/PIGProject/_Scenes/Script/Academy.cs
 		}
 	}
 
 	private void AddDataGrid(){
 					AddListViewItem (
-						"史彌堅",
-						"Can't Get Better than this (Original Version)",
+						"ChiuTim","Can't Get Better than this (Original Version)",
 						"Mathew Gil, John Courtidis, Sam Littlemore, Parachute Youth",
 						"5:02",
-						"Can't Get Better Than This"
+						"Can't Get Better Than This","abc"
 					);
-					AddListViewItem ("史彌堅","Forever", "Haim", "4:05", "Forever EP" );
-					AddListViewItem ( "史彌堅","City Boy", "Donkeyboy", "3:25", "City Boy" );
-					AddListViewItem ( "史彌堅","Dance All Night (feat. Matisyahu)", "The Dirty Heads", "3:26", "Cabin By the Sea");
-					AddListViewItem ("史彌堅", "Call it Off", "Washed Out", "3:33", "Within and Without" );
-					AddListViewItem ("史彌堅","Because Of You", "C2C, Pigeon John", "3:42", "Tetra" );
-					AddListViewItem ( "史彌堅","Flutes", "Hot Chip", "7:05", "In Our Heads" );
+					AddListViewItem ("趙括", "Forever", "Haim", "4:05", "Forever EP","abc" );
+					AddListViewItem ( "趙括","City Boy", "Donkeyboy", "3:25", "City Boy" ,"abc");
+					AddListViewItem ("呂布", "Dance All Night (feat. Matisyahu)", "The Dirty Heads", "3:26", "Cabin By the Sea","abc" );
+					AddListViewItem ("霍去病", "Call it Off", "Washed Out", "3:33", "Within and Without" ,"abc");
+					AddListViewItem ("ChiuTim", "Because Of You", "C2C, Pigeon John", "3:42", "Tetra" ,"abc");
+					AddListViewItem ("ChiuTim", "Flutes", "Hot Chip", "7:05", "In Our Heads","abc" );
 					AddListViewItem (
-						"史彌堅",
-						"Get Lucky",
+						"ChiuTim","Get Lucky",
 						"Daft Punk, Pharrell Williams, Nile Rodgers",
 						"6:10",
-						"Random Access Memories"
+						"Random Access Memories","abc"
 					);
-					AddListViewItem ("史彌堅" ,"Candy", "Robbie Williams", "3:21", "Candy" );
-					AddListViewItem ("史彌堅","Body Work", "Morgan Page, Tegan And Sara", "3:53", "In The Air" );
-					AddListViewItem ("史彌堅", "Free to Flee", "OHO", "4:00", "Land of the Happy" );
+					AddListViewItem ( "ChiuTim","Candy", "Robbie Williams", "3:21", "Candy","abc" );
+					AddListViewItem ("ChiuTim","Body Work", "Morgan Page, Tegan And Sara", "3:53", "In The Air" ,"abc");
+					AddListViewItem ( "ChiuTim","Free to Flee", "OHO", "4:00", "Land of the Happy","abc" );
 	}
 
-	private ListViewItem CreateListViewItem(string imageKey, string master, string student, string knowledge, string time)
+	private ListViewItem CreateListViewItem(string imageKey, string master, string student, string knowledge, string time, string cast)
 	{
 		string[] subItemTexts = new string[]
 		{
 			master,
 			student,
 			knowledge,
-			time
+			time,
+			cast
 		};
 
 		ListViewItem item = new ListViewItem(subItemTexts);
@@ -335,18 +268,18 @@ public class Academy : MonoBehaviour
 		return item;
 	}
 
-	private void AddListViewItem(string imageKey, string master, string student, string knowledge, string time)
+	private void AddListViewItem(string imageKey, string master, string student, string knowledge, string time, string cast)
 	{
-		ListViewItem item = CreateListViewItem(imageKey, master, student,knowledge, time);
+		ListViewItem item = CreateListViewItem(imageKey, master, student,knowledge, time, cast);
 
 		this.ListView.Items.Add(item);
 
 	}
 
-	public void RemoveAllItems(){
-		int cnt = Academy.ListViewItems.Count;
+	private void RemoveAllItems(){
+		int cnt = this.ListView.Items.Count;
 		for (int i = 0; i < cnt; i++) {
-			Academy.ListViewItems.RemoveAt (0);
+			this.ListView.Items.RemoveAt (0);
 		}
 
 	}

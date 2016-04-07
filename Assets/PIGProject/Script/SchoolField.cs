@@ -43,8 +43,9 @@ public class SchoolField : MonoBehaviour {
 	public static DateTime AssigningTime;
 	public static int AssigningQuantity = 0;
 	public static int TotalTrainingTime=0;
-	public static int refStarDust = 4200;
-	public static int refResource =550000;
+	public static int refStarDust = 80;
+	public static int refResource =160000;
+//	public static int refFeather  = 400;
 	Text SoldierSummary;
 	static ProductDict p;
 
@@ -76,7 +77,7 @@ public class SchoolField : MonoBehaviour {
 		SetDataPanel ();
 		SetAdjustSoldierValues ();
 		p = new ProductDict ();
-		InvokeRepeating ("UpdateSoldierSummaryPanel", 1, 1);
+		InvokeRepeating ("UpdateSoldierSummaryPanel", 0, 1);
 	}
 	
 	// Update is called once per frame
@@ -88,8 +89,8 @@ public class SchoolField : MonoBehaviour {
 //		TrainingQAHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { Debug.Log ("OnTrainingQAHolderConfirmed()");OnTrainingQAHolderConfirmed(); });
 //		Debug.Log (NewSoldierPanel.transform.GetChild (1));
 		NewSoldierPanel.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => {
-			Debug.Log ("Training soldiers number: "+game.soldiers[AssigningSoldier-1].attributes["trainingSoldiers"]);
-			if (game.soldiers[AssigningSoldier-1].attributes["trainingSoldiers"].AsInt == 0){
+			if (game.soldiers[AssigningSoldier-1].attributes["ETATrainingTime"] == null){
+				DisablePanel.SetActive(true);	
 				TrainingQHolder.SetActive(true);
 			}
 		});
@@ -126,7 +127,18 @@ public class SchoolField : MonoBehaviour {
 		ArmorQAHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { OnArmedReplacement("armor");});
 		ShieldQAHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { OnArmedReplacement("shield");});
 		#endregion
-
+		TrainingQHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => {  //confirm
+			DisablePanel.SetActive(false);
+			TrainingEquHolder.SetActive(false);
+			game.soldiers[AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = int.Parse(TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text);
+			TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text = "";
+		});
+		TrainingQHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => {  //cancel
+			DisablePanel.SetActive(false);
+			TrainingQHolder.SetActive(false);
+			TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text = "";
+		});
+		
 		TrainingEquHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { OnGoArtisanButtonClicked();});
 		TrainingEquHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => { 
 			DisablePanel.SetActive(false);
@@ -200,12 +212,13 @@ public class SchoolField : MonoBehaviour {
 				game.login.attributes["TotalDeductedSoldiers"].AsInt = game.login.attributes["TotalDeductedSoldiers"].AsInt + soldierQuantity;
 				game.soldiers[SchoolField.AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = soldierQuantity;
 				ShowTotalSoldiersAvailableText();
-				wsc.Send ("users","SET",game.login.toJSON());
-				JSONClass json = new JSONClass ();
-				json.Add ("id",new JSONData(game.soldiers[SchoolField.AssigningSoldier-1].id));
-				json.Add ("userId",new JSONData(game.login.id));
-				json.Add ("json", game.soldiers [SchoolField.AssigningSoldier - 1].attributes);
-				wsc.Send ("soldier", "SET", json);
+//				wsc.Send ("users","SET",game.login.toJSON());
+//				JSONClass json = new JSONClass ();
+//				json.Add ("id",new JSONData(game.soldiers[SchoolField.AssigningSoldier-1].id));
+//				json.Add ("userId",new JSONData(game.login.id));
+//				json.Add ("json", game.soldiers [SchoolField.AssigningSoldier - 1].attributes);
+//				wsc.Send ("soldier", "SET", json);
+				game.soldiers [SchoolField.AssigningSoldier - 1].UpdateQuantity();
 				s.text = "";
 				TrainingQHolder.SetActive(false);
 //				CheckArmedEquipmentAvailability();
