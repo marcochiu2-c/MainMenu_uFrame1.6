@@ -25,6 +25,8 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<AuthorizationState> _AuthorizationStateProperty;
     
+    private P<WinCondition> _WinConditonProperty;
+    
     public UserViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
@@ -38,6 +40,15 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<WinCondition> WinConditonProperty {
+        get {
+            return _WinConditonProperty;
+        }
+        set {
+            _WinConditonProperty = value;
+        }
+    }
+    
     public virtual AuthorizationState AuthorizationState {
         get {
             return AuthorizationStateProperty.Value;
@@ -47,19 +58,31 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual WinCondition WinConditon {
+        get {
+            return WinConditonProperty.Value;
+        }
+        set {
+            WinConditonProperty.Value = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
         _AuthorizationStateProperty = new P<AuthorizationState>(this, "AuthorizationState");
+        _WinConditonProperty = new P<WinCondition>(this, "WinConditon");
     }
     
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
         this.AuthorizationState = (AuthorizationState)stream.DeserializeInt("AuthorizationState");;
+        this.WinConditon = (WinCondition)stream.DeserializeInt("WinConditon");;
     }
     
     public override void Write(ISerializerStream stream) {
         base.Write(stream);
         stream.SerializeInt("AuthorizationState", (int)this.AuthorizationState);;
+        stream.SerializeInt("WinConditon", (int)this.WinConditon);;
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -70,6 +93,8 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         base.FillProperties(list);
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_AuthorizationStateProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_WinConditonProperty, false, false, true, false));
     }
 }
 
