@@ -15,7 +15,7 @@ public class WeaponMaking : MonoBehaviour {
 	public Text ResourceRequire;
 	public Text Quantity;
 	public Button Metalsmith;
-	public Text TimeRequire;
+	public Button TimeRequire;
 	public Text Details;
 	public int id;
 	DateTime eta;
@@ -41,6 +41,9 @@ public class WeaponMaking : MonoBehaviour {
 			ShowPanel(transform.parent.parent.parent.parent.GetChild(8).gameObject);
 
 		});
+		TimeRequire.onClick.AddListener (() => {
+
+		});
 	}
 
 	public void SetPanel(Products p,int q, DateTime endTime){
@@ -58,10 +61,10 @@ public class WeaponMaking : MonoBehaviour {
 	public void UpdateRemainingTime(){
 		if (eta > DateTime.Now) {
 			ts = eta.Subtract (DateTime.Now);
-			TimeRequire.text = string.Format( "{0:D2}:{1:D2}:{2:D2}", ts.Hours, ts.Minutes, ts.Seconds);
+			TimeRequire.transform.GetChild(0).GetComponent<Text>().text = string.Format( "{0:D2}:{1:D2}:{2:D2}", ts.Hours, ts.Minutes, ts.Seconds);
 			transform.GetComponent<Image>().color = Color.green;
 		} else {
-			TimeRequire.text = "00:00:00";
+			TimeRequire.transform.GetChild(0).GetComponent<Text>().text = "00:00:00";
 			transform.GetComponent<Image>().color = color;
 		}
 	}

@@ -16,6 +16,7 @@ public class CompanionScreenView : CompanionScreenViewBase {
 
 	public Button counselorsButton;
 	public Button soldiersButton;
+	public Button backButton;
 
 	public GameObject CounselorsHolder;
 	public GameObject SoldiersHolder;
@@ -32,14 +33,17 @@ public class CompanionScreenView : CompanionScreenViewBase {
         // Use this.CompanionScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
-
-		this.BindButtonToHandler (counselorsButton, () => {
-			CounselorsHolder.gameObject.SetActive (true);
+		this.BindButtonToHandler (backButton, () => {
+			CounselorsHolder.gameObject.SetActive (false);
 			SoldiersHolder.gameObject.SetActive (false);
+
 		});
 
 		this.BindButtonToHandler (counselorsButton, () => {
-			CounselorsHolder.gameObject.SetActive (false);
+			CounselorsHolder.gameObject.SetActive (true);
+		});
+
+		this.BindButtonToHandler (soldiersButton, () => {
 			SoldiersHolder.gameObject.SetActive (true);
 		});
 

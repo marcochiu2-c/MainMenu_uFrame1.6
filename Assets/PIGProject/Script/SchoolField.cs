@@ -90,8 +90,7 @@ public class SchoolField : MonoBehaviour {
 //		Debug.Log (NewSoldierPanel.transform.GetChild (1));
 		NewSoldierPanel.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => {
 			if (game.soldiers[AssigningSoldier-1].attributes["ETATrainingTime"] == null){
-				DisablePanel.SetActive(true);	
-				TrainingQHolder.SetActive(true);
+				ShowPanel(TrainingQHolder);
 			}
 		});
 		DollPanel.transform.GetChild (0).GetChild (1).GetComponent<Button> ().onClick.AddListener (() => {
@@ -128,21 +127,18 @@ public class SchoolField : MonoBehaviour {
 		ShieldQAHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { OnArmedReplacement("shield");});
 		#endregion
 		TrainingQHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => {  //confirm
-			DisablePanel.SetActive(false);
-			TrainingEquHolder.SetActive(false);
+			HidePanel(TrainingEquHolder);
 			game.soldiers[AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = int.Parse(TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text);
 			TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text = "";
 		});
 		TrainingQHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => {  //cancel
-			DisablePanel.SetActive(false);
-			TrainingQHolder.SetActive(false);
+			HidePanel(TrainingQHolder);
 			TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text = "";
 		});
 		
 		TrainingEquHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { OnGoArtisanButtonClicked();});
 		TrainingEquHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => { 
-			DisablePanel.SetActive(false);
-			TrainingEquHolder.SetActive(false);
+			HidePanel(TrainingEquHolder);
 		});
 
 		TrainingEquConfirmHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { OnAddEquipmentConfirmed();});
@@ -154,8 +150,8 @@ public class SchoolField : MonoBehaviour {
 			GetAdjustedSoldierValues();
 		});
 		AdjustSoildersAttribute.transform.GetChild (8).GetChild (1).GetComponent<Button> ().onClick.AddListener (() => {
-			DisablePanel.SetActive(false);
-			AdjustSoildersAttribute.SetActive(false);
+			HidePanel(AdjustSoildersAttribute);
+
 		});
 
 		TrainingQAHolder.transform.GetChild (2).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {
@@ -201,8 +197,7 @@ public class SchoolField : MonoBehaviour {
 		if (soldiers != "") {
 			int soldierQuantity = Int32.Parse (soldiers);
 			if (soldierQuantity > TotalSoldiersAvailable ()) {
-				DisablePanel.SetActive(true);
-				TrainingQHolder.SetActive (true);
+				ShowPanel(TrainingQHolder);
 				TrainingQHolder.transform.GetChild(1).GetComponent<Text>().text="<color=red>輸入兵數不能大於現有兵數</color>\n請輸入欲訓練士兵數目";
 				Debug.Log ("Number of new soldiers cannot be larger than available, inputed: " + soldierQuantity);
 			} else {   //Valid number
@@ -213,14 +208,9 @@ public class SchoolField : MonoBehaviour {
 				game.soldiers[SchoolField.AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = soldierQuantity;
 				ShowTotalSoldiersAvailableText();
 //				wsc.Send ("users","SET",game.login.toJSON());
-//				JSONClass json = new JSONClass ();
-//				json.Add ("id",new JSONData(game.soldiers[SchoolField.AssigningSoldier-1].id));
-//				json.Add ("userId",new JSONData(game.login.id));
-//				json.Add ("json", game.soldiers [SchoolField.AssigningSoldier - 1].attributes);
-//				wsc.Send ("soldier", "SET", json);
 				game.soldiers [SchoolField.AssigningSoldier - 1].UpdateQuantity();
 				s.text = "";
-				TrainingQHolder.SetActive(false);
+				HidePanel( TrainingQHolder);
 //				CheckArmedEquipmentAvailability();
 				SetDataPanel();
 			}
@@ -309,8 +299,7 @@ public class SchoolField : MonoBehaviour {
 
 			obj.transform.SetParent (panel);
 		}
-		DisablePanel.SetActive (true);
-		ArmyListHolder.SetActive (true);
+		ShowPanel( ArmyListHolder);
 	}
 
 	public void ShowNewArmorPanel(){
@@ -331,8 +320,7 @@ public class SchoolField : MonoBehaviour {
 			obj.transform.SetParent (panel);
 			
 		}
-		DisablePanel.SetActive (true);
-		ArmorListHolder.SetActive (true);
+		ShowPanel( ArmorListHolder);
 	}
 
 	public void ShowNewShieldPanel(){
@@ -353,16 +341,14 @@ public class SchoolField : MonoBehaviour {
 			obj.transform.SetParent (panel);
 			
 		}
-		DisablePanel.SetActive (true);
-		ShieldListHolder.SetActive (true);
+		ShowPanel( ShieldListHolder);
 	}
 	
 	public void ShowIsNeedRecruitArtisanPanel(int soldiers){
 		string txt = TrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text;
 		txt = txt.Replace ("%SQ%", soldiers.ToString ());
 		TrainingEquHolder.transform.GetChild (1).GetComponent<Text> ().text = txt;
-		DisablePanel.SetActive (true);
-		TrainingEquHolder.SetActive (true);
+		ShowPanel( TrainingEquHolder);
 	}
 
 	public void OnWeaponButtonClicked(){
@@ -380,8 +366,7 @@ public class SchoolField : MonoBehaviour {
 			ShowNewArmorPanel ();
 		} else {
 			ArmorListHolder.SetActive (false);
-			DisablePanel.SetActive (true);
-			AssignNSPopup.SetActive (true);
+			ShowPanel( AssignNSPopup);
 		}
 	}
 
@@ -390,8 +375,7 @@ public class SchoolField : MonoBehaviour {
 			ShowNewShieldPanel ();
 		} else {
 			ShieldListHolder.SetActive (false);
-			DisablePanel.SetActive (true);
-			AssignNSPopup.SetActive (true);
+			ShowPanel( AssignNSPopup );
 		}
 	}
 	
@@ -509,17 +493,15 @@ public class SchoolField : MonoBehaviour {
 
 	void OnGoArtisanButtonClicked(){
 //		ProductDict p = new ProductDict ();
-		DisablePanel.SetActive(false);
-		TrainingEquHolder.SetActive (false);
-		DisablePanel.SetActive (true);
-		TrainingEquConfirmHolder.SetActive (true);
+		HidePanel( TrainingEquHolder);
+		ShowPanel( TrainingEquConfirmHolder);
 		int count = 0;
 		int quantity = 0;
 		TimeSpan time = new TimeSpan();
 		if (AssigningWeaponId != 0){
 			if (game.artisans[0].etaTimestamp > DateTime.Now){
-				CannotTrainSoldierPopup.SetActive (true);
 				TrainingEquHolder.SetActive(false);
+				CannotTrainSoldierPopup.SetActive (true);
 				return;
 			}
 			count = game.weapon.Count;
@@ -546,8 +528,8 @@ public class SchoolField : MonoBehaviour {
 			}
 		}else if (AssigningShieldId != 0){ 
 			if (game.artisans[2].etaTimestamp > DateTime.Now){
-				CannotTrainSoldierPopup.SetActive (true);
 				TrainingEquHolder.SetActive(false);
+				CannotTrainSoldierPopup.SetActive (true);
 				return;
 			}
 			count = game.shield.Count;
@@ -577,8 +559,7 @@ public class SchoolField : MonoBehaviour {
 		Text msgText = TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ();
 		if (msgText.text.Contains ("時之星塵不足")) {
 			//TODO change this action of this condition to shop
-			DisablePanel.SetActive (false);
-			TrainingEquConfirmHolder.SetActive (false);
+			HidePanel(TrainingEquConfirmHolder);
 		}
 		if (!msgText.text.Contains("資源不足")&& !msgText.text.Contains ("時之星塵不足")){
 		#region CheckResources
@@ -631,8 +612,7 @@ public class SchoolField : MonoBehaviour {
 		} else {
 			game.soldiers [AssigningSoldier - 1].attributes.Add("artisanETA",new JSONData(0)); // TODO change 0 to .NET DateTime in string format
 		}
-		DisablePanel.SetActive (false);
-		TrainingEquConfirmHolder.SetActive (false);
+		HidePanel(TrainingEquConfirmHolder);
 		if (AssigningStarDust>0 ) {
 			game.wealth [1].Deduct (AssigningStarDust);
 			game.wealth [2].Set (0);
@@ -741,12 +721,11 @@ public class SchoolField : MonoBehaviour {
 		TotalTrainingTime += CalculateSoldierTrainingTime("Hammer",trainingSoldiers,Hammer.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Hammer"].AsFloat*100)/100);
 		Debug.Log (TotalTrainingTime);
 		if (TotalTrainingTime > 0) {
-			AdjustSoildersAttribute.SetActive (false);
+			HidePanel(AdjustSoildersAttribute);
 			ShowConfirmTrainingPanel(trainingSoldiers);
 
 		} else {
-			DisablePanel.SetActive (false);
-			AdjustSoildersAttribute.SetActive (false);
+			HidePanel(AdjustSoildersAttribute);
 		}
 
 	}
@@ -784,7 +763,7 @@ public class SchoolField : MonoBehaviour {
 		Debug.Log (time.ToString ());
 		msg = msg.Replace ("%TT%",time.Hours.ToString () + ":" + time.Minutes.ToString () + ":" + time.Seconds.ToString ());
 		TrainingQAHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
-		TrainingQAHolder.SetActive (true);
+		ShowPanel(TrainingQAHolder);
 	}
 
 	void ConfirmedTraining(){
@@ -832,14 +811,13 @@ public class SchoolField : MonoBehaviour {
 		json.Add ("userId",new JSONData(game.login.id));
 		json.Add ("json", j);
 		wsc.Send ("soldier", "SET", json);
-		DisablePanel.SetActive (false);
+		HidePanel(TrainingQAHolder);
 	}
 
 	void CancelConfirmTraining(){
 		TotalTrainingTime = 0;
 		SetAdjustSoldierValues ();
-		DisablePanel.SetActive (false);
-		TrainingQAHolder.SetActive (false);
+		HidePanel(TrainingQAHolder);
 	}
 
 	bool CheckIfTrainingOngoing(){
@@ -912,4 +890,15 @@ public class SchoolField : MonoBehaviour {
 		}
 		SoldierSummary.text = data;
 	}
+
+	void ShowPanel(GameObject panel){
+		DisablePanel.SetActive (true);
+		panel.SetActive (true);
+	}
+	
+	void HidePanel(GameObject panel){
+		DisablePanel.SetActive (false);
+		panel.SetActive (false);
+	}
+
 }

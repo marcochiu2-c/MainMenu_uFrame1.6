@@ -19,6 +19,8 @@ public class ArtisanHolder : MonoBehaviour {
 	public GameObject NeedExtraResourcesPopup;
 	public GameObject SpeedUpPopup;
 	public GameObject EquipmentQHolder;
+	public GameObject DetailPanel;
+	public GameObject JobCancelPopup;
 	Button BackButton;
 	Button CloseButton;
 	static ProductDict p  = new ProductDict();
@@ -105,7 +107,9 @@ public class ArtisanHolder : MonoBehaviour {
 	void OnNeedExtraResourcesPopupConfirmed(){
 		int cost = p.products [IdEquipmentToBeProduced].attributes ["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced;
 		HidePanel(NeedExtraResourcesPopup);
-
+		game.wealth [1].Deduct( Utilities.ExchangeRate.GetStardustFromResource (cost - game.wealth [2].value));
+		game.wealth [2].Set (0);
+		SetJob ();
 	}
 
 	void SetJob(){
@@ -133,13 +137,23 @@ public class ArtisanHolder : MonoBehaviour {
 		msg = msg.Replace ("equipment", p.products [IdEquipmentToBeProduced].name);
 		msg = msg.Replace ("amount", (p.products[IdEquipmentToBeProduced].attributes["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced).ToString()) ;
 		ArtisanConfirmPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
+
+		#region ChangeTitle
+		if (IdEquipmentToBeProduced > 5000 && IdEquipmentToBeProduced < 6000) {
+			ArtisanConfirmPopup.transform.GetChild (0).GetComponent<Text>().text = "武器";
+		}else if (IdEquipmentToBeProduced > 6000 && IdEquipmentToBeProduced < 7000) {
+			ArtisanConfirmPopup.transform.GetChild (0).GetComponent<Text>().text = "防具";
+		}else if (IdEquipmentToBeProduced > 7000 && IdEquipmentToBeProduced < 8000) {
+			ArtisanConfirmPopup.transform.GetChild (0).GetComponent<Text>().text = "盾";
+		}
+		#endregion
 	}
 
 	void SetNeedExtraResourcesPopupText(){
 		ProductDict p = new ProductDict ();
-		int res = (p.products [IdEquipmentToBeProduced].attributes ["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced);
+		int cost = (p.products [IdEquipmentToBeProduced].attributes ["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced);
 		string msg = "主公，資源不足，需要額外使用amount 星塵進行制作嗎？";
-		msg = msg.Replace ("amount",Utilities.ExchangeRate.GetStardustFromResource(res-game.wealth[2].value).ToString());
+		msg = msg.Replace ("amount",Utilities.ExchangeRate.GetStardustFromResource(cost - game.wealth[2].value).ToString());
 		NeedExtraResourcesPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
 	}
 

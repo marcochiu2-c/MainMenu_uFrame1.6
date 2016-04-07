@@ -10,7 +10,6 @@ using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 
 public class SetBattleScreenView : SetBattleScreenViewBase {
@@ -21,30 +20,46 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 	public Button LimitedBattleButton;
 	public Button HolidayBattleButton;
 	
-	public Button MapButton;
-	public Button GoButton;
-	public Button NextButton;
-	public Button PreButton;
+	public Button Mission1Button;
+	public Button Mission2Button;
+	public Button Mission3Button;
+	public Button Mission4Button;
+	public Button Mission5Button;
+	public Button Mission6Button;
+	public Button Mission7Button;
+	public Button Mission8Button;
+	public Button Mission9Button;
+	public Button Mission10Button;
+	public Button Mission11Button;
+	public Button Mission12Button;
+	public Button Mission13Button;
+	public Button Mission14Button;
+	public Button Mission15Button;
 	
 	public GameObject DailyMission;
 	public GameObject SpecialMission;
 	public GameObject LimitedMission;
 	public GameObject HolidayMission;
 	
-	public GameObject TeamSelection;
-	public GameObject SelectionPanel;
+	public MainGameRootViewModel MainGameVM;
+	public UserViewModel LocalUser;
 	
 	public Slider loadingBar;
 	public GameObject loadingImage;
 	
 	private AsyncOperation _async;
-	private int _moveCount = 0;
-    
+		
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as SetBattleScreenViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+        
+		MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
+		Debug.Log (MainGameVM== null ? "MainGameVM is null" : MainGameVM.Identifier);
+		
+		LocalUser = uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
+		Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.Identifier);
     }
     
     public override void Bind() {
@@ -61,28 +76,10 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 		});
 
 		this.BindButtonToHandler (DailyBattleButton, () => {
-			
 			DailyMission.gameObject.SetActive (true);
 			SpecialMission.gameObject.SetActive (false);
 			LimitedMission.gameObject.SetActive (false);
 			HolidayMission.gameObject.SetActive (false);
-			
-			/*
-			Publish(new UnloadSceneCommand()
-			        {
-				SceneName = "MainMenuScene"
-			});
-			Publish(new LoadSceneCommand()
-			        {
-				SceneName = "MainGameScene"
-			});
-			*/
-			
-			/*
-			loadingImage.SetActive (true);
-			StartCoroutine (LoadLevelWithBar ("MainGameScene"));
-			*/
-			
 		});
 
 		this.BindButtonToHandler (SpecialBattleButton, () => {
@@ -106,39 +103,157 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 			HolidayMission.gameObject.SetActive (true);
 		});
 		
-		this.BindButtonToHandler (MapButton, () => {
-			TeamSelection.gameObject.SetActive(true);
+		
+		this.BindButtonToHandler (Mission1Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			//PlayerPrefs.SetInt("WinCondition", 2);
+			//if (LocalUser != null)
+			//	LocalUser.WinCondition = WinCondition.Tower;
+			ChangetoMainGame();
 		});
 		
-		this.BindButtonToHandler (GoButton, () => {
-			loadingImage.SetActive (true);
-			StartCoroutine (LoadLevelWithBar ("MainGameScene"));
+		this.BindButtonToHandler (Mission2Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			//PlayerPrefs.SetInt("WinCondition", 0);
+			//if (LocalUser != null)
+			//	LocalUser.WinCondition = WinCondition.Enemies;
+			ChangetoMainGame();
 		});
 		
-		/*
-		this.BindButtonToHandler (NextButton, () => {
-			SelectionPanel.transform.DOMoveX(SelectionPanel.transform.position.x - 645, 0.5f);
+		this.BindButtonToHandler (Mission3Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			//if (LocalUser != null)
+			//	LocalUser.WinCondition = WinCondition.Enemies;
+			//PlayerPrefs.SetInt("WinCondition", 0);
 			
-			PreButton.interactable = true;
-			
-			_moveCount++;
-			if(_moveCount == 4)
-				NextButton.interactable = false;
-			
+			ChangetoMainGame();
 		});
 		
-		this.BindButtonToHandler (PreButton, () => {
-			SelectionPanel.transform.DOMoveX(SelectionPanel.transform.position.x + 645, 0.5f);
+		this.BindButtonToHandler (Mission4Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 0);
 			
-			NextButton.interactable = true;
-			
-			_moveCount--;
-			if(_moveCount == 0)
-				PreButton.interactable = false;
-			
+			ChangetoMainGame();
 		});
-		*/
-
+		
+		this.BindButtonToHandler (Mission5Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 0);
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (Mission6Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 0);
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (Mission7Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 0);
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (Mission8Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 0);
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (Mission9Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 0);
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (Mission10Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 1);
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (Mission11Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 2);
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (Mission12Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 2);
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (Mission13Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 2);
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (Mission14Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 2);
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (Mission15Button, () => {
+			// 0: WinCondition.Enemies
+			// 1: WinCondition.Boss
+			// 2: inCondition.Tower
+			PlayerPrefs.SetInt("WinCondition", 2);
+			
+			ChangetoMainGame();
+		});
+		
+    }
+    
+    public void ChangetoMainGame()
+    {
+		Publish(new UnloadSceneCommand()
+		        {
+			SceneName = "MainMenuScene"
+		});
+		
+		loadingImage.SetActive (true); 
+		StartCoroutine (LoadLevelWithBar ("MainGameScene"));
     }
     
 	IEnumerator LoadLevelWithBar (string level)
