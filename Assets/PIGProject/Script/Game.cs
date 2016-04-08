@@ -100,7 +100,7 @@ public class Game{
 		count = j["general"].Count;
 		for (int i=0; i<count; i++) {
 			general[i].id = j["general"][i]["id"].AsInt;
-			general[i].attributes = j["general"][i]["attributes"];
+			general[i].attributes = (JSONClass)j["general"][i]["attributes"];
 			general[i].type = j["general"][i]["type"].AsInt;
 			general[i].soldiers.id = j["general"][i]["soldier"]["id"].AsInt;
 			general[i].soldiers.type =  j["general"][i]["soldier"]["type"].AsInt;
@@ -417,7 +417,7 @@ public class Counselor {
 [Serializable]
 public class General {
 	public int id { get; set; }
-	public string attributes { get; set; }
+	public JSONClass attributes { get; set; }
 	public int type { get; set; }
 	public Soldiers soldiers { get; set; }
 	public int status { get; set; }
@@ -428,15 +428,19 @@ public class General {
 
 	public General(int i, string attr, int t, int st, Soldiers s = null){
 		id = i;
-		attributes = attr;
+		attributes = (JSONClass) JSON.Parse(attr);
 		type = t;
 		status = st;
-		soldiers = s;
+		if (s == null) {
+			soldiers = new Soldiers ();
+		} else {
+			soldiers = s;
+		}
 	}
 
 	public General(SimpleJSON.JSONNode j){
 		id = j["general_id"].AsInt;
-		attributes = j ["general_json"];
+		attributes = (JSONClass)j ["general_json"];
 		type = j["general_type"].AsInt;
 		status = j ["status"].AsInt;
 	}
@@ -489,10 +493,10 @@ public class Soldiers{
 
 	public void SetQuantity (int q){
 		quantity = q;
-		UpdateQuantity ();
+		UpdateObject ();
 	}
 	
-	public void UpdateQuantity(){
+	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("soldier", "SET", toJSON());
 	}

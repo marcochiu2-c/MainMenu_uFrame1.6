@@ -143,8 +143,8 @@ public class WsClient {
 	public WebSocket conn;
 	//string table = "";
 	//string result = "";
-	private string ip = "23.91.96.158";
-//	private string ip = "192.168.100.64";
+	private string ip = "23.91.96.158";     //Production server
+//	private string ip = "192.168.100.64";   //My PC
 	private int port = 8000; 
 	Game game;
 	// Use this for initialization
