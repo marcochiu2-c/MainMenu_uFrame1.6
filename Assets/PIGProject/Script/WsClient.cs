@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//#define TEST
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -138,13 +139,18 @@ enum jsonFuncNumberEnum {
 };
 
 
+
 public class WsClient {
 	//string server = "";
 	public WebSocket conn;
 	//string table = "";
 	//string result = "";
+
+#if TEST
+	private string ip = "192.168.100.64";   //My PC
+#else
 	private string ip = "23.91.96.158";     //Production server
-//	private string ip = "192.168.100.64";   //My PC
+#endif
 	private int port = 8000; 
 	Game game;
 	// Use this for initialization
