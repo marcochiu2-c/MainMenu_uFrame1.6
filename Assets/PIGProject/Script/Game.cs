@@ -927,7 +927,7 @@ public class Artisans {
 
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
-		wsc.Send ("artisans", "SET", toJSON());
+		wsc.Send ("artisan", "SET", toJSON());
 	}
 }
 
