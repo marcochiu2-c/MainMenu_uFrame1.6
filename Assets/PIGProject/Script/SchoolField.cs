@@ -208,7 +208,7 @@ public class SchoolField : MonoBehaviour {
 				game.soldiers[SchoolField.AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = soldierQuantity;
 				ShowTotalSoldiersAvailableText();
 //				wsc.Send ("users","SET",game.login.toJSON());
-				game.soldiers [SchoolField.AssigningSoldier - 1].UpdateQuantity();
+				game.soldiers [SchoolField.AssigningSoldier - 1].UpdateObject();
 				s.text = "";
 				HidePanel( TrainingQHolder);
 //				CheckArmedEquipmentAvailability();
