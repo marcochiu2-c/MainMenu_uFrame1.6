@@ -19,8 +19,8 @@ public class ArtisanHolder : MonoBehaviour {
 	public GameObject NeedExtraResourcesPopup;
 	public GameObject SpeedUpPopup;
 	public GameObject EquipmentQHolder;
-	public GameObject DetailPanel;
 	public GameObject JobCancelPopup;
+	public GameObject DetailPanel;
 	Button BackButton;
 	Button CloseButton;
 	static ProductDict p  = new ProductDict();
@@ -29,7 +29,8 @@ public class ArtisanHolder : MonoBehaviour {
 	static int IdShieldWhichProducing  = 0;
 	public static int IdEquipmentToBeProduced = 0;
 	static int NumberOfEquipmentToBeProduced=0;
-
+	public static int CancelType = 0;
+	public static int CancelId   = 0;
 	int latestEta = 0;
 	// Use this for initialization
 	void Start () {
@@ -77,10 +78,25 @@ public class ArtisanHolder : MonoBehaviour {
 			HidePanel(ArtisanConfirmPopup);
 		});
 		NeedExtraResourcesPopup.transform.GetChild (2).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {  //Confirm
-
+			OnNeedExtraResourcesPopupConfirmed();
 		});
-		NeedExtraResourcesPopup.transform.GetChild (2).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {  //Confirm
+		NeedExtraResourcesPopup.transform.GetChild (2).GetChild (1).GetComponent<Button> ().onClick.AddListener (() => {  //Confirm
 			HidePanel(NeedExtraResourcesPopup);
+		});
+		SpeedUpPopup.transform.GetChild (2).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {
+			OnSpeedUpPopupConfirmed();
+		});
+		SpeedUpPopup.transform.GetChild (2).GetChild (1).GetComponent<Button> ().onClick.AddListener (() => {
+			HidePanel (SpeedUpPopup);
+		});
+		JobCancelPopup.transform.GetChild(2).GetChild(0).GetComponent<Button> ().onClick.AddListener (() => {
+			OnCancelPopupConfirmed();
+		});
+		JobCancelPopup.transform.GetChild(2).GetChild(1).GetComponent<Button> ().onClick.AddListener (() => {
+			HidePanel (JobCancelPopup);
+		});
+		DetailPanel.transform.GetChild(2).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {
+			HidePanel (DetailPanel);
 		});
 	}
 
@@ -110,6 +126,74 @@ public class ArtisanHolder : MonoBehaviour {
 		game.wealth [1].Deduct( Utilities.ExchangeRate.GetStardustFromResource (cost - game.wealth [2].value));
 		game.wealth [2].Set (0);
 		SetJob ();
+	}
+
+	void OnSpeedUpPopupConfirmed(){  // 10 Stardust for 1 hour
+		DateTime time =DateTime.Now;
+		int id = ArtisanHolder.IdEquipmentToBeProduced;
+		int count = 0;
+		if (id == game.artisans [0].targetId) {
+			time = game.artisans[0].etaTimestamp;
+			game.artisans[0].status = 3;
+			game.artisans[0].etaTimestamp = DateTime.Now;
+			count = game.weapon.Count;
+			for (int i =0 ; i < count ; i++){
+				if (game.weapon[i].type == id){
+					game.weapon[i].SetQuantity(game.artisans [0].quantity + game.weapon[i].quantity);
+				}
+			}
+			ResetItemAfterSpeedUpOrJobCancel(ArtisanWeaponPanel, id);
+			game.artisans[0].UpdateObject();
+		}else if (id == game.artisans [1].targetId) {
+			time = game.artisans[1].etaTimestamp;
+			game.artisans[1].status = 3;
+			game.artisans[1].etaTimestamp = DateTime.Now;
+			count = game.armor.Count;
+			for (int i =0 ; i < count ; i++){
+				if (game.armor[i].type == id){
+					game.armor[i].SetQuantity(game.artisans [1].quantity + game.armor[i].quantity);
+				}
+			}
+			ResetItemAfterSpeedUpOrJobCancel(ArtisanArmorPanel, id);
+			game.artisans[1].UpdateObject();
+		}else if (id == game.artisans [2].targetId) {
+			time = game.artisans[2].etaTimestamp;
+			game.artisans[2].status = 3;
+			game.artisans[2].etaTimestamp = DateTime.Now;
+			count = game.shield.Count;
+			for (int i =0 ; i < count ; i++){
+				if (game.shield[i].type == id){
+					game.shield[i].SetQuantity(game.artisans [2].quantity + game.shield[i].quantity);
+				}
+			}
+			ResetItemAfterSpeedUpOrJobCancel(ArtisanShieldPanel, id);
+			game.artisans[2].UpdateObject();
+		}
+		TimeSpan tdiff = time - DateTime.Now;
+		int cost = (int)(tdiff.TotalHours * 10);
+		game.wealth [1].Deduct (cost);
+		HidePanel (SpeedUpPopup);
+	}
+
+	void OnCancelPopupConfirmed(){
+		int money = 0;
+		money = p.products[CancelId].attributes["NumberOfProductionResources"].AsInt * game.artisans[CancelType].quantity;
+
+		game.artisans [CancelType].status = 0;
+		game.artisans [CancelType].etaTimestamp = DateTime.Now;
+		game.artisans [CancelType].UpdateObject ();
+
+		game.wealth [2].Add (money);
+		CancelType = 0;
+		if (CancelType == 0) {
+			ResetItemAfterSpeedUpOrJobCancel (ArtisanWeaponPanel,CancelId);
+		} else if (CancelType == 1) {
+			ResetItemAfterSpeedUpOrJobCancel (ArtisanArmorPanel,CancelId);
+		} else {
+			ResetItemAfterSpeedUpOrJobCancel (ArtisanShieldPanel,CancelId);
+		}
+
+		HidePanel (JobCancelPopup);
 	}
 
 	void SetJob(){
@@ -212,6 +296,7 @@ public class ArtisanHolder : MonoBehaviour {
 		}else if (game.artisans [1].etaTimestamp > DateTime.Now) {
 			IdArmorWhichProducing = game.artisans[1].targetId;
 		}else if (game.artisans [2].etaTimestamp > DateTime.Now) {
+			IdShieldWhichProducing = game.artisans[2].targetId;
 		}
 	}
 
@@ -248,16 +333,19 @@ public class ArtisanHolder : MonoBehaviour {
 	void OnWeaponJobComplete(){
 		SetItemButtonInteractable (ArtisanWeaponPanel, true);
 		game.artisans [0].status = 3;
+		game.artisans [0].UpdateObject ();
 	}
 
 	void OnArmorJobComplete(){
 		SetItemButtonInteractable (ArtisanArmorPanel, true);
 		game.artisans [1].status = 3;
+		game.artisans [1].UpdateObject ();
 	}
 
 	void OnShieldJobComplete(){
 		SetItemButtonInteractable (ArtisanShieldPanel, true);
 		game.artisans [2].status = 3;
+		game.artisans [2].UpdateObject ();
 	}
 
 	void SetItemButtonActivateWhenJobComplete(){
@@ -291,4 +379,13 @@ public class ArtisanHolder : MonoBehaviour {
 		panel.SetActive (false);
 	}
 
+	void ResetItemAfterSpeedUpOrJobCancel(GameObject panel, int idEnd){
+		int count = panel.transform.childCount;
+		for (int i =0; i< count; i++) {
+			if(panel.transform.GetChild(i).GetComponent<WeaponMaking>().id == idEnd){
+				panel.transform.GetChild(i).GetComponent<WeaponMaking>().eta = DateTime.Now;
+				return;
+			}
+		}
+	}
 }
