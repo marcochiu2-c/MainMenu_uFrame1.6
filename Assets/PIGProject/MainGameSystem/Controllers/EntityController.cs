@@ -17,7 +17,6 @@ public class EntityController : EntityControllerBase {
 
     public override void InitializeEntity(EntityViewModel viewModel) {
         base.InitializeEntity(viewModel);
-		MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
 		//Debug.Log (MainGameVM== null ? "MainGameVM is null" : MainGameVM.Identifier);
 	}
 	
@@ -44,6 +43,8 @@ public class EntityController : EntityControllerBase {
 	
 	public override void ChangeHealth(EntityViewModel viewModel) {
 		base.ChangeBattleState(viewModel);
+		if (MainGameVM == null)
+			MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
 		//MainGameVM.GameState = GameState.GameOver;
 		
 		viewModel.BattleState = BattleState.DEAD;

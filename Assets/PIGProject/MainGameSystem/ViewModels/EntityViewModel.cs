@@ -12,7 +12,7 @@ using UniRx;
 using Gamelogic.Grids;
 
 public partial class EntityViewModel : EntityViewModelBase {
-	public float actualHit;
+	public float actualHit;  //func
 	public float hitRate;
 	public float otherHit;
 	public float physiqueCapacity;
