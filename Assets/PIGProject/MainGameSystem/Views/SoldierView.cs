@@ -15,7 +15,7 @@ using DG.Tweening;
 
 public class SoldierView : SoldierViewBase {
 
-	public GSHexGridManager gSHexGridManager;
+	//public GSHexGridManager gSHexGridManager;
 
 	/*
 	public Button SlowButton; 
@@ -46,7 +46,7 @@ public class SoldierView : SoldierViewBase {
         // var vm = model as PlayerViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
 		//Debug.Log("Max_Quantity = " + Max_Quantity);
-		gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent<GSHexGridManager>();
+		//gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent<GSHexGridManager>();
 	}
     
     public override void Bind() {
