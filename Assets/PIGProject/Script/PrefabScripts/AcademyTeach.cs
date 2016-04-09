@@ -47,6 +47,7 @@ public class AcademyTeach : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 //		Debug.Log (Utilities.TimeUpdate.Time (etaTimestamp));
+//		LeftTimeText.text = (etaTimestamp > DateTime.Now) ? Utilities.TimeUpdate.Time (etaTimestamp) : "00:00:00";
 		LeftTimeText.text = Utilities.TimeUpdate.Time (etaTimestamp);
 	}
 

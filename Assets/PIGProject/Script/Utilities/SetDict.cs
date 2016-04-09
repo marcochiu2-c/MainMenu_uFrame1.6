@@ -8,6 +8,7 @@ namespace Utilities{
 
 		public static Dictionary<int,string> Knowledge(){
 			Dictionary<int,string> dict = new Dictionary<int,string> ();
+			dict.Add (0, "");
 			dict.Add (2001, "木工");
 			dict.Add (2002,"冶鐵");
 			dict.Add (2003,"鍊鋼");
