@@ -667,8 +667,8 @@ public class Trainings {
 		type = j ["type"].AsInt;
 		trainerId = j ["trainerId"].AsInt;
 		targetId = j ["targetId"].AsInt;
-		startTimestamp = Convert.ToDateTime(j ["startTimestamp"]);
-		etaTimestamp = Convert.ToDateTime(j ["etaTimestamp"]);
+		startTimestamp = Convert.ToDateTime(j ["start_timestamp"]);
+		etaTimestamp = Convert.ToDateTime(j ["eta_timestamp"]);
 		status = j ["status"].AsInt;
 	}
 
@@ -679,8 +679,8 @@ public class Trainings {
 		j.Add ("type", new JSONData (type));
 		j.Add ("trainerId", new JSONData (trainerId));
 		j.Add ("targetId", new JSONData (targetId));
-		j ["startTimestamp"] = startTimestamp.ToString();
-		j ["etaTimestamp"] = etaTimestamp.ToString();
+		j ["start_time"] = startTimestamp.ToString();
+		j ["eta_time"] = etaTimestamp.ToString();
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}

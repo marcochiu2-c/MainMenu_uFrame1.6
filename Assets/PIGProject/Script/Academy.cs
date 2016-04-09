@@ -1,6 +1,4 @@
-﻿//TODO Delete CommandedPopup, KnowledgePopup and FightingPopup and events in 4 buttons
-
-//#define TEST
+﻿//#define TEST
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,6 +41,8 @@ public class Academy : MonoBehaviour
 	public static GameObject staticTeachHolder;
 	public static List<Counselor> cStudentList;
 	bool firstCalled = false;
+	public int TrainingTimeTaught = 10;  // in hours
+	public int TrainingCoolDownPeriod = 24; // in hours, cannot train again in the same slot for given hours.
 	WsClient wsc;
 	Game game;
 //	public ListView.ColumnHeaderCollection ListViewColumns;
@@ -67,7 +67,7 @@ public class Academy : MonoBehaviour
 		btnName [2] = "KnowledgeButton";
 		btnName [3] = "FightingButton";
 		qaBtnName [0] = "SelfStudyButton";
-		qaBtnName [0] = "TeachButton";
+		qaBtnName [1] = "TeachButton";
 		SetDictionary ();
 		Debug.Log ("Supposed to be AcademyHolder: "+transform);
 		Debug.Log ("Supposed to be base panel of AcademyHolder: "+transform.GetChild(1));
@@ -162,7 +162,7 @@ public class Academy : MonoBehaviour
 //		}
 
 		// Test Data
-
+		SetupStudentPrefabList ();
 		SetupAcademyPanel ();
 		SetTeachItems (tList);
 
@@ -210,39 +210,46 @@ public class Academy : MonoBehaviour
 
 	public void SetTeachItems(List<Trainings> tr){
 		Dictionary<int,string> KnowledgeDict = Utilities.SetDict.Knowledge ();
-		List<AcademyTeach> si=null;
-		int iqCount = 0;
-		int cCount = 0;
-		int kCount = 0;
-		int fCount = 0;
-		int tempCount=0;
+		AcademyTeach si = new AcademyTeach();
 
-		int trainCount = (tr.Count>20)? 20 : tr.Count;
+		int trainCount = 20;
 		for (int i =0; i< trainCount; i++) {
 			int trainType = tr[i].type;
 			int trainerId = tr[i].trainerId;
 			int targetId = tr[i].targetId;
 //		GameObject sp=null;
-			if (trainType >= 0 && trainType <= 1000) {
-				si = AcademyTeach.IQTeach;
-				tempCount = iqCount++;
-			} else if (trainType >= 1001 && trainType <= 2000) {
-				si = AcademyTeach.CommandedTeach;
-				tempCount = cCount++;
-			} else if (trainType >= 2001 && trainType <= 3000) {
-				si = AcademyTeach.KnowledgeTeach;
-				tempCount = kCount++;
-			} else if (trainType >= 3001 && trainType <= 4000) {
-				si = AcademyTeach.FightingTeach;
-				tempCount = fCount++;
+			if (i<6) {
+				si = AcademyTeach.IQTeach[i];
+			} else if (i> 5 && i<11) {
+				si = AcademyTeach.CommandedTeach[i-5];
+			} else if (i> 10 && i<16) {
+				si = AcademyTeach.KnowledgeTeach[i-10];
+			} else if (i> 15 && i<21) {
+				si = AcademyTeach.FightingTeach[i-15];
+			}
+			si.etaTimestamp = tr[i].etaTimestamp;
+			si.KnowledgeText.text = KnowledgeDict [trainType];
+			if (trainerId != 0 && targetId !=0){
+				si.TeacherPic = imageDict [trainerId];
+			    si.TeacherImageText.text = nameDict [trainerId];
+				si.StudentPic = imageDict [targetId];
+				si.StudentImageText.text = nameDict [targetId];
+			}else{
+				si.TeacherPic = null;
+				si.TeacherImageText.text = nameDict [trainerId];
+				si.StudentPic = null;
+				si.StudentImageText.text = nameDict [targetId];
+			}
+			if (i<6) {
+				AcademyTeach.IQTeach.Add (si);
+			} else if (i> 5 && i<11) {
+				AcademyTeach.CommandedTeach.Add (si);
+			} else if (i> 10 && i<16) {
+				AcademyTeach.KnowledgeTeach.Add (si);
+			} else if (i> 15 && i<21) {
+				AcademyTeach.FightingTeach.Add (si);
 			}
 
-			si[tempCount].etaTimestamp = tr[i].etaTimestamp;
-			si[tempCount].KnowledgeText.text = KnowledgeDict [trainType];
-			si[tempCount].TeacherPic = imageDict [trainerId];
-			si[tempCount].StudentPic = imageDict [targetId];
-			si[tempCount].TeacherImageText.text = nameDict [trainerId];
-			si[tempCount].StudentImageText.text = nameDict [targetId];
 		}
 	}
 
@@ -487,7 +494,7 @@ public class Academy : MonoBehaviour
 		imageDict.Add(/*"趙括",*/ 27,ChiuTim);
 		imageDict.Add(/*"朱般懟",*/ 28,ChuBunDeui);
 		imageDict.Add(/*"辰漾守",*/ 29,SanYeungSau);
-
+		nameDict.Add (0, "");
 		nameDict.Add(1,"姜子牙");
 		nameDict.Add(2,"吳起");
 		nameDict.Add(3,"孫武");

@@ -135,7 +135,7 @@ enum jsonFuncNumberEnum {
 	newAccountArmor  = 281,
 	newAccountShield = 282,
 	newAccountCheckIn= 283,
-
+	newAccountTrainingSlots = 284,
 };
 
 
@@ -219,6 +219,7 @@ public class WsClient {
 		Game game = Game.Instance;
 		JSONArray jArray;
 		JSONNode json;
+		int count = 0;
 		switch ((jsonFuncNumberEnum)j ["func"].AsInt) {
 		case jsonFuncNumberEnum.allData:
 //			game.parseJSON(e.Data);
@@ -299,7 +300,6 @@ public class WsClient {
 				List<Wealth> wealthList;
 				wealthList = new List<Wealth> ();
 		//					SimpleJSON.JSONArray wealths = (SimpleJSON.JSONArray) SimpleJSON.JSON.Parse (e.Data);
-				Debug.Log (j["obj"]);
 				JSONArray wealths = (SimpleJSON.JSONArray) j["obj"];
 				IEnumerator w = wealths.GetEnumerator ();
 				while (w.MoveNext ()) {
