@@ -60,6 +60,7 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 		
 		LocalUser = uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
 		Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.Identifier);
+
     }
     
     public override void Bind() {

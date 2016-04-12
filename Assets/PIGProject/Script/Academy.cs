@@ -23,7 +23,7 @@ public class Academy : MonoBehaviour
 		public float SliderValue;
 		public string ImageKey;
 	}
-	
+
 	public Button[] buttons = new Button[4];
 	string[] btnName = new string[4];
 	public Button[] qaButtons = new Button[2];
@@ -34,6 +34,9 @@ public class Academy : MonoBehaviour
 	public GameObject SelfStudyHolder;
 	public GameObject TeachHolder;
 	public GameObject QAHolder;
+	public GameObject KnowledgeListHolder;
+	public GameObject ConfirmTeacherBy;
+	public GameObject LowerThanTrainer;
 	public Transform TeachScrollPanel;
 	public Transform StudentScrollPanel;
 	Dictionary<int,Sprite> imageDict;
@@ -43,6 +46,7 @@ public class Academy : MonoBehaviour
 	bool firstCalled = false;
 	public int TrainingTimeTaught = 10;  // in hours
 	public int TrainingCoolDownPeriod = 24; // in hours, cannot train again in the same slot for given hours.
+	public static GameObject staticAcademyHolder;
 	WsClient wsc;
 	Game game;
 //	public ListView.ColumnHeaderCollection ListViewColumns;
@@ -61,7 +65,7 @@ public class Academy : MonoBehaviour
 	}
 
 	public void CallAcademy(){
-
+		staticAcademyHolder = AcademyHolder;
 		btnName [0] = "IQButton";
 		btnName [1] = "CommandedButton";
 		btnName [2] = "KnowledgeButton";
@@ -71,41 +75,21 @@ public class Academy : MonoBehaviour
 		SetDictionary ();
 		Debug.Log ("Supposed to be AcademyHolder: "+transform);
 		Debug.Log ("Supposed to be base panel of AcademyHolder: "+transform.GetChild(1));
-//		for (var i = 0; i <4; i++) {  // set Buttons array by script
-//			buttons[i] = transform.GetChild(1).GetChild(1).GetChild(i).GetComponent<Button>();
-//		}
+
 		AddButtonListener ();
-
-
+		KnowledgeOption.AssignButton (KnowledgeListHolder);
+		KnowledgeOption.AddButtonListener (KnowledgeListHolder,gameObject);
+		Debug.Log (KnowledgeOption.Woodworker);
 		Academy.staticTeachHolder = TeachHolder;
 
 
 
 		wsc = WsClient.Instance;
 		game = Game.Instance;
-
+		cStudentList = new List<Counselor> ();
 		techTreeList = TechTreeObject.GetList (1);
 		numberOfTech = techTreeList.Count;
-		
-		//		JSONNode json = new JSONClass ();
-//
-//		if (wsc.conn.IsAlive) {
-//
-//			json ["data"] = "1"; //game.login.id;
-//
-//			json ["action"] = "GET";
-//			json ["table"] = "users";
-//			wsc.conn.Send (json.ToString ());
-//
-//			json ["data"] = "1";
-//			json ["table"] = "getCounselorInfoByUserId";
-//			wsc.conn.Send (json.ToString ());
-//
-//			json ["table"] = "generals";
-//			wsc.conn.Send (json.ToString ());
-//		} else {
-//			Debug.Log ("Websocket Connection Lost!");
-//		}
+
 
 		SetCharacters ();
 
@@ -114,12 +98,7 @@ public class Academy : MonoBehaviour
 		
 		#region setListOfTrainings
 		List<Trainings> tList = game.trainings;
-#if TEST
-		tList.Add (new Trainings(2,2001,20,12, DateTime.Now, new DateTime(2016,4,1,0,0,0),1));
-		tList.Add (new Trainings(3,2002,21,15, DateTime.Now, new DateTime(2016,4,1,0,0,0),1));
-#else
 
-#endif
 		var tlCount = tList.Count;
 		
 		for (int k = 0 ; k < tlCount ; k++){
@@ -128,40 +107,7 @@ public class Academy : MonoBehaviour
 		
 		#endregion
 		
-		#region setListOfCounselorStudentCandidate
-		
-//		Academy.cStudentList = game.counselor;
-//		Debug.Log ("Number of Counselors: "+game.counselor.Count);
-//#if TEST
-//		Academy.cStudentList.Add (new Counselor(30,new JSONClass(),2,1));
-//		Academy.cStudentList.Add (new Counselor(20,new JSONClass(),21,1));
-//		Academy.cStudentList.Add (new Counselor(21,new JSONClass(),25,1));
-//		Academy.cStudentList.Add (new Counselor(23,(JSONClass) JSON.Parse("{\"skills\":[{\"name\":\"木工\",\"level\":1},{\"name\":\"化學\",\"level\":4}]}"),26,1));
-//		Academy.cStudentList.Add (new Counselor(24,new JSONClass(),27,1));
-//		Academy.cStudentList.Add (new Counselor(25,new JSONClass(),28,1));
-//#endif
-//		int cslCount = 0; 
-//
-//		for (var i = 0 ; i < Academy.cStudentList.Count ; i++){
-//			for (var j = 0 ; j < tlCount ; j++){
-//				if (tList[j].trainerId == Academy.cStudentList[i].id || tList[j].targetId == Academy.cStudentList[i].id){
-//					Debug.Log ("Id of character those are training: "+Academy.cStudentList[i].id);
-//					Academy.cStudentList.Remove(Academy.cStudentList[i]);
-//				}
-//			}
-//		}  
-//		cslCount = Academy.cStudentList.Count;
-//		for (var i = 0 ; i < cslCount ; i++){
-//			CreateStudentItem (Academy.cStudentList[i]);
-//		}
-		//AcademyStudent.showSkillsOptionPanel("knowledge");
-		#endregion
-//		var num = game.trainings.Count;
-//		for (var i = 0; i < num; i++) {
-//			CreateItem(game.trainings[i].type,game.trainings[i].trainerId,game.trainings[i].targetId, game.trainings[i].etaTimestamp);
-//		}
 
-		// Test Data
 		SetupStudentPrefabList ();
 		SetupAcademyPanel ();
 		SetTeachItems (tList);
@@ -171,23 +117,18 @@ public class Academy : MonoBehaviour
 	}
 
 	public void SetupStudentPrefabList(){
-				Academy.cStudentList = game.counselor;
+		for (int j = 0 ; j < game.counselor.Count; j++){
+			cStudentList.Add (new Counselor(game.counselor[j]));
+		}
 		Debug.Log ("Number of Counselors: "+game.counselor.Count);
-#if TEST
-		Academy.cStudentList.Add (new Counselor(30,new JSONClass(),2,1));
-		Academy.cStudentList.Add (new Counselor(20,new JSONClass(),21,1));
-		Academy.cStudentList.Add (new Counselor(21,new JSONClass(),25,1));
-		Academy.cStudentList.Add (new Counselor(23,(JSONClass) JSON.Parse("{\"skills\":[{\"name\":\"木工\",\"level\":1},{\"name\":\"化學\",\"level\":4}]}"),26,1));
-		Academy.cStudentList.Add (new Counselor(24,new JSONClass(),27,1));
-		Academy.cStudentList.Add (new Counselor(25,new JSONClass(),28,1));
-#endif
+
 		int cslCount = 0; 
 		List<Trainings> tList = game.trainings;
 		var tlCount = tList.Count;
 		for (var i = 0 ; i < Academy.cStudentList.Count ; i++){
 			for (var j = 0 ; j < tlCount ; j++){
 				if (tList[j].trainerId == Academy.cStudentList[i].id || tList[j].targetId == Academy.cStudentList[i].id){
-					Debug.Log ("Id of character those are training: "+Academy.cStudentList[i].id);
+//					Debug.Log ("Id of character those are training: "+Academy.cStudentList[i].id);
 					Academy.cStudentList.Remove(Academy.cStudentList[i]);
 				}
 			}
@@ -209,45 +150,63 @@ public class Academy : MonoBehaviour
 	}
 
 	public void SetTeachItems(List<Trainings> tr){
+		Game game = Game.Instance;
 		Dictionary<int,string> KnowledgeDict = Utilities.SetDict.Knowledge ();
 		AcademyTeach si = new AcademyTeach();
 
 		int trainCount = 20;
 		for (int i =0; i< trainCount; i++) {
-			int trainType = tr[i].type;
+			int trainingType = tr[i].type;
 			int trainerId = tr[i].trainerId;
 			int targetId = tr[i].targetId;
 //		GameObject sp=null;
-			if (i<6) {
+			if (i<5) {
 				si = AcademyTeach.IQTeach[i];
-			} else if (i> 5 && i<11) {
+				if(tr[i].targetId != 0){
+					si.KnowledgeText.text = (game.counselor[game.counselor.FindIndex(x => x.id == tr[i].targetId)].attributes["attributes"]["IQ"].AsFloat+1).ToString();
+				}
+			} else if (i> 4 && i<10) {
 				si = AcademyTeach.CommandedTeach[i-5];
-			} else if (i> 10 && i<16) {
+				if(tr[i].targetId != 0){
+					Debug.Log (game.counselor.FindIndex(x => x.id == 3))	;
+					Debug.Log (game.counselor[game.counselor.FindIndex(x => x.id == tr[i].targetId)].attributes["attributes"]["Leadership"].AsFloat)	;
+					si.KnowledgeText.text = (game.counselor[game.counselor.FindIndex(x => x.id == tr[i].targetId)].attributes["attributes"]["Leadership"].AsFloat+1).ToString();
+				}
+			} else if (i> 9 && i<15) {
 				si = AcademyTeach.KnowledgeTeach[i-10];
-			} else if (i> 15 && i<21) {
+			} else if (i> 14 && i<20) {
 				si = AcademyTeach.FightingTeach[i-15];
 			}
+			si.trainingObject = game.trainings[i];
 			si.etaTimestamp = tr[i].etaTimestamp;
-			si.KnowledgeText.text = KnowledgeDict [trainType];
 			if (trainerId != 0 && targetId !=0){
 				si.TeacherPic = imageDict [trainerId];
 			    si.TeacherImageText.text = nameDict [trainerId];
 				si.StudentPic = imageDict [targetId];
 				si.StudentImageText.text = nameDict [targetId];
+				si.trainerId = trainerId;
+
+//				si.TeacherDropZone.enabled = false;
+//				si.StudentDropZone.enabled = false;
+				si.isDropZoneEnabled = false;
+
+				si.targetId = targetId;
+				si.trainingType = tr[i].type;
 			}else{
 				si.TeacherPic = null;
 				si.TeacherImageText.text = nameDict [trainerId];
 				si.StudentPic = null;
 				si.StudentImageText.text = nameDict [targetId];
+				si.isDropZoneEnabled = true;
 			}
-			if (i<6) {
-				AcademyTeach.IQTeach.Add (si);
-			} else if (i> 5 && i<11) {
-				AcademyTeach.CommandedTeach.Add (si);
-			} else if (i> 10 && i<16) {
-				AcademyTeach.KnowledgeTeach.Add (si);
-			} else if (i> 15 && i<21) {
-				AcademyTeach.FightingTeach.Add (si);
+			if (i<5) {
+				AcademyTeach.IQTeach[i] = si;
+			} else if (i> 4 && i<10) {
+				AcademyTeach.CommandedTeach[i-5] = si;
+			} else if (i> 9 && i<15) {
+				AcademyTeach.KnowledgeTeach[i-10] = si;
+			} else if (i> 14 && i<20) {
+				AcademyTeach.FightingTeach[i-15] = si;
 			}
 
 		}
@@ -262,33 +221,6 @@ public class Academy : MonoBehaviour
 		}
 	}
 
-#if TEST
-	public void CreateTeachItems(string panel,int quantity){
-		List<AcademyTeach> si=null;
-		GameObject sp=null;
-		if (panel == "IQ") {
-			si = AcademyTeach.IQTeach;
-		}else if (panel == "Commanded") {
-			si = AcademyTeach.CommandedTeach;
-		}else if (panel == "Knowledge") {
-			si = AcademyTeach.KnowledgeTeach;
-		}else if (panel == "Fighting") {
-			si = AcademyTeach.FightingTeach;
-		}
-		
-		for (var i = 0; i < quantity; i++) { 
-			AcademyTeach obj = Instantiate(Resources.Load("AcademyTeachPrefab") as GameObject).GetComponent<AcademyTeach>();
-			obj.etaTimestamp = new DateTime(2016,3,25,i,0,0);
-			Debug.Log (new DateTime(2016,3,25,i,0,0));
-			obj.KnowledgeText.text = panel;
-			si.Add (obj);
-			obj.TeacherPic = imageDict[i+1];
-			obj.StudentPic = imageDict[i+1];
-			obj.TeacherImageText.text = nameDict[i+1];
-			obj.StudentImageText.text = nameDict[i+1];
-		}
-	}
-#endif
 
 	public void SetPanelActive (string panel){
 		if (panel == "IQ") {
@@ -313,7 +245,16 @@ public class Academy : MonoBehaviour
 			AcademyTeach.showPanelItems(AcademyTeach.FightingTeach);
 		}
 		AcademyStudent.showPanelItems(AcademyStudent.Students);
+		SetStudentImageText (panel);
+	}
 
+	void SetStudentImageText(string panel){
+		int count = AcademyStudent.Students.Count;
+
+		List<AcademyStudent> s = AcademyStudent.Students;
+		for (var i =0; i < count; i++) {
+			 s[i].SetAttributeText(panel);
+		}
 	}
 
 
@@ -328,11 +269,16 @@ public class Academy : MonoBehaviour
 //		if (!firstCalled) {
 //			Invoke("CallAcademy",1);
 //		}
-		AcademyTeach.setDropZone(AcademyTeach.IQTeach);
-		AcademyTeach.setDropZone(AcademyTeach.CommandedTeach);
-		AcademyTeach.setDropZone(AcademyTeach.KnowledgeTeach);
-		AcademyTeach.setDropZone(AcademyTeach.FightingTeach);
+//		AcademyTeach.setDropZone(AcademyTeach.IQTeach);
+//		AcademyTeach.setDropZone(AcademyTeach.CommandedTeach);
+//		AcademyTeach.setDropZone(AcademyTeach.KnowledgeTeach);
+//		AcademyTeach.setDropZone(AcademyTeach.FightingTeach);
 
+
+		// re-setup while no student prefab exist since prefabs destroyed while panel close
+		if (gameObject.activeSelf == true && AcademyStudent.Students.Count == 0 && game.counselor.Count != 0){
+			SetupStudentPrefabList();
+		}
 	}
 
 	public void SetPanelParent(string panelToShow){
@@ -372,14 +318,28 @@ public class Academy : MonoBehaviour
 
 		if (Academy.activePopup == ActivePopupEnum.IQPopup) {
 			SetPanelActive ("IQ");
+			SetTaughtHeaderTargetText ("IQ");
 		} else if (Academy.activePopup == ActivePopupEnum.CommandedPopup) {
 			SetPanelActive ("Commanded");
+			SetTaughtHeaderTargetText ("Commanded");
 		} else if (Academy.activePopup == ActivePopupEnum.KnowledgePopup) {
 			SetPanelActive ("Knowledge");
+			SetTaughtHeaderTargetText ("Knowledge");
 		} else if (Academy.activePopup == ActivePopupEnum.FightingPopup) {
 			SetPanelActive ("Fighting");
+			SetTaughtHeaderTargetText ("Fighting");
 		}
 
+	}
+
+	void SetTaughtHeaderTargetText(string header){
+		string txt = "";
+		if (header == "Knowledge") {
+			txt = "學問";
+		} else {
+			txt = "期望值";
+		}
+		TeachHolder.transform.GetChild (1).GetChild (0).GetChild (2).GetComponent<Text> ().text = txt;
 	}
 
 	void AddButtonListener(){
@@ -404,6 +364,7 @@ public class Academy : MonoBehaviour
 			for (int i = 0 ; i < count ; i++){
 //				GameObject.DestroyImmediate( StudentScrollPanel.transform.GetChild(0).gameObject);
 				GameObject.DestroyImmediate( AcademyStudent.Students[i].gameObject);
+				AcademyStudent.Students.Remove(AcademyStudent.Students[i].gameObject.GetComponent<AcademyStudent>());
 			}
 			AcademyStudent.Students = new List<AcademyStudent>();
 			Academy.activePopup = ActivePopupEnum.none;
@@ -411,8 +372,88 @@ public class Academy : MonoBehaviour
 			TeachHolder.SetActive(false);
 			AcademyHolder.SetActive(false);
 			MainScene.MainUIHolder.SetActive(true);
+		});
+		KnowledgeListHolder.transform.GetChild (3).GetComponent<Button> ().onClick.AddListener (() => {
+			KnowledgeListHolder.SetActive(false);
+			ResetTeachPanel();
+		});
+
+		Utilities.Panel.GetConfirmButton(LowerThanTrainer).onClick.AddListener (() => {
+			LowerThanTrainer.SetActive(false);
+			ResetTeachPanel();
+//			Trainings obj  = AcademyStudent.currentTeachItem.trainingObject;
+//			int index = game.trainings.FindIndex(x => x == obj);
+//			if (index < 5){
+//				SetStudentImageText ("IQ");
+//			}else if (index > 4 && index < 10){
+//				SetStudentImageText ("Commaned");
+//			}else if (index > 9 && index < 15){
+//				SetStudentImageText ("Knowledge");
+//			}else if (index > 14 && index < 20){
+//				SetStudentImageText ("Fighting");
+//			}
+
+			if (AcademyStudent.IsLevelNotReach){
+				AcademyStudent.reCreateStudentItem(AcademyStudent.currentStudentPrefab.GetComponent<AcademyStudent>(),false);
+				GameObject.Destroy(AcademyStudent.currentStudentPrefab);
+				AcademyStudent.Students.Remove(AcademyStudent.currentStudentPrefab.GetComponent<AcademyStudent>());
+				AcademyStudent.IsLevelNotReach = false;
+			}
 
 		});
+
+		Utilities.Panel.GetConfirmButton (ConfirmTeacherBy).onClick.AddListener (() => {
+			ConfirmTeacherBy.SetActive(false);
+			//TODO set training object
+			Trainings obj  = AcademyStudent.currentTeachItem.trainingObject;
+			int index = game.trainings.FindIndex(x => x == obj);
+			Debug.Log("Training item index in DB: "+obj.id);
+			game.trainings[index].trainerId = AcademyStudent.currentTeachItem.trainerId;
+			game.trainings[index].targetId = AcademyStudent.currentTeachItem.targetId;
+			game.trainings[index].startTimestamp = DateTime.Now;
+			game.trainings[index].etaTimestamp = DateTime.Now+new TimeSpan(TrainingTimeTaught,0,0);
+			game.trainings[index].status = 1;
+			if (index < 5){
+				game.trainings[index].type = 1;
+				AcademyStudent.currentTeachItem.KnowledgeText.text = (game.counselor[game.counselor.FindIndex(x => x.id == AcademyStudent.currentTeachItem.targetId)].attributes["attributes"]["IQ"].AsInt+1).ToString();
+			}else if (index > 4 && index < 10){
+				game.trainings[index].type = 2;
+				AcademyStudent.currentTeachItem.KnowledgeText.text = (game.counselor[game.counselor.FindIndex(x => x.id == AcademyStudent.currentTeachItem.targetId)].attributes["attributes"]["Leadership"].AsInt+1).ToString();
+			}else if (index > 9 && index < 15){
+				game.trainings[index].type = KnowledgeOption.knowledge;
+				Dictionary<int,string> KnowledgeDict = Utilities.SetDict.Knowledge();
+				AcademyStudent.currentTeachItem.KnowledgeText.text = String.Format ("{0}({1})",
+								KnowledgeDict[KnowledgeOption.knowledge],
+				                game.counselor.Find(x => x.id == game.trainings[index].targetId).attributes["attributes"]["KnownKnowledge"][KnowledgeOption.knowledgeName]
+				); 
+			}else if (index > 14 && index < 20){
+
+			}
+			Debug.Log (game.trainings[index].toJSON());
+			game.trainings[index].UpdateObject();
+			AcademyStudent.currentTeachItem.LeftTimeText.text = Utilities.TimeUpdate.Time (game.trainings[index].etaTimestamp);
+			KnowledgeOption.knowledge = 0;
+			KnowledgeOption.knowledgeName ="";
+		});
+
+		Utilities.Panel.GetCancelButton (ConfirmTeacherBy).onClick.AddListener (() => {
+			ConfirmTeacherBy.SetActive(false);
+			ResetTeachPanel();
+		});
+	}
+
+	void ResetTeachPanel(){
+		AcademyStudent.reCreateStudentItem(AcademyStudent.currentTeachItem);
+		AcademyStudent.currentTeachItem.TeacherImage.sprite = null;
+		AcademyStudent.currentTeachItem.StudentImage.sprite = null;
+		AcademyStudent.currentTeachItem.TeacherImageText.text = "";
+		AcademyStudent.currentTeachItem.StudentImageText.text = "";
+		AcademyStudent.currentTeachItem.KnowledgeText.text = "";
+		AcademyStudent.currentTeachItem.LeftTimeText.text = "00:00:00";
+		AcademyStudent.currentTeachItem.trainerId=0;
+		AcademyStudent.currentTeachItem.targetId=0;
+		AcademyStudent.currentTeachItem.trainingType=0;
+		AcademyStudent.currentTeachItem.targetType = 0;
 	}
 
 	void SetDictionary(){

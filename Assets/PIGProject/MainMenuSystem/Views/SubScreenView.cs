@@ -83,6 +83,7 @@ public class SubScreenView : SubScreenViewBase
 #if (TEST)
 			ScreenUIContainer.transform.DOLocalMoveY(2f, time).SetEase(Ease.InOutBack).OnStart(()=>{
 				Debug.Log ("DoLocalMoveY called");
+				Debug.Log (ScreenUIContainer);
 				ScreenUIContainer.gameObject.SetActive(true);
 				bgm.Play ();
 			});

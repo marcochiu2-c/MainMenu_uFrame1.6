@@ -388,6 +388,13 @@ public class Counselor {
 		status = s;
 	}
 
+	public Counselor(Counselor origCounselor){
+		id = origCounselor.id;
+		attributes = origCounselor.attributes;
+		type = origCounselor.type;
+		status = origCounselor.status;
+	}
+
 	public Counselor (SimpleJSON.JSONNode j){
 		id = j["id"].AsInt;
 		attributes = (JSONClass)j ["attributes"];
@@ -404,6 +411,8 @@ public class Counselor {
 		j.Add ("userId", new JSONData(game.login.id));
 		return j;
 	}
+
+
 
 	/// <summary>
 	/// Update the Object to database</summary>
@@ -663,13 +672,13 @@ public class Trainings {
 	}
 
 	public Trainings(JSONNode j){
-		id = j ["id"].AsInt;
+		id = j ["training_id"].AsInt;
 		type = j ["type"].AsInt;
-		trainerId = j ["trainerId"].AsInt;
-		targetId = j ["targetId"].AsInt;
+		trainerId = j ["trainer_id"].AsInt;
+		targetId = j ["training_target_id"].AsInt;
 		startTimestamp = Convert.ToDateTime(j ["start_timestamp"]);
 		etaTimestamp = Convert.ToDateTime(j ["eta_timestamp"]);
-		status = j ["status"].AsInt;
+		status = j ["training_status"].AsInt;
 	}
 
 	public JSONClass toJSON(){
@@ -679,10 +688,18 @@ public class Trainings {
 		j.Add ("type", new JSONData (type));
 		j.Add ("trainerId", new JSONData (trainerId));
 		j.Add ("targetId", new JSONData (targetId));
-		j ["start_time"] = startTimestamp.ToString();
-		j ["eta_time"] = etaTimestamp.ToString();
+		j ["start_time"] = new JSONData (WsClient.JSDate(startTimestamp));
+		j ["eta_time"] = new JSONData (WsClient.JSDate(etaTimestamp));
+		j ["status"] = new JSONData (status);
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
+	}
+
+	public void UpdateObject(){
+		WsClient wsc = WsClient.Instance;
+		if (id > 0 && etaTimestamp > DateTime.Now) {
+			wsc.Send ("training", "SET", toJSON ());
+		}
 	}
 }
 
