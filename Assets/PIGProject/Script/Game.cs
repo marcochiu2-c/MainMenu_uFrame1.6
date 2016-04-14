@@ -417,6 +417,7 @@ public class Counselor {
 	/// <summary>
 	/// Update the Object to database</summary>
 	public void UpdateObject(){
+		Debug.Log ("Updating Counselor");
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("counselors", "SET", toJSON());
 	}
@@ -661,6 +662,9 @@ public class Trainings {
 	public DateTime etaTimestamp { get; set; }
 	public int status { get; set; }
 
+	public Trainings(){
+	}
+
 	public Trainings(int i, int t, int tr, int tid, DateTime sts, DateTime ets, int s){
 		id = i;
 		type = t;
@@ -673,7 +677,7 @@ public class Trainings {
 
 	public Trainings(JSONNode j){
 		id = j ["training_id"].AsInt;
-		type = j ["type"].AsInt;
+		type = j ["training_type"].AsInt;
 		trainerId = j ["trainer_id"].AsInt;
 		targetId = j ["training_target_id"].AsInt;
 		startTimestamp = Convert.ToDateTime(j ["start_timestamp"]);
@@ -697,7 +701,7 @@ public class Trainings {
 
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
-		if (id > 0 && etaTimestamp > DateTime.Now) {
+		if (id > 0 ) {
 			wsc.Send ("training", "SET", toJSON ());
 		}
 	}

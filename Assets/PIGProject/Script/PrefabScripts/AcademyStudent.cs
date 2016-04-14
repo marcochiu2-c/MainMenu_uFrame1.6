@@ -54,6 +54,7 @@ public class AcademyStudent : MonoBehaviour {
 				game = Game.Instance;
 				TimeSpan ts = new TimeSpan(24,0,0);
 				int index = game.trainings.FindIndex(x => x == at.trainingObject);
+				#region CheckCoolDownPeriodAndLevel
 				if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
 					if (game.trainings[AcademyTeach.IQTeach.FindIndex(x => x == at)].etaTimestamp > DateTime.Now + ts){
 						AcademyStudent.reCreateStudentItem(this,false);
@@ -64,6 +65,7 @@ public class AcademyStudent : MonoBehaviour {
 					if (index > 1 && index < 5){
 						ShowLevelNotReachPanel();
 						currentStudentPrefab =this.gameObject;
+						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
 						IsLevelNotReach = true;
 						return;
 					}
@@ -92,6 +94,7 @@ public class AcademyStudent : MonoBehaviour {
 						ShowLevelNotReachPanel();
 						GameObject.Destroy(this.gameObject);
 						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
+						IsLevelNotReach = true;
 						return;
 					}
 				}else if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "陣法"){
@@ -105,6 +108,7 @@ public class AcademyStudent : MonoBehaviour {
 						ShowLevelNotReachPanel();
 						GameObject.Destroy(this.gameObject);
 						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
+						IsLevelNotReach = true;
 						return;
 					}
 				}
@@ -137,15 +141,12 @@ public class AcademyStudent : MonoBehaviour {
 //					AcademyStudent.showSkillsOptionPanel(category);
 					ConfirmTrainingIfOk(at);
 				}
+				#endregion
 				drag.placeholderParent.GetComponent<Image>().sprite = StudentPic;
 				#endregion
 
-				#region OpenTeacherSkillsPanel
-// TODO if target object is TeacherImage, show panel for choosing skills/knowledges
-// TODO if both TeacherImage and StudentImage filled and choosen skills/knowledges, upload the details to DB.
 				GameObject.Destroy(this.gameObject);
 				Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-				#endregion
 				isDropped = true;
 			}
 		}

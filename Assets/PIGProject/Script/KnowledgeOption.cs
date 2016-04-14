@@ -41,85 +41,141 @@ public class KnowledgeOption : MonoBehaviour {
 		Woodworker.onClick.AddListener (() => {
 			knowledge = 2001;
 			knowledgeName = "Woodworker";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		MetalFabrication.onClick.AddListener (() => {
 			knowledge = 2002;
 			knowledgeName = "MetalFabrication";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		ChainSteel.onClick.AddListener (() => {
 			knowledge = 2003;
 			knowledgeName = "ChainSteel";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		MetalProcessing.onClick.AddListener (() => {
 			knowledge = 2004;
 			knowledgeName = "MetalProcessing";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			};
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Crafts.onClick.AddListener (() => {
 			knowledge = 2005;
 			knowledgeName = "Crafts";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Geometry.onClick.AddListener (() => {
 			knowledge = 2006;
 			knowledgeName = "Geometry";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Physics.onClick.AddListener (() => {
 			knowledge = 2007;
 			knowledgeName = "Physics";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Chemistry.onClick.AddListener (() => {
 			knowledge = 2008;
 			knowledgeName = "Chemistry";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		PeriodicTable.onClick.AddListener (() => {
 			knowledge = 2009;
 			knowledgeName = "PeriodicTable";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Pulley.onClick.AddListener (() => {
 			knowledge = 2010;
 			knowledgeName = "Pulley";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Anatomy.onClick.AddListener (() => {
 			knowledge = 2011;
 			knowledgeName = "Anatomy";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Catapult.onClick.AddListener (() => {
 			knowledge = 2012;
 			knowledgeName = "Catapult";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		GunpowderModulation.onClick.AddListener (() => {
 			knowledge = 2013;
 			knowledgeName = "GunpowderModulation";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Psychology.onClick.AddListener (() => {
 			knowledge = 2014;
 			knowledgeName = "Psychology";
-			parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			if (AcademySelfLearn.isSelfStudy){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 	}

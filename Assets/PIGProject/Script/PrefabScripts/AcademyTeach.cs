@@ -33,7 +33,7 @@ public class AcademyTeach : MonoBehaviour {
 
 	public DropZone TeacherDropZone;
 	public DropZone StudentDropZone;
-	public bool isDropZoneEnabled = false; 
+	public bool isDropZoneEnabled = true; 
 	public static int currentIQIndex=0;
 	public static int currentCommandedIndex=0;
 	public static int currentKnowledgeIndex=0;
@@ -59,7 +59,7 @@ public class AcademyTeach : MonoBehaviour {
 				game.trainings [index].targetId = 0;
 				game.trainings [index].type = 0;
 				game.trainings [index].UpdateObject();
-
+				isDropZoneEnabled = true;
 				int idx = game.trainings.FindIndex(x=> x == trainingObject);
 				if (trainingObject.trainerId == 0){
 					return;
