@@ -78,6 +78,5 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			DefensiveLinup.gameObject.SetActive (false);
 			Standings.gameObject.SetActive (true);
 		});
-
     }
 }

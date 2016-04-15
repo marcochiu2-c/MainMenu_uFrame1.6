@@ -60,7 +60,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	private Vector3 tempPoint;
 	private bool _targetSelected = false;
 	private FlatHexGrid<GSCell> walkableGrid;
-	private int _soldierCount = 0;
+	private int _soldierCount = 0;  
 	private bool _clicking = false;
 	private float _touchPosition;
 	
