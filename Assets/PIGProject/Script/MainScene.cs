@@ -108,6 +108,7 @@ public class MainScene : MonoBehaviour {
 		wsc.Send ("soldier","GET",new JSONData (MainScene.userId));
 		wsc.Send ("artisan","GET", new JSONData (MainScene.userId));
 		wsc.Send ("getCheckinInfo","GET", new JSONData (MainScene.userId));
+		wsc.Send ("training","GET", new JSONData (MainScene.userId));
 		MainScene.needReloadFromDB = false;
 	}
 
@@ -140,7 +141,6 @@ public class MainScene : MonoBehaviour {
 			game.login = new Login ((JSONClass)MainScene.UserInfo);
 //			Debug.Log (game.login.ToString());
 			MainScene.UserInfo = null;
-			Debug.Log (MainScene.userId);
 			if (MainScene.userId == 0){
 				MainScene.userId = game.login.id;
 				reloadFromDB();

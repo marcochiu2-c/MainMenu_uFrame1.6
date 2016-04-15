@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//#define TEST
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -134,8 +135,9 @@ enum jsonFuncNumberEnum {
 	newAccountArmor  = 281,
 	newAccountShield = 282,
 	newAccountCheckIn= 283,
-
+	newAccountTrainingSlots = 284,
 };
+
 
 
 public class WsClient {
@@ -143,8 +145,12 @@ public class WsClient {
 	public WebSocket conn;
 	//string table = "";
 	//string result = "";
+
+#if TEST
+	private string ip = "192.168.100.64";   //My PC
+#else
 	private string ip = "23.91.96.158";     //Production server
-//	private string ip = "192.168.100.64";   //My PC
+#endif
 	private int port = 8000; 
 	Game game;
 	// Use this for initialization
@@ -188,6 +194,7 @@ public class WsClient {
 			conn.OnMessage += (sender, e) => { 
 				if (e.Data != "[]"){
 					Debug.Log("Received Message: " +e.Data);
+					Debug.Log (JSON.Parse(e.Data).ToString());
 					handleMessage(JSON.Parse(e.Data));
 				}
 			};
@@ -213,6 +220,7 @@ public class WsClient {
 		Game game = Game.Instance;
 		JSONArray jArray;
 		JSONNode json;
+		int count = 0;
 		switch ((jsonFuncNumberEnum)j ["func"].AsInt) {
 		case jsonFuncNumberEnum.allData:
 //			game.parseJSON(e.Data);
@@ -293,7 +301,6 @@ public class WsClient {
 				List<Wealth> wealthList;
 				wealthList = new List<Wealth> ();
 		//					SimpleJSON.JSONArray wealths = (SimpleJSON.JSONArray) SimpleJSON.JSON.Parse (e.Data);
-				Debug.Log (j["obj"]);
 				JSONArray wealths = (SimpleJSON.JSONArray) j["obj"];
 				IEnumerator w = wealths.GetEnumerator ();
 				while (w.MoveNext ()) {
