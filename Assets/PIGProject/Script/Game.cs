@@ -388,6 +388,13 @@ public class Counselor {
 		status = s;
 	}
 
+	public Counselor(Counselor origCounselor){
+		id = origCounselor.id;
+		attributes = origCounselor.attributes;
+		type = origCounselor.type;
+		status = origCounselor.status;
+	}
+
 	public Counselor (SimpleJSON.JSONNode j){
 		id = j["id"].AsInt;
 		attributes = (JSONClass)j ["attributes"];
@@ -405,9 +412,12 @@ public class Counselor {
 		return j;
 	}
 
+
+
 	/// <summary>
 	/// Update the Object to database</summary>
 	public void UpdateObject(){
+		Debug.Log ("Updating Counselor");
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("counselors", "SET", toJSON());
 	}
@@ -652,6 +662,9 @@ public class Trainings {
 	public DateTime etaTimestamp { get; set; }
 	public int status { get; set; }
 
+	public Trainings(){
+	}
+
 	public Trainings(int i, int t, int tr, int tid, DateTime sts, DateTime ets, int s){
 		id = i;
 		type = t;
@@ -663,13 +676,13 @@ public class Trainings {
 	}
 
 	public Trainings(JSONNode j){
-		id = j ["id"].AsInt;
-		type = j ["type"].AsInt;
-		trainerId = j ["trainerId"].AsInt;
-		targetId = j ["targetId"].AsInt;
+		id = j ["training_id"].AsInt;
+		type = j ["training_type"].AsInt;
+		trainerId = j ["trainer_id"].AsInt;
+		targetId = j ["training_target_id"].AsInt;
 		startTimestamp = Convert.ToDateTime(j ["start_timestamp"]);
 		etaTimestamp = Convert.ToDateTime(j ["eta_timestamp"]);
-		status = j ["status"].AsInt;
+		status = j ["training_status"].AsInt;
 	}
 
 	public JSONClass toJSON(){
@@ -679,10 +692,18 @@ public class Trainings {
 		j.Add ("type", new JSONData (type));
 		j.Add ("trainerId", new JSONData (trainerId));
 		j.Add ("targetId", new JSONData (targetId));
-		j ["start_time"] = startTimestamp.ToString();
-		j ["eta_time"] = etaTimestamp.ToString();
+		j ["start_time"] = new JSONData (WsClient.JSDate(startTimestamp));
+		j ["eta_time"] = new JSONData (WsClient.JSDate(etaTimestamp));
+		j ["status"] = new JSONData (status);
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
+	}
+
+	public void UpdateObject(){
+		WsClient wsc = WsClient.Instance;
+		if (id > 0 ) {
+			wsc.Send ("training", "SET", toJSON ());
+		}
 	}
 }
 
