@@ -186,9 +186,9 @@ public class DrawCards : MonoBehaviour {
 //				Debug.Log ("Random Number: "+random);
 				results[i] = (isCounselors[i]) ? random : random - numberOfCounselors + 1000;
 				if (isCounselors[i]){ 
-					Debug.Log("Drawn number:"+(results[i]-1));
-					isRedraw = (counselorList[results[i]-1].Rank != rankStopRedraw) ; // Make it false if any card Rank 2
-					if (counselorList[results[i]-1].Rank == rankNeedRedraw) isMustRedraw = true;
+					Debug.Log("Drawn number:"+(results[i]));
+					isRedraw = (counselorList[results[i]].Rank != rankStopRedraw) ; // Make it false if any card Rank 2
+					if (counselorList[results[i]].Rank == rankNeedRedraw) isMustRedraw = true;
 					j = new JSONClass();
 					j.Add("type",new JSONData(results[i]));
 					j.Add("level",new JSONData(1));

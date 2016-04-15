@@ -194,6 +194,7 @@ public class WsClient {
 			conn.OnMessage += (sender, e) => { 
 				if (e.Data != "[]"){
 					Debug.Log("Received Message: " +e.Data);
+					Debug.Log (JSON.Parse(e.Data).ToString());
 					handleMessage(JSON.Parse(e.Data));
 				}
 			};

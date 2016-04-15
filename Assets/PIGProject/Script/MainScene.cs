@@ -227,7 +227,6 @@ public class MainScene : MonoBehaviour {
 			for (var i = 0; i < count; i++) {
 				game.trainings.Add (new Trainings (MainScene.TrainingInfo[i]));
 			}
-			Debug.Log (game.trainings[25].startTimestamp);
 			MainScene.TrainingInfo = null;
 		}
 		if (MainScene.ArtisanInfo != null) {
