@@ -87,7 +87,7 @@ public class MainScene : MonoBehaviour {
 			}
 			Store.GetStorageInfoFromDB();
 
-			LoadHeadPic headPic = LoadHeadPic.Instance;
+			LoadHeadPic headPic = LoadHeadPic.SetCharacters();
 
 		}
 

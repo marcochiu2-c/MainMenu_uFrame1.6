@@ -70,9 +70,9 @@ public class DrawCards : MonoBehaviour {
 		AddButtonListener ();
 		json = new JSONClass ();
 		SetCharacters ();
-
-		Debug.Log (counselorList .Find(x => x.id == 1).ToJSON().ToString());
-		Debug.Log (generalList.Find(x => x.id == 1001).ToJSON().ToString());
+//
+//		Debug.Log (counselorList .Find(x => x.id == 1).ToJSON().ToString());
+//		Debug.Log (generalList.Find(x => x.id == 1001).ToJSON().ToString());
 	}
 
 	// Update is called once per frame
@@ -174,8 +174,8 @@ public class DrawCards : MonoBehaviour {
 				results[i] = (isCounselors[i]) ? random : random - numberOfCounselors + 1000;
 				if (isCounselors[i]){ 
 					Debug.Log("Drawn number:"+(results[i]));
-					isRedraw = (counselorList[results[i]].Rank != rankStopRedraw) ; // Make it false if any card Rank 2
-					if (counselorList[results[i]].Rank == rankNeedRedraw) isMustRedraw = true;
+					isRedraw = (counselorList.Find(x => x.id == results[i]).Rank != rankStopRedraw) ; // Make it false if any card Rank 2
+					if (counselorList.Find(x => x.id == results[i]).Rank == rankNeedRedraw) isMustRedraw = true;
 					j = new JSONClass();
 					j.Add("type",new JSONData(results[i]));
 					j.Add("level",new JSONData(1));
@@ -185,7 +185,7 @@ public class DrawCards : MonoBehaviour {
 					//storageJsonArray[i] = "{\"type\":"+results[i]+",\"level\":1}";
 				}else{ // result == generals
 					isRedraw = ( generalList[random-numberOfCounselors].Rank != rankStopRedraw); // Make it false if any card Rank 2
-					if (generalList[random-numberOfCounselors].Rank == rankNeedRedraw) isMustRedraw = true;
+					if (generalList.Find(x => x.id == results[i]).Rank == rankNeedRedraw) isMustRedraw = true;
 					j = (JSONNode)s.toJSON ();
 					j.Add("type",new JSONData(results[i]));
 					j.Add("level",new JSONData(1));
@@ -196,18 +196,20 @@ public class DrawCards : MonoBehaviour {
 			}
 		} while(isRedraw|| isMustRedraw);
 		//string data = "["+ String.Join(" , ", storageJsonArray)+"]";
-		var json = new JSONClass ();
-		if (wsc.conn.IsAlive) {
-			json ["data"] = counselorNode;
-			json ["action"] = "NEW";
-			json ["table"] = "multiCounselors";
-			Debug.Log (json.ToString());
-			wsc.Send (json.ToString ());
 
-			json ["data"] = generalNode;
-			json ["action"] = "NEW";
-			json ["table"] = "multiGenerals";
-			wsc.Send (json.ToString ());
+		if (wsc.conn.IsAlive) {
+//			var json = new JSONClass ();
+//			json ["data"] = counselorNode;
+//			json ["action"] = "NEW";
+//			json ["table"] = "multiCounselors";
+//			Debug.Log (json.ToString());
+			wsc.Send ("multiCounselors","NEW",counselorNode);
+
+//			json ["data"] = generalNode;
+//			json ["action"] = "NEW";
+//			json ["table"] = "multiGenerals";
+//			Debug.Log (json.ToString ());
+			wsc.Send ("multiGenerals","NEW",generalNode);
 		} else {
 			Debug.Log ("Websocket Connection Lost!");
 		}
@@ -397,7 +399,7 @@ public class DrawCards : MonoBehaviour {
 	public Sprite PongDak;
 	public Sprite PongGyun;
 	public Sprite PongTong;
-	public Sprite CheungSaiKit;
+//	public Sprite CheungSaiKit;
 #endregion
 	
 	private void SetCharacters(){
@@ -512,7 +514,6 @@ public class DrawCards : MonoBehaviour {
 		imageDict.Add (/*"龐涓",*/21, PongGyun);
 		imageDict.Add (/*"龐統",*/22, PongTong);
 		imageDict.Add (/*"關羽",*/1014, KwanYu);
-		imageDict.Add (/*"張世傑",*/1061, CheungSaiKit);
 		
 		nameDict.Add (1047, "也先帖木兒");
 		nameDict.Add (25, "于謙");
@@ -621,7 +622,6 @@ public class DrawCards : MonoBehaviour {
 		nameDict.Add (21, "龐涓");
 		nameDict.Add (22, "龐統");
 		nameDict.Add (1014, "關羽");
-		nameDict.Add (1061, "張世傑");
 	}
 }
 
