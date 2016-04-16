@@ -419,13 +419,13 @@ public class Academy : MonoBehaviour
 			Debug.Log(count);
 			for (int i = 0 ; i < count ; i++){
 				GameObject.DestroyImmediate( AcademyStudent.Students[i].gameObject);
-				AcademyStudent.Students.Remove(AcademyStudent.Students[i].gameObject.GetComponent<AcademyStudent>());
+//				AcademyStudent.Students.Remove(AcademyStudent.Students[i].gameObject.GetComponent<AcademyStudent>());
 			}
 			count =AcademySelfLearn.Students.Count;
 			Debug.Log(count);
 			for (int i = 0 ; i < count ; i++){
 				GameObject.DestroyImmediate( AcademySelfLearn.Students[i].gameObject);
-				AcademySelfLearn.Students.Remove(AcademySelfLearn.Students[i].gameObject.GetComponent<AcademySelfLearn>());
+//				AcademySelfLearn.Students.Remove(AcademySelfLearn.Students[i].gameObject.GetComponent<AcademySelfLearn>());
 			}
 			AcademyStudent.Students = new List<AcademyStudent>();
 			Debug.Log (AcademyStudent.Students.Count);

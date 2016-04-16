@@ -70,22 +70,9 @@ public class DrawCards : MonoBehaviour {
 		AddButtonListener ();
 		json = new JSONClass ();
 		SetCharacters ();
-//		//Debug.Log (json.ToString ());
-//		if (wsc.conn.IsAlive) {
-//			json ["data"] = "1";
-//			json ["action"] = "GET";
-//			json ["table"] = "users";
-//			wsc.Send (json.ToString ()); 
-//
-//			json ["table"] = "generals";
-//			wsc.Send (json.ToString ()); 
-//
-//			json ["table"] = "getCounselorInfoByUserId";
-//			wsc.Send (json.ToString ()); 
-//		} else {
-//			Debug.Log ("Websocket Connection Lost!");
-//		}
 
+		Debug.Log (counselorList .Find(x => x.id == 1).ToJSON().ToString());
+		Debug.Log (generalList.Find(x => x.id == 1001).ToJSON().ToString());
 	}
 
 	// Update is called once per frame
@@ -141,14 +128,14 @@ public class DrawCards : MonoBehaviour {
 		json["data"].Add ("type" , new JSONData(result));
 		json["data"].Add ("level", new JSONData(1));
 		if (isCounselors) {
-			json["data"].Add ("attributes", counselorList[result].ToJSON());
+			json["data"].Add ("attributes", counselorList.Find(x => x.id == result).ToJSON());
 			json ["table"] = "counselors";
-			game.counselor.Add (new Counselor(0, counselorList[result].ToJSON(), result,1));
+			game.counselor.Add (new Counselor(0, counselorList.Find(x => x.id == result).ToJSON(), result,1));
 		} else {
 
-			json["data"].Add ("attributes", generalList[random - numberOfCounselors].ToJSON());
+			json["data"].Add ("attributes", generalList.Find(x => x.id == result).ToJSON());
 			json ["table"] = "generals";
-			game.general.Add (new General(0, generalList[random - numberOfCounselors].ToJSON(), result, 1));
+			game.general.Add (new General(0, generalList.Find(x => x.id == result).ToJSON(), result, 1));
 		}
 
 		json ["action"] = "NEW";
@@ -193,7 +180,7 @@ public class DrawCards : MonoBehaviour {
 					j.Add("type",new JSONData(results[i]));
 					j.Add("level",new JSONData(1));
 					j.Add("userId",new JSONData(game.login.id));
-					j.Add ("attributes", counselorList[results[i]].ToJSON());
+					j.Add ("attributes", counselorList.Find(x => x.id == results[i]).ToJSON());
 					counselorNode.Add(j);
 					//storageJsonArray[i] = "{\"type\":"+results[i]+",\"level\":1}";
 				}else{ // result == generals
@@ -203,7 +190,7 @@ public class DrawCards : MonoBehaviour {
 					j.Add("type",new JSONData(results[i]));
 					j.Add("level",new JSONData(1));
 					j.Add("userId",new JSONData(game.login.id));
-					j.Add ("attributes", generalList[results[i]-1000].ToJSON());
+					j.Add ("attributes", generalList.Find(x => x.id == results[i]).ToJSON());
 					generalNode.Add(j);
 				}
 			}
@@ -410,6 +397,7 @@ public class DrawCards : MonoBehaviour {
 	public Sprite PongDak;
 	public Sprite PongGyun;
 	public Sprite PongTong;
+	public Sprite CheungSaiKit;
 #endregion
 	
 	private void SetCharacters(){
@@ -524,6 +512,7 @@ public class DrawCards : MonoBehaviour {
 		imageDict.Add (/*"龐涓",*/21, PongGyun);
 		imageDict.Add (/*"龐統",*/22, PongTong);
 		imageDict.Add (/*"關羽",*/1014, KwanYu);
+		imageDict.Add (/*"張世傑",*/1061, CheungSaiKit);
 		
 		nameDict.Add (1047, "也先帖木兒");
 		nameDict.Add (25, "于謙");
@@ -632,6 +621,7 @@ public class DrawCards : MonoBehaviour {
 		nameDict.Add (21, "龐涓");
 		nameDict.Add (22, "龐統");
 		nameDict.Add (1014, "關羽");
+		nameDict.Add (1061, "張世傑");
 	}
 }
 
