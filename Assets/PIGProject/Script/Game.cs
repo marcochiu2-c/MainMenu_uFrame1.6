@@ -462,7 +462,7 @@ public class General {
 		j ["attributes"] = attributes;
 		j.Add ("type", new JSONData (type));
 		j.Add ("status", new JSONData (status));
-		j ["soldiers"] = soldiers.toJSON ();
+//		j ["soldiers"] = soldiers.toJSON ();
 		j.Add ("userId", new JSONData(game.login.id));
 		return j;
 	}
@@ -697,6 +697,14 @@ public class Trainings {
 		j ["status"] = new JSONData (status);
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
+	}
+
+	public void Completed(){
+		type = 0;
+		trainerId = 0;
+		targetId = 0;
+		status = 3;
+		UpdateObject ();
 	}
 
 	public void UpdateObject(){

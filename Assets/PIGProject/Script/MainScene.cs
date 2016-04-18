@@ -87,19 +87,21 @@ public class MainScene : MonoBehaviour {
 			}
 			Store.GetStorageInfoFromDB();
 
-//			json ["table"] = "friendship";
-//			wsc.Send (json.ToString ());
+			LoadHeadPic headPic = LoadHeadPic.SetCharacters();
 
 		}
-
+		InvokeRepeating("OnGeneralTrainComplete",1,1);
 	}
 
+
+
 	void reloadFromDB(){
-		json = new JSONClass ();
-		json.Add ("data", new JSONData (MainScene.userId));
-		json ["action"] = "GET";
-		json ["table"] = "wealth";
-		wsc.Send (json.ToString ());
+//		json = new JSONClass ();
+//		json.Add ("data", new JSONData (MainScene.userId));
+//		json ["action"] = "GET";
+//		json ["table"] = "wealth";
+//		wsc.Send (json.ToString ());
+		wsc.Send("wealth","GET",new JSONData (MainScene.userId));
 		wsc.Send("counselors","GET",new JSONData (MainScene.userId));
 		wsc.Send("generals","GET",new JSONData (MainScene.userId));
 		wsc.Send ("weapon","GET",new JSONData (MainScene.userId));
@@ -292,5 +294,31 @@ public class MainScene : MonoBehaviour {
 		}
 	}
 
+	void OnGeneralTrainComplete(){
+//		GeneralTrainPrefab general = null;
+		int point = 0;
+		General g = new General ();
+		Dictionary<int,string> trainDict = new Dictionary<int,string> ();
+		trainDict.Add (40, "Courage");
+		trainDict.Add (41, "Force");
+		trainDict.Add (42, "Physical");
+		if (game.trainings.Count > 40) {
+			for (int i = 40 ; i < 43; i++){
+				if (game.trainings[i].status == 1 && game.trainings[i].etaTimestamp < DateTime.Now){
+					g = game.general.Find(x=>x.id == game.trainings[i].targetId);
+					point = game.trainings[i].type;
+					g.attributes[trainDict[i]].AsFloat = g.attributes[trainDict[i]].AsFloat + point;
+					GeneralTrainPrefab.currentPrefab =null;
+					g.UpdateObject();
+					game.trainings[i].Completed();
+//
+//					general = GeneralTrainPrefab.GeneralTrain.Find(x => x.general.id == game.trainings[i].targetId);
+//					if(general != null){
+//						general.gameObject.SetActive(true);
+//					}
+				}
+			}
+		}
+	}
 
 }

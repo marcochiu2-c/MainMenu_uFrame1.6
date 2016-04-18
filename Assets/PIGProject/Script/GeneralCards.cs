@@ -12,31 +12,31 @@ public class GeneralCards
 	public int Rank { get; set; }
 	public string Era { get; set; }
 	public int Type { get; set; }
-	public int InitialIQ { get; set; }
-	public double GainIQ { get; set; }
-	public int HighestIQ { get; set; }
+	public float InitialIQ { get; set; }
+	public float GainIQ { get; set; }
+	public float HighestIQ { get; set; }
 	public int InitialLeadership { get; set; }
 	public int GainLv30Leadership { get; set; }
 	public int GainLv60Leadership { get; set; }
 	public int GainLv99Leadership { get; set; }
 	public int HighestLeadership { get; set; }
-	public int InitialPrestige { get; set; }
-	public int InitialCourage { get; set; }
-	public int GainCourage { get; set; }
-	public int HighestCourage { get; set; }
-	public int InitialForce { get; set; }
-	public int GainForce { get; set; }
-	public int HighestForce { get; set; }
-	public int InitialPhysical { get; set; }
-	public int GainPhysical { get; set; }
-	public int HighestPhysical { get; set; }
-	public int Obedience { get; set; }
+	public float InitialPrestige { get; set; }
+	public float InitialCourage { get; set; }
+	public float GainCourage { get; set; }
+	public float HighestCourage { get; set; }
+	public float InitialForce { get; set; }
+	public float GainForce { get; set; }
+	public float HighestForce { get; set; }
+	public float InitialPhysical { get; set; }
+	public float GainPhysical { get; set; }
+	public float HighestPhysical { get; set; }
+	public float Obedience { get; set; }
 	
-	public GeneralCards(string n, int r, string e, int t,int iIQ, 
-	                int gIQ, int hIQ, int iLeadership, int lLv30, int lLv60, int lLv99,
-	                int hLeadership, int iPrestige, int iCourage,
-	                int gCourage, int hCourage, int iForce, int gForce, int hForce, 
-	                int iPhysical, int gPhysical, int hPhysical, int o, int cnt = 1){
+	public GeneralCards(string n, int r, string e, int t,float iIQ, 
+	                    float gIQ, float hIQ, int iLeadership, int lLv30, int lLv60, int lLv99,
+	                    int hLeadership, float iPrestige, float iCourage,
+	                    float gCourage, float hCourage, float iForce, float gForce, float hForce, 
+	                    float iPhysical, float gPhysical, float hPhysical, float o, int cnt = 1){
 		id = cnt;
 		Name = n;
 		Rank = r;
@@ -69,25 +69,25 @@ public class GeneralCards
 		Rank = j["Rank"].AsInt;
 		Era = j["Era"];
 		Type = j["Type"].AsInt;
-		InitialIQ = j["InitialIQ"].AsInt;
-		GainIQ = j["GainIQ"].AsDouble;
-		HighestIQ = j["HighestIQ"].AsInt;
-		InitialLeadership = j["InitialLeadership"].AsInt;
+		InitialIQ = j["IQ"].AsFloat;
+		GainIQ = j["GainIQ"].AsFloat;
+		HighestIQ = j["HighestIQ"].AsFloat;
+		InitialLeadership = j["Leadership"].AsInt;
 		GainLv30Leadership = j["GainLv30Leadership"].AsInt;
 		GainLv60Leadership = j["GainLv60Leadership"].AsInt;
 		GainLv99Leadership = j["GainLv99Leadership"].AsInt;
 		HighestLeadership = j["HighestLeadership"].AsInt;
-		InitialPrestige = j["InitialPrestige"].AsInt;
-		InitialCourage = j["InitialCourage"].AsInt;
-		GainCourage = j["GainCourage"].AsInt;
-		HighestCourage = j["HighestCourage"].AsInt;
-		InitialForce = j["InitalForce"].AsInt;
-		GainForce = j["GainForce"].AsInt;
+		InitialPrestige = j["Prestige"].AsInt;
+		InitialCourage = j["Courage"].AsFloat;
+		GainCourage = j["GainCourage"].AsFloat;
+		HighestCourage = j["HighestCourage"].AsFloat;
+		InitialForce = j["Force"].AsFloat;
+		GainForce = j["GainForce"].AsFloat;
 		HighestForce = j["HighestForce"].AsInt;
-		InitialPhysical = j["InitialPhysical"].AsInt;
-		GainPhysical = j["GainPhysical"].AsInt;
-		HighestPhysical = j["HighestPhysical"].AsInt;
-		Obedience = j["Obedience"].AsInt;
+		InitialPhysical = j["Physical"].AsFloat;
+		GainPhysical = j["GainPhysical"].AsFloat;
+		HighestPhysical = j["HighestPhysical"].AsFloat;
+		Obedience = j["Obedience"].AsFloat;
 	}
 
 	public string ToString (){
@@ -97,22 +97,22 @@ public class GeneralCards
 		j.Add ("Rank",new JSONData (Rank));
 		j.Add ("Era", new JSONData(Era));
 		j.Add ("Type", new JSONData(Type));
-		j.Add ("InitialIQ", new JSONData(InitialIQ));
+		j.Add ("IQ", new JSONData(InitialIQ));
 		j.Add ("GainIQ", new JSONData(GainIQ));
 		j.Add ("HighestIQ", new JSONData(HighestIQ));
-		j.Add ("InitialLeadership", new JSONData(InitialLeadership));
+		j.Add ("Leadership", new JSONData(InitialLeadership));
 		j.Add ("GainLv30Leadership", new JSONData(GainLv30Leadership));
 		j.Add ("GainLv60Leadership", new JSONData(GainLv60Leadership));
 		j.Add ("GainLv99Leadership", new JSONData(GainLv99Leadership));
 		j.Add ("HighestLeadership", new JSONData (HighestLeadership));
-		j.Add ("InitialPrestige", new JSONData (InitialPrestige));
-		j.Add ("InitialCourage", new JSONData (InitialCourage));
+		j.Add ("Prestige", new JSONData (InitialPrestige));
+		j.Add ("Courage", new JSONData (InitialCourage));
 		j.Add ("GainCourage", new JSONData (GainCourage));
 		j.Add ("HighestCourage", new JSONData (HighestCourage));
-		j.Add ("InitialForce", new JSONData (InitialForce));
+		j.Add ("Force", new JSONData (InitialForce));
 		j.Add ("GainForce", new JSONData (GainForce));
 		j.Add ("HighestForce", new JSONData (HighestForce));
-		j.Add ("InitialPhysical", new JSONData (InitialPhysical));
+		j.Add ("Physical", new JSONData (InitialPhysical));
 		j.Add ("GainPhysical", new JSONData (GainPhysical));
 		j.Add ("HighestPhysical", new JSONData (HighestPhysical));
 		j.Add ("Obedience", new JSONData (Obedience));	
@@ -126,22 +126,22 @@ public class GeneralCards
 		j.Add ("Rank",new JSONData (Rank));
 		j.Add ("Era", new JSONData(Era));
 		j.Add ("Type", new JSONData(Type));
-		j.Add ("InitialIQ", new JSONData(InitialIQ));
+		j.Add ("IQ", new JSONData(InitialIQ));
 		j.Add ("GainIQ", new JSONData(GainIQ));
 		j.Add ("HighestIQ", new JSONData(HighestIQ));
-		j.Add ("InitialLeadership", new JSONData(InitialLeadership));
+		j.Add ("Leadership", new JSONData(InitialLeadership));
 		j.Add ("GainLv30Leadership", new JSONData(GainLv30Leadership));
 		j.Add ("GainLv60Leadership", new JSONData(GainLv60Leadership));
 		j.Add ("GainLv99Leadership", new JSONData(GainLv99Leadership));
 		j.Add ("HighestLeadership", new JSONData (HighestLeadership));
-		j.Add ("InitialPrestige", new JSONData (InitialPrestige));
-		j.Add ("InitialCourage", new JSONData (InitialCourage));
+		j.Add ("Prestige", new JSONData (InitialPrestige));
+		j.Add ("Courage", new JSONData (InitialCourage));
 		j.Add ("GainCourage", new JSONData (GainCourage));
 		j.Add ("HighestCourage", new JSONData (HighestCourage));
-		j.Add ("InitialForce", new JSONData (InitialForce));
+		j.Add ("Force", new JSONData (InitialForce));
 		j.Add ("GainForce", new JSONData (GainForce));
 		j.Add ("HighestForce", new JSONData (HighestForce));
-		j.Add ("InitialPhysical", new JSONData (InitialPhysical));
+		j.Add ("Physical", new JSONData (InitialPhysical));
 		j.Add ("GainPhysical", new JSONData (GainPhysical));
 		j.Add ("HighestPhysical", new JSONData (HighestPhysical));
 		j.Add ("Obedience", new JSONData (Obedience));	

@@ -18,13 +18,13 @@ public class CounselorCards{
 	public int GainLv99Leadership { get; set; }
 	public int HighestLeadership { get; set; }
 	public int InitialPrestige { get; set; }
-	public string KnownFormation { get; set; }
-	public string KnownKnowledge { get; set; }
+	public JSONClass KnownFormation { get; set; }
+	public JSONClass KnownKnowledge { get; set; }
 
 	public CounselorCards(string n, int r, string e, int t,int iIQ, 
 	                int gIQ, int hIQ, int iLeadership, int lLv30, int lLv60, int lLv99,
-	                int hLeadership, int iPrestige, string kFormation,
-	                string kKnowledge, int cnt = 0){
+	                int hLeadership, int iPrestige, JSONClass kFormation,
+	                JSONClass kKnowledge, int cnt = 0){
 		id = cnt;
 		Name = n;
 		Rank = r;
@@ -39,8 +39,8 @@ public class CounselorCards{
 		GainLv99Leadership = lLv99;
 		HighestLeadership = hLeadership;
 		InitialPrestige = iPrestige;
-		KnownFormation = kFormation != "" ? kFormation : " ";
-		KnownKnowledge = kKnowledge != "" ? kKnowledge : " ";
+		KnownFormation = kFormation;
+		KnownKnowledge = kKnowledge;
 	}
 
 	public CounselorCards (SimpleJSON.JSONClass j, int cnt =0){
@@ -49,19 +49,21 @@ public class CounselorCards{
 		Rank = j["Rank"].AsInt;
 		Era = j["Era"];
 		Type = j["Type"].AsInt;
-		InitialIQ = j["InitialIQ"].AsInt;
+		InitialIQ = j["IQ"].AsInt;
 		GainIQ = j["GainIQ"].AsDouble;
 		HighestIQ = j["HighestIQ"].AsInt;
-		InitialLeadership = j["InitialLeadership"].AsInt;
+		InitialLeadership = j["Leadership"].AsInt;
 		GainLv30Leadership = j["GainLv30Leadership"].AsInt;
 		GainLv60Leadership = j["GainLv60Leadership"].AsInt;
 		GainLv99Leadership = j["GainLv99Leadership"].AsInt;
 		HighestLeadership = j["HighestLeadership"].AsInt;
-		InitialPrestige = j["InitialPrestige"].AsInt;
-		KnownFormation = j ["KnownFormation"];
-		KnownKnowledge = j["KnownKnowledge"];
-		if (KnownFormation == null) KnownFormation = " ";
-		if (KnownKnowledge == null) KnownKnowledge = " ";
+		InitialPrestige = j["Prestige"].AsInt;
+		if (j ["KnownFormation"].ToString().Trim() != "") {
+			KnownFormation = (JSONClass)j ["KnownFormation"];
+		} else {
+			KnownFormation = (JSONClass) JSON.Parse("{ }");
+		}
+		KnownKnowledge = (JSONClass)j["KnownKnowledge"];
 	}
 
 	public string ToString (){
@@ -71,17 +73,17 @@ public class CounselorCards{
 		j.Add ("Rank",new JSONData (Rank));
 		j.Add ("Era", new JSONData(Era));
 		j.Add ("Type", new JSONData(Type));
-		j.Add ("InitialIQ", new JSONData(InitialIQ));
+		j.Add ("IQ", new JSONData(InitialIQ));
 		j.Add ("GainIQ", new JSONData(GainIQ));
 		j.Add ("HighestIQ", new JSONData(HighestIQ));
-		j.Add ("InitialLeadership", new JSONData(InitialLeadership));
+		j.Add ("Leadership", new JSONData(InitialLeadership));
 		j.Add ("GainLv30Leadership", new JSONData(GainLv30Leadership));
 		j.Add ("GainLv60Leadership", new JSONData(GainLv60Leadership));
 		j.Add ("GainLv99Leadership", new JSONData(GainLv99Leadership));
 		j.Add ("HighestLeadership", new JSONData (HighestLeadership));
-		j.Add ("InitialPrestige", new JSONData (InitialPrestige));
-		j.Add ("KnownFormation", new JSONData (KnownFormation));
-		j.Add ("KnownKnowledge", new JSONData (KnownKnowledge));
+		j.Add ("Prestige", new JSONData (InitialPrestige));
+		j.Add ("KnownFormation", KnownFormation);
+		j.Add ("KnownKnowledge", KnownKnowledge);
 		return j.ToString ();
 	}
 
@@ -93,17 +95,17 @@ public class CounselorCards{
 		j.Add ("Rank",new JSONData (Rank));
 		j.Add ("Era", new JSONData(Era));
 		j.Add ("Type", new JSONData(Type));
-		j.Add ("InitialIQ", new JSONData(InitialIQ));
+		j.Add ("IQ", new JSONData(InitialIQ));
 		j.Add ("GainIQ", new JSONData(GainIQ));
 		j.Add ("HighestIQ", new JSONData(HighestIQ));
-		j.Add ("InitialLeadership", new JSONData(InitialLeadership));
+		j.Add ("Leadership", new JSONData(InitialLeadership));
 		j.Add ("GainLv30Leadership", new JSONData(GainLv30Leadership));
 		j.Add ("GainLv60Leadership", new JSONData(GainLv60Leadership));
 		j.Add ("GainLv99Leadership", new JSONData(GainLv99Leadership));
 		j.Add ("HighestLeadership", new JSONData (HighestLeadership));
-		j.Add ("InitialPrestige", new JSONData (InitialPrestige));
-		j.Add ("KnownFormation", new JSONData (KnownFormation));
-		j.Add ("KnownKnowledge", new JSONData (KnownKnowledge));
+		j.Add ("Prestige", new JSONData (InitialPrestige));
+		j.Add ("KnownFormation", KnownFormation);
+		j.Add ("KnownKnowledge", KnownKnowledge);
 		return j;
 	}
 
