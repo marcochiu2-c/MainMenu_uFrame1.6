@@ -87,19 +87,19 @@ public class MainScene : MonoBehaviour {
 			}
 			Store.GetStorageInfoFromDB();
 
-//			json ["table"] = "friendship";
-//			wsc.Send (json.ToString ());
+			LoadHeadPic headPic = LoadHeadPic.SetCharacters();
 
 		}
 
 	}
 
 	void reloadFromDB(){
-		json = new JSONClass ();
-		json.Add ("data", new JSONData (MainScene.userId));
-		json ["action"] = "GET";
-		json ["table"] = "wealth";
-		wsc.Send (json.ToString ());
+//		json = new JSONClass ();
+//		json.Add ("data", new JSONData (MainScene.userId));
+//		json ["action"] = "GET";
+//		json ["table"] = "wealth";
+//		wsc.Send (json.ToString ());
+		wsc.Send("wealth","GET",new JSONData (MainScene.userId));
 		wsc.Send("counselors","GET",new JSONData (MainScene.userId));
 		wsc.Send("generals","GET",new JSONData (MainScene.userId));
 		wsc.Send ("weapon","GET",new JSONData (MainScene.userId));
