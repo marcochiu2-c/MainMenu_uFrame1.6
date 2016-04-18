@@ -416,19 +416,19 @@ public class Academy : MonoBehaviour
 		});
 		closeButton.onClick.AddListener (() => {
 			var count = AcademyStudent.Students.Count;
-			Debug.Log(count);
+//			Debug.Log(count);
 			for (int i = 0 ; i < count ; i++){
 				GameObject.DestroyImmediate( AcademyStudent.Students[i].gameObject);
-				AcademyStudent.Students.Remove(AcademyStudent.Students[i].gameObject.GetComponent<AcademyStudent>());
+//				AcademyStudent.Students.Remove(AcademyStudent.Students[i].gameObject.GetComponent<AcademyStudent>());
 			}
 			count =AcademySelfLearn.Students.Count;
-			Debug.Log(count);
+//			Debug.Log(count);
 			for (int i = 0 ; i < count ; i++){
 				GameObject.DestroyImmediate( AcademySelfLearn.Students[i].gameObject);
-				AcademySelfLearn.Students.Remove(AcademySelfLearn.Students[i].gameObject.GetComponent<AcademySelfLearn>());
+//				AcademySelfLearn.Students.Remove(AcademySelfLearn.Students[i].gameObject.GetComponent<AcademySelfLearn>());
 			}
 			AcademyStudent.Students = new List<AcademyStudent>();
-			Debug.Log (AcademyStudent.Students.Count);
+//			Debug.Log (AcademyStudent.Students.Count);
 			AcademySelfLearn.Students = new List<AcademySelfLearn>();
 			Academy.activePopup = ActivePopupEnum.none;
 			SelfStudyHolder.SetActive(false);

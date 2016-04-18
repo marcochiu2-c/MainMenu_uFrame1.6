@@ -13,7 +13,7 @@
     "GainLv99Leadership":18441,
     "HighestLeadership":1000000,
     "Prestige":0,
-    "KnownFormation":"",
+    "KnownFormation"{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -30,7 +30,7 @@
     "GainLv99Leadership":16795,
     "HighestLeadership":900000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -47,7 +47,7 @@
     "GainLv99Leadership":17764,
     "HighestLeadership":1000000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -64,7 +64,7 @@
     "GainLv99Leadership":9359,
     "HighestLeadership":650000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -81,7 +81,7 @@
     "GainLv99Leadership":10321,
     "HighestLeadership":650000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -98,7 +98,7 @@
     "GainLv99Leadership":11603,
     "HighestLeadership":700000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -115,7 +115,7 @@
     "GainLv99Leadership":11314,
     "HighestLeadership":700000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -132,7 +132,7 @@
     "GainLv99Leadership":18429,
     "HighestLeadership":1000000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -149,7 +149,7 @@
     "GainLv99Leadership":16154,
     "HighestLeadership":900000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -166,7 +166,7 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -183,7 +183,7 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -200,7 +200,7 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -217,7 +217,7 @@
     "GainLv99Leadership":11314,
     "HighestLeadership":700000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -234,7 +234,7 @@
     "GainLv99Leadership":11314,
     "HighestLeadership":700000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -251,7 +251,7 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -268,7 +268,7 @@
     "GainLv99Leadership":10321,
     "HighestLeadership":650000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -285,7 +285,7 @@
     "GainLv99Leadership":11603,
     "HighestLeadership":700000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -302,7 +302,7 @@
     "GainLv99Leadership":16154,
     "HighestLeadership":900000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -319,7 +319,7 @@
     "GainLv99Leadership":15160,
     "HighestLeadership":850000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -336,7 +336,7 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -353,7 +353,7 @@
     "GainLv99Leadership":15160,
     "HighestLeadership":850000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -370,7 +370,7 @@
     "GainLv99Leadership":15160,
     "HighestLeadership":850000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -387,7 +387,7 @@
     "GainLv99Leadership":15449,
     "HighestLeadership":850000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -404,7 +404,7 @@
     "GainLv99Leadership":15160,
     "HighestLeadership":850000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -421,7 +421,7 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -438,7 +438,7 @@
     "GainLv99Leadership":7917,
     "HighestLeadership":500000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -455,7 +455,7 @@
     "GainLv99Leadership":9615,
     "HighestLeadership":600000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -472,7 +472,7 @@
     "GainLv99Leadership":8205,
     "HighestLeadership":500000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   },
   {
@@ -489,7 +489,7 @@
     "GainLv99Leadership":12596,
     "HighestLeadership":750000,
     "Prestige":0,
-    "KnownFormation":" ",
+    "KnownFormation":{ },
     "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
   }
 ]
