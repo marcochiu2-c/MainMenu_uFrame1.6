@@ -70,9 +70,15 @@ public class DrawCards : MonoBehaviour {
 		AddButtonListener ();
 		json = new JSONClass ();
 		SetCharacters ();
+<<<<<<< HEAD
 //
 //		Debug.Log (counselorList .Find(x => x.id == 1).ToJSON().ToString());
 //		Debug.Log (generalList.Find(x => x.id == 1001).ToJSON().ToString());
+=======
+
+		Debug.Log (counselorList .Find(x => x.id == 1).ToJSON().ToString());
+		Debug.Log (generalList.Find(x => x.id == 1001).ToJSON().ToString());
+>>>>>>> feature/MainBattle
 	}
 
 	// Update is called once per frame

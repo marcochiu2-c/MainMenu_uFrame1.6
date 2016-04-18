@@ -25,12 +25,30 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public GameObject MilitaryAdviser;
 	public GameObject DefensiveLinup;
 	public GameObject Standings;
+	
+	public Transform GeneralScrollPanel;
+	public List<Counselor> GeneralList;
+	public Dictionary<int,Sprite> imageDict;
+	public Dictionary<int,string> nameDict;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as ConferenceScreenViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+		Game game = Game.Instance;
+		LoadHeadPic headPic = LoadHeadPic.SetCharacters();
+		
+		imageDict = headPic.imageDict;
+		nameDict = headPic.nameDict;
+		Debug.Log ("HeadPIG: " + headPic.SuenMo);
+		//imageDict = headPic.imageDict;
+		
+		GeneralList = new List<Counselor> ();
+		for (int j = 0 ; j < game.counselor.Count; j++){
+			GeneralList.Add (new Counselor(game.counselor[j]));
+		}
+		
     }
     
     public override void Bind() {
@@ -45,6 +63,12 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			MilitaryAdviser.gameObject.SetActive (false);
 			DefensiveLinup.gameObject.SetActive (false);
 			Standings.gameObject.SetActive (false);
+			
+
+			//int cslCount = Academy.cSelfLearnList.Count;
+			for (var i = 0 ; i < 10 ; i++){
+				CreateSelfLearnItem (GeneralList[i]);
+			}
 		});
 
 		this.BindButtonToHandler (armyGarrison, () => {
@@ -78,6 +102,22 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			DefensiveLinup.gameObject.SetActive (false);
 			Standings.gameObject.SetActive (true);
 		});
-
     }
+    
+	public void CreateSelfLearnItem(Counselor character){
+		var type = character.type;
+		Debug.Log ("Type: " + type);
+		AcademySelfLearn ss = Instantiate(Resources.Load("GeneralPrefab") as GameObject).GetComponent<AcademySelfLearn>();
+		ss.transform.parent =  GeneralScrollPanel;
+		
+		ss.characterType = character.type;
+		ss.characterId = character.id;
+		ss.StudentPic =  imageDict[type];
+		ss.StudentImageText.text = nameDict[type];
+		//AcademySelfLearn.Students.Add (ss);
+		
+		ss.transform.localScale = Vector3.one;
+		
+		Debug.Log ("Gen Genereal from ConfrenceScreen");
+	}
 }

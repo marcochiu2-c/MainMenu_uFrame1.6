@@ -41,8 +41,8 @@ public class Academy : MonoBehaviour
 	public Transform TeachScrollPanel;
 	public Transform StudentScrollPanel;
 	public Transform SelfLearnScrollPanel;
-	Dictionary<int,Sprite> imageDict;
-	Dictionary<int,string> nameDict;
+	public static Dictionary<int,Sprite> imageDict;
+	public static Dictionary<int,string> nameDict;
 	public static GameObject staticTeachHolder;
 	public static GameObject staticSelfStudyHolder;
 	public static List<Counselor> cStudentList;
@@ -95,7 +95,8 @@ public class Academy : MonoBehaviour
 		techTreeList = TechTreeObject.GetList (1);
 		numberOfTech = techTreeList.Count;
 
-
+		//imageDict = new Dictionary<int,Sprite>();
+		//nameDict = new Dictionary<int,string> ();
 		SetCharacters ();
 
 		AcademyTeach.commonPanel = TeachScrollPanel;
@@ -627,8 +628,8 @@ public class Academy : MonoBehaviour
 	public Sprite ChuBunDeui;
 	public Sprite SanYeungSau;
 
-
-
+	
+    /*
 	public static Dictionary<int,Sprite> GetImageDict(){
 		Academy a = new Academy ();
 		return a.imageDict;
@@ -638,8 +639,9 @@ public class Academy : MonoBehaviour
 		Academy a = new Academy ();
 		return a.nameDict;
 	}
+	*/
 
-	private void SetCharacters(){
+	public void SetCharacters(){
 		imageDict = new Dictionary<int,Sprite>();
 		nameDict = new Dictionary<int,string> ();
 		// Add some images.
