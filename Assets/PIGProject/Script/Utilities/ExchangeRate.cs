@@ -15,5 +15,13 @@ namespace Utilities{
 		public static int GetStardustFromFeather (int f){
 			return Mathf.CeilToInt((float)f/feather);
 		}
+
+		public static int GetResourceFromStardust(int sd){
+			return sd * resource;
+		}
+
+		public static int GetFeatherFromStardust(int sd){
+			return sd * feather;
+		}
 	}
 }

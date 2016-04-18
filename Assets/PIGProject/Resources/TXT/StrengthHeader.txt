@@ -1,4 +1,4 @@
-﻿[StrengthHeader]
+[StrengthHeader]
 體力訓練
 
 戰場之上，有勇有謀但沒體力，如何指揮千軍萬馬？奔跑吧！武將！
@@ -10,6 +10,15 @@
 
 [StrengthEvent2]
 
+練功房保養中，暫未開啟。
+
+
 [StrengthEvent3]
 
+練功房保養中，暫未開啟。
+
+
 [StrengthEvent4]
+
+練功房保養中，暫未開啟。
+

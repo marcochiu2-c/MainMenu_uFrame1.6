@@ -90,8 +90,10 @@ public class MainScene : MonoBehaviour {
 			LoadHeadPic headPic = LoadHeadPic.SetCharacters();
 
 		}
-
+		InvokeRepeating("OnGeneralTrainComplete",1,1);
 	}
+
+
 
 	void reloadFromDB(){
 //		json = new JSONClass ();
@@ -292,5 +294,31 @@ public class MainScene : MonoBehaviour {
 		}
 	}
 
+	void OnGeneralTrainComplete(){
+//		GeneralTrainPrefab general = null;
+		int point = 0;
+		General g = new General ();
+		Dictionary<int,string> trainDict = new Dictionary<int,string> ();
+		trainDict.Add (40, "Courage");
+		trainDict.Add (41, "Force");
+		trainDict.Add (42, "Physical");
+		if (game.trainings.Count > 40) {
+			for (int i = 40 ; i < 43; i++){
+				if (game.trainings[i].status == 1 && game.trainings[i].etaTimestamp < DateTime.Now){
+					g = game.general.Find(x=>x.id == game.trainings[i].targetId);
+					point = game.trainings[i].type;
+					g.attributes[trainDict[i]].AsFloat = g.attributes[trainDict[i]].AsFloat + point;
+					GeneralTrainPrefab.currentPrefab =null;
+					g.UpdateObject();
+					game.trainings[i].Completed();
+//
+//					general = GeneralTrainPrefab.GeneralTrain.Find(x => x.general.id == game.trainings[i].targetId);
+//					if(general != null){
+//						general.gameObject.SetActive(true);
+//					}
+				}
+			}
+		}
+	}
 
 }

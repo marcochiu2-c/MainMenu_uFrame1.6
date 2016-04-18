@@ -35,8 +35,8 @@ public class TrainingEvent : MonoBehaviour {
 		ForceHeader.text = (ForceTxt [1] + "\n\n" + ForceTxt [3]);
 		ForceEvent1.text = (ForceTxt [6] + "\n" + ForceTxt [7] + "\n" + ForceTxt [8]);
 		ForceEvent2.text = (ForceTxt [11] + "\n" + ForceTxt [12] + "\n" + ForceTxt [13]);
-		ForceEvent3.text = (ForceTxt [16] + "\n" + ForceTxt [16] + "\n" + ForceTxt [16]);
-		ForceEvent4.text = (ForceTxt [18] + "\n" + ForceTxt [18] + "\n" + ForceTxt [18]);
+		ForceEvent3.text = (ForceTxt [16] + "\n" + ForceTxt [17] + "\n" + ForceTxt [18]);
+		ForceEvent4.text = (ForceTxt [21] + "\n" + ForceTxt [22] + "\n" + ForceTxt [23]);
 
 		if(StrengthFile != null) {
 			StrengthTxt = (StrengthFile.text.Split ('\n'));
@@ -46,9 +46,9 @@ public class TrainingEvent : MonoBehaviour {
 
 		StrengthHeader.text = (StrengthTxt [1] + "\n\n" + StrengthTxt [3]);
 		StrengthEvent1.text = (StrengthTxt [6] + "\n" + StrengthTxt [7] + "\n" + StrengthTxt [8]);
-		StrengthEvent2.text = (StrengthTxt [11] + "\n" + StrengthTxt [11] + "\n" + StrengthTxt [11]);
-		StrengthEvent3.text = (StrengthTxt [13] + "\n" + StrengthTxt [13] + "\n" + StrengthTxt [13]);
-		StrengthEvent4.text = (StrengthTxt [15] + "\n" + StrengthTxt [15] + "\n" + StrengthTxt [15]);
+		StrengthEvent2.text = (StrengthTxt [11] + "\n" + StrengthTxt [12] + "\n" + StrengthTxt [13]);
+		StrengthEvent3.text = (StrengthTxt [16] + "\n" + StrengthTxt [17] + "\n" + StrengthTxt [18]);
+		StrengthEvent4.text = (StrengthTxt [21] + "\n" + StrengthTxt [22] + "\n" + StrengthTxt [23]);
 	}
 
 }
