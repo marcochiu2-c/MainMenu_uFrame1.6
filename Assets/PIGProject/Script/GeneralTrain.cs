@@ -20,6 +20,9 @@ public class GeneralTrain : MonoBehaviour {
 	public Button BackButton;
 	public Button CloseButton;
 
+	public static int OpenedPanel = -1;
+	public static List<int> RunningItem = new List<int>();// 0 - Courage, 1 - Force, 2- Strength
+
 	Transform CourageEventHolder;
 	Transform ForceEventHolder;
 	Transform StrengthEventHolder;
@@ -37,7 +40,6 @@ public class GeneralTrain : MonoBehaviour {
 
 	void CallGeneralTrain(){
 		game = Game.Instance;
-		//Debug.Log (game.general [10].attributes);
 
 //		SetupGeneralTrainingPrefab ();
 		CourageEventHolder = CouragePopup.GetChild (0).GetChild (0).GetChild (1);
@@ -68,22 +70,27 @@ public class GeneralTrain : MonoBehaviour {
 
 	void AddButtonListener(){
 		BackButton.onClick.AddListener (() => {
+			OpenedPanel = -1;
 			DestroyAllGeneralTrainingPrefab();
 		});
 
 		CloseButton.onClick.AddListener (() => {
+			OpenedPanel = -1;
 			DestroyAllGeneralTrainingPrefab();
 		});
 		CourageButton.onClick.AddListener (() => {
 			SetupGeneralTrainingPrefab ();
+			OpenedPanel = 0;
 			OnPanelOpen(CouragePopup);
 		});
 		ForceButton.onClick.AddListener (() => {
 			SetupGeneralTrainingPrefab ();
+			OpenedPanel = 1;
 			OnPanelOpen(ForcePopup);
 		});
 		StrengthButton.onClick.AddListener (() => {
 			SetupGeneralTrainingPrefab ();
+			OpenedPanel = 2;
 			OnPanelOpen(StrengthPopup);
 		});
 		CourageEventHolder.GetChild(0).GetChild(1).GetChild(0).GetComponent<Button>().onClick.AddListener (() =>{
@@ -292,8 +299,7 @@ public class GeneralTrain : MonoBehaviour {
 		g.attributes [type].AsFloat = value > g.attributes ["Highest"+type].AsFloat + point ? g.attributes ["Highest"+type].AsFloat : value;
 		g.UpdateObject ();
 		Trainings tr = game.trainings.Find (x => x.targetId == id);
-		tr.status = 3;
-		tr.UpdateObject ();
+		tr.Completed ();
 	}
 
 	void OnPanelOpen(Transform panel){
@@ -310,22 +316,25 @@ public class GeneralTrain : MonoBehaviour {
 		idDict.Add (ForcePopup, 41);
 		idDict.Add (StrengthPopup, 42);
 
-		int count = GeneralTrainPrefab.GeneralTrain.Count;
+		int count = GeneralTrainPrefab.GTrain.Count;
 		int trainingGeneral = 0;
 		for (int i = 0; i < count; i++) {
-			GeneralTrainPrefab.GeneralTrain[i].SetAttrName(textDict[panel]);
-			GeneralTrainPrefab.GeneralTrain[i].SetAttr(game.general[i].attributes[attrDict[panel]]);
-			GeneralTrainPrefab.GeneralTrain[i].transform.parent = panel.GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetChild(0);
-			RectTransform rTransform = GeneralTrainPrefab.GeneralTrain[i].GetComponent<RectTransform>();
+			GeneralTrainPrefab.GTrain[i].SetAttrName(textDict[panel]);
+			GeneralTrainPrefab.GTrain[i].SetAttr(game.general[i].attributes[attrDict[panel]]);
+			GeneralTrainPrefab.GTrain[i].transform.parent = panel.GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetChild(0);
+			RectTransform rTransform = GeneralTrainPrefab.GTrain[i].GetComponent<RectTransform>();
 			rTransform.localScale= Vector3.one;
+
+			//if the general in the prefab is training
 			if (game.trainings[idDict[panel]].status == 1 && game.trainings[idDict[panel]].targetId == game.general[i].id){
-				GeneralTrainPrefab.GeneralTrain[i].SetRemainingTime(game.trainings[idDict[panel]].etaTimestamp);
-				GeneralTrainPrefab.GeneralTrain[i].transform.SetSiblingIndex(0);
-				GeneralTrainPrefab.currentPrefab = GeneralTrainPrefab.GeneralTrain[i];
+				GeneralTrainPrefab.GTrain[i].SetRemainingTime(game.trainings[idDict[panel]].etaTimestamp);
+				GeneralTrainPrefab.GTrain[i].transform.SetSiblingIndex(0);
+				GeneralTrainPrefab.currentPrefab = GeneralTrainPrefab.GTrain[i];
+				RunningItem[idDict[panel]-40] = game.general[i].id;
 			}else{
-				GeneralTrainPrefab.GeneralTrain[i].eta = new DateTime(2015,1,1);
+				GeneralTrainPrefab.GTrain[i].eta = new DateTime(2015,1,1);
 				if (game.trainings.Exists(x => x.targetId == game.general[i].id)){
-					GeneralTrainPrefab.GeneralTrain[i].gameObject.SetActive(false);
+					GeneralTrainPrefab.GTrain[i].gameObject.SetActive(false);
 				}
 			}
 
@@ -338,7 +347,7 @@ public class GeneralTrain : MonoBehaviour {
 		var count = game.general.Count;
 		for (var i=0; i <count; i++) {
 			GeneralTrainPrefab gtp = Instantiate (Resources.Load ("GeneralTrainingPrefab") as GameObject).GetComponent<GeneralTrainPrefab> ();
-			GeneralTrainPrefab.GeneralTrain.Add (gtp);
+			GeneralTrainPrefab.GTrain.Add (gtp);
 			gtp.general = game.general[i];
 			gtp.SetName (gtp.general.attributes["Name"]);
 			gtp.image.sprite = headPic.imageDict[gtp.general.type];
@@ -346,11 +355,11 @@ public class GeneralTrain : MonoBehaviour {
 	}
 
 	void DestroyAllGeneralTrainingPrefab(){
-		int count = GeneralTrainPrefab.GeneralTrain.Count;
+		int count = GeneralTrainPrefab.GTrain.Count;
 		for (int i = 0; i < count; i++) {
-			GameObject.DestroyImmediate(GeneralTrainPrefab.GeneralTrain[i].gameObject);
+			GameObject.DestroyImmediate(GeneralTrainPrefab.GTrain[i].gameObject);
 		}
-		GeneralTrainPrefab.GeneralTrain = new List<GeneralTrainPrefab>();
+		GeneralTrainPrefab.GTrain = new List<GeneralTrainPrefab>();
 	}
 
 	// Update is called once per frame
