@@ -82,10 +82,7 @@ public class LoginScreen : MonoBehaviour {
 
 		// TODO send device ID to server for checking user existance
 		JSONNode json = new JSONClass ();
-		json ["data"] = deviceId;
-		json ["action"] = "GET";
-		json ["table"] = "getUserInformationByDeviceId";
-		wsc.conn.Send (json.ToString ());
+		wsc.Send ("getUserInformationByDeviceId", "GET", new JSONData (deviceId));
 
 
 //		Debug.Log ("NewFBUserPanel Active: " + newFBUserPanel.activeSelf);
@@ -96,7 +93,7 @@ public class LoginScreen : MonoBehaviour {
 //		Debug.Log (game.login.snsType);
 		if (user!=null){
 
-//			Debug.Log (user);
+
 			if (user.ToString ()=="{\"success\":false}") {
 				Debug.Log ("user not existed");
 				
@@ -104,7 +101,7 @@ public class LoginScreen : MonoBehaviour {
 			}else if (LoginScreen.user != null) {
 				var j = LoginScreen.user["attributes"];
 				game.login = new Login ((JSONClass)LoginScreen.user);
-
+//				Debug.Log (user);
 				LoginScreen.user = null;
 			}
 
@@ -249,11 +246,12 @@ public class LoginScreen : MonoBehaviour {
 
 	public void CheckUserSNSInDB(){
 //		Debug.Log ("User not linked with SNS");
-		JSONNode json = new JSONClass ();
-		json ["data"] = snsURL;
-		json ["action"] = "GET";
-		json ["table"] = "getUserInformationBySnsUrl";
-		wsc.conn.Send (json.ToString ());
+//		JSONNode json = new JSONClass ();
+//		json ["data"] = snsURL;
+//		json ["action"] = "GET";
+//		json ["table"] = "getUserInformationBySnsUrl";
+//		wsc.conn.Send (json.ToString ());
+		wsc.Send ("getUserInformationBySnsUrl", "GET", snsURL);
 //		sentDBSNSCheckRequest = true;
 	}
 
