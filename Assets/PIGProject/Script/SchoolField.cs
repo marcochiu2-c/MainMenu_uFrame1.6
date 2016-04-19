@@ -234,8 +234,7 @@ public class SchoolField : MonoBehaviour {
 						msg = msg.Replace("%SQ%",game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"]);
 						msg = msg.Replace("%EQ%",(game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt - game.weapon[i].quantity).ToString());
 						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
-						staticDisablePanel.SetActive(true);
-						staticTrainingEquHolder.SetActive(true);
+						staticShowPanel( staticTrainingEquHolder);
 					}else{
 						game.weapon[i].SetQuantity(game.weapon[i].quantity - game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt);
 					}
@@ -253,8 +252,7 @@ public class SchoolField : MonoBehaviour {
 						msg = msg.Replace("%SQ%",game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"]);
 						msg = msg.Replace("%EQ%",(game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt - game.armor[i].quantity).ToString());
 						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
-						staticDisablePanel.SetActive(true);
-						staticTrainingEquHolder.SetActive(true);
+						staticShowPanel( staticTrainingEquHolder);
 					}else{
 						game.weapon[i].SetQuantity(game.armor[i].quantity - game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt);
 					}
@@ -272,8 +270,7 @@ public class SchoolField : MonoBehaviour {
 						msg = msg.Replace("%SQ%",game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"]);
 						msg = msg.Replace("%EQ%",(game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt - game.shield[i].quantity).ToString());
 						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
-						staticDisablePanel.SetActive(true);
-						staticTrainingEquHolder.SetActive(true);
+						staticShowPanel( staticTrainingEquHolder);
 					}else{
 						game.weapon[i].SetQuantity(game.shield[i].quantity - game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt);
 					}
@@ -355,8 +352,8 @@ public class SchoolField : MonoBehaviour {
 		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0) {
 			ShowNewWeaponPanel ();
 		} else {
-			ArmyListHolder.SetActive(false);
-			AssignNSPopup.SetActive(true);
+			HidePanel(ArmyListHolder);
+			ShowPanel(AssignNSPopup.);
 			Debug.Log("No soldier assigned");
 		}
 	}
@@ -365,7 +362,7 @@ public class SchoolField : MonoBehaviour {
 		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0) {
 			ShowNewArmorPanel ();
 		} else {
-			ArmorListHolder.SetActive (false);
+			HidePanel(ArmyListHolder);
 			ShowPanel( AssignNSPopup);
 		}
 	}
@@ -374,7 +371,7 @@ public class SchoolField : MonoBehaviour {
 		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0) {
 			ShowNewShieldPanel ();
 		} else {
-			ShieldListHolder.SetActive (false);
+			HidePanel(ShieldListHolder);
 			ShowPanel( AssignNSPopup );
 		}
 	}
@@ -425,8 +422,7 @@ public class SchoolField : MonoBehaviour {
 		Game game = Game.Instance;
 		string qText = "";
 //		ProductDict p = new ProductDict ();
-		staticDisablePanel.SetActive (true);
-		panelDict [armedCategory].SetActive (true);
+		staticShowPanel(panelDict [armedCategory]);
 
 		if (armedCategory == "weapon"){
 			qText = nameDict [armedCategory];
@@ -443,8 +439,7 @@ public class SchoolField : MonoBehaviour {
 				qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
 				qText = qText.Replace ("%New%", p.products [armedType].name);
 			}else{
-				staticDisablePanel.SetActive(false);
-				staticArmyQAHolder.SetActive(false);
+				staticHidePanel( staticArmyQAHolder);
 				return;
 			}
 		}else if (armedCategory == "armor"){
@@ -452,8 +447,7 @@ public class SchoolField : MonoBehaviour {
 				qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
 				qText = qText.Replace ("%New%", p.products [armedType].name);
 			}else{
-				staticDisablePanel.SetActive(false);
-				staticArmorQAHolder.SetActive(false);
+				staticHidePanel( staticArmorQAHolder);
 				return;
 			}
 		}else if (armedCategory == "shield"){
@@ -461,8 +455,7 @@ public class SchoolField : MonoBehaviour {
 				qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
 				qText = qText.Replace ("%New%", p.products [armedType].name);
 			}else{
-				staticDisablePanel.SetActive(false);
-				staticShieldQAHolder.SetActive(false);
+				staticHidePanel( staticShieldQAHolder);
 				return;
 			}
 		}
@@ -487,7 +480,7 @@ public class SchoolField : MonoBehaviour {
 //		json.Add ("userId", new JSONData (game.login.id));
 //		json.Add ("json", game.soldiers [AssigningSoldier - 1].attributes);
 //		wsc.Send ("soldier", "SET", json);
-		panelDict [category].SetActive (false);
+		staticHidePanel(panelDict [category]);
 
 	}
 
@@ -500,8 +493,8 @@ public class SchoolField : MonoBehaviour {
 		TimeSpan time = new TimeSpan();
 		if (AssigningWeaponId != 0){
 			if (game.artisans[0].etaTimestamp > DateTime.Now){
-				TrainingEquHolder.SetActive(false);
-				CannotTrainSoldierPopup.SetActive (true);
+				HidePanel(TrainingEquHolder);
+				ShowPanel( CannotTrainSoldierPopup);
 				return;
 			}
 			count = game.weapon.Count;
@@ -514,8 +507,8 @@ public class SchoolField : MonoBehaviour {
 			}
 		}else if (AssigningArmorId != 0){ 
 			if (game.artisans[1].etaTimestamp > DateTime.Now){
-				CannotTrainSoldierPopup.SetActive (true);
-				TrainingEquHolder.SetActive(false);
+				HidePanel(TrainingEquHolder);
+				ShowPanel(CannotTrainSoldierPopup);
 				return;
 			}
 			count = game.armor.Count;
@@ -528,8 +521,8 @@ public class SchoolField : MonoBehaviour {
 			}
 		}else if (AssigningShieldId != 0){ 
 			if (game.artisans[2].etaTimestamp > DateTime.Now){
-				TrainingEquHolder.SetActive(false);
-				CannotTrainSoldierPopup.SetActive (true);
+				HidePanel(TrainingEquHolder);
+				ShowPanel(CannotTrainSoldierPopup);
 				return;
 			}
 			count = game.shield.Count;
@@ -889,6 +882,16 @@ public class SchoolField : MonoBehaviour {
 			}
 		}
 		SoldierSummary.text = data;
+	}
+
+	static void staticShowPanel(GameObject panel){
+		staticDisablePanel.SetActive (true);
+		panel.SetActive (true);
+	}
+
+	static void staticHidePanel(GameObject panel){
+		staticDisablePanel.SetActive (false);
+		panel.SetActive (false);
 	}
 
 	void ShowPanel(GameObject panel){

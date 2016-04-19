@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class GeneralTrainPrefab : MonoBehaviour {
-	public static List<GeneralTrainPrefab> GeneralTrain = new List<GeneralTrainPrefab>();
+	public static List<GeneralTrainPrefab> GTrain = new List<GeneralTrainPrefab>();
 	public static GeneralTrainPrefab currentPrefab;
 	public Image image;
 	public Text Name;
@@ -37,6 +37,7 @@ public class GeneralTrainPrefab : MonoBehaviour {
 				currentPrefab.gameObject.GetComponent<Image>().color = defaultColor;
 			}
 			// Set the clicked item to be currentPrefab
+//			if (generaltr
 			currentPrefab = gameObject.GetComponent<GeneralTrainPrefab> ();
 			currentPrefab.GetComponent<Image>().color = Color.green;
 		}else{
