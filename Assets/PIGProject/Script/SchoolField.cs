@@ -353,7 +353,7 @@ public class SchoolField : MonoBehaviour {
 			ShowNewWeaponPanel ();
 		} else {
 			HidePanel(ArmyListHolder);
-			ShowPanel(AssignNSPopup.);
+			ShowPanel(AssignNSPopup);
 			Debug.Log("No soldier assigned");
 		}
 	}
