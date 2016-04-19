@@ -478,6 +478,7 @@ public class Soldiers{
 	public int id { get; set; }
 	public JSONClass attributes { get; set; }
 	public int type { get; set; }
+	public int generalId { get; set; }
 	public int quantity { get; set; }
 
 	public Soldiers(){
@@ -487,6 +488,7 @@ public class Soldiers{
 		id = j ["soldier_id"].AsInt;
 		attributes = (JSONClass)j ["soldier_json"];
 		type = j ["type"].AsInt;
+		generalId = j ["general_id"].AsInt;
 		quantity = j ["quantity"].AsInt;
 	}
 	
@@ -497,6 +499,7 @@ public class Soldiers{
 		j ["json"] = attributes;
 		j.Add ("type", new JSONData (type));
 		j.Add ("quantity", new JSONData (quantity));
+		j.Add ("generalId", new JSONData (generalId));
 		j.Add ("userId", new JSONData(game.login.id));
 		return j;
 	}

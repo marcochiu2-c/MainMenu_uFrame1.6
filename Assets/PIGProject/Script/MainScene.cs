@@ -311,8 +311,9 @@ public class MainScene : MonoBehaviour {
 					GeneralTrainPrefab.currentPrefab =null;
 					g.UpdateObject();
 					game.trainings[i].Completed();
+					GeneralTrain.RunningItem[i-40] = 0;
 //
-//					general = GeneralTrainPrefab.GeneralTrain.Find(x => x.general.id == game.trainings[i].targetId);
+//					general = GeneralTrainPrefab.GTrain.Find(x => x.general.id == game.trainings[i].targetId);
 //					if(general != null){
 //						general.gameObject.SetActive(true);
 //					}

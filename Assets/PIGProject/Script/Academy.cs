@@ -53,8 +53,6 @@ public class Academy : MonoBehaviour
 	public static GameObject staticAcademyHolder;
 	WsClient wsc;
 	Game game;
-//	public ListView.ColumnHeaderCollection ListViewColumns;
-//	public ListView.ListViewItemCollection ListViewItems;
 
 	public static ActivePopupEnum activePopup;
 	Dictionary<ActivePopupEnum,string> academyCategoryText = new Dictionary<ActivePopupEnum, string>();
@@ -69,7 +67,6 @@ public class Academy : MonoBehaviour
 	}
 
 	public void CallAcademy(){
-
 
 		btnName [0] = "IQButton";
 		btnName [1] = "CommandedButton";
