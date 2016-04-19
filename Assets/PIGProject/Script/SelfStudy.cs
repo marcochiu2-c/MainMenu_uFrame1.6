@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor.Sprites;
+//using UnityEditor.Sprites;
 using System;
 using System.Collections;
 using System.Collections.Generic;
