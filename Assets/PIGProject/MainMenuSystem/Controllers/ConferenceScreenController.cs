@@ -20,11 +20,12 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
     public override void InitializeConferenceScreen(ConferenceScreenViewModel viewModel) {
         base.InitializeConferenceScreen(viewModel);
         // This is called when a ConferenceScreenViewModel is created
-        //GetSoldierValue();
+        SetSoldierVM();
     }
     
-    public void SetSoldierVM(int i, int AssigningSoldier)
+    public void SetSoldierVM()
     {
+		int AssigningSoldier = 0;
 		float soldierHealth = 1000; 
 		/*
 		Soldier data should be passed from menu:
@@ -43,10 +44,12 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		
 		game = Game.Instance;
 		
+		for(int i = 1; i <= 5; i++)
+		{
 		// Get the Controllers, ViewModels and Views from Kernel
 		SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
 		Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
-		
+		}
 		Debug.Log (game.soldiers[AssigningSoldier].attributes);
 		
 		
@@ -67,19 +70,22 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 			
 			int maxSoldeirsQuatity = game.soldiers[AssigningSoldier].quantity;
 	
-			
+		for(int i = 0; i < 5; i++)
+		{
 			SoldierVM[i].AttackSpeed = game.soldiers[AssigningSoldier].attributes["AttackSpeed"].AsInt;
-			SoldierVM[i].Physique = game.soldiers[AssigningSoldier].attributes["Strength"].AsInt;
-			SoldierVM[i].HitPoint = game.soldiers[AssigningSoldier].attributes["Hit"].AsInt;
+			SoldierVM[i].Physique = 70;
+			SoldierVM[i].HitPoint = 70;
 			SoldierVM[i].Dodge = game.soldiers[AssigningSoldier].attributes["Dodge"].AsFloat;
-			SoldierVM[i].InitialMorale = game.soldiers[AssigningSoldier].attributes["Morale"].AsInt;
-			SoldierVM[i].Prestige = game.soldiers[AssigningSoldier].attributes["Strength"].AsInt;
-			//SoldierVM[i].WeaponProficiency = game.soldiers[AssigningSoldier].attributes["AttackSpeed"].AsInt;
-			//SoldierVM[i].Career = game.soldiers[AssigningSoldier].attributes["Career"].AsInt;
+			SoldierVM[i].InitialMorale = 70;
+			SoldierVM[i].Prestige = 100;
+			SoldierVM[i].WeaponProficiency = 90;
+			SoldierVM[i].Career = Career.Swordman;
+			SoldierVM[i].Sense = SenseStyle.AGGRESSIVE;
 			
 			SoldierVM[i].Health = 2001;
+			SoldierVM[i].Max_Health = SoldierVM[i].Health;
 			//Debug.Log ("AttackSpeed: " + SoldierVM[0].AttackSpeed);
-		
+		}
 		
 		/// Soldier Quatity: Set Number in TextField
 		SoldierVM[0].Health = soldierHealth;

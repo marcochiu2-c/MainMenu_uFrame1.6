@@ -41,12 +41,14 @@ public class GeneralTrain : MonoBehaviour {
 	void CallGeneralTrain(){
 		game = Game.Instance;
 
-//		SetupGeneralTrainingPrefab ();
 		CourageEventHolder = CouragePopup.GetChild (0).GetChild (0).GetChild (1);
 		ForceEventHolder = ForcePopup.GetChild (0).GetChild (0).GetChild (1);
 		StrengthEventHolder = StrengthPopup.GetChild (0).GetChild (0).GetChild (1);
 		SetTrainDict ();
 		AddButtonListener ();
+		RunningItem.Add ( -1);
+		RunningItem.Add ( -1);
+		RunningItem.Add ( -1);
 	}
 
 	void SetTrainDict(){

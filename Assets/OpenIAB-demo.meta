@@ -1,7 +1,11 @@
 fileFormatVersion: 2
 guid: c304271f3386b7a41acacc074c6db74b
 folderAsset: yes
+<<<<<<< HEAD
 timeCreated: 1461141038
+=======
+timeCreated: 1461140963
+>>>>>>> feature/MainGame
 licenseType: Free
 DefaultImporter:
   userData: 

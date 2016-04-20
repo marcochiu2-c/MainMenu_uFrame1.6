@@ -17,9 +17,11 @@ public class GeneralTrainPrefab : MonoBehaviour {
 	public DateTime eta;
 	public General general { get; set; }
 	Color defaultColor;
+	Game game;
 	
 	// Use this for initialization
 	void Start () {
+		game = Game.Instance;
 		Color.TryParseHexString ("#F5FBF818", out defaultColor);
 		InvokeRepeating ("UpdateRemainingTime", 0, 1);
 	}
@@ -37,9 +39,23 @@ public class GeneralTrainPrefab : MonoBehaviour {
 				currentPrefab.gameObject.GetComponent<Image>().color = defaultColor;
 			}
 			// Set the clicked item to be currentPrefab
-//			if (generaltr
-			currentPrefab = gameObject.GetComponent<GeneralTrainPrefab> ();
-			currentPrefab.GetComponent<Image>().color = Color.green;
+			Debug.Log ("game.trainings[0].status: "+game.trainings[40].status);
+			if(GeneralTrain.OpenedPanel == 0){
+				if (game.trainings[40].status ==1){
+					return;
+				}
+			}else if (GeneralTrain.OpenedPanel == 1){
+				if (game.trainings[41].status ==1){
+					return;
+				}
+			}else if (GeneralTrain.OpenedPanel == 2){
+				if (game.trainings[42].status ==1){
+					return;
+				}
+			}else{
+				currentPrefab = gameObject.GetComponent<GeneralTrainPrefab> ();
+				currentPrefab.GetComponent<Image>().color = Color.green;
+			}
 		}else{
 			currentPrefab.gameObject.GetComponent<Image>().color = defaultColor;
 			currentPrefab = null;
