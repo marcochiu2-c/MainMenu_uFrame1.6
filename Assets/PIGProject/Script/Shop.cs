@@ -19,6 +19,7 @@ public class ProductDesc{
 }
 
 
+
 public class Shop : MonoBehaviour {
 	const string STARDUST_380 = "stardust_380";
 	const string STARDUST_780 = "stardust_780";
@@ -50,8 +51,8 @@ public class Shop : MonoBehaviour {
 	//    ProductList prodList = new ProductList();
 	//    List<Purchase> UnConsumedInventory;
 	//    bool UnConsumedInventoryNewUpdate=false;
-	bool monthlySubscriptionBought = false;
-	bool _isInitialized = false;
+	public static bool monthlySubscriptionBought = false;
+	public bool _isInitialized = false;
 	Game game;
 	WsClient wsc;
 	public Button firstChargeButton;
@@ -59,14 +60,16 @@ public class Shop : MonoBehaviour {
 	
 	string googlePublicKey ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgQiRcQJ6Gv0KaZm3SRQ2qntuyiHgrA2cXhwXsOc3aTF3hzncp86wIAHGmlblZDo6g04YLdSJxuEpqXmEW77utWtRnO8lQI8kbh52VbyhUxeOv1q6vJKjymrCSFsWaIlp31ki7CQDA9YWq7nMGFXlzfV9cMEJwqTfMyzwMoPR2hqtd80zJ9IIP4vIBDb9lPLT/MNgJ6gwDu6wDAUjEyM2Gjs1MfqEzUuoTF02V9u5dT4axDks3uP8fI2PiLOUwvju45faMQP6ujtMqHNzOOHSN6zu8RfcrXFFG/+UgCtUl/YgWNmy81rdnN8Kh2Wk9RW2FXV1vbnBbHWuKO26mIWofQIDAQAB";
 	
-	
-	
+
 	// Use this for initialization
 	void Start () {
 		CallShop ();
 	}
 	
-	void CallShop(){
+	public void CallShop(){
+		if (_isInitialized) {
+			return;
+		}
 		game = Game.Instance;
 		wsc = WsClient.Instance;
 		
@@ -279,7 +282,10 @@ public class Shop : MonoBehaviour {
 	}
 	
 	private void CheckInventory(){
-		OpenIAB.queryInventory ();
+		Debug.Log ("CheckInventory()");
+		if (_isInitialized) {
+			OpenIAB.queryInventory ();
+		}
 	}
 	
 }
