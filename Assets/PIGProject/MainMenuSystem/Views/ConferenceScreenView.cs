@@ -20,6 +20,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button defensiveLinup;
 	public Button standings;
 	
+	/*
 	public Button SetSoldierType;
 	public Button SoldierType1;
 	public Button SoldierType2;
@@ -29,14 +30,15 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button SoldierType6;
 	public Button SoldierType7;
 	public Button SoldierType8;
-
+    */
+    
 	public GameObject ArmyAttack;
 	public GameObject ArmyGarrison;
 	public GameObject MilitaryAdviser;
 	public GameObject DefensiveLinup;
 	public GameObject Standings;
-	public GameObject SoldierType;
-	public GameObject SoldierQuantity;
+	//public GameObject SoldierType;
+	//public GameObject SoldierQuantity;
 	
 	public Transform GeneralScrollPanel;
 	public List<General> GeneralList;
@@ -115,6 +117,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			Standings.gameObject.SetActive (true);
 		});
 		
+		/*
 		this.BindButtonToHandler (SetSoldierType, () => {
 			SoldierType.gameObject.SetActive (true);
 		});
@@ -124,6 +127,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			SoldierQuantity.gameObject.SetActive (true);
 
 		});
+		*/
     }
     
 	public void CreateSelfLearnItem(General character){
