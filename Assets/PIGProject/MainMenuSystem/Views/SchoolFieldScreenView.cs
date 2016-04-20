@@ -115,6 +115,7 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 //			TrainingQHolder.gameObject.SetActive (true);
 		});
 		this.BindButtonToHandler (AssignSoldierConfirmButton, () => {
+			DisablePanel.SetActive(false);
 			AssignNSHolder.gameObject.SetActive (false);
 		});
 		this.BindButtonToHandler (SoldierType1Button, () => {

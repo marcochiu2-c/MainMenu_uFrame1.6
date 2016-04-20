@@ -25,7 +25,8 @@ public class MainGameRootView : MainGameRootViewBase {
 	public Button InfoMissionButton;
 	public Button StartBattleButton;
 	public Button LeaveButton;
-
+	public Button Leave2Button;
+	
 	public Button SlowButton; 
 	public Button NormalButton; 
 	public Button FastButton;
@@ -153,7 +154,27 @@ public class MainGameRootView : MainGameRootViewBase {
 			loadingImage.SetActive (true);
 			StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
 		});
-
+		
+		this.BindButtonToHandler(Leave2Button, () => { 
+			
+			/*
+			Publish(new UnloadSceneCommand()
+			{
+				SceneName = "MainGameScene"
+			});
+			
+			Application.LoadLevel("MainMenuScene");
+			
+			//Publish(new LoadSceneCommand()
+			//{
+			//	SceneName = "MainMenuScene"
+			//});
+		    */
+			
+			loadingImage.SetActive (true);
+			StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
+		});
+		
 		this.BindButtonToHandler(InfoAtkButton, () => { 
 			InfoText.text = atkInfo.text;
 		});
