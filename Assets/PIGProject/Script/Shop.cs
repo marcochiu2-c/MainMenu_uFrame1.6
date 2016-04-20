@@ -282,8 +282,9 @@ public class Shop : MonoBehaviour {
 	}
 	
 	private void CheckInventory(){
-		Debug.Log ("CheckInventory()");
+
 		if (_isInitialized) {
+			Debug.Log ("CheckInventory()");
 			OpenIAB.queryInventory ();
 		}
 	}

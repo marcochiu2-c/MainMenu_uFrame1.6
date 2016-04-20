@@ -257,7 +257,6 @@ public class LoadHeadPic : MonoBehaviour
 		headPic.PongGyun  = Instantiate( Resources.Load<Sprite>("Characters/龐涓/Head-PongGyun")) as Sprite;
 		headPic.PongTung  = Instantiate( Resources.Load<Sprite>("Characters/龐統/Head-PongTung")) as Sprite;
 		headPic.KwanYu = Instantiate( Resources.Load<Sprite>("Characters/關羽/關公")) as Sprite;
-		headPic.KwanYu = Instantiate( Resources.Load<Sprite>("Characters/張世傑/Head-CheungSaiKit")) as Sprite;
 		headPic._setCharacters ();
 
 		return headPic;
