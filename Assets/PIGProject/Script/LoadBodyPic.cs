@@ -5,7 +5,7 @@ using System.Collections.Generic;
 //Utility script to load head pic sprite to the script for later use.
 
 
-public class LoadHeadPic : MonoBehaviour
+public class LoadBodyPic : MonoBehaviour
 {
 	public Dictionary<int,Sprite> imageDict;
 	public Dictionary<int,string> nameDict;
@@ -25,12 +25,12 @@ public class LoadHeadPic : MonoBehaviour
 	
 	}
 
-	public LoadHeadPic(){
+	public LoadBodyPic(){
 	}
 
-	private static readonly LoadHeadPic s_Instance = new LoadHeadPic();
+	private static readonly LoadBodyPic s_Instance = new LoadBodyPic();
 	
-	public static LoadHeadPic Instance
+	public static LoadBodyPic Instance
 	{
 		get
 		{
@@ -147,119 +147,118 @@ public class LoadHeadPic : MonoBehaviour
 	public Sprite PongTung;
 	public Sprite CheungSaiKit;
 
-	public static LoadHeadPic SetCharacters(){
-		Debug.Log ("LoadHeadPic.SetCharacters()");
-		LoadHeadPic headPic = LoadHeadPic.Instance;
-		headPic.YaSinTipMukYi  = Instantiate( Resources.Load<Sprite>("Characters/也先帖木兒/Head-YaSinTipMukYi")) as Sprite;
-		headPic.YuHim  = Instantiate( Resources.Load<Sprite>("Characters/于謙/YuHim")) as Sprite;
-		headPic.NgTseSeui  = Instantiate( Resources.Load<Sprite>("Characters/伍子胥/Head-NgTseSeui")) as Sprite;
-		headPic.BakPei  = Instantiate( Resources.Load<Sprite>("Characters/伯嚭/Head-BakPei")) as Sprite;
-		headPic.SinJan  = Instantiate( Resources.Load<Sprite>("Characters/先軫/Head-SinJan")) as Sprite;
-		headPic.SinYing  = Instantiate( Resources.Load<Sprite>("Characters/冼英/Head-SinYing")) as Sprite;
-		headPic.LauBakWan  = Instantiate( Resources.Load<Sprite>("Characters/劉基/Head-LauBakWan")) as Sprite;
-		headPic.LauBingChung  = Instantiate( Resources.Load<Sprite>("Characters/劉秉忠/Head-LauBingChung")) as Sprite;
-		headPic.SiNeiGin  = Instantiate( Resources.Load<Sprite>("Characters/史彌堅/Head-SiNeiGin")) as Sprite;
-		headPic.SiSiMing  = Instantiate( Resources.Load<Sprite>("Characters/史思明/Head-SiSiMing")) as Sprite;
-		headPic.SiManShui  = Instantiate( Resources.Load<Sprite>("Characters/史萬歲/SiManShui")) as Sprite;
-		headPic.SiMaYi  = Instantiate( Resources.Load<Sprite>("Characters/司馬懿/Head-SiMaYi")) as Sprite;
-		headPic.NgSaamGwai  = Instantiate( Resources.Load<Sprite>("Characters/吳三桂/Head-NgSaamGwai")) as Sprite;
-		headPic.NgHei  = Instantiate( Resources.Load<Sprite>("Characters/吳起/Head-NgHei")) as Sprite;
-		headPic.LuiBo  = Instantiate( Resources.Load<Sprite>("Characters/呂布/Head-LuiBo")) as Sprite;
-		headPic.ChowAhFu  = Instantiate( Resources.Load<Sprite>("Characters/周亞夫/Head-ChowAhFu")) as Sprite;
-		headPic.ChowYu = Instantiate( Resources.Load<Sprite>("Characters/周瑜/Head-ChowYu")) as Sprite;
-		headPic.ChowSauYing  = Instantiate( Resources.Load<Sprite>("Characters/周秀英/Head-ChowSauYing")) as Sprite;
-		headPic.JitBit  = Instantiate( Resources.Load<Sprite>("Characters/哲別/Head-JitBit")) as Sprite;
-		headPic.SinHongShun  = Instantiate( Resources.Load<Sprite>("Characters/單雄信/SinHongShun")) as Sprite;
-		headPic.WongShekGong  = Instantiate( Resources.Load<Sprite>("Characters/圮上老人.黃石公/Head-WongShekGong")) as Sprite;
-		headPic.HaHouDun = Instantiate( Resources.Load<Sprite>("Characters/夏侯惇/Head-HaHouDun")) as Sprite;
-		headPic.GeungTseNga  = Instantiate( Resources.Load<Sprite>("Characters/姜子牙/Head-GeungTseNga")) as Sprite;
-		headPic.SuenMo  = Instantiate( Resources.Load<Sprite>("Characters/孫武/Head-SuenMo")) as Sprite;
-		headPic.SuenBan  = Instantiate( Resources.Load<Sprite>("Characters/孫臏/Head-SuenBan")) as Sprite;
-		headPic.OnLukShan  = Instantiate( Resources.Load<Sprite>("Characters/安祿山/Head-OnLukShan")) as Sprite;
-		headPic.JungJaak = Instantiate( Resources.Load<Sprite>("Characters/宗澤/Head-JungJaak")) as Sprite;
-		headPic.WaiLiuTse  = Instantiate( Resources.Load<Sprite>("Characters/尉繚子/Head-WaiLiuTse")) as Sprite;
-		headPic.WaiChiGingDak  = Instantiate( Resources.Load<Sprite>("Characters/尉遲敬德/Head-WaiChiGingDak")) as Sprite;
-		headPic.NgokFei  = Instantiate( Resources.Load<Sprite>("Characters/岳飛/Head-NgokFei")) as Sprite;
-		headPic.SheungYuChun  = Instantiate( Resources.Load<Sprite>("Characters/常遇春/SheungYuChun")) as Sprite;
-		headPic.LimPaul = Instantiate( Resources.Load<Sprite>("Characters/廉頗/Head-LimPaul")) as Sprite;
-		headPic.CheungShukYe  = Instantiate( Resources.Load<Sprite>("Characters/張叔夜/Head-CheungSukYe")) as Sprite;
-		headPic.CheungLeung  = Instantiate( Resources.Load<Sprite>("Characters/張良/Head-CheungLeung")) as Sprite;
-		headPic.CheungLiu  = Instantiate( Resources.Load<Sprite>("Characters/張遼/Head-CheungLiu")) as Sprite;
-		headPic.CheungHop  = Instantiate( Resources.Load<Sprite>("Characters/張郃/Head-CheungHop")) as Sprite;
-		headPic.CheungFei = Instantiate( Resources.Load<Sprite>("Characters/張飛/Head-CheungFei")) as Sprite;
-		headPic.ChuiTat  = Instantiate( Resources.Load<Sprite>("Characters/徐達/Head-ChuiTat")) as Sprite;
-		headPic.NgouLoi  = Instantiate( Resources.Load<Sprite>("Characters/惡來/Head-NgouLoi")) as Sprite;
-		headPic.MoYungYinChiu  = Instantiate( Resources.Load<Sprite>("Characters/慕容延釗/Head-MoYungYinChiu")) as Sprite;
-		headPic.ChikGaiGwong  = Instantiate( Resources.Load<Sprite>("Characters/戚繼光/Head-ChikGaiGwong")) as Sprite;
-		headPic.SiLong = Instantiate( Resources.Load<Sprite>("Characters/施琅/Head-SiLong")) as Sprite;
-		headPic.ChoGwai  = Instantiate( Resources.Load<Sprite>("Characters/曹劌/Head-ChoGwai")) as Sprite;
-		headPic.TsengKwokFan  = Instantiate( Resources.Load<Sprite>("Characters/曾國藩/Head-TsengKwokFan")) as Sprite;
-		headPic.ChuBunDeui  = Instantiate( Resources.Load<Sprite>("Characters/朱般懟/Head-ChuBunDeui")) as Sprite;
-		headPic.LeeSaiJik  = Instantiate( Resources.Load<Sprite>("Characters/李勣/Head-LeeSaiJik")) as Sprite;
-		headPic.LeeKwongLee = Instantiate( Resources.Load<Sprite>("Characters/李廣利/Head-LeeKwongLee")) as Sprite;
-		headPic.LeeManChung  = Instantiate( Resources.Load<Sprite>("Characters/李文忠/Head-LeeManChung")) as Sprite;
-		headPic.LeeGingLung  = Instantiate( Resources.Load<Sprite>("Characters/李景隆/Head-LeeGingLung")) as Sprite;
-		headPic.LeeMuk  = Instantiate( Resources.Load<Sprite>("Characters/李牧/Head-LeeMuk")) as Sprite;
-		headPic.LeeSauNing  = Instantiate( Resources.Load<Sprite>("Characters/李秀寧/Head-LeeSauNing")) as Sprite;
-		headPic.LeeJiShing = Instantiate( Resources.Load<Sprite>("Characters/李自成/Head-LeeJiShing")) as Sprite;
-		headPic.YeungJiCheung  = Instantiate( Resources.Load<Sprite>("Characters/楊嗣昌/Head-YeungJiCheung")) as Sprite;
-		headPic.YeungKwokChung  = Instantiate( Resources.Load<Sprite>("Characters/楊國忠/Head-YeungKwokChung")) as Sprite;
-		headPic.YeungYip  = Instantiate( Resources.Load<Sprite>("Characters/楊業/Head-YeungYip")) as Sprite;
-		headPic.YeungSou  = Instantiate( Resources.Load<Sprite>("Characters/楊素/Head-YeungSou")) as Sprite;
-		headPic.YeungHou = Instantiate( Resources.Load<Sprite>("Characters/楊鎬/Head-YeungHou")) as Sprite;
-		headPic.LokNgai  = Instantiate( Resources.Load<Sprite>("Characters/樂毅/Head-LokNgai")) as Sprite;
-		headPic.DikChing  = Instantiate( Resources.Load<Sprite>("Characters/狄青/DikChing")) as Sprite;
-		headPic.WongBakDong  = Instantiate( Resources.Load<Sprite>("Characters/王伯當/WongBakDong")) as Sprite;
-		headPic.WongFaChing  = Instantiate( Resources.Load<Sprite>("Characters/王化貞/Head-WongFaChing")) as Sprite;
-		headPic.WongYuenMou = Instantiate( Resources.Load<Sprite>("Characters/王玄謨/Head-WongYuenMou")) as Sprite;
-		headPic.WongYi  = Instantiate( Resources.Load<Sprite>("Characters/王異/Head-WongYi")) as Sprite;
-		headPic.WongChin  = Instantiate( Resources.Load<Sprite>("Characters/王翦/Head-WongChin")) as Sprite;
-		headPic.GumNing  = Instantiate( Resources.Load<Sprite>("Characters/甘寧/Head-GumNing")) as Sprite;
-		headPic.TinYeungJeui  = Instantiate( Resources.Load<Sprite>("Characters/田穰苴/Head-TinYeungJeui")) as Sprite;
-		headPic.ButJoiYu = Instantiate( Resources.Load<Sprite>("Characters/畢再遇/Head-ButJoiYu")) as Sprite;
-		headPic.PakHei  = Instantiate( Resources.Load<Sprite>("Characters/白起/Head-PakHei")) as Sprite;
-		headPic.ChunLeungYuk  = Instantiate( Resources.Load<Sprite>("Characters/秦良玉/Head-ChunLeungYuk")) as Sprite;
-		headPic.ChingNgauGam  = Instantiate( Resources.Load<Sprite>("Characters/程咬金/Head-ChingNgauGam")) as Sprite;
-		headPic.MukGwaiYing  = Instantiate( Resources.Load<Sprite>("Characters/穆桂英/Head-MukGwaiYing")) as Sprite;
-		headPic.GunChung = Instantiate( Resources.Load<Sprite>("Characters/管仲/Head-GunChung")) as Sprite;
-		headPic.YeLuChucai  = Instantiate( Resources.Load<Sprite>("Characters/耶律楚材/Head-YeLuChucai")) as Sprite;
-		headPic.FaMukLan  = Instantiate( Resources.Load<Sprite>("Characters/花木蘭/Head-FaMukLan")) as Sprite;
-		headPic.MiuFun  = Instantiate( Resources.Load<Sprite>("Characters/苗訓/Head-MiuFun")) as Sprite;
-		headPic.FanTseng  = Instantiate( Resources.Load<Sprite>("Characters/范增/Head-FanTseng")) as Sprite;
-		headPic.FanManChing = Instantiate( Resources.Load<Sprite>("Characters/范文程/Head-FanManChing")) as Sprite;
-		headPic.FanManFu  = Instantiate( Resources.Load<Sprite>("Characters/范文虎/Head-FanManFu")) as Sprite;
-		headPic.FanYi  = Instantiate( Resources.Load<Sprite>("Characters/范蠡/Head-FanYi")) as Sprite;
-		headPic.FanYung  = Instantiate( Resources.Load<Sprite>("Characters/范雍/Head-FanYung")) as Sprite;
-		headPic.MongTim  = Instantiate( Resources.Load<Sprite>("Characters/蒙恬/Head-MongTim")) as Sprite;
-		headPic.SitYanGwai = Instantiate( Resources.Load<Sprite>("Characters/薛仁貴/Head-SitYanGwai")) as Sprite;
-		headPic.WaiChing  = Instantiate( Resources.Load<Sprite>("Characters/衛青/Head-WaiChing")) as Sprite;
-		headPic.YuenShungWun  = Instantiate( Resources.Load<Sprite>("Characters/袁崇煥/Head-YuenShungWun")) as Sprite;
-		headPic.YuenYingTai  = Instantiate( Resources.Load<Sprite>("Characters/袁應泰/Head-YuenYingTai")) as Sprite;
-		headPic.ChuGotLeung  = Instantiate( Resources.Load<Sprite>("Characters/諸葛亮/Head-ChuGotLeung")) as Sprite;
-		headPic.HoYeukBut = Instantiate( Resources.Load<Sprite>("Characters/賀若弼/Head-HoYeukBut")) as Sprite;
-		headPic.ChoiSheungA  = Instantiate( Resources.Load<Sprite>("Characters/賽尚阿/Head-ChoiSheungA")) as Sprite;
-		headPic.ChiuChe  = Instantiate( Resources.Load<Sprite>("Characters/趙奢/Head-ChiuChe")) as Sprite;
-		headPic.ChiuTim  = Instantiate( Resources.Load<Sprite>("Characters/趙括/Head-ChiuTim")) as Sprite;
-		headPic.ChiuWan  = Instantiate( Resources.Load<Sprite>("Characters/趙雲/Head-ChiuWan")) as Sprite;
-		headPic.SanYeungSau = Instantiate( Resources.Load<Sprite>("Characters/辰漾守/Head-SanYeungSau")) as Sprite;
-		headPic.KwokTseYi  = Instantiate( Resources.Load<Sprite>("Characters/郭子儀/Head-KwokTseYi")) as Sprite;
-		headPic.ChengYanTai  = Instantiate( Resources.Load<Sprite>("Characters/鄭仁泰/Head-ChengYanTai")) as Sprite;
-		headPic.ChengShingGong  = Instantiate( Resources.Load<Sprite>("Characters/鄭成功/Head-ChengShingGong")) as Sprite;
-		headPic.ChanHingChi  = Instantiate( Resources.Load<Sprite>("Characters/陳慶之/Head-ChanHingChi")) as Sprite;
-		headPic.FokHuiBang = Instantiate( Resources.Load<Sprite>("Characters/霍去病/Head-FokHuiBang")) as Sprite;
-		headPic.HonSaiChung  = Instantiate( Resources.Load<Sprite>("Characters/韓世忠/Head-HonSaiChung")) as Sprite;
-		headPic.HongYu  = Instantiate( Resources.Load<Sprite>("Characters/項羽/Head-HongYu")) as Sprite;
-		headPic.FeiLim  = Instantiate( Resources.Load<Sprite>("Characters/飛廉/Head-FeiLim")) as Sprite;
-		headPic.MaChiu  = Instantiate( Resources.Load<Sprite>("Characters/馬超/Head-MaChiu")) as Sprite;
-		headPic.SinYuChungTong = Instantiate( Resources.Load<Sprite>("Characters/鮮于仲通/Head-SinYuChungTong")) as Sprite;
-		headPic.WongChung  = Instantiate( Resources.Load<Sprite>("Characters/黃忠/Head-WongChung")) as Sprite;
-		headPic.PongDak  = Instantiate( Resources.Load<Sprite>("Characters/龐德/PongDak")) as Sprite;
-		headPic.PongGyun  = Instantiate( Resources.Load<Sprite>("Characters/龐涓/Head-PongGyun")) as Sprite;
-		headPic.PongTung  = Instantiate( Resources.Load<Sprite>("Characters/龐統/Head-PongTung")) as Sprite;
-		headPic.KwanYu = Instantiate( Resources.Load<Sprite>("Characters/關羽/關公")) as Sprite;
-		headPic._setCharacters ();
+	public static LoadBodyPic SetCharacters(){
+		LoadBodyPic bodyPic = LoadBodyPic.Instance;
+		bodyPic.YaSinTipMukYi  = Instantiate( Resources.Load<Sprite>("Characters/也先帖木兒/YaSinTipMukYi")) as Sprite;
+		bodyPic.YuHim  = Instantiate( Resources.Load<Sprite>("Characters/于謙/YuHim")) as Sprite;
+		bodyPic.NgTseSeui  = Instantiate( Resources.Load<Sprite>("Characters/伍子胥/NgTseSeui")) as Sprite;
+		bodyPic.BakPei  = Instantiate( Resources.Load<Sprite>("Characters/伯嚭/BakPei")) as Sprite;
+		bodyPic.SinJan  = Instantiate( Resources.Load<Sprite>("Characters/先軫/SinJan")) as Sprite;
+		bodyPic.SinYing  = Instantiate( Resources.Load<Sprite>("Characters/冼英/SinYing")) as Sprite;
+		bodyPic.LauBakWan  = Instantiate( Resources.Load<Sprite>("Characters/劉基/LauBakWan")) as Sprite;
+		bodyPic.LauBingChung  = Instantiate( Resources.Load<Sprite>("Characters/劉秉忠/LauBingChung")) as Sprite;
+		bodyPic.SiNeiGin  = Instantiate( Resources.Load<Sprite>("Characters/史彌堅/SiNeiGin")) as Sprite;
+		bodyPic.SiSiMing  = Instantiate( Resources.Load<Sprite>("Characters/史思明/SiSiMing")) as Sprite;
+		bodyPic.SiManShui  = Instantiate( Resources.Load<Sprite>("Characters/史萬歲/SiManShui")) as Sprite;
+		bodyPic.SiMaYi  = Instantiate( Resources.Load<Sprite>("Characters/司馬懿/SiMaYi")) as Sprite;
+		bodyPic.NgSaamGwai  = Instantiate( Resources.Load<Sprite>("Characters/吳三桂/NgSaamGwai")) as Sprite;
+		bodyPic.NgHei  = Instantiate( Resources.Load<Sprite>("Characters/吳起/NgHei")) as Sprite;
+		bodyPic.LuiBo  = Instantiate( Resources.Load<Sprite>("Characters/呂布/LuiBo")) as Sprite;
+		bodyPic.ChowAhFu  = Instantiate( Resources.Load<Sprite>("Characters/周亞夫/ChowAhFu")) as Sprite;
+		bodyPic.ChowYu = Instantiate( Resources.Load<Sprite>("Characters/周瑜/ChowYu-Final2")) as Sprite;
+		bodyPic.ChowSauYing  = Instantiate( Resources.Load<Sprite>("Characters/周秀英/ChowSauYing")) as Sprite;
+		bodyPic.JitBit  = Instantiate( Resources.Load<Sprite>("Characters/哲別/JitBit")) as Sprite;
+		bodyPic.SinHongShun  = Instantiate( Resources.Load<Sprite>("Characters/單雄信/SinHongShun")) as Sprite;
+		bodyPic.WongShekGong  = Instantiate( Resources.Load<Sprite>("Characters/圮上老人.黃石公/WongShekGong")) as Sprite;
+		bodyPic.HaHouDun = Instantiate( Resources.Load<Sprite>("Characters/夏侯惇/HaHouDun")) as Sprite;
+		bodyPic.GeungTseNga  = Instantiate( Resources.Load<Sprite>("Characters/姜子牙/GeungTseNga")) as Sprite;
+		bodyPic.SuenMo  = Instantiate( Resources.Load<Sprite>("Characters/孫武/SuenMo")) as Sprite;
+		bodyPic.SuenBan  = Instantiate( Resources.Load<Sprite>("Characters/孫臏/SuenBan")) as Sprite;
+		bodyPic.OnLukShan  = Instantiate( Resources.Load<Sprite>("Characters/安祿山/OnLukShan")) as Sprite;
+		bodyPic.JungJaak = Instantiate( Resources.Load<Sprite>("Characters/宗澤/JungJaak")) as Sprite;
+		bodyPic.WaiLiuTse  = Instantiate( Resources.Load<Sprite>("Characters/尉繚子/WaiLiuTse")) as Sprite;
+		bodyPic.WaiChiGingDak  = Instantiate( Resources.Load<Sprite>("Characters/尉遲敬德/WaiChiGingDak")) as Sprite;
+		bodyPic.NgokFei  = Instantiate( Resources.Load<Sprite>("Characters/岳飛/NgokFei")) as Sprite;
+		bodyPic.SheungYuChun  = Instantiate( Resources.Load<Sprite>("Characters/常遇春/SheungYuChun")) as Sprite;
+		bodyPic.LimPaul = Instantiate( Resources.Load<Sprite>("Characters/廉頗/LimPaul")) as Sprite;
+		bodyPic.CheungShukYe  = Instantiate( Resources.Load<Sprite>("Characters/張叔夜/CheungSukYe")) as Sprite;
+		bodyPic.CheungLeung  = Instantiate( Resources.Load<Sprite>("Characters/張良/CheungLeung")) as Sprite;
+		bodyPic.CheungLiu  = Instantiate( Resources.Load<Sprite>("Characters/張遼/CheungLiu")) as Sprite;
+		bodyPic.CheungHop  = Instantiate( Resources.Load<Sprite>("Characters/張郃/CheungHop")) as Sprite;
+		bodyPic.CheungFei = Instantiate( Resources.Load<Sprite>("Characters/張飛/CheungFei")) as Sprite;
+		bodyPic.ChuiTat  = Instantiate( Resources.Load<Sprite>("Characters/徐達/ChuiTat")) as Sprite;
+		bodyPic.NgouLoi  = Instantiate( Resources.Load<Sprite>("Characters/惡來/NgouLoi")) as Sprite;
+		bodyPic.MoYungYinChiu  = Instantiate( Resources.Load<Sprite>("Characters/慕容延釗/MoYungYinChiu")) as Sprite;
+		bodyPic.ChikGaiGwong  = Instantiate( Resources.Load<Sprite>("Characters/戚繼光/ChikGaiGwong")) as Sprite;
+		bodyPic.SiLong = Instantiate( Resources.Load<Sprite>("Characters/施琅/SiLong")) as Sprite;
+		bodyPic.ChoGwai  = Instantiate( Resources.Load<Sprite>("Characters/曹劌/ChoGwai")) as Sprite;
+		bodyPic.TsengKwokFan  = Instantiate( Resources.Load<Sprite>("Characters/曾國藩/TsengKwokFan")) as Sprite;
+		bodyPic.ChuBunDeui  = Instantiate( Resources.Load<Sprite>("Characters/朱般懟/ChuBunDeui")) as Sprite;
+		bodyPic.LeeSaiJik  = Instantiate( Resources.Load<Sprite>("Characters/李勣/LeeSaiJik")) as Sprite;
+		bodyPic.LeeKwongLee = Instantiate( Resources.Load<Sprite>("Characters/李廣利/LeeKwongLee")) as Sprite;
+		bodyPic.LeeManChung  = Instantiate( Resources.Load<Sprite>("Characters/李文忠/LeeManChung")) as Sprite;
+		bodyPic.LeeGingLung  = Instantiate( Resources.Load<Sprite>("Characters/李景隆/LeeGingLung")) as Sprite;
+		bodyPic.LeeMuk  = Instantiate( Resources.Load<Sprite>("Characters/李牧/LeeMuk")) as Sprite;
+		bodyPic.LeeSauNing  = Instantiate( Resources.Load<Sprite>("Characters/李秀寧/LeeSauNing")) as Sprite;
+		bodyPic.LeeJiShing = Instantiate( Resources.Load<Sprite>("Characters/李自成/LeeJiShing")) as Sprite;
+		bodyPic.YeungJiCheung  = Instantiate( Resources.Load<Sprite>("Characters/楊嗣昌/YeungJiCheung")) as Sprite;
+		bodyPic.YeungKwokChung  = Instantiate( Resources.Load<Sprite>("Characters/楊國忠/YeungKwokChung")) as Sprite;
+		bodyPic.YeungYip  = Instantiate( Resources.Load<Sprite>("Characters/楊業/YeungYip")) as Sprite;
+		bodyPic.YeungSou  = Instantiate( Resources.Load<Sprite>("Characters/楊素/YeungSou")) as Sprite;
+		bodyPic.YeungHou = Instantiate( Resources.Load<Sprite>("Characters/楊鎬/YeungHou")) as Sprite;
+		bodyPic.LokNgai  = Instantiate( Resources.Load<Sprite>("Characters/樂毅/LokNgai")) as Sprite;
+		bodyPic.DikChing  = Instantiate( Resources.Load<Sprite>("Characters/狄青/DikChing")) as Sprite;
+		bodyPic.WongBakDong  = Instantiate( Resources.Load<Sprite>("Characters/王伯當/WongBakDong")) as Sprite;
+		bodyPic.WongFaChing  = Instantiate( Resources.Load<Sprite>("Characters/王化貞/WongFaChing")) as Sprite;
+		bodyPic.WongYuenMou = Instantiate( Resources.Load<Sprite>("Characters/王玄謨/WongYuenMou")) as Sprite;
+		bodyPic.WongYi  = Instantiate( Resources.Load<Sprite>("Characters/王異/WongYi")) as Sprite;
+		bodyPic.WongChin  = Instantiate( Resources.Load<Sprite>("Characters/王翦/WongChin")) as Sprite;
+		bodyPic.GumNing  = Instantiate( Resources.Load<Sprite>("Characters/甘寧/GumNing")) as Sprite;
+		bodyPic.TinYeungJeui  = Instantiate( Resources.Load<Sprite>("Characters/田穰苴/TinYeungJeui")) as Sprite;
+		bodyPic.ButJoiYu = Instantiate( Resources.Load<Sprite>("Characters/畢再遇/ButJoiYu")) as Sprite;
+		bodyPic.PakHei  = Instantiate( Resources.Load<Sprite>("Characters/白起/PakHei-1")) as Sprite;
+		bodyPic.ChunLeungYuk  = Instantiate( Resources.Load<Sprite>("Characters/秦良玉/ChunLeungYuk")) as Sprite;
+		bodyPic.ChingNgauGam  = Instantiate( Resources.Load<Sprite>("Characters/程咬金/ChingNgauGam")) as Sprite;
+		bodyPic.MukGwaiYing  = Instantiate( Resources.Load<Sprite>("Characters/穆桂英/MukGwaiYing")) as Sprite;
+		bodyPic.GunChung = Instantiate( Resources.Load<Sprite>("Characters/管仲/GunChung")) as Sprite;
+		bodyPic.YeLuChucai  = Instantiate( Resources.Load<Sprite>("Characters/耶律楚材/YeLuChucai")) as Sprite;
+		bodyPic.FaMukLan  = Instantiate( Resources.Load<Sprite>("Characters/花木蘭/FaMukLan2")) as Sprite;
+		bodyPic.MiuFun  = Instantiate( Resources.Load<Sprite>("Characters/苗訓/MiuFun")) as Sprite;
+		bodyPic.FanTseng  = Instantiate( Resources.Load<Sprite>("Characters/范增/FanTseng")) as Sprite;
+		bodyPic.FanManChing = Instantiate( Resources.Load<Sprite>("Characters/范文程/FanManChing")) as Sprite;
+		bodyPic.FanManFu  = Instantiate( Resources.Load<Sprite>("Characters/范文虎/FanManFu")) as Sprite;
+		bodyPic.FanYi  = Instantiate( Resources.Load<Sprite>("Characters/范蠡/FanYi")) as Sprite;
+		bodyPic.FanYung  = Instantiate( Resources.Load<Sprite>("Characters/范雍/FanYung")) as Sprite;
+		bodyPic.MongTim  = Instantiate( Resources.Load<Sprite>("Characters/蒙恬/MongTim")) as Sprite;
+		bodyPic.SitYanGwai = Instantiate( Resources.Load<Sprite>("Characters/薛仁貴/SitYanGwai")) as Sprite;
+		bodyPic.WaiChing  = Instantiate( Resources.Load<Sprite>("Characters/衛青/WaiChing")) as Sprite;
+		bodyPic.YuenShungWun  = Instantiate( Resources.Load<Sprite>("Characters/袁崇煥/YuenShungWun")) as Sprite;
+		bodyPic.YuenYingTai  = Instantiate( Resources.Load<Sprite>("Characters/袁應泰/YuenYingTai")) as Sprite;
+		bodyPic.ChuGotLeung  = Instantiate( Resources.Load<Sprite>("Characters/諸葛亮/ChuGotLeung")) as Sprite;
+		bodyPic.HoYeukBut = Instantiate( Resources.Load<Sprite>("Characters/賀若弼/HoYeukBut")) as Sprite;
+		bodyPic.ChoiSheungA  = Instantiate( Resources.Load<Sprite>("Characters/賽尚阿/ChoiSheungA")) as Sprite;
+		bodyPic.ChiuChe  = Instantiate( Resources.Load<Sprite>("Characters/趙奢/ChiuChe")) as Sprite;
+		bodyPic.ChiuTim  = Instantiate( Resources.Load<Sprite>("Characters/趙括/ChiuTim2")) as Sprite;
+		bodyPic.ChiuWan  = Instantiate( Resources.Load<Sprite>("Characters/趙雲/ChiuWan2")) as Sprite;
+		bodyPic.SanYeungSau = Instantiate( Resources.Load<Sprite>("Characters/辰漾守/SanYeungSau")) as Sprite;
+		bodyPic.KwokTseYi  = Instantiate( Resources.Load<Sprite>("Characters/郭子儀/KwokTseYi")) as Sprite;
+		bodyPic.ChengYanTai  = Instantiate( Resources.Load<Sprite>("Characters/鄭仁泰/ChengYanTai")) as Sprite;
+		bodyPic.ChengShingGong  = Instantiate( Resources.Load<Sprite>("Characters/鄭成功/ChengShingGong3")) as Sprite;
+		bodyPic.ChanHingChi  = Instantiate( Resources.Load<Sprite>("Characters/陳慶之/ChanHingChi")) as Sprite;
+		bodyPic.FokHuiBang = Instantiate( Resources.Load<Sprite>("Characters/霍去病/FokHuiBang")) as Sprite;
+		bodyPic.HonSaiChung  = Instantiate( Resources.Load<Sprite>("Characters/韓世忠/HonSaiChung")) as Sprite;
+		bodyPic.HongYu  = Instantiate( Resources.Load<Sprite>("Characters/項羽/HongYu2")) as Sprite;
+		bodyPic.FeiLim  = Instantiate( Resources.Load<Sprite>("Characters/飛廉/FeiLim")) as Sprite;
+		bodyPic.MaChiu  = Instantiate( Resources.Load<Sprite>("Characters/馬超/MaChiu")) as Sprite;
+		bodyPic.SinYuChungTong = Instantiate( Resources.Load<Sprite>("Characters/鮮于仲通/SinYuChungTong")) as Sprite;
+		bodyPic.WongChung  = Instantiate( Resources.Load<Sprite>("Characters/黃忠/WongChung")) as Sprite;
+		bodyPic.PongDak  = Instantiate( Resources.Load<Sprite>("Characters/龐德/PongDak")) as Sprite;
+		bodyPic.PongGyun  = Instantiate( Resources.Load<Sprite>("Characters/龐涓/PongGyun")) as Sprite;
+		bodyPic.PongTung  = Instantiate( Resources.Load<Sprite>("Characters/龐統/PongTung")) as Sprite;
+		bodyPic.KwanYu = Instantiate( Resources.Load<Sprite>("Characters/關羽/關公")) as Sprite;
+		bodyPic._setCharacters ();
 
-		return headPic;
+		return bodyPic;
 	}
 
 	public void _setCharacters(){
