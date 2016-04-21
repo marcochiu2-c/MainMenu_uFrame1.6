@@ -92,7 +92,7 @@ public class MainScene : MonoBehaviour {
 			LoadBodyPic bodyPic = LoadBodyPic.SetCharacters();
 		}
 
-		shop = new Shop ();
+		shop = GetComponent<Shop> ();
 		Invoke ("CallShop", 10);
 
 		InvokeRepeating("OnGeneralTrainComplete",1,1);

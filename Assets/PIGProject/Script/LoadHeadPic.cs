@@ -373,7 +373,7 @@ public class LoadHeadPic : MonoBehaviour
 		imageDict.Add (/*"龐涓",*/21, PongGyun);
 		imageDict.Add (/*"龐統",*/22, PongTung);
 		imageDict.Add (/*"關羽",*/1014, KwanYu);
-		
+		nameDict.Add (0, "");
 		nameDict.Add (1047, "也先帖木兒");
 		nameDict.Add (25, "于謙");
 		nameDict.Add (4, "伍子胥");
