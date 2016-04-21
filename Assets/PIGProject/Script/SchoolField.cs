@@ -27,6 +27,7 @@ public class SchoolField : MonoBehaviour {
 	public GameObject TrainingEquConfirmHolder;
 	public GameObject TrainingQAHolder;
 	public GameObject CannotTrainSoldierPopup;
+	public Text TrainingQText;
 
 	public static GameObject staticArmyQAHolder;
 	public static GameObject staticArmorQAHolder;
@@ -127,6 +128,7 @@ public class SchoolField : MonoBehaviour {
 		ShieldQAHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { OnArmedReplacement("shield");});
 		#endregion
 		TrainingQHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => {  //confirm
+			Debug.Log ("Soldier number assignment confirmed.");
 			HidePanel(TrainingEquHolder);
 			game.soldiers[AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = int.Parse(TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text);
 			TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text = "";
@@ -192,7 +194,7 @@ public class SchoolField : MonoBehaviour {
 	#endregion
 
 	public void OnSetNewSoldierNumber(){
-		Text s = TrainingQHolder.transform.GetChild (1).GetChild (0).GetChild (2).GetComponent<Text> ();
+		Text s = TrainingQText;
 		string soldiers = Regex.Replace(s.text, "[^0-9]", "");
 		if (soldiers != "") {
 			int soldierQuantity = Int32.Parse (soldiers);
@@ -896,11 +898,13 @@ public class SchoolField : MonoBehaviour {
 
 	void ShowPanel(GameObject panel){
 		DisablePanel.SetActive (true);
+		Debug.Log ("ShowPanel");
 		panel.SetActive (true);
 	}
 	
 	void HidePanel(GameObject panel){
 		DisablePanel.SetActive (false);
+		Debug.Log ("HidePanel");
 		panel.SetActive (false);
 	}
 

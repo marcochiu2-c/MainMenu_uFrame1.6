@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using OnePF;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,7 +53,7 @@ public class MainScene : MonoBehaviour {
 	public static Nullable<DateTime> StorageLastUpdate = null;
 	public static Nullable<DateTime> WarfareLastUpdate = null;
 	public static Nullable<DateTime> FriendLastUpdate = null;
-
+	Shop shop;
 
 	void Start(){
 
@@ -88,12 +89,18 @@ public class MainScene : MonoBehaviour {
 			Store.GetStorageInfoFromDB();
 
 			LoadHeadPic headPic = LoadHeadPic.SetCharacters();
-
+			LoadBodyPic bodyPic = LoadBodyPic.SetCharacters();
 		}
+
+		shop = new Shop ();
+		Invoke ("CallShop", 10);
+
 		InvokeRepeating("OnGeneralTrainComplete",1,1);
 	}
 
-
+	void CallShop(){
+		shop.CallShop ();
+	}
 
 	void reloadFromDB(){
 //		json = new JSONClass ();
