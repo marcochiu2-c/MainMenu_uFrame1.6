@@ -281,7 +281,7 @@ public class Shop : MonoBehaviour {
 		}
 	}
 	
-	private void CheckInventory(){
+	public void CheckInventory(){
 
 		if (_isInitialized) {
 			Debug.Log ("CheckInventory()");

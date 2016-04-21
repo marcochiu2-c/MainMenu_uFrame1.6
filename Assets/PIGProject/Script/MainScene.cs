@@ -89,7 +89,7 @@ public class MainScene : MonoBehaviour {
 			Store.GetStorageInfoFromDB();
 
 			LoadHeadPic headPic = LoadHeadPic.SetCharacters();
-
+			LoadBodyPic bodyPic = LoadBodyPic.SetCharacters();
 		}
 
 		shop = new Shop ();
