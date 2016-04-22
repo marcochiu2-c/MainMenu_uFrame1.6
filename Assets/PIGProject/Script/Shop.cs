@@ -52,7 +52,7 @@ public class Shop : MonoBehaviour {
 	//    List<Purchase> UnConsumedInventory;
 	//    bool UnConsumedInventoryNewUpdate=false;
 	public static bool monthlySubscriptionBought = false;
-	public bool _isInitialized = false;
+	public static bool _isInitialized = false;
 	Game game;
 	WsClient wsc;
 	public Button firstChargeButton;
