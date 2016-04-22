@@ -187,21 +187,21 @@ public class LoginScreen : MonoBehaviour {
 			data.Add ("snsURL", new JSONData(snsURL));
 			data.Add ("deviceId", new JSONData(SystemInfo.deviceUniqueIdentifier));
 
-			json.Add ("action", new JSONData("SET"));
-			json.Add ("table", new JSONData("sns"));
-			json.Add ("data", data);
-			Debug.Log (json.ToString ());
-			wsc.conn.Send (json.ToString ());
+//			json.Add ("action", new JSONData("SET"));
+//			json.Add ("table", new JSONData("sns"));
+//			json.Add ("data", data);
+//			Debug.Log (json.ToString ());
+			wsc.Send ("sns","SET",data);
 		}
 	}
 	
 	private void SubmitUserRegisterData(JSONNode jData){
-		JSONClass json = new JSONClass ();
-		json.Add ("action", new JSONData("NEW"));
-		json.Add ("table", new JSONData("users"));
-		json.Add ("data", jData);
-		wsc.conn.Send (json.ToString ());
-
+//		JSONClass json = new JSONClass ();
+//		json.Add ("action", new JSONData("NEW"));
+//		json.Add ("table", new JSONData("users"));
+//		json.Add ("data", jData);
+//		wsc.conn.Send (json.ToString ());
+		wsc.Send ("users","NEW",jData);
 		GotoMainUI ();
 	}
 	

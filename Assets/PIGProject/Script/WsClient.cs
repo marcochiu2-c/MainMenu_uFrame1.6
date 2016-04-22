@@ -443,6 +443,8 @@ public class WsClient {
 			json.Add ("data", j);
 			Debug.Log (json.ToString ());
 			conn.Send (json.ToString ());
+		}else {
+			Debug.Log ("Websocket Connection Lost!");
 		}
 	}
 
