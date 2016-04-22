@@ -165,9 +165,15 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	public void SetupSocialNetworkAccount(){
+		Debug.Log ("SetupSocialNetworkAccount(),NewUserSNSAccountName: "+NewUserSNSAccountName.text.Trim ());
 		if (NewUserSNSAccountName.text.Trim () == "") {
-			return;
+			Debug.Log ("User id: "+game.login.id);
+			if (game.login.id==0){
+
+				return;
+			}
 		}
+		Debug.Log ("SetupSocialNetworkAccount()");
 		if (game.login.id==0) { // Link SNS with new user
 			JSONClass json = new JSONClass ();
 			JSONClass j = new JSONClass ();
@@ -210,7 +216,7 @@ public class LoginScreen : MonoBehaviour {
 //		cla.loadingBar = slider;
 //		cla.loadingImage = loadImage;
 //		cla.ClickAsync(5);
-//		loadingImageScreen.SetActive (true);
+		loadingImageScreen.SetActive (true);
 		newUserPanel.SetActive (false);
 		newFBUserPanel.SetActive (false);
 		EnterGameButton.gameObject.SetActive (false);
@@ -291,13 +297,11 @@ public class LoginScreen : MonoBehaviour {
 				Debug.Log(perm);
 			}
 
-//			StartCoroutine(FbGetPicture(snsURL));
 
-			CheckUserIn();
 			if (game.login.snsType==0){
 				SetupSocialNetworkAccount();
 			}
-
+			CheckUserIn();
 			GotoMainUI();
 			if (game.login.id!=0){
 				isSNSLoggedIn=true;
