@@ -36,7 +36,7 @@ public class LoginScreen : MonoBehaviour {
 	public static bool isSNSLoggedIn = false;
 
 	public GameObject loadingImageScreen;
-
+	private AsyncOperation async;
 	// Use this for initialization
 	void Awake() {
 		CallLoginScreen ();
@@ -115,7 +115,7 @@ public class LoginScreen : MonoBehaviour {
 //		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
 //			//TODO show Facebook register reminder first
 //
-//			GotoMainUI();
+		//			GotoMainUI("MainMenuScene");
 //		}
 		if (userWithSns != null)
 			Debug.Log (snsURL);
@@ -127,10 +127,10 @@ public class LoginScreen : MonoBehaviour {
 					if (userWithSns.ToString() == "{\"success\":false}") {
 						Debug.Log ("No SNS account found in DB");
 						SetupSocialNetworkAccount();
-						GotoMainUI ();
+						GotoMainUI ("MainMenuScene");
 					} else {
 						Debug.Log ("SNS account found.");
-						GotoMainUI ();
+						GotoMainUI ("MainMenuScene");
 					}
 					MainScene.UserInfo = userWithSns;
 					userWithSns = null;
@@ -145,7 +145,7 @@ public class LoginScreen : MonoBehaviour {
 
 	public void EnterGameNoSNS(){
 		if (game.login.id != 0) {
-			GotoMainUI ();
+			GotoMainUI ("MainMenuScene");
 		} else {
 			newUserPanel.SetActive (true);
 		}
@@ -165,7 +165,6 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	public void SetupSocialNetworkAccount(){
-		Debug.Log ("SetupSocialNetworkAccount(),NewUserSNSAccountName: "+NewUserSNSAccountName.text.Trim ());
 		if (NewUserSNSAccountName.text.Trim () == "") {
 			Debug.Log ("User id: "+game.login.id);
 			if (game.login.id==0){
@@ -173,7 +172,6 @@ public class LoginScreen : MonoBehaviour {
 				return;
 			}
 		}
-		Debug.Log ("SetupSocialNetworkAccount()");
 		if (game.login.id==0) { // Link SNS with new user
 			JSONClass json = new JSONClass ();
 			JSONClass j = new JSONClass ();
@@ -208,10 +206,10 @@ public class LoginScreen : MonoBehaviour {
 		json.Add ("data", jData);
 		wsc.conn.Send (json.ToString ());
 
-		GotoMainUI ();
+		GotoMainUI ("MainMenuScene");
 	}
 	
-	private void GotoMainUI(){
+	private void GotoMainUI(string level){
 //		ClickToLoadAsync cla = new ClickToLoadAsync();
 //		cla.loadingBar = slider;
 //		cla.loadingImage = loadImage;
@@ -222,7 +220,15 @@ public class LoginScreen : MonoBehaviour {
 		EnterGameButton.gameObject.SetActive (false);
 		EnterGameFBButton.gameObject.SetActive (false);
 		Debug.Log ("User ID: "+game.login.id);
-		Application.LoadLevel ("MainMenuScene");
+		StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
+	}
+
+	IEnumerator LoadLevelWithBar (string level){
+		async = Application.LoadLevelAsync("MainMenuScene");
+		while(!async.isDone){
+			 slider.value=async.progress;
+			 yield return null;
+		}	
 	}
 
 	private bool LoginSNS(){
@@ -302,7 +308,7 @@ public class LoginScreen : MonoBehaviour {
 				SetupSocialNetworkAccount();
 			}
 			CheckUserIn();
-			GotoMainUI();
+			GotoMainUI("MainMenuScene");
 			if (game.login.id!=0){
 				isSNSLoggedIn=true;
 				CheckUserSNSInDB();
