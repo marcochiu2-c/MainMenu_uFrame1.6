@@ -93,7 +93,7 @@ public class MainScene : MonoBehaviour {
 		}
 
 		shop = GetComponent<Shop> ();
-		Invoke ("CallShop", 10);
+		Invoke ("CallShop", 3);
 
 		InvokeRepeating("OnGeneralTrainComplete",1,1);
 	}
@@ -103,11 +103,6 @@ public class MainScene : MonoBehaviour {
 	}
 
 	void reloadFromDB(){
-//		json = new JSONClass ();
-//		json.Add ("data", new JSONData (MainScene.userId));
-//		json ["action"] = "GET";
-//		json ["table"] = "wealth";
-//		wsc.Send (json.ToString ());
 		wsc.Send("wealth","GET",new JSONData (MainScene.userId));
 		wsc.Send("counselors","GET",new JSONData (MainScene.userId));
 		wsc.Send("generals","GET",new JSONData (MainScene.userId));

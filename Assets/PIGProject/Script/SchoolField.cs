@@ -126,6 +126,9 @@ public class SchoolField : MonoBehaviour {
 		ArmyQAHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { OnArmedReplacement("weapon");});
 		ArmorQAHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { OnArmedReplacement("armor");});
 		ShieldQAHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { OnArmedReplacement("shield");});
+		ArmyQAHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => { HidePanel(ArmyQAHolder);});
+		ArmorQAHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => { HidePanel(ArmorQAHolder);});
+		ShieldQAHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => { HidePanel(ShieldQAHolder);});
 		#endregion
 		TrainingQHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => {  //confirm
 			Debug.Log ("Soldier number assignment confirmed.");
@@ -288,7 +291,7 @@ public class SchoolField : MonoBehaviour {
 		Transform panel = ArmyListHolder.transform.GetChild (1).GetChild (1).GetChild (0);
 		for (int i = 0; i < count; i++) {
 			SchoolFieldWeapon obj = Instantiate (Resources.Load ("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon> ();
-			obj.transform.localScale = new Vector3 (0.51f, 0.51f, 0.51f);
+			obj.transform.localScale = new Vector3 (0.6f, 0.6f, 0.6f);
 			obj.SetSchoolFieldWeapon (SchoolField.AssigningSoldier,
 								game.weapon [i].type,
 								p.products [game.weapon [i].type].name, 
