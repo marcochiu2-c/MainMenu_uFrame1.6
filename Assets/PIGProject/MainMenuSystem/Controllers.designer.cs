@@ -682,12 +682,20 @@ public class ConferenceScreenControllerBase : SubScreenController {
     
     public virtual void InitializeConferenceScreen(ConferenceScreenViewModel viewModel) {
         // This is called when a ConferenceScreenViewModel is created
+        viewModel.SetSoldierData.Action = this.SetSoldierDataHandler;
         ConferenceScreenViewModelManager.Add(viewModel);
     }
     
     public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
         base.DisposingViewModel(viewModel);
         ConferenceScreenViewModelManager.Remove(viewModel);
+    }
+    
+    public virtual void SetSoldierData(ConferenceScreenViewModel viewModel) {
+    }
+    
+    public virtual void SetSoldierDataHandler(SetSoldierDataCommand command) {
+        this.SetSoldierData(command.Sender as ConferenceScreenViewModel);
     }
 }
 

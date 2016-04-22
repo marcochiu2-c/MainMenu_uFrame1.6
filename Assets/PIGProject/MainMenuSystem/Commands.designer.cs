@@ -45,3 +45,6 @@ public partial class SelectLevelCommand : uFrame.MVVM.ViewModelCommand {
 
 public partial class SignCommand : uFrame.MVVM.ViewModelCommand {
 }
+
+public partial class SetSoldierDataCommand : uFrame.MVVM.ViewModelCommand {
+}

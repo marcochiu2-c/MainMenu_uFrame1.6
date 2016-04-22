@@ -15,11 +15,17 @@ using UnityEngine;
 public class ConferenceScreenController : ConferenceScreenControllerBase {
 	Game game;
 	WsClient wsc = WsClient.Instance;
+	public UserViewModel LocalUser;
+	
 	public List<SoldierViewModel> SoldierVM = new List<SoldierViewModel>();
 	
     public override void InitializeConferenceScreen(ConferenceScreenViewModel viewModel) {
         base.InitializeConferenceScreen(viewModel);
         // This is called when a ConferenceScreenViewModel is created
+        
+		LocalUser = uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
+		Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.Identifier);
+		
         GetSoldierValue();
     }
     
@@ -96,5 +102,24 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		//
 		
 		
+    }
+
+    public override void SetSoldierData(ConferenceScreenViewModel viewModel) {
+        base.SetSoldierData(viewModel);
+        
+        int SoldierGroup = viewModel.Group;
+        int SoldierType = viewModel.SoldierType;
+        
+		SoldierVM[SoldierGroup].AttackSpeed = game.soldiers[SoldierType].attributes["AttackSpeed"].AsInt;
+		SoldierVM[SoldierGroup].Physique = game.soldiers[SoldierType].attributes["Strength"].AsInt;
+		SoldierVM[SoldierGroup].HitPoint = game.soldiers[SoldierType].attributes["Hit"].AsInt;
+		SoldierVM[SoldierGroup].Dodge = game.soldiers[SoldierType].attributes["Dodge"].AsFloat;
+		SoldierVM[SoldierGroup].InitialMorale = game.soldiers[SoldierType].attributes["Morale"].AsInt;
+		SoldierVM[SoldierGroup].WeaponProficiency = 90;
+		SoldierVM[SoldierGroup].Prestige = 100;
+		//SoldierVM[i].Career = game.soldiers[AssigningSoldier].attributes["Career"].AsInt;
+		
+		SoldierVM[SoldierGroup].Health = 2001;
+        
     }
 }

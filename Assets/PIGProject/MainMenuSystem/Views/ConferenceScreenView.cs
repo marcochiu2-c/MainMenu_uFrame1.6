@@ -19,12 +19,18 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button militaryAdviser;
 	public Button defensiveLinup;
 	public Button standings;
+	
+	public Button SoldierTypeBtn;
+	public Button SoldierType1;
+	public Button SoldierType2;
+	public Button SoldierType3;
 
 	public GameObject ArmyAttack;
 	public GameObject ArmyGarrison;
 	public GameObject MilitaryAdviser;
 	public GameObject DefensiveLinup;
 	public GameObject Standings;
+	public GameObject SelectSoldierPanel;
 	
 	public Transform GeneralScrollPanel;
 	public List<Counselor> GeneralList;
@@ -48,8 +54,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		for (int j = 0 ; j < game.counselor.Count; j++){
 			GeneralList.Add (new Counselor(game.counselor[j]));
 		}
-		
-    }
+	}
     
     public override void Bind() {
         base.Bind();
@@ -102,6 +107,38 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			DefensiveLinup.gameObject.SetActive (false);
 			Standings.gameObject.SetActive (true);
 		});
+		
+		this.BindButtonToHandler (SoldierTypeBtn, () => {
+			SelectSoldierPanel.gameObject.SetActive (true);
+		});
+		
+		this.BindButtonToHandler (SoldierType1, () => {
+			this.ConferenceScreen.Group = 0;
+			this.ConferenceScreen.SoldierType = 1;
+			ExecuteSetSoldierData();
+			SelectSoldierPanel.gameObject.SetActive (false);
+			SoldierTypeBtn.GetComponentInChildren<Text>().text = "兵種一";
+			
+		});
+		
+		this.BindButtonToHandler (SoldierType2, () => {
+			this.ConferenceScreen.Group = 0;
+			this.ConferenceScreen.SoldierType = 2;
+			ExecuteSetSoldierData();
+			SelectSoldierPanel.gameObject.SetActive (false);
+			SoldierTypeBtn.GetComponentInChildren<Text>().text = "兵種二";
+			
+		});
+		
+		this.BindButtonToHandler (SoldierType3, () => {
+			this.ConferenceScreen.Group = 0;
+			this.ConferenceScreen.SoldierType = 3;
+			ExecuteSetSoldierData();
+			SelectSoldierPanel.gameObject.SetActive (false);
+			SoldierTypeBtn.GetComponentInChildren<Text>().text = "兵種三";
+			
+		});
+		
     }
     
 	public void CreateSelfLearnItem(Counselor character){
