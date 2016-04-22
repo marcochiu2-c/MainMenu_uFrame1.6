@@ -19,29 +19,15 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button militaryAdviser;
 	public Button defensiveLinup;
 	public Button standings;
-	
-	/*
-	public Button SetSoldierType;
-	public Button SoldierType1;
-	public Button SoldierType2;
-	public Button SoldierType3;
-	public Button SoldierType4;
-	public Button SoldierType5;
-	public Button SoldierType6;
-	public Button SoldierType7;
-	public Button SoldierType8;
-    */
-    
+
 	public GameObject ArmyAttack;
 	public GameObject ArmyGarrison;
 	public GameObject MilitaryAdviser;
 	public GameObject DefensiveLinup;
 	public GameObject Standings;
-	//public GameObject SoldierType;
-	//public GameObject SoldierQuantity;
 	
 	public Transform GeneralScrollPanel;
-	public List<General> GeneralList;
+	public List<Counselor> GeneralList;
 	public Dictionary<int,Sprite> imageDict;
 	public Dictionary<int,string> nameDict;
     
@@ -58,12 +44,10 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		Debug.Log ("HeadPIG: " + headPic.SuenMo);
 		//imageDict = headPic.imageDict;
 		
-		GeneralList = game.general;
-		/*
-		for (int j = 0 ; j < game.general.Count; j++){
-			GeneralList.Add (new General(game.general[j]));
+		GeneralList = new List<Counselor> ();
+		for (int j = 0 ; j < game.counselor.Count; j++){
+			GeneralList.Add (new Counselor(game.counselor[j]));
 		}
-		*/
 		
     }
     
@@ -80,7 +64,9 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			DefensiveLinup.gameObject.SetActive (false);
 			Standings.gameObject.SetActive (false);
 			
-			for (var i = 0 ; i < GeneralList.Count ; i++){
+
+			//int cslCount = Academy.cSelfLearnList.Count;
+			for (var i = 0 ; i < 10 ; i++){
 				CreateSelfLearnItem (GeneralList[i]);
 			}
 		});
@@ -116,21 +102,9 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			DefensiveLinup.gameObject.SetActive (false);
 			Standings.gameObject.SetActive (true);
 		});
-		
-		/*
-		this.BindButtonToHandler (SetSoldierType, () => {
-			SoldierType.gameObject.SetActive (true);
-		});
-		
-		this.BindButtonToHandler (SoldierType1, () => {
-			SoldierType.gameObject.SetActive (false);
-			SoldierQuantity.gameObject.SetActive (true);
-
-		});
-		*/
     }
     
-	public void CreateSelfLearnItem(General character){
+	public void CreateSelfLearnItem(Counselor character){
 		var type = character.type;
 		Debug.Log ("Type: " + type);
 		AcademySelfLearn ss = Instantiate(Resources.Load("GeneralPrefab") as GameObject).GetComponent<AcademySelfLearn>();

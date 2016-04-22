@@ -26,7 +26,7 @@ public class MainGameRootView : MainGameRootViewBase {
 	public Button StartBattleButton;
 	public Button LeaveButton;
 	public Button Leave2Button;
-	
+
 	public Button SlowButton; 
 	public Button NormalButton; 
 	public Button FastButton;
@@ -174,7 +174,7 @@ public class MainGameRootView : MainGameRootViewBase {
 			loadingImage.SetActive (true);
 			StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
 		});
-		
+
 		this.BindButtonToHandler(InfoAtkButton, () => { 
 			InfoText.text = atkInfo.text;
 		});
