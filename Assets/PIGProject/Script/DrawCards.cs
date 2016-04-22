@@ -21,19 +21,40 @@ public class DrawCards : MonoBehaviour {
 	List<GeneralCards> generalList = new List<GeneralCards>();
 	List<CounselorCards> counselorList = new List<CounselorCards> ();
 
+	public GameObject DisablePanel;
+
 	public GameObject TenDrawHolder;
 	public GameObject SingleCardHolder;
+
+	public GameObject CardQAHolder;
+	public GameObject NoFreeDraw;
+	public GameObject DrawCardPop;
+	public GameObject NoMoneyPopup;
+	public GameObject ShopHolder;
 
 	Dictionary<int,Sprite> imageDict;
 	Dictionary<int,string> nameDict;
 	public Button backButton;
 	public Button closeButton;
 
+	public Button CardQAConfirm;
+	public Button NoFreeDrawSuperDraw;
+	public Button NoFreeDrawTimeTravelDraw;
+	public Button DrawCardPopConfirm;
+	public Button DrawCardPopCancel;
+	public Button NoMoneyPopupConfirm;
+	public Button NoMoneyPopupCancel;
+
+
+	Dictionary<string,int> drawCost;
+
 	const int rankNeedRedraw = 1;
 	const int rankStopRedraw = 2;
 
 	int numberOfCounselors = 0;
 	int numberOfGenerals = 0;
+
+	string actionId = "";
 
 	bool calledByDrawTenCards = false;
 
@@ -79,6 +100,12 @@ public class DrawCards : MonoBehaviour {
 		if (IsTodayFirstDraw()) {
 			ResetFreeDrawCount();
 		}
+
+		drawCost = new Dictionary<string,int>();
+		drawCost.Add ("SuperDraw", 400);
+		drawCost.Add ("TimeTravelDraw", 80);
+		drawCost.Add ("TenSuperDraw", 3600);
+		drawCost.Add ("TenTimeTravelDraw", 720);
 	}
 
 	// Update is called once per frame
@@ -115,6 +142,29 @@ public class DrawCards : MonoBehaviour {
 			TenDrawHolder.SetActive(false);
 			calledByDrawTenCards = false;
 
+		});
+
+
+		CardQAConfirm.onClick.AddListener (() => {
+			OnCardQAHolderConfirmClicked();
+		});
+		NoFreeDrawSuperDraw.onClick.AddListener (() => {
+			OnNoFreeDrawFeatherClicked();
+		});
+		NoFreeDrawTimeTravelDraw.onClick.AddListener (() => {
+			OnNoFreeDrawStarDustClicked();
+		});
+		DrawCardPopConfirm.onClick.AddListener (() => {
+			OnDrawCardPopConfirmClicked();
+		});
+		DrawCardPopCancel.onClick.AddListener (() => {
+			OnDrawCardPopCancelClicked();
+		});
+		NoMoneyPopupConfirm.onClick.AddListener (() => {
+			OnNoMoneyPopupConfirmClicked();
+		});
+		NoMoneyPopupCancel.onClick.AddListener (() => {
+			OnNoMoneyPopupCancelClicked();
 		});
 	}
 
@@ -260,15 +310,146 @@ public class DrawCards : MonoBehaviour {
 		game.login.UpdateObject ();
 	}
 
-	public void OnConfirmDefaultDraw(){
-				if (Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim)) + new TimeSpan (0, 5, 0) > DateTime.Now) {
-			// TODO show Panel for not available
+	public void OnDefaultDrawClicked(){
+		// if not ready for next free draw
+		if (Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim)) + new TimeSpan (0, 5, 0) > DateTime.Now) {
+			string txt = "主公，未到免費抽卡之時間，請用400銀羽進行勁抽，或是使用80星塵進行超時抽";
+			NoFreeDraw.transform.GetChild(1).GetComponent<Text>().text = txt;
+			ShowPanel(NoFreeDraw);
 			return;
 		}
 		if (game.login.attributes ["FreeDraw"].AsInt == 0) {
-			// TODO show Panel for no quota left
+			string txt = "主公，是日免費抽卡之機會已用完，請用400銀羽進行勁抽，或是使用80星塵進行超時抽";
+			NoFreeDraw.transform.GetChild(1).GetComponent<Text>().text = txt;
+			ShowPanel(NoFreeDraw);
 			return;
 		}
+		string msg = "主公，是日尚餘五次免費抽卡之機會，快抽卡！";
+		msg = msg.Replace ("五", game.login.attributes ["FreeDraw"].AsInt.ToString ());
+		CardQAHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
+		ShowPanel (CardQAHolder);
+	}
+
+	public void OnCardQAHolderConfirmClicked(){
+		OnConfirmDefaultDraw ();
+		HidePanel (CardQAHolder);
+	}
+
+	public void  OnSuperDrawClicked(){
+		actionId = "SuperDraw";
+		if (game.wealth [0].value >= drawCost["SuperDraw"]) {
+			string msg = "主公，勁抽使用400銀羽進行抽卡。";
+			DrawCardPop.transform.GetChild (0).GetComponent<Text> ().text = "勁抽";
+			DrawCardPop.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			ShowPanel (DrawCardPop);
+		} else {
+			string msg = "主公，銀羽不足了，請到交易所購買。";
+			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "勁抽";
+			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			ShowPanel (NoMoneyPopup);
+		}
+	}
+
+	public void  OnTimeTravelDrawClicked(){
+		actionId = "TimeTravelDraw";
+		if (game.wealth [1].value >= drawCost["TimeTravelDraw"]) {
+			string msg = "主公，超時抽使用80時之星塵進行抽卡。";
+			DrawCardPop.transform.GetChild (0).GetComponent<Text> ().text = "超時抽";
+			DrawCardPop.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			ShowPanel (DrawCardPop);
+		} else {
+			string msg = "主公，時之星塵不足了，請到交易所購買。";
+			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "超時抽";
+			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			ShowPanel (NoMoneyPopup);
+		}
+	}
+
+	public void  OnTenSuperDrawClicked(){
+		actionId = "TenSuperDraw";
+		if (game.wealth [0].value >= drawCost["TenSuperDraw"]) {
+			string msg = "主公，十連勁抽使用3600銀羽進行抽卡。";
+			DrawCardPop.transform.GetChild (0).GetComponent<Text> ().text = "十連勁抽";
+			DrawCardPop.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			ShowPanel (DrawCardPop);
+		} else {
+			string msg = "主公，銀羽不足了，請到交易所購買。";
+			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "十連勁抽";
+			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			ShowPanel (NoMoneyPopup);
+		}
+	}
+
+	public void  OnTenTimeTravelDrawClicked(){
+		actionId = "TenTimeTravelDraw";
+		if (game.wealth [1].value >= drawCost["TenTimeTravelDraw"]) {
+			string msg = "主公，十連超時抽使用720時之星塵進行抽卡。";
+			DrawCardPop.transform.GetChild (0).GetComponent<Text> ().text = "十連超時抽";
+			DrawCardPop.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			ShowPanel (DrawCardPop);
+		} else {
+			string msg = "主公，時之星塵不足了，請到交易所購買。";
+			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "十連超時抽";
+			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			ShowPanel (NoMoneyPopup);
+		}
+	}
+
+	public void OnNoFreeDrawFeatherClicked(){
+		if (game.wealth [0].value < 400) {
+			string msg = "主公，銀羽不足了，請到交易所購買。";
+			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "人品抽";
+			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			HidePanel(NoFreeDraw);
+			ShowPanel (NoMoneyPopup);
+		} else {
+			OnConfirmSuperDraw();
+		}
+	}
+
+	public void OnNoFreeDrawStarDustClicked(){
+		if (game.wealth [1].value < 80) {
+			string msg = "主公，時之星塵不足了，請到交易所購買。";
+			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "人品抽";
+			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			HidePanel(NoFreeDraw);
+			ShowPanel (NoMoneyPopup);
+		} else {
+			OnConfirmTimeTravelDraw();
+		}
+	}
+
+	public void OnDrawCardPopConfirmClicked(){
+		if (actionId == "SuperDraw") {
+			OnConfirmSuperDraw();
+		}else if (actionId == "TimeTravelDraw") {
+			OnConfirmTimeTravelDraw();
+		}if (actionId == "TenSuperDraw") {
+			OnConfirmTenSuperDraw();
+		}if (actionId == "TenTimeTravelDraw") {
+			OnConfirmTenTimeTravelDraw();
+		}
+		HidePanel (DrawCardPop);
+	}
+
+	public void OnDrawCardPopCancelClicked(){
+		HidePanel (DrawCardPop);
+	}
+
+	public void OnNoMoneyPopupConfirmClicked(){
+		HidePanel (NoMoneyPopup);
+		gameObject.SetActive (false);
+		ShopHolder.SetActive (true);
+	}
+
+	public void OnNoMoneyPopupCancelClicked(){
+		HidePanel (NoMoneyPopup);
+	}
+	
+
+
+
+	public void OnConfirmDefaultDraw(){
 		game.login.attributes["LastDrawTime"] = DateTime.Now.ToString();
 		game.login.attributes ["FreeDraw"].AsInt = game.login.attributes ["FreeDraw"].AsInt - 1;
 		game.login.UpdateObject ();
@@ -277,22 +458,22 @@ public class DrawCards : MonoBehaviour {
 	}
 
 	public void OnConfirmSuperDraw(){
-		game.wealth [0].Deduct (400);	
+		game.wealth [0].Deduct (drawCost["SuperDraw"]);	
 		DrawSingleCard ();
 	}
 
 	public void OnConfirmTimeTravelDraw(){
-		game.wealth [1].Deduct (80);	
+		game.wealth [1].Deduct (drawCost["TimeTravelDraw"]);	
 		DrawSingleCard ();
 	}
 
 	public void OnConfirmTenSuperDraw(){
-		game.wealth [0].Deduct (3600);	
+		game.wealth [0].Deduct (drawCost["TenSuperDraw"]);	
 		DrawTenCards ();
 	}
 	
 	public void OnConfirmTenTimeTravelDraw(){
-		game.wealth [1].Deduct (720);	
+		game.wealth [1].Deduct (drawCost["TenTimeTravelDraw"]);	
 		DrawTenCards ();
 	}
 
@@ -354,6 +535,18 @@ public class DrawCards : MonoBehaviour {
 		LoadBodyPic bodyPic = LoadBodyPic.Instance;
 		imageDict = bodyPic.imageDict;
 		nameDict = bodyPic.nameDict;
+	}
+
+	void ShowPanel(GameObject panel){
+		DisablePanel.SetActive (true);
+		Debug.Log ("ShowPanel");
+		panel.SetActive (true);
+	}
+	
+	void HidePanel(GameObject panel){
+		DisablePanel.SetActive (false);
+		Debug.Log ("HidePanel");
+		panel.SetActive (false);
 	}
 }
 

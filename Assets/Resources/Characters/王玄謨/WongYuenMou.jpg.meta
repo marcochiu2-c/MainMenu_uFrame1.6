@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: be239332e00d14cf28b40f4dc3b23a42
 timeCreated: 1461206763
+=======
+guid: b582a467d996a42ae965cfa6655b363d
+timeCreated: 1461318823
+>>>>>>> feature/Menu-Shawn
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
