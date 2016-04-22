@@ -135,7 +135,7 @@ public class SelfStudy : MonoBehaviour {
 		SelfStudy p;
 		for (int i = 0; i <5; i++){
 			p = leftHolder.GetChild(i*2).GetComponent<SelfStudy>();
-			Debug.Log (panel);	
+			Debug.Log (leftHolder.GetChild(0));	
 			if (panel == "IQ") {	
 				if (game.trainings[i+20].targetId !=0){
 					leftHolder.GetChild(i*2).GetComponent<SelfStudy>().trainingType = game.trainings[i+20].type;

@@ -242,6 +242,14 @@ public class Login {
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
+
+	/// <summary>
+	/// Update the Object to database</summary>
+	public void UpdateObject(){
+		Debug.Log ("Updating Login");
+		WsClient wsc = WsClient.Instance;
+		wsc.Send ("users", "SET", toJSON());
+	}
 }
 
 [Serializable]
