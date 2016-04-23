@@ -20,6 +20,7 @@ public class GeneralTrain : MonoBehaviour {
 	public Button BackButton;
 	public Button CloseButton;
 
+//	public static 
 	public static int OpenedPanel = -1;
 	public static List<int> RunningItem = new List<int>();// 0 - Courage, 1 - Force, 2- Strength
 

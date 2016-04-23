@@ -146,7 +146,7 @@ public class WsClient {
 	//string table = "";
 	//string result = "";
 
-#if TEST
+#if UNITY_EDITOR
 	private string ip = "192.168.100.64";   //My PC
 #else
 	private string ip = "23.91.96.158";     //Production server

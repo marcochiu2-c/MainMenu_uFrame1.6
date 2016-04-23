@@ -55,6 +55,10 @@ public class MainScene : MonoBehaviour {
 	public static Nullable<DateTime> FriendLastUpdate = null;
 	Shop shop;
 
+	void Awake(){
+		DontDestroyOnLoad(gameObject);
+	}
+
 	void Start(){
 
 		CallMainScene ();

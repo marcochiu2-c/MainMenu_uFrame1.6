@@ -14,5 +14,13 @@ namespace Utilities{
 				return Mathf.FloorToInt((float)t.TotalHours) + ":" + t.Minutes.ToString ("00") + ":" + t.Seconds.ToString ("00");
 			}
 		}
+
+		public static string Time(TimeSpan ts){
+			if (ts.TotalHours > 99) {
+				return ((int)ts.TotalDays).ToString () + "日";
+			} else {
+				return Mathf.FloorToInt((float)ts.TotalHours) + ":" + ts.Minutes.ToString ("00") + ":" + ts.Seconds.ToString ("00");
+			}
+		}
 	}
 }
