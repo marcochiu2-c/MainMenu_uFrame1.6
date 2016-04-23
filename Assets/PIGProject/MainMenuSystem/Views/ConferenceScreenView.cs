@@ -33,7 +33,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public GameObject SelectSoldierPanel;
 	
 	public Transform GeneralScrollPanel;
-	public List<Counselor> GeneralList;
+	public List<General> GeneralList;
 	public Dictionary<int,Sprite> imageDict;
 	public Dictionary<int,string> nameDict;
     
@@ -50,10 +50,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		Debug.Log ("HeadPIG: " + headPic.SuenMo);
 		//imageDict = headPic.imageDict;
 		
-		GeneralList = new List<Counselor> ();
-		for (int j = 0 ; j < game.counselor.Count; j++){
-			GeneralList.Add (new Counselor(game.counselor[j]));
-		}
+		GeneralList = game.general;
 	}
     
     public override void Bind() {
@@ -71,7 +68,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			
 
 			//int cslCount = Academy.cSelfLearnList.Count;
-			for (var i = 0 ; i < 10 ; i++){
+			for (var i = 0 ; i < GeneralList.Count ; i++){
 				CreateSelfLearnItem (GeneralList[i]);
 			}
 		});
@@ -141,7 +138,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		
     }
     
-	public void CreateSelfLearnItem(Counselor character){
+	public void CreateSelfLearnItem(General character){
 		var type = character.type;
 		Debug.Log ("Type: " + type);
 		AcademySelfLearn ss = Instantiate(Resources.Load("GeneralPrefab") as GameObject).GetComponent<AcademySelfLearn>();

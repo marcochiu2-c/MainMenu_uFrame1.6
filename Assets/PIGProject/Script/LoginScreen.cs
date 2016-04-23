@@ -112,19 +112,11 @@ public class LoginScreen : MonoBehaviour {
 			//			Debug.Log ("account already login with SNS");
 			LoginSNS();
 		}	
-<<<<<<< HEAD
-//		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
-//			//TODO show Facebook register reminder first
-//
-		//			GotoMainUI("MainMenuScene");
-//		}
-=======
 		//		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
 		//			//TODO show Facebook register reminder first
 		//
 		//			GotoMainUI("MainMenuScene");
 		//		}
->>>>>>> feature/Menu-Shawn
 		if (userWithSns != null)
 			Debug.Log (snsURL);
 		if (newFBUserPanelActivated) {  // For device not link with SNS account and user choose to link with SNS
@@ -176,11 +168,7 @@ public class LoginScreen : MonoBehaviour {
 		if (NewUserSNSAccountName.text.Trim () == "") {
 			Debug.Log ("User id: "+game.login.id);
 			if (game.login.id==0){
-<<<<<<< HEAD
-
-=======
 				
->>>>>>> feature/Menu-Shawn
 				return;
 			}
 		}
@@ -217,26 +205,15 @@ public class LoginScreen : MonoBehaviour {
 		json.Add ("table", new JSONData("users"));
 		json.Add ("data", jData);
 		wsc.conn.Send (json.ToString ());
-<<<<<<< HEAD
-
-=======
 		
->>>>>>> feature/Menu-Shawn
 		GotoMainUI ("MainMenuScene");
 	}
 	
 	private void GotoMainUI(string level){
-<<<<<<< HEAD
-//		ClickToLoadAsync cla = new ClickToLoadAsync();
-//		cla.loadingBar = slider;
-//		cla.loadingImage = loadImage;
-//		cla.ClickAsync(5);
-=======
 		//		ClickToLoadAsync cla = new ClickToLoadAsync();
 		//		cla.loadingBar = slider;
 		//		cla.loadingImage = loadImage;
 		//		cla.ClickAsync(5);
->>>>>>> feature/Menu-Shawn
 		loadingImageScreen.SetActive (true);
 		newUserPanel.SetActive (false);
 		newFBUserPanel.SetActive (false);
@@ -244,17 +221,6 @@ public class LoginScreen : MonoBehaviour {
 		EnterGameFBButton.gameObject.SetActive (false);
 		Debug.Log ("User ID: "+game.login.id);
 		StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
-<<<<<<< HEAD
-	}
-
-	IEnumerator LoadLevelWithBar (string level){
-		async = Application.LoadLevelAsync("MainMenuScene");
-		while(!async.isDone){
-			 slider.value=async.progress;
-			 yield return null;
-		}	
-=======
->>>>>>> feature/Menu-Shawn
 	}
 	
 	IEnumerator LoadLevelWithBar (string level){
@@ -336,13 +302,8 @@ public class LoginScreen : MonoBehaviour {
 			foreach (string perm in aToken.Permissions) {
 				Debug.Log(perm);
 			}
-<<<<<<< HEAD
-
-
-=======
 			
 			
->>>>>>> feature/Menu-Shawn
 			if (game.login.snsType==0){
 				SetupSocialNetworkAccount();
 			}

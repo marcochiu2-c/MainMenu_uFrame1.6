@@ -40,6 +40,7 @@ public class DrawCards : MonoBehaviour {
 	public Button CardQAConfirm;
 	public Button NoFreeDrawSuperDraw;
 	public Button NoFreeDrawTimeTravelDraw;
+	public Button NoFreeDrawDecline;
 	public Button DrawCardPopConfirm;
 	public Button DrawCardPopCancel;
 	public Button NoMoneyPopupConfirm;
@@ -153,6 +154,9 @@ public class DrawCards : MonoBehaviour {
 		});
 		NoFreeDrawTimeTravelDraw.onClick.AddListener (() => {
 			OnNoFreeDrawStarDustClicked();
+		});
+		NoFreeDrawDecline.onClick.AddListener (() => {
+			OnNoFreeDrawDeclineClicked();
 		});
 		DrawCardPopConfirm.onClick.AddListener (() => {
 			OnDrawCardPopConfirmClicked();
@@ -305,8 +309,9 @@ public class DrawCards : MonoBehaviour {
 	}
 
 	void ResetFreeDrawCount(){
-		game.login.attributes.Add ("LastDrawTime",new JSONData(DateTime.Now.ToString().Trim(charToTrim)));
+		game.login.attributes["LastDrawTime"]= DateTime.Now.ToString().Trim(charToTrim);
 		game.login.attributes.Add ("FreeDraw",new JSONData(5));
+		Debug.Log (game.login.attributes);
 		game.login.UpdateObject ();
 	}
 
@@ -396,11 +401,11 @@ public class DrawCards : MonoBehaviour {
 	}
 
 	public void OnNoFreeDrawFeatherClicked(){
+		HidePanel(NoFreeDraw);
 		if (game.wealth [0].value < 400) {
 			string msg = "主公，銀羽不足了，請到交易所購買。";
 			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "人品抽";
 			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
-			HidePanel(NoFreeDraw);
 			ShowPanel (NoMoneyPopup);
 		} else {
 			OnConfirmSuperDraw();
@@ -408,15 +413,20 @@ public class DrawCards : MonoBehaviour {
 	}
 
 	public void OnNoFreeDrawStarDustClicked(){
+		HidePanel(NoFreeDraw);
 		if (game.wealth [1].value < 80) {
 			string msg = "主公，時之星塵不足了，請到交易所購買。";
 			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "人品抽";
 			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
-			HidePanel(NoFreeDraw);
 			ShowPanel (NoMoneyPopup);
 		} else {
 			OnConfirmTimeTravelDraw();
 		}
+
+	}
+
+	public void OnNoFreeDrawDeclineClicked(){
+		HidePanel(NoFreeDraw);
 	}
 
 	public void OnDrawCardPopConfirmClicked(){
@@ -450,6 +460,7 @@ public class DrawCards : MonoBehaviour {
 
 
 	public void OnConfirmDefaultDraw(){
+
 		game.login.attributes["LastDrawTime"] = DateTime.Now.ToString();
 		game.login.attributes ["FreeDraw"].AsInt = game.login.attributes ["FreeDraw"].AsInt - 1;
 		game.login.UpdateObject ();
