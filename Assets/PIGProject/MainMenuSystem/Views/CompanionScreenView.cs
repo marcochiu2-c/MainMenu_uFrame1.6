@@ -17,9 +17,10 @@ public class CompanionScreenView : CompanionScreenViewBase {
 	public Button counselorsButton;
 	public Button soldiersButton;
 	public Button backButton;
+	public Button closeButton;
 
 	public GameObject CounselorsHolder;
-	public GameObject SoldiersHolder;
+	public GameObject GeneralsHolder;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -35,8 +36,13 @@ public class CompanionScreenView : CompanionScreenViewBase {
         // Any designer bindings are created in the base implementation.
 		this.BindButtonToHandler (backButton, () => {
 			CounselorsHolder.gameObject.SetActive (false);
-			SoldiersHolder.gameObject.SetActive (false);
+			GeneralsHolder.gameObject.SetActive (false);
 
+		});
+		this.BindButtonToHandler (closeButton, () => {
+			CounselorsHolder.gameObject.SetActive (false);
+			GeneralsHolder.gameObject.SetActive (false);
+			gameObject.SetActive(false);
 		});
 
 		this.BindButtonToHandler (counselorsButton, () => {
@@ -44,7 +50,7 @@ public class CompanionScreenView : CompanionScreenViewBase {
 		});
 
 		this.BindButtonToHandler (soldiersButton, () => {
-			SoldiersHolder.gameObject.SetActive (true);
+			GeneralsHolder.gameObject.SetActive (true);
 		});
 
     }
