@@ -55,9 +55,15 @@ public class MainScene : MonoBehaviour {
 	public static Nullable<DateTime> FriendLastUpdate = null;
 	Shop shop;
 
+	void Awake(){
+		DontDestroyOnLoad(gameObject);
+		CallMainScene ();
+		
+	}
+
 	void Start(){
 
-		CallMainScene ();
+		//CallMainScene ();
 	}
 	// Use this for initialization
 	public void CallMainScene () {
@@ -84,7 +90,7 @@ public class MainScene : MonoBehaviour {
 				reloadFromDB();
 			}else{
 				MainScene.needReloadFromDB = true;
-				Debug.Log ("User Id: "+0);
+				Debug.Log ("User Id: "+ 0);
 			}
 			Store.GetStorageInfoFromDB();
 
@@ -95,14 +101,14 @@ public class MainScene : MonoBehaviour {
 		shop = GetComponent<Shop> ();
 		Invoke ("CallShop", 3);
 
-		InvokeRepeating("OnGeneralTrainComplete",1,1);
+		//InvokeRepeating("OnGeneralTrainComplete",1,1);
 	}
 
 	void CallShop(){
 		shop.CallShop ();
 	}
 
-	void reloadFromDB(){
+	public void reloadFromDB(){
 		wsc.Send("wealth","GET",new JSONData (MainScene.userId));
 		wsc.Send("counselors","GET",new JSONData (MainScene.userId));
 		wsc.Send("generals","GET",new JSONData (MainScene.userId));
@@ -114,6 +120,8 @@ public class MainScene : MonoBehaviour {
 		wsc.Send ("getCheckinInfo","GET", new JSONData (MainScene.userId));
 		wsc.Send ("training","GET", new JSONData (MainScene.userId));
 		MainScene.needReloadFromDB = false;
+		Debug.Log ("Game Wealth from reloadFromDB: " + game.wealth[0].toJSON().ToString());
+		
 	}
 
 	// Update is called once per frame
@@ -147,7 +155,7 @@ public class MainScene : MonoBehaviour {
 			MainScene.UserInfo = null;
 			if (MainScene.userId == 0){
 				MainScene.userId = game.login.id;
-				reloadFromDB();
+				reloadFromDB();				
 			}
 			MainCharButton.transform.GetChild(0).GetComponent<Text>().text = "等級 "+CharacterPage.UserLevelCalculator(game.login.exp).ToString();
 
@@ -208,6 +216,7 @@ public class MainScene : MonoBehaviour {
 			count = game.general.Count;
 			game.general [count - 1].id = MainScene.GeneralLastInsertId;
 			MainScene.GeneralLastInsertId = 0;
+			wsc.Send("generals","GET",new JSONData (MainScene.userId));
 		}
 		if (MainScene.stardustValue != null || MainScene.silverFeatherValue != null || MainScene.resourceValue != null) {
 			game.wealth[0] = MainScene.silverFeatherValue;

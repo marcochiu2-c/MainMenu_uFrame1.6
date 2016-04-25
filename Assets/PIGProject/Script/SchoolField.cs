@@ -759,7 +759,7 @@ public class SchoolField : MonoBehaviour {
 		TimeSpan time = new TimeSpan ((long)SchoolField.TotalTrainingTime *1000*10000);
 		msg = msg.Replace ("%SQ%", numOfSoldiers.ToString ());
 		Debug.Log (time.ToString ());
-		msg = msg.Replace ("%TT%",time.Hours.ToString () + ":" + time.Minutes.ToString () + ":" + time.Seconds.ToString ());
+		msg = msg.Replace ("%TT%", Utilities.TimeUpdate.Time (time));
 		TrainingQAHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
 		ShowPanel(TrainingQAHolder);
 	}
@@ -804,11 +804,7 @@ public class SchoolField : MonoBehaviour {
 		DateTime d = DateTime.Now;
 		j.Add ("ETATrainingTime", new JSONData (d.Add (new TimeSpan((long)TotalTrainingTime*1000*10000)).ToString()));
 
-		JSONClass json = new JSONClass ();
-		json.Add ("id",new JSONData(game.soldiers[SchoolField.AssigningSoldier-1].id));
-		json.Add ("userId",new JSONData(game.login.id));
-		json.Add ("json", j);
-		wsc.Send ("soldier", "SET", json);
+		game.soldiers [AssigningSoldier - 1].UpdateObject ();
 		HidePanel(TrainingQAHolder);
 	}
 
@@ -820,8 +816,8 @@ public class SchoolField : MonoBehaviour {
 
 	bool CheckIfTrainingOngoing(){
 		if (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"] != null) {
-			Debug.Log (Convert.ToDateTime( game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]).ToString());
-			Debug.Log (DateTime.Now.ToString());
+//			Debug.Log (Convert.ToDateTime( game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]).ToString());
+//			Debug.Log (DateTime.Now.ToString());
 			if (Convert.ToDateTime (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]) <= DateTime.Now) {
 
 				game.soldiers [AssigningSoldier - 1].attributes ["Hit"] = game.soldiers [AssigningSoldier - 1].attributes ["TargetHit"];
@@ -843,12 +839,7 @@ public class SchoolField : MonoBehaviour {
 				game.soldiers [AssigningSoldier - 1].attributes ["Hammer"] = game.soldiers [AssigningSoldier - 1].attributes ["TargetHammer"];
 				game.soldiers [AssigningSoldier - 1].attributes.Remove ("ETATrainingTime");
 				game.soldiers [AssigningSoldier - 1].quantity = game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt;
-				JSONClass json = new JSONClass ();
-				json.Add ("id",new JSONData(game.soldiers[SchoolField.AssigningSoldier-1].id));
-				json.Add ("userId",new JSONData(game.login.id));
-				json.Add ("json", game.soldiers [AssigningSoldier - 1].attributes);
-				json.Add ("quantity",new JSONData(game.soldiers [AssigningSoldier - 1].quantity));
-				wsc.Send ("soldier", "SET", json);
+				game.soldiers[SchoolField.AssigningSoldier-1].UpdateObject();
 
 				return false;
 			} else {
@@ -881,9 +872,11 @@ public class SchoolField : MonoBehaviour {
 		}
 		data += "\n已訓練兵數： " + game.soldiers [AssigningSoldier - 1].quantity;
 		data += "\n未訓練兵數： " + j["trainingSoldiers"];
+
 		if (j ["ETATrainingTime"] != null) {
-			if (Convert.ToDateTime( j ["ETATrainingTime"]) < DateTime.Now) {
-				data += "\n訓練時間： " + Convert.ToDateTime( j ["ETATrainingTime"]).Subtract(DateTime.Now);
+			if (Convert.ToDateTime( j ["ETATrainingTime"]) > DateTime.Now) {
+				Debug.Log (j["ETATrainingTime"]);
+				data += "\n訓練時間： " + Utilities.TimeUpdate.Time(Convert.ToDateTime( j ["ETATrainingTime"]));
 			}
 		}
 		SoldierSummary.text = data;

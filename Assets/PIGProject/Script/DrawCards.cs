@@ -99,6 +99,7 @@ public class DrawCards : MonoBehaviour {
 //		Debug.Log (counselorList .Find(x => x.id == 1).ToJSON().ToString());
 //		Debug.Log (generalList.Find(x => x.id == 1001).ToJSON().ToString());
 		if (IsTodayFirstDraw()) {
+			Debug.Log ("This is the first draw.");
 			ResetFreeDrawCount();
 		}
 
@@ -309,7 +310,7 @@ public class DrawCards : MonoBehaviour {
 	}
 
 	void ResetFreeDrawCount(){
-		game.login.attributes["LastDrawTime"]= DateTime.Now.ToString().Trim(charToTrim);
+		game.login.attributes["LastDrawTime"]= DateTime.Today.ToString().Trim(charToTrim);
 		game.login.attributes.Add ("FreeDraw",new JSONData(5));
 		Debug.Log (game.login.attributes);
 		game.login.UpdateObject ();
@@ -317,7 +318,9 @@ public class DrawCards : MonoBehaviour {
 
 	public void OnDefaultDrawClicked(){
 		// if not ready for next free draw
-		if (Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim)) + new TimeSpan (0, 5, 0) > DateTime.Now) {
+		if (Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim)) + new TimeSpan (0, 5, 0) > DateTime.Now||
+		    Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim))== DateTime.Today
+		    ) {
 			string txt = "主公，未到免費抽卡之時間，請用400銀羽進行勁抽，或是使用80星塵進行超時抽";
 			NoFreeDraw.transform.GetChild(1).GetComponent<Text>().text = txt;
 			ShowPanel(NoFreeDraw);
@@ -342,6 +345,8 @@ public class DrawCards : MonoBehaviour {
 
 	public void  OnSuperDrawClicked(){
 		actionId = "SuperDraw";
+		Debug.Log ("Silver Feather: "+game.wealth [0].value);
+		Debug.Log ("Cost of Draw card: " + drawCost ["SuperDraw"]);
 		if (game.wealth [0].value >= drawCost["SuperDraw"]) {
 			string msg = "主公，勁抽使用400銀羽進行抽卡。";
 			DrawCardPop.transform.GetChild (0).GetComponent<Text> ().text = "勁抽";

@@ -292,6 +292,7 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	private void AuthCallback (ILoginResult result) {
+		Debug.Log (result);
 		if (FB.IsLoggedIn) {
 			// AccessToken class will have session details
 			var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
@@ -299,9 +300,11 @@ public class LoginScreen : MonoBehaviour {
 			Debug.Log(aToken.UserId);
 			snsURL = aToken.UserId;
 			// Print current access token's granted permissions
+#if UNITY_EDITOR
 			foreach (string perm in aToken.Permissions) {
 				Debug.Log(perm);
 			}
+#endif
 			
 			
 			if (game.login.snsType==0){

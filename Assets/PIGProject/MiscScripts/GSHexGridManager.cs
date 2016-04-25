@@ -88,6 +88,9 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
 		MainGameController = uFrameKernel.Container.Resolve<MainGameRootController>();
 		
+		Game game = Game.Instance;
+		Debug.Log ("Game Wealth: " + game.wealth[1].toJSON().ToString());
+		
 		//init MainGAmeVM, hard code first
 		MainGameVM.PlayerIQ = 200;
 		MainGameVM.SoldierCount = 5;

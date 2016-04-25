@@ -25,7 +25,7 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
         
 		LocalUser = uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
 		Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.Identifier);
-		
+		//Debug.Log ("Game Wealth: " + game.wealth[1].toJSON().ToString());
         GetSoldierValue();
     }
     
@@ -54,7 +54,7 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		{
 			// Get the Controllers, ViewModels and Views from Kernel
 			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
-			Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
+			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
 		}
 		
 		Debug.Log (game.soldiers[AssigningSoldier].attributes);
@@ -119,7 +119,6 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		SoldierVM[SoldierGroup].Prestige = 100;
 		//SoldierVM[i].Career = game.soldiers[AssigningSoldier].attributes["Career"].AsInt;
 		
-		SoldierVM[SoldierGroup].Health = 2001;
-        
+		SoldierVM[SoldierGroup].Health = 2001;   
     }
 }

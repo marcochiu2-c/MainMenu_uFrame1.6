@@ -111,7 +111,6 @@ public class SubScreenView : SubScreenViewBase
 #else
 			//ScreenUIContainer.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutBack).OnComplete(()=>ScreenUIContainer.gameObject.SetActive(false));
 #endif
-		}
-					
+		}					
 	}
 }

@@ -39,6 +39,8 @@ public class MenuScreenView : MenuScreenViewBase
 	public Button SchoolFieldButton;
 	
 	public Button SampleButton;
+	
+	public MainScene MainScene;
 
 	public GameObject StorageHolder;
 //	public Endgame.ListView ItemPanel;
@@ -51,6 +53,7 @@ public class MenuScreenView : MenuScreenViewBase
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
 //		MenuScreenView.staticAcademyListViewColumns  = AcademyListView.Columns;
+
     }
     
     public override void Bind() {
@@ -232,6 +235,8 @@ public class MenuScreenView : MenuScreenViewBase
 	{
 		base.IsActiveChanged(active);
 		//DisablePanel.gameObject.SetActive(!active);
+		MainScene.reloadFromDB();
+		Debug.Log ("MenuScreen is active or not ?");
 	}
 
 

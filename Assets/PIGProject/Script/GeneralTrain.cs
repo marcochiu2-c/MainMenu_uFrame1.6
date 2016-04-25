@@ -20,6 +20,7 @@ public class GeneralTrain : MonoBehaviour {
 	public Button BackButton;
 	public Button CloseButton;
 
+//	public static 
 	public static int OpenedPanel = -1;
 	public static List<int> RunningItem = new List<int>();// 0 - Courage, 1 - Force, 2- Strength
 
@@ -79,6 +80,13 @@ public class GeneralTrain : MonoBehaviour {
 		CloseButton.onClick.AddListener (() => {
 			OpenedPanel = -1;
 			DestroyAllGeneralTrainingPrefab();
+			HidePanel(CouragePopup);
+			HidePanel(ForcePopup);
+			HidePanel(StrengthPopup);
+			HidePanel(TrainSFHolder);
+			HidePanel(TrainSDHolder);
+			HidePanel(NotEnoughSD);
+			HidePanel(NotEnoughSF);
 		});
 		CourageButton.onClick.AddListener (() => {
 			SetupGeneralTrainingPrefab ();
