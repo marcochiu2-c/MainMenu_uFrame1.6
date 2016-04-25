@@ -119,6 +119,6 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		SoldierVM[SoldierGroup].Prestige = 100;
 		//SoldierVM[i].Career = game.soldiers[AssigningSoldier].attributes["Career"].AsInt;
 		
-		SoldierVM[SoldierGroup].Health = 2001;   
+		SoldierVM[SoldierGroup].Health =  viewModel.SoldierQuantity ;
     }
 }

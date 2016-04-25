@@ -34,6 +34,7 @@ public class LoginScreen : MonoBehaviour {
 	string debugText = "";
 	public static bool isSNSInit = false;
 	public static bool isSNSLoggedIn = false;
+	bool _CalledFBLogin = false;
 	
 	public GameObject loadingImageScreen;
 	private AsyncOperation async;
@@ -90,6 +91,7 @@ public class LoginScreen : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.Log ("Game Object: " + game);
 		//		Debug.Log (game.login.snsType);
 		if (user!=null){
 			
@@ -110,13 +112,27 @@ public class LoginScreen : MonoBehaviour {
 		
 		if (game.login.snsType==1){  // if account already login with SNS
 			//			Debug.Log ("account already login with SNS");
-			LoginSNS();
+			if (userWithSns != " "){
+				if (!_CalledFBLogin){
+					LoginSNS();
+					_CalledFBLogin = true;
+				}
+			}
 		}	
+
 		//		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
 		//			//TODO show Facebook register reminder first
 		//
 		//			GotoMainUI("MainMenuScene");
 		//		}
+//		if (userWithSns != null)
+//			Debug.Log (snsURL);
+//		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
+//			//TODO show Facebook register reminder first
+//
+		//			GotoMainUI("MainMenuScene");
+//		}
+
 		if (userWithSns != null)
 			Debug.Log (snsURL);
 		if (newFBUserPanelActivated) {  // For device not link with SNS account and user choose to link with SNS
@@ -168,7 +184,6 @@ public class LoginScreen : MonoBehaviour {
 		if (NewUserSNSAccountName.text.Trim () == "") {
 			Debug.Log ("User id: "+game.login.id);
 			if (game.login.id==0){
-				
 				return;
 			}
 		}
@@ -205,7 +220,6 @@ public class LoginScreen : MonoBehaviour {
 		json.Add ("table", new JSONData("users"));
 		json.Add ("data", jData);
 		wsc.conn.Send (json.ToString ());
-		
 		GotoMainUI ("MainMenuScene");
 	}
 	
@@ -222,13 +236,13 @@ public class LoginScreen : MonoBehaviour {
 		Debug.Log ("User ID: "+game.login.id);
 		StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
 	}
-	
+
 	IEnumerator LoadLevelWithBar (string level){
 		async = Application.LoadLevelAsync("MainMenuScene");
 		while(!async.isDone){
-			slider.value=async.progress;
-			yield return null;
-		}	
+			 slider.value=async.progress;
+			 yield return null;
+		}
 	}
 	
 	private bool LoginSNS(){
@@ -305,8 +319,6 @@ public class LoginScreen : MonoBehaviour {
 				Debug.Log(perm);
 			}
 #endif
-			
-			
 			if (game.login.snsType==0){
 				SetupSocialNetworkAccount();
 			}

@@ -101,11 +101,29 @@ public class MainScene : MonoBehaviour {
 		shop = GetComponent<Shop> ();
 		Invoke ("CallShop", 3);
 
+		InvokeRepeating("OnGeneralTrainComplete",1,4);
+
+		InvokeRepeating("CheckObject",1,2);
+
 		//InvokeRepeating("OnGeneralTrainComplete",1,1);
 	}
 
 	void CallShop(){
 		shop.CallShop ();
+	}
+	
+	void CheckObject(){
+		if (game == null) {
+			Debug.Log ("Game object null");
+			game = Game.Instance;
+			silverFeatherText = GameObject.Find ("SilverFeatherText").GetComponents<Text> () [0];
+			resourceText = GameObject.Find ("ResourcesText").GetComponents<Text> () [0];
+			starDustText = GameObject.Find ("StardustText").GetComponents<Text> () [0];
+			MainScene.sValue = game.wealth[0].value.ToString();
+			MainScene.sdValue = game.wealth[1].value.ToString();
+			MainScene.rValue = game.wealth[2].value.ToString();
+			reloadFromDB();
+		}
 	}
 
 	public void reloadFromDB(){
@@ -209,6 +227,7 @@ public class MainScene : MonoBehaviour {
 		if (MainScene.CounselorLastInsertId != 0) {
 			count = game.counselor.Count;
 			game.counselor [count - 1].id = MainScene.CounselorLastInsertId;
+			Debug.Log (game.counselor[count-1].toJSON().ToString());
 			MainScene.CounselorLastInsertId = 0;
 		}
 

@@ -865,6 +865,11 @@ public class ConferenceScreenViewBase : SubScreenView {
     [UnityEngine.HideInInspector()]
     public Int32 _SoldierType;
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _SoldierQuantity;
+    
     public override string DefaultIdentifier {
         get {
             return base.DefaultIdentifier;
@@ -891,6 +896,7 @@ public class ConferenceScreenViewBase : SubScreenView {
         var conferencescreenview = ((ConferenceScreenViewModel)model);
         conferencescreenview.Group = this._Group;
         conferencescreenview.SoldierType = this._SoldierType;
+        conferencescreenview.SoldierQuantity = this._SoldierQuantity;
     }
     
     public override void Bind() {

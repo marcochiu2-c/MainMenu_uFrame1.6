@@ -107,104 +107,103 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 		
 		this.BindButtonToHandler (Mission1Button, () => {
 			if (LocalUser != null)
-			LocalUser.WinConditon = WinCondition.Tower;
-			
+				LocalUser.WinCondition = WinCondition.Tower;
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission2Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Enemies;
+				LocalUser.WinCondition = WinCondition.Enemies;
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission3Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Enemies;
+				LocalUser.WinCondition = WinCondition.Enemies;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission4Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Enemies;
+				LocalUser.WinCondition = WinCondition.Enemies;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission5Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Enemies;
+				LocalUser.WinCondition = WinCondition.Enemies;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission6Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Enemies;
+				LocalUser.WinCondition = WinCondition.Enemies;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission7Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Enemies;
+				LocalUser.WinCondition = WinCondition.Enemies;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission8Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Enemies;
+				LocalUser.WinCondition = WinCondition.Enemies;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission9Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Enemies;
+				LocalUser.WinCondition = WinCondition.Enemies;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission10Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Boss;
+				LocalUser.WinCondition = WinCondition.Boss;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission11Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Tower;
+				LocalUser.WinCondition = WinCondition.Tower;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission12Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Tower;
+				LocalUser.WinCondition = WinCondition.Tower;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission13Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Tower;
+				LocalUser.WinCondition = WinCondition.Tower;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission14Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Tower;
+				LocalUser.WinCondition = WinCondition.Tower;
 			
 			ChangetoMainGame();
 		});
 		
 		this.BindButtonToHandler (Mission15Button, () => {
 			if (LocalUser != null)
-				LocalUser.WinConditon = WinCondition.Tower;
+				LocalUser.WinCondition = WinCondition.Tower;
 			
 			ChangetoMainGame();
 		});

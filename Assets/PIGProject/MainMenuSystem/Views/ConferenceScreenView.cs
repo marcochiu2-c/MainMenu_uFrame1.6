@@ -24,6 +24,12 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button SoldierType1;
 	public Button SoldierType2;
 	public Button SoldierType3;
+	public Button InputConfirmBtn;
+	
+	public InputField SoldierQuantityInput;
+	public Text SoldierQuantityText;
+	
+	public Game game;
 
 	public GameObject ArmyAttack;
 	public GameObject ArmyGarrison;
@@ -31,6 +37,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public GameObject DefensiveLinup;
 	public GameObject Standings;
 	public GameObject SelectSoldierPanel;
+	public GameObject SoldierQuantityPanel;
 	
 	public Transform GeneralScrollPanel;
 	public List<General> GeneralList;
@@ -42,7 +49,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as ConferenceScreenViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
-		Game game = Game.Instance;
+		game = Game.Instance;
 		LoadHeadPic headPic = LoadHeadPic.SetCharacters();
 		
 		imageDict = headPic.imageDict;
@@ -112,27 +119,50 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		this.BindButtonToHandler (SoldierType1, () => {
 			this.ConferenceScreen.Group = 0;
 			this.ConferenceScreen.SoldierType = 1;
-			ExecuteSetSoldierData();
+			//ExecuteSetSoldierData();
 			SelectSoldierPanel.gameObject.SetActive (false);
 			SoldierTypeBtn.GetComponentInChildren<Text>().text = "兵種一";
-			
+			SoldierQuantityPanel.gameObject.SetActive (true);
 		});
 		
 		this.BindButtonToHandler (SoldierType2, () => {
 			this.ConferenceScreen.Group = 0;
 			this.ConferenceScreen.SoldierType = 2;
-			ExecuteSetSoldierData();
+			//ExecuteSetSoldierData();
 			SelectSoldierPanel.gameObject.SetActive (false);
 			SoldierTypeBtn.GetComponentInChildren<Text>().text = "兵種二";
-			
+			SoldierQuantityPanel.gameObject.SetActive (true);
 		});
 		
 		this.BindButtonToHandler (SoldierType3, () => {
 			this.ConferenceScreen.Group = 0;
 			this.ConferenceScreen.SoldierType = 3;
-			ExecuteSetSoldierData();
+			//ExecuteSetSoldierData();
 			SelectSoldierPanel.gameObject.SetActive (false);
 			SoldierTypeBtn.GetComponentInChildren<Text>().text = "兵種三";
+			SoldierQuantityPanel.gameObject.SetActive (true);
+		});
+		
+		this.BindButtonToHandler (InputConfirmBtn, () => {
+		
+			this.ConferenceScreen.SoldierQuantity = int.Parse(SoldierQuantityInput.text);
+			SoldierQuantityText.text = "兵數: " + SoldierQuantityInput.text;
+			ExecuteSetSoldierData();
+			SoldierQuantityPanel.gameObject.SetActive (false);
+			/*
+			if(int.Parse(SoldierQuantityInput.text) > game.soldiers[this.ConferenceScreen.SoldierType].quantity)
+			{
+				Debug.Log ("Please enter again");
+			}
+			
+			else
+			{
+				this.ConferenceScreen.SoldierQuantity = int.Parse(SoldierQuantityInput.text);
+			    SoldierQuantityText.text = SoldierQuantityInput.text;
+				ExecuteSetSoldierData();
+				SoldierQuantityPanel.gameObject.SetActive (false);
+			}
+			*/
 			
 		});
 		

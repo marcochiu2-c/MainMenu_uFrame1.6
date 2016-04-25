@@ -1,4 +1,4 @@
-﻿//#define TEST
+﻿#define TEST
 using UnityEngine;
 using System;
 using System.Collections;
@@ -183,7 +183,9 @@ public class WsClient {
 
 			conn.OnError += (sender, e) => {
 				Debug.Log("Websocket Error");
+				Application.Quit();
 				conn.Close ();
+
 			};
 
 			conn.OnClose += (sender, e) => {
@@ -411,6 +413,7 @@ public class WsClient {
 			conn.Send (json);
 		} else {
 			Debug.Log ("Websocket Connection Lost!");
+			Application.Quit();
 		}
 	}
 
@@ -443,6 +446,9 @@ public class WsClient {
 			json.Add ("data", j);
 			Debug.Log (json.ToString ());
 			conn.Send (json.ToString ());
+		} else {
+			Debug.Log ("Websocket Connection Lost!");
+			Application.Quit();
 		}
 	}
 

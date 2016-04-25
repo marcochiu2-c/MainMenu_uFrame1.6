@@ -25,7 +25,7 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<AuthorizationState> _AuthorizationStateProperty;
     
-    private P<WinCondition> _WinConditonProperty;
+    private P<WinCondition> _WinConditionProperty;
     
     private ModelCollection<SoldierViewModel> _Soldier;
     
@@ -42,12 +42,12 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual P<WinCondition> WinConditonProperty {
+    public virtual P<WinCondition> WinConditionProperty {
         get {
-            return _WinConditonProperty;
+            return _WinConditionProperty;
         }
         set {
-            _WinConditonProperty = value;
+            _WinConditionProperty = value;
         }
     }
     
@@ -60,12 +60,12 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual WinCondition WinConditon {
+    public virtual WinCondition WinCondition {
         get {
-            return WinConditonProperty.Value;
+            return WinConditionProperty.Value;
         }
         set {
-            WinConditonProperty.Value = value;
+            WinConditionProperty.Value = value;
         }
     }
     
@@ -81,14 +81,14 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
     public override void Bind() {
         base.Bind();
         _AuthorizationStateProperty = new P<AuthorizationState>(this, "AuthorizationState");
-        _WinConditonProperty = new P<WinCondition>(this, "WinConditon");
+        _WinConditionProperty = new P<WinCondition>(this, "WinCondition");
         _Soldier = new ModelCollection<SoldierViewModel>(this, "Soldier");
     }
     
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
         this.AuthorizationState = (AuthorizationState)stream.DeserializeInt("AuthorizationState");;
-        this.WinConditon = (WinCondition)stream.DeserializeInt("WinConditon");;
+        this.WinCondition = (WinCondition)stream.DeserializeInt("WinCondition");;
         if (stream.DeepSerialize) {
             this.Soldier.Clear();
             this.Soldier.AddRange(stream.DeserializeObjectArray<SoldierViewModel>("Soldier"));
@@ -98,7 +98,7 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
     public override void Write(ISerializerStream stream) {
         base.Write(stream);
         stream.SerializeInt("AuthorizationState", (int)this.AuthorizationState);;
-        stream.SerializeInt("WinConditon", (int)this.WinConditon);;
+        stream.SerializeInt("WinCondition", (int)this.WinCondition);;
         if (stream.DeepSerialize) stream.SerializeArray("Soldier", this.Soldier);
     }
     
@@ -111,7 +111,7 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_AuthorizationStateProperty, false, false, true, false));
         // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_WinConditonProperty, false, false, true, false));
+        list.Add(new ViewModelPropertyInfo(_WinConditionProperty, false, false, true, false));
         list.Add(new ViewModelPropertyInfo(_Soldier, true, true, false, false));
     }
 }

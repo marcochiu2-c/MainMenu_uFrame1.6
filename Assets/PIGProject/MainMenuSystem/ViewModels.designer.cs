@@ -689,6 +689,8 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
     
     private P<Int32> _SoldierTypeProperty;
     
+    private P<Int32> _SoldierQuantityProperty;
+    
     private Signal<SetSoldierDataCommand> _SetSoldierData;
     
     public ConferenceScreenViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
@@ -713,6 +715,15 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
         }
     }
     
+    public virtual P<Int32> SoldierQuantityProperty {
+        get {
+            return _SoldierQuantityProperty;
+        }
+        set {
+            _SoldierQuantityProperty = value;
+        }
+    }
+    
     public virtual Int32 Group {
         get {
             return GroupProperty.Value;
@@ -731,6 +742,15 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
         }
     }
     
+    public virtual Int32 SoldierQuantity {
+        get {
+            return SoldierQuantityProperty.Value;
+        }
+        set {
+            SoldierQuantityProperty.Value = value;
+        }
+    }
+    
     public virtual Signal<SetSoldierDataCommand> SetSoldierData {
         get {
             return _SetSoldierData;
@@ -745,6 +765,7 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
         this.SetSoldierData = new Signal<SetSoldierDataCommand>(this);
         _GroupProperty = new P<Int32>(this, "Group");
         _SoldierTypeProperty = new P<Int32>(this, "SoldierType");
+        _SoldierQuantityProperty = new P<Int32>(this, "SoldierQuantity");
     }
     
     public virtual void ExecuteSetSoldierData() {
@@ -755,12 +776,14 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
         base.Read(stream);
         this.Group = stream.DeserializeInt("Group");;
         this.SoldierType = stream.DeserializeInt("SoldierType");;
+        this.SoldierQuantity = stream.DeserializeInt("SoldierQuantity");;
     }
     
     public override void Write(ISerializerStream stream) {
         base.Write(stream);
         stream.SerializeInt("Group", this.Group);
         stream.SerializeInt("SoldierType", this.SoldierType);
+        stream.SerializeInt("SoldierQuantity", this.SoldierQuantity);
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -774,6 +797,8 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
         list.Add(new ViewModelPropertyInfo(_GroupProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_SoldierTypeProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_SoldierQuantityProperty, false, false, false, false));
     }
 }
 

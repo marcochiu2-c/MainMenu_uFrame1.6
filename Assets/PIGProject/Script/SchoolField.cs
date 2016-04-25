@@ -65,6 +65,7 @@ public class SchoolField : MonoBehaviour {
 		game = Game.Instance;
 		wsc = WsClient.Instance;
 		SchoolField.AssigningSoldier = 1;
+		Debug.Log (game.counselor [0].toJSON ().ToString ());
 //		Debug.Log (TotalSoldiersAvailable());
 		InvokeRepeating ("ShowTotalSoldiersAvailableText", 0, 60);
 		AddButtonListener ();
@@ -902,6 +903,12 @@ public class SchoolField : MonoBehaviour {
 		DisablePanel.SetActive (false);
 		Debug.Log ("HidePanel");
 		panel.SetActive (false);
+	}
+
+	void ChangePanel(GameObject panel1, GameObject panel2){
+		Debug.Log (panel1 + " panel is change to " + panel2);
+		panel1.SetActive (false);
+		panel2.SetActive (true);
 	}
 
 }

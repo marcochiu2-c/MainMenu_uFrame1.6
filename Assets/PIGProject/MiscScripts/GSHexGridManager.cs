@@ -31,6 +31,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	
 	public MainGameRootController MainGameController;
 	public MainGameRootViewModel MainGameVM;
+	public UserViewModel LocalUser;
 	
 	public Button Play_Btn;
 	public Button EndTurn_Btn;
@@ -74,7 +75,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			// Get the Controllers, ViewModels and Views from Kernel
 			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
 			TargetVM.Add(uFrameKernel.Container.Resolve<EnemyViewModel>("Enemy" + i));
-			//Debug.Log (MainGameVM== null ? "MainGameVM is null" : MainGameVM.Identifier);
 			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
 			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM.ActualHit() + " and " + SoldierVM.ActualDodge() + " and " + SoldierVM.ActualMorale());
 			
@@ -85,40 +85,23 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			SoldierV.Add (objSoldier.GetComponent<SoldierView>() as SoldierView);
 		}
 		
+		LocalUser =  uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
 		MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
 		MainGameController = uFrameKernel.Container.Resolve<MainGameRootController>();
+		//Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.Identifier);
+		//Debug.Log (MainGameVM == null ? "MainGameVM is null" : MainGameVM.Identifier);
 		
-		Game game = Game.Instance;
-		Debug.Log ("Game Wealth: " + game.wealth[1].toJSON().ToString());
+		
+		MainGameVM.WinCondition = LocalUser.WinCondition;
+		
+		Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.WinCondition.ToString());
+		Debug.Log (MainGameVM == null ? "MainGameVM is null" : MainGameVM.WinCondition.ToString());
 		
 		//init MainGAmeVM, hard code first
 		MainGameVM.PlayerIQ = 200;
 		MainGameVM.SoldierCount = 5;
 		MainGameVM.EnemyCount = 4;
-		
-		
-		//int winCondition = PlayerPrefs.GetInt("WinCondition");
-		int winCondition = 2;
-		
-		//Temp use
-		if (winCondition == 0)
-		{
-			MainGameVM.WinCondition = WinCondition.Enemies;
-			Debug.Log("Change win condition: " + MainGameVM.WinCondition);
-		}		
-		else if (winCondition == 1)
-		{
-			MainGameVM.WinCondition = WinCondition.Boss;
-			Debug.Log("Change win condition: " + MainGameVM.WinCondition);
-		}
-		else
-		{
-			MainGameVM.WinCondition = WinCondition.Tower;
-			Debug.Log("Change win condition: " + MainGameVM.WinCondition);
-		}
-		
-		PlayerPrefs.DeleteKey("WinCondition");
-		
+				
 		MainGameVM.GameState = GameState.Playing;
 		
 		IQDisplay.text = "Player IQ: " + MainGameVM.PlayerIQ;
