@@ -80,6 +80,13 @@ public class GeneralTrain : MonoBehaviour {
 		CloseButton.onClick.AddListener (() => {
 			OpenedPanel = -1;
 			DestroyAllGeneralTrainingPrefab();
+			HidePanel(CouragePopup);
+			HidePanel(ForcePopup);
+			HidePanel(StrengthPopup);
+			HidePanel(TrainSFHolder);
+			HidePanel(TrainSDHolder);
+			HidePanel(NotEnoughSD);
+			HidePanel(NotEnoughSF);
 		});
 		CourageButton.onClick.AddListener (() => {
 			SetupGeneralTrainingPrefab ();

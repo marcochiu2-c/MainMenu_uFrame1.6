@@ -34,6 +34,7 @@ public class LoginScreen : MonoBehaviour {
 	string debugText = "";
 	public static bool isSNSInit = false;
 	public static bool isSNSLoggedIn = false;
+	bool _CalledFBLogin = false;
 	
 	public GameObject loadingImageScreen;
 	private AsyncOperation async;
@@ -90,6 +91,7 @@ public class LoginScreen : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.Log ("Game Object: " + game);
 		//		Debug.Log (game.login.snsType);
 		if (user!=null){
 			
@@ -110,15 +112,20 @@ public class LoginScreen : MonoBehaviour {
 		
 		if (game.login.snsType==1){  // if account already login with SNS
 			//			Debug.Log ("account already login with SNS");
-			LoginSNS();
+			if (userWithSns != " "){
+				if (!_CalledFBLogin){
+					LoginSNS();
+					_CalledFBLogin = true;
+				}
+			}
 		}	
 		//		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
 		//			//TODO show Facebook register reminder first
 		//
 		//			GotoMainUI("MainMenuScene");
 		//		}
-		if (userWithSns != null)
-			Debug.Log (snsURL);
+//		if (userWithSns != null)
+//			Debug.Log (snsURL);
 		if (newFBUserPanelActivated) {  // For device not link with SNS account and user choose to link with SNS
 			
 			if(game.login.id!=0){

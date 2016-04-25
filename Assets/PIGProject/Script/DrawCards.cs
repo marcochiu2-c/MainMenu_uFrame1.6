@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using SimpleJSON;
 using WebSocketSharp;
+using System.Linq;
 
 
 
@@ -97,7 +98,7 @@ public class DrawCards : MonoBehaviour {
 
 
 //		Debug.Log (counselorList .Find(x => x.id == 1).ToJSON().ToString());
-//		Debug.Log (generalList.Find(x => x.id == 1001).ToJSON().ToString());
+		Debug.Log (generalList.Find(x => x.id == 1067).ToJSON().ToString());
 		if (IsTodayFirstDraw()) {
 			Debug.Log ("This is the first draw.");
 			ResetFreeDrawCount();
@@ -200,7 +201,6 @@ public class DrawCards : MonoBehaviour {
 		}
 
 		json ["action"] = "NEW";
-
 		Debug.Log (json.ToString ());
 		wsc.Send (json.ToString ());
 		calledByDrawTenCards = false;
@@ -345,6 +345,8 @@ public class DrawCards : MonoBehaviour {
 
 	public void  OnSuperDrawClicked(){
 		actionId = "SuperDraw";
+		Debug.Log ("Silver Feather: "+game.wealth [0].value);
+		Debug.Log ("Cost of Draw card: " + drawCost ["SuperDraw"]);
 		if (game.wealth [0].value >= drawCost["SuperDraw"]) {
 			string msg = "主公，勁抽使用400銀羽進行抽卡。";
 			DrawCardPop.transform.GetChild (0).GetComponent<Text> ().text = "勁抽";
