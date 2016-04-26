@@ -28,7 +28,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	
 	public InputField SoldierQuantityInput;
 	public Text SoldierQuantityText;
-	
+	public Text QunatityErrorText;
 	public Game game;
 
 	public GameObject ArmyAttack;
@@ -144,25 +144,29 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		});
 		
 		this.BindButtonToHandler (InputConfirmBtn, () => {
-		
+			
+			/*
 			this.ConferenceScreen.SoldierQuantity = int.Parse(SoldierQuantityInput.text);
 			SoldierQuantityText.text = "兵數: " + SoldierQuantityInput.text;
 			ExecuteSetSoldierData();
 			SoldierQuantityPanel.gameObject.SetActive (false);
-			/*
-			if(int.Parse(SoldierQuantityInput.text) > game.soldiers[this.ConferenceScreen.SoldierType].quantity)
+			*/
+			
+			//if(int.Parse(SoldierQuantityInput.text) > game.soldiers[this.ConferenceScreen.SoldierType].quantity)
+			if(int.Parse(SoldierQuantityInput.text) > 3000 || int.Parse(SoldierQuantityInput.text) < 0)
 			{
 				Debug.Log ("Please enter again");
+				QunatityErrorText.text = "請重新輸入 (0~3000)";
 			}
 			
 			else
 			{
 				this.ConferenceScreen.SoldierQuantity = int.Parse(SoldierQuantityInput.text);
-			    SoldierQuantityText.text = SoldierQuantityInput.text;
+				SoldierQuantityText.text = "兵數: " + SoldierQuantityInput.text;
 				ExecuteSetSoldierData();
 				SoldierQuantityPanel.gameObject.SetActive (false);
 			}
-			*/
+			
 			
 		});
 		
