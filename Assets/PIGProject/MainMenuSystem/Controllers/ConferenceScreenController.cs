@@ -88,6 +88,8 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 			//SoldierVM[i].Career = game.soldiers[AssigningSoldier].attributes["Career"].AsInt;
 			
 			SoldierVM[i].Health = 2001;
+			SoldierVM[i].Max_Health = 2001;
+			
 			//Debug.Log ("AttackSpeed: " + SoldierVM[0].AttackSpeed);
 		}
 		
@@ -120,5 +122,7 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		//SoldierVM[i].Career = game.soldiers[AssigningSoldier].attributes["Career"].AsInt;
 		
 		SoldierVM[SoldierGroup].Health =  viewModel.SoldierQuantity ;
+		SoldierVM[SoldierGroup].Max_Health =  SoldierVM[SoldierGroup].Health;
+		
     }
 }

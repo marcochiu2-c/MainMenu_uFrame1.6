@@ -105,8 +105,66 @@ public class MainScene : MonoBehaviour {
 
 		InvokeRepeating("CheckObject",1,2);
 
-		//InvokeRepeating("OnGeneralTrainComplete",1,1);
+		InvokeRepeating("QuitIfConnectionFailed",0,10);
+
+		InvokeRepeating ("OnSchoolFieldSoldierTrainComplete", 2, 4);
 	}
+
+	void QuitIfConnectionFailed(){
+		if (!wsc.conn.IsAlive) {
+			Debug.Log ("Websocket connection failed.");
+			Application.Quit ();
+		}
+	}
+
+	void OnSchoolFieldSoldierTrainComplete(){
+		int NumberOfTypeOfSoldiers = 8;
+		game = Game.Instance;
+		for (int i = 0; i < NumberOfTypeOfSoldiers; i++) {
+			if (game.soldiers [i].attributes ["ETATrainingTime"] != null) {
+				if (Convert.ToDateTime (game.soldiers [i].attributes ["ETATrainingTime"]) < DateTime.Now) {
+					game.soldiers [i].attributes ["Hit"].AsFloat = game.soldiers [i].attributes ["TargetHit"].AsFloat;
+					game.soldiers [i].attributes ["Dodge"].AsFloat = game.soldiers [i].attributes ["TargetDodge"].AsFloat;
+					game.soldiers [i].attributes ["Strength"].AsFloat = game.soldiers [i].attributes ["TargetStrength"].AsFloat;
+					game.soldiers [i].attributes ["AttackSpeed"].AsFloat = game.soldiers [i].attributes ["TargetAttackSpeed"].AsFloat;
+					game.soldiers [i].attributes ["Morale"].AsFloat = game.soldiers [i].attributes ["TargetMorale"].AsFloat;
+					game.soldiers [i].attributes ["Wand"].AsFloat = game.soldiers [i].attributes ["TargetWand"].AsFloat;
+					game.soldiers [i].attributes ["PiercingLongWeapon"].AsFloat = game.soldiers [i].attributes ["TargetPiercingLongWeapon"].AsFloat;
+					game.soldiers [i].attributes ["Bows"].AsFloat = game.soldiers [i].attributes ["TargetBows"].AsFloat;
+					game.soldiers [i].attributes ["HighEndBows"].AsFloat = game.soldiers [i].attributes ["TargetHighEndBows"].AsFloat;
+					game.soldiers [i].attributes ["HiddenWeapon"].AsFloat = game.soldiers [i].attributes ["TargetHiddenWeapon"].AsFloat;
+					game.soldiers [i].attributes ["Knife"].AsFloat = game.soldiers [i].attributes ["TargetKnife"].AsFloat;
+					game.soldiers [i].attributes ["HackTypeLongWeapon"].AsFloat = game.soldiers [i].attributes ["TargetHackTypeLongWeapon"].AsFloat;
+					game.soldiers [i].attributes ["Sword"].AsFloat = game.soldiers [i].attributes ["TargetSword"].AsFloat;
+					game.soldiers [i].attributes ["HighEndSword"].AsFloat = game.soldiers [i].attributes ["TargetHighEndSword"].AsFloat;
+					game.soldiers [i].attributes ["SpecialWeapon"].AsFloat = game.soldiers [i].attributes ["TargetSpecialWeapon"].AsFloat;
+					game.soldiers [i].attributes ["Axe"].AsFloat = game.soldiers [i].attributes ["TargetAxe"].AsFloat;
+					game.soldiers [i].attributes ["Hammer"].AsFloat = game.soldiers [i].attributes ["TargetHammer"].AsFloat;
+					game.soldiers [i].attributes.Remove ("ETATrainingTime");
+					game.soldiers [i].attributes.Remove ("TargetHit");
+					game.soldiers [i].attributes.Remove ("TargetDodge");
+					game.soldiers [i].attributes.Remove ("TargetStrength");
+					game.soldiers [i].attributes.Remove ("TargetAttackSpeed");
+					game.soldiers [i].attributes.Remove ("TargetMorale");
+					game.soldiers [i].attributes.Remove ("TargetWand");
+					game.soldiers [i].attributes.Remove ("TargetPiercingLongWeapon");
+					game.soldiers [i].attributes.Remove ("TargetBows");
+					game.soldiers [i].attributes.Remove ("TargetHighEndBows");
+					game.soldiers [i].attributes.Remove ("TargetHiddenWeapon");
+					game.soldiers [i].attributes.Remove ("TargetKnife");
+					game.soldiers [i].attributes.Remove ("TargetHackTypeLongWeapon");
+					game.soldiers [i].attributes.Remove ("TargetSword");
+					game.soldiers [i].attributes.Remove ("TargetHighEndSword");
+					game.soldiers [i].attributes.Remove ("TargetSpecialWeapon");
+					game.soldiers [i].attributes.Remove ("TargetAxe");
+					game.soldiers [i].attributes.Remove ("TargetHammer");
+					game.soldiers [i].quantity = game.soldiers [i].attributes ["trainingSoldiers"].AsInt;
+					game.soldiers [i].UpdateObject ();
+				}
+			}
+		}
+	}
+
 
 	void CallShop(){
 		shop.CallShop ();
@@ -326,6 +384,7 @@ public class MainScene : MonoBehaviour {
 
 	void OnGeneralTrainComplete(){
 //		GeneralTrainPrefab general = null;
+		game = Game.Instance;
 		int point = 0;
 		General g = new General ();
 		Dictionary<int,string> trainDict = new Dictionary<int,string> ();

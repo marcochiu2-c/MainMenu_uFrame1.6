@@ -988,6 +988,9 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		
 		//the following logic is about soldier will move to the tower after all command finished
 		//this is the case that win condition is entering the tower 
+		
+		MainGameVM.WinCondition = LocalUser.WinCondition;
+		
 		if(MainGameVM.WinCondition == WinCondition.Tower)
 		{
 			if(SoldierVM[i].CurrentPointLocation != towerPoint)

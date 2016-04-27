@@ -1,4 +1,4 @@
-﻿#define TEST
+﻿//#define TEST
 using UnityEngine;
 using System;
 using System.Collections;
@@ -145,7 +145,7 @@ public class WsClient {
 	public WebSocket conn;
 	//string table = "";
 	//string result = "";
-
+	string protocol = "ws://";
 #if UNITY_EDITOR
 	private string ip = "192.168.100.64";   //My PC
 #else
@@ -175,7 +175,7 @@ public class WsClient {
 		var count = 0;
 		if (success) {
 			Debug.Log ("Server check ok");
-			string server = String.Format("ws://{0}:{1}/",  ip,  port );
+			string server = String.Format(protocol+"{0}:{1}/",  ip,  port );
 			using (conn = new WebSocket (server,"game"));
 			conn.Connect ();
 
@@ -183,7 +183,6 @@ public class WsClient {
 
 			conn.OnError += (sender, e) => {
 				Debug.Log("Websocket Error");
-				Application.Quit();
 				conn.Close ();
 
 			};

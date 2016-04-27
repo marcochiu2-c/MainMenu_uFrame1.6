@@ -495,6 +495,7 @@ public class Soldiers{
 	public Soldiers(JSONNode j){
 		id = j ["soldier_id"].AsInt;
 		attributes = (JSONClass)j ["soldier_json"];
+		Debug.Log (attributes);
 		type = j ["type"].AsInt;
 		generalId = j ["general_id"].AsInt;
 		quantity = j ["quantity"].AsInt;

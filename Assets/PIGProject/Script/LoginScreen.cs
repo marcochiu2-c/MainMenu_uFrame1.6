@@ -109,13 +109,16 @@ public class LoginScreen : MonoBehaviour {
 			
 			user =null;
 		}
+
 		
 		if (game.login.snsType==1){  // if account already login with SNS
-			//			Debug.Log ("account already login with SNS");
+						Debug.Log ("account already login with SNS");
 			if (userWithSns != " "){
+				Debug.Log ("userWithSns: "+userWithSns);
 				if (!_CalledFBLogin){
 					LoginSNS();
 					_CalledFBLogin = true;
+					GotoMainUI ("MainMenuScene");
 				}
 			}
 		}	
@@ -267,6 +270,8 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	public void CheckUserIn(){
+		wsc = WsClient.Instance;
+		Debug.Log (wsc);
 		wsc.Send ("login", "SET", new JSONData (game.login.id));
 	}
 	

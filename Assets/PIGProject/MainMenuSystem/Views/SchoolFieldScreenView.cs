@@ -15,6 +15,7 @@ using UnityEngine.UI;
 public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 
 	public Button BackButton;
+	public Button CloseButton;
 	public Button SoldierButton;
 	public Button ArmyButton;
 	public Button MountButton;
@@ -71,20 +72,39 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 
 		this.BindButtonToHandler (BackButton, () => {
 			DisablePanel.SetActive (false);
-			MountListHolder.gameObject.SetActive (false);
-			ArmyListHolder.gameObject.SetActive (false);
-			ArmorListHolder.gameObject.SetActive (false);
-			ShieldListHolder.gameObject.SetActive (false);
-			SaveType.gameObject.SetActive (false);
-			TrainingHolder.gameObject.SetActive (false);
+			MountListHolder.SetActive (false);
+			ArmyListHolder.SetActive (false);
+			ArmorListHolder.SetActive (false);
+			ShieldListHolder.SetActive (false);
+			SaveType.SetActive (false);
+			TrainingHolder.SetActive (false);
+			TrainingQHolder.SetActive(false);
+			AssignNSHolder.SetActive(false);
+			ArmyQAHolder.SetActive(false);
+			ArmorQAHolder.SetActive(false);
+			ShieldQAHolder.SetActive(false);
+		});
+
+		this.BindButtonToHandler (CloseButton, () => {
+			DisablePanel.SetActive (false);
+			MountListHolder.SetActive (false);
+			ArmyListHolder.SetActive (false);
+			ArmorListHolder.SetActive (false);
+			ShieldListHolder.SetActive (false);
+			SaveType.SetActive (false);
+			TrainingHolder.SetActive (false);
+			TrainingQHolder.SetActive(false);
+			AssignNSHolder.SetActive(false);
+			ArmyQAHolder.SetActive(false);
+			ArmorQAHolder.SetActive(false);
+			ShieldQAHolder.SetActive(false);
+
 		});
 
 		this.BindButtonToHandler (closeTrainingButton, () => {
-			TrainingHolder.gameObject.SetActive (false);
-			//ArmyQAHolder.gameObject.SetActive (false);
-			//MountQAHolder.gameObject.SetActive (false);
-			//ArmorQAHolder.gameObject.SetActive (false);
-			//ShieldQAHolder.gameObject.SetActive (false);
+			DisablePanel.SetActive (false);
+			TrainingHolder.SetActive (false);
+
 		});
 
 		this.BindButtonToHandler (ArmyButton, () => {
