@@ -78,11 +78,13 @@ public class SubScreenView : SubScreenViewBase
 
 		if(active)
 		{
-			if (ScreenUIContainer.name == "MainUIHolder") return;
-//			if (ScreenUIContainer.name == "AcademyHolder") return;
+			if (ScreenUIContainer.name == "HeaderHolder") 
+			{
+				bgm.Play ();
+				return;
+			}
 #if (TEST)
 			ScreenUIContainer.transform.DOLocalMoveY(2f, time).SetEase(Ease.InOutBack).OnStart(()=>{
-				Debug.Log ("DoLocalMoveY called");
 				Debug.Log (ScreenUIContainer);
 				ScreenUIContainer.gameObject.SetActive(true);
 				bgm.Play ();
@@ -95,12 +97,15 @@ public class SubScreenView : SubScreenViewBase
 		}
 		else
 		{
-			if (ScreenUIContainer.name == "MainUIHolder") return;
-//			if (ScreenUIContainer.name == "AcademyHolder") return;
+			if (ScreenUIContainer.name == "HeaderHolder")
+			{
+				bgm.Stop ();
+				return;
+			}
 #if (TEST)	
 //			ShowLog.Log ("SubScreen Close");
 			ScreenUIContainer.transform.DOLocalMoveY(759f, time).SetEase(Ease.InOutBack).OnStart(()=>{
-				bgm.Play ();
+				bgm.Stop ();
 
 				if (ScreenUIContainer.gameObject.ToString()=="AcademyHolder (UnityEngine.GameObject)"){
 					Debug.Log (ScreenUIContainer.gameObject);

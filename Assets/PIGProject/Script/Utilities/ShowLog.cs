@@ -1,21 +1,20 @@
 #define TEST
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using System;
+//using UnityEngine;
 
 namespace Utilities{
 	public class ShowLog
 	{
 
-		public static void Log(string text){
+		public static void Log(object message){
 #if TEST
-			Debug.Log (text);
+			UnityEngine.Debug.Log (DateTime.Now+": "+message);
 #endif
 		}
 
-		public static void Log(Object text){
+		public static void Log(object message, UnityEngine.Object context){
 #if TEST
-			Debug.Log (text.ToString());
+			UnityEngine.Debug.Log (DateTime.Now+": "+message, context);
 #endif
 		}
 

@@ -6,12 +6,11 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using SimpleJSON;
-//using Endgame;
-//using Facebook.Unity;
 
+//using Endgame;
 // TODO if anything updated wealth table, pls set MainScene.needReloadFromDB to true
 using Facebook.Unity;
-
+using Utilities;
 
 
 
@@ -76,7 +75,7 @@ public class MainScene : MonoBehaviour {
 
 		if (MainScene.needReloadFromDB) {
 			MainUIHolder = GameObject.Find ("MainUIHolder");
-			Debug.Log (MainUIHolder);
+			Utilities.ShowLog.Log (MainUIHolder);
 			//silverFeatherText  = GameObject.Find ("/Canvas/HeaderHolder/SilverFeatherPanel/SilverFeatherText").GetComponents<Text>() [0];
 			//resourceText = GameObject.Find ("/Canvas/HeaderHolder/ResourcesPanel/ResourcesText").GetComponents<Text> () [0];
 			//starDustText = GameObject.Find ("/Canvas/HeaderHolder/StardustPanel/StardustText").GetComponents<Text> () [0];
@@ -86,11 +85,13 @@ public class MainScene : MonoBehaviour {
 			game = Game.Instance;
 			wsc = WsClient.Instance;
 			MainScene.userId = game.login.id;  // TODO: load userID from DB
+			ShowLog.Log ("User ID: "+MainScene.userId );
+			ShowLog.Log ("User ID from DB: "+game.login.id );
 			if (MainScene.userId != 0){
 				reloadFromDB();
 			}else{
 				MainScene.needReloadFromDB = true;
-				Debug.Log ("User Id: "+ 0);
+//				Utilities.ShowLog.Log ("User Id: "+ 0);
 			}
 			Store.GetStorageInfoFromDB();
 
@@ -108,58 +109,133 @@ public class MainScene : MonoBehaviour {
 		InvokeRepeating("QuitIfConnectionFailed",0,10);
 
 		InvokeRepeating ("OnSchoolFieldSoldierTrainComplete", 2, 4);
+
+		InvokeRepeating ("OnAcademyTrainingComplete", 3, 4);
+	}
+
+
+	void OnAcademyTrainingComplete(){
+		for (int i = 0; i < 40; i++) {
+			if (game.trainings[i].status == 1 && game.trainings[i].etaTimestamp < DateTime.Now){
+				Counselor co = game.counselor.Find (x=>x.id == game.trainings [i].targetId);
+				if (i < 5 || (i >19 && i < 25)){ 
+					co.attributes["attributes"]["IQ"].AsFloat = co.attributes["attributes"]["IQ"].AsFloat + 1;
+				}else if ((i > 4 && i < 10)|| (i > 24 && i < 30)){
+					co.attributes["attributes"]["Leadership"].AsFloat =co.attributes["attributes"]["IQ"].AsFloat + 1;
+				}else if ((i > 9 && i < 15)|| (i > 29 && i < 35)){
+					switch (game.trainings [i].type){
+					case 2001:
+						co.attributes["attributes"]["KnownKnowledge"]["Woodworker"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Woodworker"].AsInt + 1;
+						break;
+					case 2002:
+						co.attributes["attributes"]["KnownKnowledge"]["MetalFabrication"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["MetalFabrication"].AsInt + 1;
+						break;
+					case 2003:
+						co.attributes["attributes"]["KnownKnowledge"]["ChainSteel"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["ChainSteel"].AsInt + 1;
+						break;					
+					case 2004:
+						co.attributes["attributes"]["KnownKnowledge"]["MetalProcessing"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["MetalProcessing"].AsInt + 1;
+						break;					
+					case 2005:
+						co.attributes["attributes"]["KnownKnowledge"]["Crafts"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Crafts"].AsInt + 1;
+						break;					
+					case 2006:
+						co.attributes["attributes"]["KnownKnowledge"]["Geometry"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Geometry"].AsInt + 1;
+						break;					
+					case 2007:
+						co.attributes["attributes"]["KnownKnowledge"]["Physics"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Physics"].AsInt + 1;
+						break;					
+					case 2008:
+						co.attributes["attributes"]["KnownKnowledge"]["Chemistry"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Chemistry"].AsInt + 1;
+						break;					
+					case 2009:
+						co.attributes["attributes"]["KnownKnowledge"]["PeriodicTable"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["PeriodicTable"].AsInt + 1;
+						break;					
+					case 2010:
+						co.attributes["attributes"]["KnownKnowledge"]["Pulley"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Pulley"].AsInt + 1;
+						break;					
+					case 2011:
+						co.attributes["attributes"]["KnownKnowledge"]["Anatomy"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Anatomy"].AsInt + 1;
+						break;					
+					case 2012:
+						co.attributes["attributes"]["KnownKnowledge"]["Catapult"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Catapult"].AsInt + 1;
+						break;					
+					case 2013:
+						co.attributes["attributes"]["KnownKnowledge"]["GunpowderModulation"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["GunpowderModulation"].AsInt + 1;
+						break;					
+					case 2014:
+						co.attributes["attributes"]["KnownKnowledge"]["Psychology"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Psychology"].AsInt + 1;
+						break;
+					}
+				}else if ((i > 14 && i < 20)||(i > 34 && i < 40)){
+					
+				}
+				co.UpdateObject();
+				game.trainings [i].status = 3;
+				game.trainings [i].trainerId = 0;
+				game.trainings [i].targetId = 0;
+				game.trainings [i].type = 0;
+				game.trainings [i].UpdateObject();
+			}                                                                   
+		}
 	}
 
 	void QuitIfConnectionFailed(){
 		if (!wsc.conn.IsAlive) {
-			Debug.Log ("Websocket connection failed.");
+			ShowLog.Log ("Websocket connection failed.");
 			Application.Quit ();
 		}
 	}
 
 	void OnSchoolFieldSoldierTrainComplete(){
 		int NumberOfTypeOfSoldiers = 8;
+//		ShowLog.Log (Game.Instance);
 		game = Game.Instance;
-		for (int i = 0; i < NumberOfTypeOfSoldiers; i++) {
-			if (game.soldiers [i].attributes ["ETATrainingTime"] != null) {
-				if (Convert.ToDateTime (game.soldiers [i].attributes ["ETATrainingTime"]) < DateTime.Now) {
-					game.soldiers [i].attributes ["Hit"].AsFloat = game.soldiers [i].attributes ["TargetHit"].AsFloat;
-					game.soldiers [i].attributes ["Dodge"].AsFloat = game.soldiers [i].attributes ["TargetDodge"].AsFloat;
-					game.soldiers [i].attributes ["Strength"].AsFloat = game.soldiers [i].attributes ["TargetStrength"].AsFloat;
-					game.soldiers [i].attributes ["AttackSpeed"].AsFloat = game.soldiers [i].attributes ["TargetAttackSpeed"].AsFloat;
-					game.soldiers [i].attributes ["Morale"].AsFloat = game.soldiers [i].attributes ["TargetMorale"].AsFloat;
-					game.soldiers [i].attributes ["Wand"].AsFloat = game.soldiers [i].attributes ["TargetWand"].AsFloat;
-					game.soldiers [i].attributes ["PiercingLongWeapon"].AsFloat = game.soldiers [i].attributes ["TargetPiercingLongWeapon"].AsFloat;
-					game.soldiers [i].attributes ["Bows"].AsFloat = game.soldiers [i].attributes ["TargetBows"].AsFloat;
-					game.soldiers [i].attributes ["HighEndBows"].AsFloat = game.soldiers [i].attributes ["TargetHighEndBows"].AsFloat;
-					game.soldiers [i].attributes ["HiddenWeapon"].AsFloat = game.soldiers [i].attributes ["TargetHiddenWeapon"].AsFloat;
-					game.soldiers [i].attributes ["Knife"].AsFloat = game.soldiers [i].attributes ["TargetKnife"].AsFloat;
-					game.soldiers [i].attributes ["HackTypeLongWeapon"].AsFloat = game.soldiers [i].attributes ["TargetHackTypeLongWeapon"].AsFloat;
-					game.soldiers [i].attributes ["Sword"].AsFloat = game.soldiers [i].attributes ["TargetSword"].AsFloat;
-					game.soldiers [i].attributes ["HighEndSword"].AsFloat = game.soldiers [i].attributes ["TargetHighEndSword"].AsFloat;
-					game.soldiers [i].attributes ["SpecialWeapon"].AsFloat = game.soldiers [i].attributes ["TargetSpecialWeapon"].AsFloat;
-					game.soldiers [i].attributes ["Axe"].AsFloat = game.soldiers [i].attributes ["TargetAxe"].AsFloat;
-					game.soldiers [i].attributes ["Hammer"].AsFloat = game.soldiers [i].attributes ["TargetHammer"].AsFloat;
-					game.soldiers [i].attributes.Remove ("ETATrainingTime");
-					game.soldiers [i].attributes.Remove ("TargetHit");
-					game.soldiers [i].attributes.Remove ("TargetDodge");
-					game.soldiers [i].attributes.Remove ("TargetStrength");
-					game.soldiers [i].attributes.Remove ("TargetAttackSpeed");
-					game.soldiers [i].attributes.Remove ("TargetMorale");
-					game.soldiers [i].attributes.Remove ("TargetWand");
-					game.soldiers [i].attributes.Remove ("TargetPiercingLongWeapon");
-					game.soldiers [i].attributes.Remove ("TargetBows");
-					game.soldiers [i].attributes.Remove ("TargetHighEndBows");
-					game.soldiers [i].attributes.Remove ("TargetHiddenWeapon");
-					game.soldiers [i].attributes.Remove ("TargetKnife");
-					game.soldiers [i].attributes.Remove ("TargetHackTypeLongWeapon");
-					game.soldiers [i].attributes.Remove ("TargetSword");
-					game.soldiers [i].attributes.Remove ("TargetHighEndSword");
-					game.soldiers [i].attributes.Remove ("TargetSpecialWeapon");
-					game.soldiers [i].attributes.Remove ("TargetAxe");
-					game.soldiers [i].attributes.Remove ("TargetHammer");
-					game.soldiers [i].quantity = game.soldiers [i].attributes ["trainingSoldiers"].AsInt;
-					game.soldiers [i].UpdateObject ();
+		if (game.soldiers [0] == null) {
+			reloadFromDB ();
+			return;
+		} else {
+			for (int i = 0; i < NumberOfTypeOfSoldiers; i++) {
+				if (game.soldiers [i].attributes ["ETATrainingTime"] != null) {
+					if (Convert.ToDateTime (game.soldiers [i].attributes ["ETATrainingTime"]) < DateTime.Now) {
+						game.soldiers [i].attributes ["Hit"].AsFloat = game.soldiers [i].attributes ["TargetHit"].AsFloat;
+						game.soldiers [i].attributes ["Dodge"].AsFloat = game.soldiers [i].attributes ["TargetDodge"].AsFloat;
+						game.soldiers [i].attributes ["Strength"].AsFloat = game.soldiers [i].attributes ["TargetStrength"].AsFloat;
+						game.soldiers [i].attributes ["AttackSpeed"].AsFloat = game.soldiers [i].attributes ["TargetAttackSpeed"].AsFloat;
+						game.soldiers [i].attributes ["Morale"].AsFloat = game.soldiers [i].attributes ["TargetMorale"].AsFloat;
+						game.soldiers [i].attributes ["Wand"].AsFloat = game.soldiers [i].attributes ["TargetWand"].AsFloat;
+						game.soldiers [i].attributes ["PiercingLongWeapon"].AsFloat = game.soldiers [i].attributes ["TargetPiercingLongWeapon"].AsFloat;
+						game.soldiers [i].attributes ["Bows"].AsFloat = game.soldiers [i].attributes ["TargetBows"].AsFloat;
+						game.soldiers [i].attributes ["HighEndBows"].AsFloat = game.soldiers [i].attributes ["TargetHighEndBows"].AsFloat;
+						game.soldiers [i].attributes ["HiddenWeapon"].AsFloat = game.soldiers [i].attributes ["TargetHiddenWeapon"].AsFloat;
+						game.soldiers [i].attributes ["Knife"].AsFloat = game.soldiers [i].attributes ["TargetKnife"].AsFloat;
+						game.soldiers [i].attributes ["HackTypeLongWeapon"].AsFloat = game.soldiers [i].attributes ["TargetHackTypeLongWeapon"].AsFloat;
+						game.soldiers [i].attributes ["Sword"].AsFloat = game.soldiers [i].attributes ["TargetSword"].AsFloat;
+						game.soldiers [i].attributes ["HighEndSword"].AsFloat = game.soldiers [i].attributes ["TargetHighEndSword"].AsFloat;
+						game.soldiers [i].attributes ["SpecialWeapon"].AsFloat = game.soldiers [i].attributes ["TargetSpecialWeapon"].AsFloat;
+						game.soldiers [i].attributes ["Axe"].AsFloat = game.soldiers [i].attributes ["TargetAxe"].AsFloat;
+						game.soldiers [i].attributes ["Hammer"].AsFloat = game.soldiers [i].attributes ["TargetHammer"].AsFloat;
+						game.soldiers [i].attributes.Remove ("ETATrainingTime");
+						game.soldiers [i].attributes.Remove ("TargetHit");
+						game.soldiers [i].attributes.Remove ("TargetDodge");
+						game.soldiers [i].attributes.Remove ("TargetStrength");
+						game.soldiers [i].attributes.Remove ("TargetAttackSpeed");
+						game.soldiers [i].attributes.Remove ("TargetMorale");
+						game.soldiers [i].attributes.Remove ("TargetWand");
+						game.soldiers [i].attributes.Remove ("TargetPiercingLongWeapon");
+						game.soldiers [i].attributes.Remove ("TargetBows");
+						game.soldiers [i].attributes.Remove ("TargetHighEndBows");
+						game.soldiers [i].attributes.Remove ("TargetHiddenWeapon");
+						game.soldiers [i].attributes.Remove ("TargetKnife");
+						game.soldiers [i].attributes.Remove ("TargetHackTypeLongWeapon");
+						game.soldiers [i].attributes.Remove ("TargetSword");
+						game.soldiers [i].attributes.Remove ("TargetHighEndSword");
+						game.soldiers [i].attributes.Remove ("TargetSpecialWeapon");
+						game.soldiers [i].attributes.Remove ("TargetAxe");
+						game.soldiers [i].attributes.Remove ("TargetHammer");
+						game.soldiers [i].quantity = game.soldiers [i].attributes ["trainingSoldiers"].AsInt;
+						game.soldiers [i].UpdateObject ();
+					}
 				}
 			}
 		}
@@ -172,7 +248,7 @@ public class MainScene : MonoBehaviour {
 	
 	void CheckObject(){
 		if (game == null) {
-			Debug.Log ("Game object null");
+			Utilities.ShowLog.Log ("Game object null");
 			game = Game.Instance;
 			silverFeatherText = GameObject.Find ("SilverFeatherText").GetComponents<Text> () [0];
 			resourceText = GameObject.Find ("ResourcesText").GetComponents<Text> () [0];
@@ -185,19 +261,21 @@ public class MainScene : MonoBehaviour {
 	}
 
 	public void reloadFromDB(){
-		wsc.Send("wealth","GET",new JSONData (MainScene.userId));
-		wsc.Send("counselors","GET",new JSONData (MainScene.userId));
-		wsc.Send("generals","GET",new JSONData (MainScene.userId));
-		wsc.Send ("weapon","GET",new JSONData (MainScene.userId));
-		wsc.Send ("armor","GET",new JSONData (MainScene.userId));
-		wsc.Send ("shield","GET",new JSONData (MainScene.userId));
-		wsc.Send ("soldier","GET",new JSONData (MainScene.userId));
-		wsc.Send ("artisan","GET", new JSONData (MainScene.userId));
-		wsc.Send ("getCheckinInfo","GET", new JSONData (MainScene.userId));
-		wsc.Send ("training","GET", new JSONData (MainScene.userId));
-		MainScene.needReloadFromDB = false;
-		Debug.Log ("Game Wealth from reloadFromDB: " + game.wealth[0].toJSON().ToString());
-		
+		Utilities.ShowLog.Log ("reloadFromDB(); ");
+		if (MainScene.userId > 0) {
+			wsc.Send ("wealth", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("counselors", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("generals", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("weapon", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("armor", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("shield", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("soldier", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("artisan", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("getCheckinInfo", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("training", "GET", new JSONData (MainScene.userId));
+			MainScene.needReloadFromDB = false;
+			Utilities.ShowLog.Log ("Game Wealth from reloadFromDB: " + game.wealth [0].toJSON ().ToString ());
+		}
 	}
 
 	// Update is called once per frame
@@ -227,7 +305,7 @@ public class MainScene : MonoBehaviour {
 		var count = 0;
 		if (MainScene.UserInfo != null) {
 			game.login = new Login ((JSONClass)MainScene.UserInfo);
-//			Debug.Log (game.login.ToString());
+//			Utilities.ShowLog.Log (game.login.ToString());
 			MainScene.UserInfo = null;
 			if (MainScene.userId == 0){
 				MainScene.userId = game.login.id;
@@ -242,8 +320,8 @@ public class MainScene : MonoBehaviour {
 			for (var i = 0; i < count; i++) {
 				game.general.Add (new General (MainScene.GeneralInfo[i]));
 			}
-			//			Debug.Log(MainScene.GeneralInfo);
-			//			Debug.Log(game.general.Count);
+			//			Utilities.ShowLog.Log(MainScene.GeneralInfo);
+			//			Utilities.ShowLog.Log(game.general.Count);
 			MainScene.GeneralInfo = null;
 			MainScene.GeneralLastUpdate = DateTime.Now;
 		}
@@ -253,8 +331,8 @@ public class MainScene : MonoBehaviour {
 			for (var i = 0; i < count; i++) {
 				game.counselor.Add (new Counselor (MainScene.CounselorInfo[i]));
 			}
-			//			Debug.Log(MainScene.CounselorInfo);
-			//			Debug.Log(game.counselor.Count);
+			//			Utilities.ShowLog.Log(MainScene.CounselorInfo);
+			//			Utilities.ShowLog.Log(game.counselor.Count);
 			MainScene.CounselorInfo = null;
 			MainScene.CounselorLastUpdate = DateTime.Now;
 		}
@@ -285,7 +363,7 @@ public class MainScene : MonoBehaviour {
 		if (MainScene.CounselorLastInsertId != 0) {
 			count = game.counselor.Count;
 			game.counselor [count - 1].id = MainScene.CounselorLastInsertId;
-			Debug.Log (game.counselor[count-1].toJSON().ToString());
+			Utilities.ShowLog.Log (game.counselor[count-1].toJSON().ToString());
 			MainScene.CounselorLastInsertId = 0;
 		}
 
@@ -359,7 +437,7 @@ public class MainScene : MonoBehaviour {
 			for (var i = 0; i < count; i++) {
 				game.soldiers.Add (new Soldiers (MainScene.SoldierInfo[i]));
 			}
-//			Debug.Log ("Number of training soldiers of First team: "+game.soldiers[0].attributes["trainingSoldiers"]);
+//			Utilities.ShowLog.Log ("Number of training soldiers of First team: "+game.soldiers[0].attributes["trainingSoldiers"]);
 			MainScene.SoldierInfo = null;
 		}
 		if (MainScene.newUserId != 0) {
@@ -378,13 +456,17 @@ public class MainScene : MonoBehaviour {
 			Sprite avatar = Sprite.Create (result.Texture, new Rect (0, 0, 128, 128), new Vector2 ());
 			MainCharButton.image.sprite = avatar;
 		}else{
-			Debug.Log(result.Error);
+			Utilities.ShowLog.Log(result.Error);
 		}
 	}
 
 	void OnGeneralTrainComplete(){
 //		GeneralTrainPrefab general = null;
 		game = Game.Instance;
+		if (game == null) {
+			reloadFromDB();
+			return;
+		}
 		int point = 0;
 		General g = new General ();
 		Dictionary<int,string> trainDict = new Dictionary<int,string> ();

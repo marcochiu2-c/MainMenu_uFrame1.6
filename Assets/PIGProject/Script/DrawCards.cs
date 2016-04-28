@@ -8,6 +8,8 @@ using System.Collections;
 using System.Collections.Generic;
 using SimpleJSON;
 using WebSocketSharp;
+using System.Linq;
+using Utilities;
 
 
 
@@ -97,7 +99,7 @@ public class DrawCards : MonoBehaviour {
 
 
 //		Debug.Log (counselorList .Find(x => x.id == 1).ToJSON().ToString());
-//		Debug.Log (generalList.Find(x => x.id == 1001).ToJSON().ToString());
+		Debug.Log (generalList.Find(x => x.id == 1067).ToJSON().ToString());
 		if (IsTodayFirstDraw()) {
 			Debug.Log ("This is the first draw.");
 			ResetFreeDrawCount();
@@ -200,12 +202,12 @@ public class DrawCards : MonoBehaviour {
 		}
 
 		json ["action"] = "NEW";
-
 		Debug.Log (json.ToString ());
 		wsc.Send (json.ToString ());
 		calledByDrawTenCards = false;
 		ShowCardPanel (result);
 	}
+
 
 	public void OnButtonDrawTenCards(){
 		if (true) {
@@ -298,10 +300,16 @@ public class DrawCards : MonoBehaviour {
 		ShowCardPanel (num);
 	}
 
+	
+	void ShowNextFreeDrawTime(){
+		ShowLog.Log ("Time of next free draw:"+(Convert.ToDateTime( game.login.attributes["LastDrawTime"])+new TimeSpan(0,5,0)));	
+	}
+
 	bool IsTodayFirstDraw(){
 		if(game.login.attributes["LastDrawTime"]==null){
 			ResetFreeDrawCount();
 		}
+		ShowNextFreeDrawTime();
 		if (Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim (charToTrim)).Date < DateTime.Today) {
 			return true;
 		} else {
@@ -317,9 +325,9 @@ public class DrawCards : MonoBehaviour {
 	}
 
 	public void OnDefaultDrawClicked(){
-		// if not ready for next free draw
-		if (Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim)) + new TimeSpan (0, 5, 0) > DateTime.Now||
-		    Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim))== DateTime.Today
+		// if not ready for next free draw, *Now* should be larger than (Last Draw Time + 5 minutes), if LastDrawTime == 00:00:00, always allow
+		if (Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim)) + new TimeSpan (0, 5, 0) > DateTime.Now//||
+//		    Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim))== DateTime.Today
 		    ) {
 			string txt = "主公，未到免費抽卡之時間，請用400銀羽進行勁抽，或是使用80星塵進行超時抽";
 			NoFreeDraw.transform.GetChild(1).GetComponent<Text>().text = txt;
@@ -335,6 +343,7 @@ public class DrawCards : MonoBehaviour {
 		string msg = "主公，是日尚餘五次免費抽卡之機會，快抽卡！";
 		msg = msg.Replace ("五", game.login.attributes ["FreeDraw"].AsInt.ToString ());
 		CardQAHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
+		ShowNextFreeDrawTime();
 		ShowPanel (CardQAHolder);
 	}
 

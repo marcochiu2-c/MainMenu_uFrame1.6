@@ -235,8 +235,15 @@ public class MenuScreenView : MenuScreenViewBase
 	{
 		base.IsActiveChanged(active);
 		//DisablePanel.gameObject.SetActive(!active);
-		MainScene.reloadFromDB();
-		Debug.Log ("MenuScreen is active or not ?");
+		/*
+		if (active == true)
+		{
+			Debug.Log ("call reloadFromDB from MainScreenView");
+			MainScene.reloadFromDB();
+		}
+			
+		Debug.Log ("MenuScreen is active? " + active);
+		*/
 	}
 
 

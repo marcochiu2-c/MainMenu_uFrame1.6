@@ -47,78 +47,77 @@ public class AcademyTeach : MonoBehaviour {
 
 	void OnTrainingCompleted(){
 		Game game = Game.Instance;
-		if (etaTimestamp < DateTime.Now && trainingObject.status != 3) {
-			if (LeftTimeText.text != "00:00:00"){
-				TeacherPic = null;
-				StudentPic = null;
-				KnowledgeText.text = "";
-				LeftTimeText.text = "00:00:00";
-				int index = game.trainings.FindIndex (x => x.trainerId == trainerId);
-				game.trainings [index].status = 3;
-				game.trainings [index].trainerId = 0;
-				game.trainings [index].targetId = 0;
-				game.trainings [index].type = 0;
-				game.trainings [index].UpdateObject();
-				isDropZoneEnabled = true;
-				int idx = game.trainings.FindIndex(x=> x == trainingObject);
-				if (trainingObject.trainerId == 0){
-					return;
-				}
-				Counselor co = game.counselor.Find (x=>x.id == trainingObject.targetId);
-				if (index < 5){ 
-					co.attributes["attributes"]["IQ"].AsFloat = co.attributes["attributes"]["IQ"].AsFloat + 1;
-				}else if (index > 4 && index < 10){
-					co.attributes["attributes"]["Leadership"].AsFloat =co.attributes["attributes"]["IQ"].AsFloat + 1;
-				}else if (index > 9 && index < 15){
-					switch (trainingObject.type){
-					case 2001:
-						co.attributes["attributes"]["KnownKnowledge"]["Woodworker"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Woodworker"].AsInt + 1;
-						break;
-					case 2002:
-						co.attributes["attributes"]["KnownKnowledge"]["MetalFabrication"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["MetalFabrication"].AsInt + 1;
-					break;
-					case 2003:
-						co.attributes["attributes"]["KnownKnowledge"]["ChainSteel"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["ChainSteel"].AsInt + 1;
-					break;					
-					case 2004:
-						co.attributes["attributes"]["KnownKnowledge"]["MetalProcessing"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["MetalProcessing"].AsInt + 1;
-					break;					
-					case 2005:
-						co.attributes["attributes"]["KnownKnowledge"]["Crafts"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Crafts"].AsInt + 1;
-					break;					
-					case 2006:
-						co.attributes["attributes"]["KnownKnowledge"]["Geometry"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Geometry"].AsInt + 1;
-						break;					
-					case 2007:
-						co.attributes["attributes"]["KnownKnowledge"]["Physics"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Physics"].AsInt + 1;
-						break;					
-					case 2008:
-						co.attributes["attributes"]["KnownKnowledge"]["Chemistry"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Chemistry"].AsInt + 1;
-						break;					
-					case 2009:
-						co.attributes["attributes"]["KnownKnowledge"]["PeriodicTable"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["PeriodicTable"].AsInt + 1;
-						break;					
-					case 2010:
-						co.attributes["attributes"]["KnownKnowledge"]["Pulley"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Pulley"].AsInt + 1;
-						break;					
-					case 2011:
-						co.attributes["attributes"]["KnownKnowledge"]["Anatomy"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Anatomy"].AsInt + 1;
-						break;					
-					case 2012:
-						co.attributes["attributes"]["KnownKnowledge"]["Catapult"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Catapult"].AsInt + 1;
-						break;					
-					case 2013:
-						co.attributes["attributes"]["KnownKnowledge"]["GunpowderModulation"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["GunpowderModulation"].AsInt + 1;
-						break;					
-					case 2014:
-						co.attributes["attributes"]["KnownKnowledge"]["Psychology"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Psychology"].AsInt + 1;
-						break;
-				}
-				}else if (index > 14 && index < 20){
-					
-				}
-				co.UpdateObject();
+		if (etaTimestamp < DateTime.Now && trainingObject.status == 1){
+			if (trainingObject.id==1){
+				Debug.Log ("OnTrainingCompleted()");
+				Debug.Log (etaTimestamp);
 			}
+			TeacherPic = null;
+			StudentPic = null;
+			KnowledgeText.text = "";
+			TeacherImageText.text = "";
+			StudentImageText.text = "";
+			LeftTimeText.text = "00:00:00";
+			int index = game.trainings.FindIndex (x => x.trainerId == trainerId);
+			isDropZoneEnabled = true;
+
+//				if (trainingObject.trainerId == 0){
+//					return;
+//				}
+//				Counselor co = game.counselor.Find (x=>x.id == trainingObject.targetId);
+//				if (index < 5){ 
+//					co.attributes["attributes"]["IQ"].AsFloat = co.attributes["attributes"]["IQ"].AsFloat + 1;
+//				}else if (index > 4 && index < 10){
+//					co.attributes["attributes"]["Leadership"].AsFloat =co.attributes["attributes"]["IQ"].AsFloat + 1;
+//				}else if (index > 9 && index < 15){
+//					switch (trainingObject.type){
+//					case 2001:
+//						co.attributes["attributes"]["KnownKnowledge"]["Woodworker"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Woodworker"].AsInt + 1;
+//						break;
+//					case 2002:
+//						co.attributes["attributes"]["KnownKnowledge"]["MetalFabrication"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["MetalFabrication"].AsInt + 1;
+//					break;
+//					case 2003:
+//						co.attributes["attributes"]["KnownKnowledge"]["ChainSteel"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["ChainSteel"].AsInt + 1;
+//					break;					
+//					case 2004:
+//						co.attributes["attributes"]["KnownKnowledge"]["MetalProcessing"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["MetalProcessing"].AsInt + 1;
+//					break;					
+//					case 2005:
+//						co.attributes["attributes"]["KnownKnowledge"]["Crafts"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Crafts"].AsInt + 1;
+//					break;					
+//					case 2006:
+//						co.attributes["attributes"]["KnownKnowledge"]["Geometry"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Geometry"].AsInt + 1;
+//						break;					
+//					case 2007:
+//						co.attributes["attributes"]["KnownKnowledge"]["Physics"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Physics"].AsInt + 1;
+//						break;					
+//					case 2008:
+//						co.attributes["attributes"]["KnownKnowledge"]["Chemistry"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Chemistry"].AsInt + 1;
+//						break;					
+//					case 2009:
+//						co.attributes["attributes"]["KnownKnowledge"]["PeriodicTable"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["PeriodicTable"].AsInt + 1;
+//						break;					
+//					case 2010:
+//						co.attributes["attributes"]["KnownKnowledge"]["Pulley"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Pulley"].AsInt + 1;
+//						break;					
+//					case 2011:
+//						co.attributes["attributes"]["KnownKnowledge"]["Anatomy"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Anatomy"].AsInt + 1;
+//						break;					
+//					case 2012:
+//						co.attributes["attributes"]["KnownKnowledge"]["Catapult"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Catapult"].AsInt + 1;
+//						break;					
+//					case 2013:
+//						co.attributes["attributes"]["KnownKnowledge"]["GunpowderModulation"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["GunpowderModulation"].AsInt + 1;
+//						break;					
+//					case 2014:
+//						co.attributes["attributes"]["KnownKnowledge"]["Psychology"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Psychology"].AsInt + 1;
+//						break;
+//				}
+//				}else if (index > 14 && index < 20){
+//					
+//				}
+//				co.UpdateObject();
 		} 
 	}
 

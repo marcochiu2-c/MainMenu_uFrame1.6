@@ -11,6 +11,7 @@ using WebSocketSharp;
 using System;
 using System.IO;
 using Facebook.Unity;
+using Utilities;
 
 public class LoginScreen : MonoBehaviour {
 	private Game game;
@@ -64,7 +65,7 @@ public class LoginScreen : MonoBehaviour {
 		//			//			SoomlaProfile.GetContacts(Provider.FACEBOOK);
 		//			//var purchase = StoreInfo.GetPurchasableItemWithProductId("stardust_10")
 		//			//      .PurchaseType as PurchaseWithMarket;
-		//			//Debug.Log("Price of Star dust 10 pack "+ purchase.MarketItem.MarketPriceAndCurrency);
+		//			//ShowLog.Log("Price of Star dust 10 pack "+ purchase.MarketItem.MarketPriceAndCurrency);
 		//			
 		//		};
 		//		SoomlaProfile.Initialize ();
@@ -86,24 +87,24 @@ public class LoginScreen : MonoBehaviour {
 		wsc.Send ("getUserInformationByDeviceId", "GET", new JSONData (deviceId));
 		
 		
-		//		Debug.Log ("NewFBUserPanel Active: " + newFBUserPanel.activeSelf);
+		//		ShowLog.Log ("NewFBUserPanel Active: " + newFBUserPanel.activeSelf);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log ("Game Object: " + game);
-		//		Debug.Log (game.login.snsType);
+		ShowLog.Log ("Game Object: " + game);
+		//		ShowLog.Log (game.login.snsType);
 		if (user!=null){
 			
 			
 			if (user.ToString ()=="{\"success\":false}") {
-				Debug.Log ("user not existed");
+				ShowLog.Log ("user not existed");
 				
 				// TODO else setup account with SNS account  SetupSocialNetworkAccount();
 			}else if (LoginScreen.user != null) {
 				var j = LoginScreen.user["attributes"];
 				game.login = new Login ((JSONClass)LoginScreen.user);
-				//				Debug.Log (user);
+				//				ShowLog.Log (user);
 				LoginScreen.user = null;
 			}
 			
@@ -112,10 +113,12 @@ public class LoginScreen : MonoBehaviour {
 
 		
 		if (game.login.snsType==1){  // if account already login with SNS
-						Debug.Log ("account already login with SNS");
+						ShowLog.Log ("account already login with SNS");
 			if (userWithSns != " "){
-				Debug.Log ("userWithSns: "+userWithSns);
+
+				ShowLog.Log ("userWithSns: "+userWithSns);
 				if (!_CalledFBLogin){
+					ShowLog.Log ("FB Login not called"); 
 					LoginSNS();
 					_CalledFBLogin = true;
 					GotoMainUI ("MainMenuScene");
@@ -129,7 +132,7 @@ public class LoginScreen : MonoBehaviour {
 		//			GotoMainUI("MainMenuScene");
 		//		}
 //		if (userWithSns != null)
-//			Debug.Log (snsURL);
+//			ShowLog.Log (snsURL);
 //		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
 //			//TODO show Facebook register reminder first
 //
@@ -137,18 +140,18 @@ public class LoginScreen : MonoBehaviour {
 //		}
 
 		if (userWithSns != null)
-			Debug.Log (snsURL);
+			ShowLog.Log (snsURL);
 		if (newFBUserPanelActivated) {  // For device not link with SNS account and user choose to link with SNS
 			
 			if(game.login.id!=0){
 				if(userWithSns!=null && snsURL!=""){ 
-					Debug.Log (userWithSns.ToString ());
+					ShowLog.Log (userWithSns.ToString ());
 					if (userWithSns.ToString() == "{\"success\":false}") {
-						Debug.Log ("No SNS account found in DB");
+						ShowLog.Log ("No SNS account found in DB");
 						SetupSocialNetworkAccount();
 						GotoMainUI ("MainMenuScene");
 					} else {
-						Debug.Log ("SNS account found.");
+						ShowLog.Log ("SNS account found.");
 						GotoMainUI ("MainMenuScene");
 					}
 					MainScene.UserInfo = userWithSns;
@@ -185,7 +188,7 @@ public class LoginScreen : MonoBehaviour {
 	
 	public void SetupSocialNetworkAccount(){
 		if (NewUserSNSAccountName.text.Trim () == "") {
-			Debug.Log ("User id: "+game.login.id);
+			ShowLog.Log ("User id: "+game.login.id);
 			if (game.login.id==0){
 				return;
 			}
@@ -212,7 +215,7 @@ public class LoginScreen : MonoBehaviour {
 			json.Add ("action", new JSONData("SET"));
 			json.Add ("table", new JSONData("sns"));
 			json.Add ("data", data);
-			Debug.Log (json.ToString ());
+			ShowLog.Log (json.ToString ());
 			wsc.conn.Send (json.ToString ());
 		}
 	}
@@ -236,12 +239,13 @@ public class LoginScreen : MonoBehaviour {
 		newFBUserPanel.SetActive (false);
 		EnterGameButton.gameObject.SetActive (false);
 		EnterGameFBButton.gameObject.SetActive (false);
-		Debug.Log ("User ID: "+game.login.id);
+		ShowLog.Log ("User ID: "+game.login.id);
 		StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
 	}
 
 	IEnumerator LoadLevelWithBar (string level){
-		async = Application.LoadLevelAsync("MainMenuScene");
+//		async = Application.LoadLevelAsync("MainMenuScene");
+		async = Application.LoadLevelAsync(4);
 		while(!async.isDone){
 			 slider.value=async.progress;
 			 yield return null;
@@ -249,7 +253,7 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	private bool LoginSNS(){
-		Debug.Log ("Logging in with SNS");
+		ShowLog.Log ("Logging in with SNS");
 		if (LoginScreen.isSNSInit){
 			var perms = new List<string>(){"public_profile", "email", "user_friends","user_photos"};
 			FB.LogInWithReadPermissions(perms, AuthCallback);
@@ -271,17 +275,11 @@ public class LoginScreen : MonoBehaviour {
 	
 	public void CheckUserIn(){
 		wsc = WsClient.Instance;
-		Debug.Log (wsc);
+		ShowLog.Log (wsc);
 		wsc.Send ("login", "SET", new JSONData (game.login.id));
 	}
 	
 	public void CheckUserSNSInDB(){
-		//		Debug.Log ("User not linked with SNS");
-		//		JSONNode json = new JSONClass ();
-		//		json ["data"] = snsURL;
-		//		json ["action"] = "GET";
-		//		json ["table"] = "getUserInformationBySnsUrl";
-		//		wsc.conn.Send (json.ToString ());
 		wsc.Send ("getUserInformationBySnsUrl", "GET", snsURL);
 		//		sentDBSNSCheckRequest = true;
 	}
@@ -295,7 +293,7 @@ public class LoginScreen : MonoBehaviour {
 			LoginScreen.isSNSInit = true;
 			// ...
 		} else {
-			Debug.Log("Failed to Initialize the Facebook SDK");
+			ShowLog.Log("Failed to Initialize the Facebook SDK");
 		}
 	}
 	
@@ -311,30 +309,32 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	private void AuthCallback (ILoginResult result) {
-		Debug.Log (result);
+		ShowLog.Log (result);
 		if (FB.IsLoggedIn) {
 			// AccessToken class will have session details
 			var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
 			// Print current access token's User ID
-			Debug.Log(aToken.UserId);
+			ShowLog.Log(aToken.UserId);
 			snsURL = aToken.UserId;
 			// Print current access token's granted permissions
 #if UNITY_EDITOR
 			foreach (string perm in aToken.Permissions) {
-				Debug.Log(perm);
+				ShowLog.Log(perm);
 			}
 #endif
 			if (game.login.snsType==0){
 				SetupSocialNetworkAccount();
 			}
 			CheckUserIn();
+			_CalledFBLogin = true;
+			ShowLog.Log ("FB Login OK ");
 			GotoMainUI("MainMenuScene");
 			if (game.login.id!=0){
 				isSNSLoggedIn=true;
 				CheckUserSNSInDB();
 			}
 		} else {
-			Debug.Log("User cancelled login");
+			ShowLog.Log("User cancelled login");
 			userCancelledLogin = true;
 			newFBUserPanel.SetActive(false);
 		}

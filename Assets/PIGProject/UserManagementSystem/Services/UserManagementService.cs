@@ -34,17 +34,19 @@ public class UserManagementService : UserManagementServiceBase
             LocalUser.AuthorizationState = AuthorizationState.Authorized;
         }
     }
-
+	
 	public void loadDB ()
 	{
-		MainScene = GameObject.Find ("MainUIHolder").GetComponent<MainScene> () ;
-		Debug.Log (MainScene == null ? "MainScene  is null" : MainScene.userId.ToString());
 		
+		if(GameObject.Find ("MainUIHolder").GetComponent<MainScene> () != null)
+			MainScene = GameObject.Find ("MainUIHolder").GetComponent<MainScene> ();
+				
 		WsClient wsc = WsClient.Instance;
 		Debug.Log (wsc == null ? "ws  is null" : wsc.ToString());
 		
 		MainScene.needReloadFromDB = true;
 		MainScene.CallMainScene();
 	}
+	
 
 }

@@ -420,7 +420,9 @@ public class Counselor {
 		return j;
 	}
 
-
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
 
 	/// <summary>
 	/// Update the Object to database</summary>
@@ -475,6 +477,10 @@ public class General {
 		return j;
 	}
 
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
+	
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("generals", "SET", toJSON());
@@ -495,7 +501,6 @@ public class Soldiers{
 	public Soldiers(JSONNode j){
 		id = j ["soldier_id"].AsInt;
 		attributes = (JSONClass)j ["soldier_json"];
-		Debug.Log (attributes);
 		type = j ["type"].AsInt;
 		generalId = j ["general_id"].AsInt;
 		quantity = j ["quantity"].AsInt;
@@ -513,6 +518,10 @@ public class Soldiers{
 		return j;
 	}
 
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
+	
 	public void SetQuantity (int q){
 		quantity = q;
 		UpdateObject ();
@@ -559,6 +568,10 @@ public class Weapon {
 		return j;
 	}
 
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
+	
 	public void SetQuantity (int q){
 		quantity = q;
 		UpdateObject ();
@@ -606,6 +619,10 @@ public class Armor {
 		j.Add ("userId", new JSONData(game.login.id));
 		return j;
 	}
+
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
 	
 	public void SetQuantity (int q){
 		quantity = q;
@@ -651,6 +668,10 @@ public class Shield {
 		j.Add ("quantity", new JSONData (quantity));
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
+	}
+
+	public string ToString(){
+		return toJSON ().ToString ();
 	}
 	
 	public void SetQuantity (int q){
@@ -711,6 +732,10 @@ public class Trainings {
 		return j;
 	}
 
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
+	
 	public void Completed(){
 		type = 0;
 		trainerId = 0;
@@ -743,6 +768,10 @@ public class Buildings {
 		return j;
 	}
 
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
+	
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("buildings", "SET", toJSON());
@@ -789,6 +818,10 @@ public class Warfare {
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
+
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
 }
 
 [Serializable]
@@ -808,6 +841,10 @@ public class Message {
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
 	}
+
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
 }
 
 [Serializable]
@@ -824,6 +861,10 @@ public class PrivateMessage : Message{
 		j.Add ("isTo", new JSONData (isTo));
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;
+	}
+
+	public string ToString(){
+		return toJSON ().ToString ();
 	}
 }
 
@@ -863,6 +904,10 @@ public class Storage{
 		return j;
 	}
 
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
+	
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("storage", "SET", toJSON());
@@ -922,6 +967,10 @@ public class CheckInStatus{
 		return j;
 	}
 
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
+	
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("checkin", "SET", toJSON());
@@ -970,6 +1019,10 @@ public class Artisans {
 		return j;
 	}
 
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
+	
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("artisan", "SET", toJSON());

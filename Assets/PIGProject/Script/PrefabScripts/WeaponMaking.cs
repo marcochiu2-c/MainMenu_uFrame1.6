@@ -53,7 +53,7 @@ public class WeaponMaking : MonoBehaviour {
 	}
 
 	void SetDetailText(){
-		ProductDict p = new ProductDict ();
+		ProductDict p = ProductDict.Instance;
 		string msg1 = "裝備詳細\n可下拉\n";
 		string msg2 = "\n\n對\n主公\n返回最頂吧";
 		string details = "";
@@ -168,10 +168,10 @@ public class WeaponMaking : MonoBehaviour {
 	}
 		
 	public void UpdateRemainingTime(){
-		ProductDict p = new ProductDict ();
+		ProductDict p = ProductDict.Instance;
 		if (eta > DateTime.Now) {
 			ts = eta.Subtract (DateTime.Now);
-			TimeRequire.transform.GetChild(0).GetComponent<Text>().text = string.Format( "{0:D2}:{1:D2}:{2:D2}", ts.Hours, ts.Minutes, ts.Seconds);
+			TimeRequire.transform.GetChild(0).GetComponent<Text>().text = Utilities.TimeUpdate.Time(ts);
 			transform.GetComponent<Image>().color = Color.green;
 		} else {
 			TimeRequire.transform.GetChild(0).GetComponent<Text>().text = p.products[id].attributes["ProductionTime"]+"s";
@@ -180,7 +180,7 @@ public class WeaponMaking : MonoBehaviour {
 	}
 
 	public void UpdateButtonName(){
-		ProductDict p = new ProductDict ();
+		ProductDict p = ProductDict.Instance;
 		if (eta > DateTime.Now) {
 			ts = eta.Subtract (DateTime.Now);
 			Metalsmith.transform.GetChild(0).GetComponent<Text>().text = "取消";
