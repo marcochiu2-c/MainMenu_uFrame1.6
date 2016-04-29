@@ -29,7 +29,7 @@ public class LoginScreen : MonoBehaviour {
 	private bool newFBUserPanelActivated=false;
 	public Button EnterGameButton;
 	public Button EnterGameFBButton;
-	//	public bool sentDBSNSCheckRequest = false;
+	//    public bool sentDBSNSCheckRequest = false;
 	bool userCancelledLogin = false;
 	
 	string debugText = "";
@@ -46,33 +46,37 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	private void CallLoginScreen(){
-		//		ProfileEvents.OnSoomlaProfileInitialized += () => {
-		//			debugText += "SoomlaProfile Initialized !"+"\n";
-		//			Soomla.SoomlaUtils.LogDebug("LoginScreen", "SoomlaProfile Initialized !");
-		//			LoginScreen.isSoomlaInit = true;
-		//			SoomlaProfile.Login(
-		//				Provider.FACEBOOK,                        // Social Provider
-		//				null
-		//				);
-		//		};
-		//		
-		//		ProfileEvents.OnLoginFinished += (UserProfile UserProfile, bool autoLogin, string payload) => {
-		//			//SoomlaProfile.MultiShare("Ha Ha Ha",
-		//			//                         "~/Documents/device-2015-07-17-104246.png");
-		//			Soomla.SoomlaUtils.LogDebug("LogInFinish","User: "+UserProfile.ProfileId);
-		//			snsURL = UserProfile.ProfileId;
-		//			LoginScreen.isSoomlaLoggedIn = true;
-		//			//			SoomlaProfile.GetContacts(Provider.FACEBOOK);
-		//			//var purchase = StoreInfo.GetPurchasableItemWithProductId("stardust_10")
-		//			//      .PurchaseType as PurchaseWithMarket;
-		//			//ShowLog.Log("Price of Star dust 10 pack "+ purchase.MarketItem.MarketPriceAndCurrency);
-		//			
-		//		};
-		//		SoomlaProfile.Initialize ();
+		//        ProfileEvents.OnSoomlaProfileInitialized += () => {
+		//            debugText += "SoomlaProfile Initialized !"+"\n";
+		//            Soomla.SoomlaUtils.LogDebug("LoginScreen", "SoomlaProfile Initialized !");
+		//            LoginScreen.isSoomlaInit = true;
+		//            SoomlaProfile.Login(
+		//                Provider.FACEBOOK,                        // Social Provider
+		//                null
+		//                );
+		//        };
+		//        
+		//        ProfileEvents.OnLoginFinished += (UserProfile UserProfile, bool autoLogin, string payload) => {
+		//            //SoomlaProfile.MultiShare("Ha Ha Ha",
+		//            //                         "~/Documents/device-2015-07-17-104246.png");
+		//            Soomla.SoomlaUtils.LogDebug("LogInFinish","User: "+UserProfile.ProfileId);
+		//            snsURL = UserProfile.ProfileId;
+		//            LoginScreen.isSoomlaLoggedIn = true;
+		//            //            SoomlaProfile.GetContacts(Provider.FACEBOOK);
+		//            //var purchase = StoreInfo.GetPurchasableItemWithProductId("stardust_10")
+		//            //      .PurchaseType as PurchaseWithMarket;
+		//            //ShowLog.Log("Price of Star dust 10 pack "+ purchase.MarketItem.MarketPriceAndCurrency);
+		//            
+		//        };
+		//        SoomlaProfile.Initialize ();
 		
 		if (!FB.IsInitialized) {
 			// Initialize the Facebook SDK
+			#if UNITY_EDITOR
+			FB.Init ("104851296515749",true,true,true,false,true,null,OnHideUnity,InitCallback);
+			#else
 			FB.Init(InitCallback, OnHideUnity);
+			#endif
 		} else {
 			// Already initialized, signal an app activation App Event
 			FB.ActivateApp();
@@ -87,13 +91,13 @@ public class LoginScreen : MonoBehaviour {
 		wsc.Send ("getUserInformationByDeviceId", "GET", new JSONData (deviceId));
 		
 		
-		//		ShowLog.Log ("NewFBUserPanel Active: " + newFBUserPanel.activeSelf);
+		//        ShowLog.Log ("NewFBUserPanel Active: " + newFBUserPanel.activeSelf);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		ShowLog.Log ("Game Object: " + game);
-		//		ShowLog.Log (game.login.snsType);
+		//        ShowLog.Log (game.login.snsType);
 		if (user!=null){
 			
 			
@@ -104,18 +108,18 @@ public class LoginScreen : MonoBehaviour {
 			}else if (LoginScreen.user != null) {
 				var j = LoginScreen.user["attributes"];
 				game.login = new Login ((JSONClass)LoginScreen.user);
-				//				ShowLog.Log (user);
+				//                ShowLog.Log (user);
 				LoginScreen.user = null;
 			}
 			
 			user =null;
 		}
-
+		
 		
 		if (game.login.snsType==1){  // if account already login with SNS
-						ShowLog.Log ("account already login with SNS");
+			ShowLog.Log ("account already login with SNS");
 			if (userWithSns != " "){
-
+				
 				ShowLog.Log ("userWithSns: "+userWithSns);
 				if (!_CalledFBLogin){
 					ShowLog.Log ("FB Login not called"); 
@@ -124,21 +128,21 @@ public class LoginScreen : MonoBehaviour {
 					GotoMainUI ("MainMenuScene");
 				}
 			}
-		}	
-
-		//		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
-		//			//TODO show Facebook register reminder first
+		}    
+		
+		//        }else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
+		//            //TODO show Facebook register reminder first
 		//
-		//			GotoMainUI("MainMenuScene");
-		//		}
-//		if (userWithSns != null)
-//			ShowLog.Log (snsURL);
-//		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
-//			//TODO show Facebook register reminder first
-//
-		//			GotoMainUI("MainMenuScene");
-//		}
-
+		//            GotoMainUI("MainMenuScene");
+		//        }
+		//        if (userWithSns != null)
+		//            ShowLog.Log (snsURL);
+		//        }else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
+		//            //TODO show Facebook register reminder first
+		//
+		//            GotoMainUI("MainMenuScene");
+		//        }
+		
 		if (userWithSns != null)
 			ShowLog.Log (snsURL);
 		if (newFBUserPanelActivated) {  // For device not link with SNS account and user choose to link with SNS
@@ -230,10 +234,10 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	private void GotoMainUI(string level){
-		//		ClickToLoadAsync cla = new ClickToLoadAsync();
-		//		cla.loadingBar = slider;
-		//		cla.loadingImage = loadImage;
-		//		cla.ClickAsync(5);
+		//        ClickToLoadAsync cla = new ClickToLoadAsync();
+		//        cla.loadingBar = slider;
+		//        cla.loadingImage = loadImage;
+		//        cla.ClickAsync(5);
 		loadingImageScreen.SetActive (true);
 		newUserPanel.SetActive (false);
 		newFBUserPanel.SetActive (false);
@@ -242,13 +246,13 @@ public class LoginScreen : MonoBehaviour {
 		ShowLog.Log ("User ID: "+game.login.id);
 		StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
 	}
-
+	
 	IEnumerator LoadLevelWithBar (string level){
-//		async = Application.LoadLevelAsync("MainMenuScene");
-		async = Application.LoadLevelAsync(4);
+		//        async = Application.LoadLevelAsync("MainMenuScene");
+		async = Application.LoadLevelAsync(3);
 		while(!async.isDone){
-			 slider.value=async.progress;
-			 yield return null;
+			slider.value=async.progress;
+			yield return null;
 		}
 	}
 	
@@ -258,10 +262,10 @@ public class LoginScreen : MonoBehaviour {
 			var perms = new List<string>(){"public_profile", "email", "user_friends","user_photos"};
 			FB.LogInWithReadPermissions(perms, AuthCallback);
 			
-			//			SoomlaProfile.Login(
-			//				Provider.FACEBOOK,                        // Social Provider
-			//				null
-			//				);
+			//            SoomlaProfile.Login(
+			//                Provider.FACEBOOK,                        // Social Provider
+			//                null
+			//                );
 		}
 		return LoginScreen.isSNSInit;
 	}
@@ -281,7 +285,7 @@ public class LoginScreen : MonoBehaviour {
 	
 	public void CheckUserSNSInDB(){
 		wsc.Send ("getUserInformationBySnsUrl", "GET", snsURL);
-		//		sentDBSNSCheckRequest = true;
+		//        sentDBSNSCheckRequest = true;
 	}
 	
 	private void InitCallback ()
@@ -317,11 +321,11 @@ public class LoginScreen : MonoBehaviour {
 			ShowLog.Log(aToken.UserId);
 			snsURL = aToken.UserId;
 			// Print current access token's granted permissions
-#if UNITY_EDITOR
+			#if UNITY_EDITOR
 			foreach (string perm in aToken.Permissions) {
 				ShowLog.Log(perm);
 			}
-#endif
+			#endif
 			if (game.login.snsType==0){
 				SetupSocialNetworkAccount();
 			}

@@ -261,6 +261,7 @@ public class MainScene : MonoBehaviour {
 	}
 
 	public void reloadFromDB(){
+		Utilities.ShowLog.Log ("User ID: "+Game.Instance.login.id);
 		Utilities.ShowLog.Log ("reloadFromDB(); ");
 		if (MainScene.userId > 0) {
 			wsc.Send ("wealth", "GET", new JSONData (MainScene.userId));
@@ -276,6 +277,7 @@ public class MainScene : MonoBehaviour {
 			MainScene.needReloadFromDB = false;
 			Utilities.ShowLog.Log ("Game Wealth from reloadFromDB: " + game.wealth [0].toJSON ().ToString ());
 		}
+
 	}
 
 	// Update is called once per frame

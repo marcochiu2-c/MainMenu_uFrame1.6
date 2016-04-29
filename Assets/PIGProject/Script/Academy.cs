@@ -9,6 +9,7 @@ using SimpleJSON;
 using UnityEngine.EventSystems;
 using System;
 using System.Linq;
+using Utilities;
 
 public enum ActivePopupEnum{
 	none,IQPopup,CommandedPopup,KnowledgePopup,FightingPopup
@@ -112,7 +113,7 @@ public class Academy : MonoBehaviour
 		#endregion
 
 		SetupStudentPrefabList ();
-		SetupAcademyTaughtPanel ();
+//		SetupAcademyTaughtPanel ();
 //		SetTeachItems (tList);
 
 
@@ -338,6 +339,8 @@ public class Academy : MonoBehaviour
 		Academy.activePopup = activePopupName[btn.name];
 		Debug.Log (Academy.activePopup);
 		List<Trainings> tList = game.trainings;
+		SetupAcademyTaughtPanel ();
+		ShowLog.Log ("Trying Setup Teach Prefabs");
 		SetTeachItems (tList);
 		SetupStudentPrefabList();
 	}
@@ -396,6 +399,10 @@ public class Academy : MonoBehaviour
 			GameObject.DestroyImmediate( AcademyTeach.KnowledgeTeach[i].gameObject);
 			GameObject.DestroyImmediate( AcademyTeach.FightingTeach[i].gameObject);
 		}
+		AcademyTeach.IQTeach = new List<AcademyTeach>();
+		AcademyTeach.CommandedTeach = new List<AcademyTeach>();
+		AcademyTeach.KnowledgeTeach = new List<AcademyTeach>();
+		AcademyTeach.FightingTeach = new List<AcademyTeach>();
 	}
 
 	void CloseAllPanel(){
@@ -429,10 +436,7 @@ public class Academy : MonoBehaviour
 			DestroyPrefabObject();
 			AcademyStudent.Students = new List<AcademyStudent>();
 			AcademySelfLearn.Students = new List<AcademySelfLearn>();
-			AcademyTeach.IQTeach = new List<AcademyTeach>();
-			AcademyTeach.CommandedTeach = new List<AcademyTeach>();
-			AcademyTeach.KnowledgeTeach = new List<AcademyTeach>();
-			AcademyTeach.FightingTeach = new List<AcademyTeach>();
+
 			Academy.activePopup = ActivePopupEnum.none;
 			CloseAllPanel();
 			AcademyHolder.SetActive(false);

@@ -130,6 +130,7 @@ public class AcademyTeach : MonoBehaviour {
 
 	public static void showPanelItems(List<AcademyTeach> items){
 		var count = items.Count;
+		Utilities.ShowLog.Log ("Count of the Prefabs: " + count);
 		for (var i =0; i < count; i++) {
 			items[i].transform.parent = AcademyTeach.commonPanel;
 			RectTransform rTransform = items[i].GetComponent<RectTransform>();

@@ -67,6 +67,7 @@ public class Shop : MonoBehaviour {
 	}
 	
 	public void CallShop(){
+		Utilities.ShowLog.Log ("CallShop()");
 		if (_isInitialized) {
 			return;
 		}
@@ -131,7 +132,7 @@ public class Shop : MonoBehaviour {
 		
 		// Transmit options and start the service
 		OpenIAB.init(options);
-		Invoke ("CheckInventory", 5); // check inventory after IAB initialized.
+//		Invoke ("CheckInventory", 5); // check inventory after IAB initialized.
 	}
 	
 	// Update is called once per frame
@@ -168,6 +169,7 @@ public class Shop : MonoBehaviour {
 	private void billingSupportedEvent()
 	{
 		_isInitialized = true;
+		CheckInventory ();
 		Debug.Log("billingSupportedEvent");
 	}
 	private void billingNotSupportedEvent(string error)
@@ -196,7 +198,7 @@ public class Shop : MonoBehaviour {
 				}
 			}
 		}
-		
+
 	}
 	private void queryInventoryFailedEvent(string error)
 	{

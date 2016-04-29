@@ -27,6 +27,7 @@ public class SchoolField : MonoBehaviour {
 	public GameObject TrainingEquConfirmHolder;
 	public GameObject TrainingQAHolder;
 	public GameObject CannotTrainSoldierPopup;
+	public GameObject ConfirmSpeedUpHolder;
 	public Text TrainingQText;
 
 	public static GameObject staticArmyQAHolder;
@@ -90,7 +91,7 @@ public class SchoolField : MonoBehaviour {
 		SoldierSummary = DollPanel.transform.GetChild (2).GetComponent<Text>();
 		SetDataPanel ();
 		SetAdjustSoldierValues ();
-		p = new ProductDict ();
+		p = ProductDict.Instance;
 		InvokeRepeating ("UpdateSoldierSummaryPanel", 0, 1);
 	}
 
@@ -182,6 +183,15 @@ public class SchoolField : MonoBehaviour {
 		});
 		TrainingQAHolder.transform.GetChild (2).GetChild (1).GetComponent<Button> ().onClick.AddListener (() => {
 			CancelConfirmTraining();
+		});
+		Utilities.Panel.GetConfirmButton (AssignNSPopup).onClick.AddListener (() => {
+			HidePanel(AssignNSPopup);
+		});
+		Utilities.Panel.GetConfirmButton (ConfirmSpeedUpHolder).onClick.AddListener (() => {
+			OnSpeedUpProductionConfirmed();
+		});
+		Utilities.Panel.GetCancelButton (ConfirmSpeedUpHolder).onClick.AddListener (() => {
+			HidePanel(ConfirmSpeedUpHolder);
 		});
 
 	}
@@ -304,12 +314,12 @@ public class SchoolField : MonoBehaviour {
 
 	public void ShowNewWeaponPanel(){
 		DestroySchoolFieldWeaponPanel(ArmyListHolder.transform);
-//		ProductDict p = new ProductDict ();
+//		ProductDict p = ProductDict.Instance;
 		var count = game.weapon.Count;
 		Transform panel = ArmyListHolder.transform.GetChild (1).GetChild (1).GetChild (0);
 		for (int i = 0; i < count; i++) {
 			SchoolFieldWeapon obj = Instantiate (Resources.Load ("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon> ();
-			obj.transform.localScale = new Vector3 (0.6f, 0.6f, 0.6f);
+			obj.transform.localScale = new Vector3 (0.4f, 0.4f);
 			obj.SetSchoolFieldWeapon (SchoolField.AssigningSoldier,
 								game.weapon [i].type,
 								p.products [game.weapon [i].type].name, 
@@ -324,12 +334,12 @@ public class SchoolField : MonoBehaviour {
 
 	public void ShowNewArmorPanel(){
 		DestroySchoolFieldWeaponPanel(ArmorListHolder.transform);
-//		ProductDict p = new ProductDict ();
+//		ProductDict p = ProductDict.Instance;
 		var count = game.armor.Count;
 		Transform panel = ArmorListHolder.transform.GetChild (1).GetChild (1).GetChild (0);
 		for (int i = 0; i < count; i++) {
 			SchoolFieldWeapon obj = Instantiate (Resources.Load ("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon> ();
-			obj.transform.localScale = new Vector3 (0.51f, 0.51f, 0.51f);
+			obj.transform.localScale = new Vector3 (0.4f, 0.4f);
 			obj.SetSchoolFieldWeapon (SchoolField.AssigningSoldier,
 									  game.armor [i].type,
 			                          p.products [game.armor [i].type].name, 
@@ -345,12 +355,12 @@ public class SchoolField : MonoBehaviour {
 
 	public void ShowNewShieldPanel(){
 		DestroySchoolFieldWeaponPanel(ShieldListHolder.transform);
-//		ProductDict p = new ProductDict ();
+//		ProductDict p = ProductDict.Instance;
 		var count = game.shield.Count;
 		Transform panel = ShieldListHolder.transform.GetChild (1).GetChild (1).GetChild (0);
 		for (int i = 0; i < count; i++) {
 			SchoolFieldWeapon obj = Instantiate (Resources.Load ("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon> ();
-			obj.transform.localScale = new Vector3 (0.51f, 0.51f, 0.51f);
+			obj.transform.localScale = new Vector3 (0.4f, 0.4f);
 			obj.SetSchoolFieldWeapon (SchoolField.AssigningSoldier,
 			                          game.shield [i].type,
 			                          p.products [game.shield [i].type].name, 
@@ -445,7 +455,7 @@ public class SchoolField : MonoBehaviour {
 		panelDict.Add ("shield", SchoolField.staticShieldQAHolder);
 		Game game = Game.Instance;
 		string qText = "";
-//		ProductDict p = new ProductDict ();
+//		ProductDict p = ProductDict.Instance;
 		staticShowPanel(panelDict [armedCategory]);
 
 		if (armedCategory == "weapon"){
@@ -509,7 +519,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	void OnGoArtisanButtonClicked(){
-//		ProductDict p = new ProductDict ();
+//		ProductDict p = ProductDict.Instance;
 		HidePanel( TrainingEquHolder);
 //		ShowPanel( TrainingEquConfirmHolder);
 		int count = 0;
@@ -570,6 +580,7 @@ public class SchoolField : MonoBehaviour {
 			msg = msg.Replace ("%TM%", time.Minutes + ":" + time.Seconds);
 		}
 		TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
+		ShowPanel( TrainingEquConfirmHolder);
 	}
 
 	void OnAddEquipmentConfirmed(){
@@ -616,14 +627,14 @@ public class SchoolField : MonoBehaviour {
 		game.artisans [type - 1].etaTimestamp = AssigningTime;
 		game.artisans [type - 1].quantity = AssigningQuantity;
 		game.artisans [type - 1].status = 4;
-		game.artisans [type - 1].UpdateObject ();
+
 		TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text = "";
 
-
 		// TODO add the ETA time to soldiers if new one is end later
-					game.soldiers [AssigningSoldier - 1].attributes.Add("eta_time",new JSONData(0)); // TODO change 0 to .NET DateTime in string format
+		game.soldiers [AssigningSoldier - 1].attributes.Add("eta_time",new JSONData(AssigningTime.ToString()));
+		Utilities.ShowLog.Log (game.soldiers [AssigningSoldier - 1].attributes ["eta_time"]);
 		if (game.soldiers [AssigningSoldier - 1].attributes ["eta_time"] != null) {
-			if (DateTime.Parse(game.soldiers [AssigningSoldier - 1].attributes ["eta_time"]) > DateTime.Now){
+			if (Convert.ToDateTime(game.soldiers [AssigningSoldier - 1].attributes ["eta_time"]) > DateTime.Now){
 				if (DateTime.Parse(game.soldiers [AssigningSoldier - 1].attributes ["eta_time"]) < new DateTime()/* TODO new ETA  */){
 					game.soldiers [AssigningSoldier - 1].attributes.Add("eta_time",new JSONData(0)); // TODO change 0 to .NET DateTime in string format
 				}
@@ -631,6 +642,7 @@ public class SchoolField : MonoBehaviour {
 		} else {
 			game.soldiers [AssigningSoldier - 1].attributes.Add("eta_time",new JSONData(0)); // TODO change 0 to .NET DateTime in string format
 		}
+		game.artisans [type - 1].UpdateObject ();
 		HidePanel(TrainingEquConfirmHolder);
 		if (AssigningStarDust>0 ) {
 			game.wealth [1].Deduct (AssigningStarDust);
@@ -644,9 +656,46 @@ public class SchoolField : MonoBehaviour {
 		AssigningStarDust = 0;
 	}
 	void OnSpeedUpProductionClicked(){
-//TODO show shop
+		HidePanel (TrainingEquConfirmHolder);
+		TimeSpan ts = AssigningTime - DateTime.Now;
+		var msg = "要用%sd%時之星塵加速製作嗎？";
+		if (AssigningStarDust == 0) {
+			AssigningStarDust = Utilities.ExchangeRate.GetStardustFromResource(AssigningResources)+(int)(ts.TotalHours * 10);
+		} else {
+			AssigningStarDust += (int)(ts.TotalHours * 10);
+		}
+		if (AssigningStarDust > game.wealth [1].value) {
+			Debug.Log( "時之星塵: "+AssigningStarDust);
+			msg = "時之星塵不足，請先購買";
+			ConfirmSpeedUpHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
+			ShowPanel (ConfirmSpeedUpHolder);
+		}
+		Debug.Log( "時之星塵: "+AssigningStarDust);
+		msg = msg.Replace ("%sd%", AssigningStarDust.ToString ());
+		ConfirmSpeedUpHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
+		ShowPanel (ConfirmSpeedUpHolder);
+	}
 
-
+	void OnSpeedUpProductionConfirmed(){
+		int index = 0;
+		HidePanel (ConfirmSpeedUpHolder);
+		if (AssigningStarDust > game.wealth [1].value) {
+			return;
+		}
+		game.wealth[1].Deduct(AssigningStarDust);
+		if (AssigningWeaponId > 0) {
+			index = game.weapon.FindIndex (x => x.type == AssigningWeaponId);
+			game.weapon [index].quantity += AssigningQuantity;
+			game.weapon [index].UpdateObject ();
+		} else if (AssigningArmorId > 0) {
+			index = game.armor.FindIndex (x => x.type == AssigningArmorId);
+			game.armor [index].quantity += AssigningQuantity;
+			game.armor [index].UpdateObject ();
+		} else if (AssigningShieldId > 0) {
+			index = game.shield.FindIndex(x => x.type == AssigningShieldId);
+			game.shield[index].quantity += AssigningQuantity;
+			game.shield[index].UpdateObject();
+		}
 	}
 
 	public static void ResetAssigningValue(){
