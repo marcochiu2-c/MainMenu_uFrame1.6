@@ -25,7 +25,15 @@ public class SelfStudy : MonoBehaviour {
 	public static Sprite defaultSprite;
 	// Use this for initialization
 	void Start () {
+
+	}
+
+	void OnEnable(){
 		InvokeRepeating ("UpdateImageText", 0, 1);
+	}
+	
+	void OnDisable(){
+		CancelInvoke ();
 	}
 	
 	// Update is called once per frame
@@ -108,6 +116,7 @@ public class SelfStudy : MonoBehaviour {
 	}
 
 	void UpdateImageText(){
+		Debug.Log ("UpdateImageText()");
 		int index = 0;
 		Counselor thisCounselor;
 		Game game = Game.Instance;

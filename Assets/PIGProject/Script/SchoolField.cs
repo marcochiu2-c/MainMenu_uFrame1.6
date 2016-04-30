@@ -69,7 +69,7 @@ public class SchoolField : MonoBehaviour {
 //	public bool hasTrainingQHolderShown = false;
 	RectTransform rt;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		CallSchoolField ();
 	}
 
@@ -80,7 +80,7 @@ public class SchoolField : MonoBehaviour {
 		SchoolField.AssigningSoldier = 1;
 //		Debug.Log (game.counselor [0].toJSON ().ToString ());
 //		Debug.Log (TotalSoldiersAvailable());
-		InvokeRepeating ("ShowTotalSoldiersAvailableText", 0, 60);
+
 		AddButtonListener ();
 		staticArmyQAHolder = ArmyQAHolder;
 		staticArmorQAHolder = ArmorQAHolder;
@@ -92,13 +92,17 @@ public class SchoolField : MonoBehaviour {
 		SetDataPanel ();
 		SetAdjustSoldierValues ();
 		p = ProductDict.Instance;
-		InvokeRepeating ("UpdateSoldierSummaryPanel", 0, 1);
 	}
 
 	void OnEnable(){
+		InvokeRepeating ("ShowTotalSoldiersAvailableText", 0, 60);
+		InvokeRepeating ("UpdateSoldierSummaryPanel", 0, 1);
 		InvokeRepeating("SetDataPanel",0.5f,1);
 	}
 
+	void OnDisable(){
+		CancelInvoke ();
+	}
 
 	// Update is called once per frame
 	void Update () {
@@ -426,6 +430,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public void SetDataPanel(){
+		Debug.Log ("SetDataPanel()");
 		Transform dataHolder = DataPanel.transform.GetChild (0).GetChild (0);
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
 		string[] valueList = new string[]{
