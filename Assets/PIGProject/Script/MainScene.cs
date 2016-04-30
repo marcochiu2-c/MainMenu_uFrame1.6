@@ -103,6 +103,9 @@ public class MainScene : MonoBehaviour {
 		wsc.Send("notice_url","GET",new JSONData (MainScene.userId));
 		InvokeRepeating("OnGeneralTrainComplete",1,4);
 		InvokeRepeating("CheckObject",1,2);
+		InvokeRepeating("QuitIfConnectionFailed",0,10);
+		InvokeRepeating ("OnSchoolFieldSoldierTrainComplete", 2, 4);
+		InvokeRepeating ("OnAcademyTrainingComplete", 3, 4);
 	}
 
 	void CallShop(){
