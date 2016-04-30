@@ -329,18 +329,18 @@ public class DrawCards : MonoBehaviour {
 		if (Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim)) + new TimeSpan (0, 5, 0) > DateTime.Now//||
 //		    Convert.ToDateTime (game.login.attributes ["LastDrawTime"].ToString ().Trim(charToTrim))== DateTime.Today
 		    ) {
-			string txt = "主公，未到免費抽卡之時間，請用400銀羽進行勁抽，或是使用80星塵進行超時抽";
+			string txt = "軍師閣下，未到免費抽卡之時間，請用400銀羽進行勁抽，或是使用80星塵進行超時抽";
 			NoFreeDraw.transform.GetChild(1).GetComponent<Text>().text = txt;
 			ShowPanel(NoFreeDraw);
 			return;
 		}
 		if (game.login.attributes ["FreeDraw"].AsInt == 0) {
-			string txt = "主公，是日免費抽卡之機會已用完，請用400銀羽進行勁抽，或是使用80星塵進行超時抽";
+			string txt = "軍師閣下，是日免費抽卡之機會已用完，請用400銀羽進行勁抽，或是使用80星塵進行超時抽";
 			NoFreeDraw.transform.GetChild(1).GetComponent<Text>().text = txt;
 			ShowPanel(NoFreeDraw);
 			return;
 		}
-		string msg = "主公，是日尚餘五次免費抽卡之機會，快抽卡！";
+		string msg = "軍師閣下，是日尚餘五次免費抽卡之機會，快抽卡！";
 		msg = msg.Replace ("五", game.login.attributes ["FreeDraw"].AsInt.ToString ());
 		CardQAHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
 		ShowNextFreeDrawTime();
@@ -357,12 +357,12 @@ public class DrawCards : MonoBehaviour {
 		Debug.Log ("Silver Feather: "+game.wealth [0].value);
 		Debug.Log ("Cost of Draw card: " + drawCost ["SuperDraw"]);
 		if (game.wealth [0].value >= drawCost["SuperDraw"]) {
-			string msg = "主公，勁抽使用400銀羽進行抽卡。";
+			string msg = "軍師閣下，勁抽使用400銀羽進行抽卡。";
 			DrawCardPop.transform.GetChild (0).GetComponent<Text> ().text = "勁抽";
 			DrawCardPop.transform.GetChild (1).GetComponent<Text> ().text = msg;
 			ShowPanel (DrawCardPop);
 		} else {
-			string msg = "主公，銀羽不足了，請到交易所購買。";
+			string msg = "軍師閣下，銀羽不足了，請到交易所購買。";
 			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "勁抽";
 			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
 			ShowPanel (NoMoneyPopup);
@@ -372,12 +372,12 @@ public class DrawCards : MonoBehaviour {
 	public void  OnTimeTravelDrawClicked(){
 		actionId = "TimeTravelDraw";
 		if (game.wealth [1].value >= drawCost["TimeTravelDraw"]) {
-			string msg = "主公，超時抽使用80時之星塵進行抽卡。";
+			string msg = "軍師閣下，超時抽使用80時之星塵進行抽卡。";
 			DrawCardPop.transform.GetChild (0).GetComponent<Text> ().text = "超時抽";
 			DrawCardPop.transform.GetChild (1).GetComponent<Text> ().text = msg;
 			ShowPanel (DrawCardPop);
 		} else {
-			string msg = "主公，時之星塵不足了，請到交易所購買。";
+			string msg = "軍師閣下，時之星塵不足了，請到交易所購買。";
 			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "超時抽";
 			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
 			ShowPanel (NoMoneyPopup);
@@ -387,12 +387,12 @@ public class DrawCards : MonoBehaviour {
 	public void  OnTenSuperDrawClicked(){
 		actionId = "TenSuperDraw";
 		if (game.wealth [0].value >= drawCost["TenSuperDraw"]) {
-			string msg = "主公，十連勁抽使用3600銀羽進行抽卡。";
+			string msg = "軍師閣下，十連勁抽使用3600銀羽進行抽卡。";
 			DrawCardPop.transform.GetChild (0).GetComponent<Text> ().text = "十連勁抽";
 			DrawCardPop.transform.GetChild (1).GetComponent<Text> ().text = msg;
 			ShowPanel (DrawCardPop);
 		} else {
-			string msg = "主公，銀羽不足了，請到交易所購買。";
+			string msg = "軍師閣下，銀羽不足了，請到交易所購買。";
 			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "十連勁抽";
 			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
 			ShowPanel (NoMoneyPopup);
@@ -402,12 +402,12 @@ public class DrawCards : MonoBehaviour {
 	public void  OnTenTimeTravelDrawClicked(){
 		actionId = "TenTimeTravelDraw";
 		if (game.wealth [1].value >= drawCost["TenTimeTravelDraw"]) {
-			string msg = "主公，十連超時抽使用720時之星塵進行抽卡。";
+			string msg = "軍師閣下，十連超時抽使用720時之星塵進行抽卡。";
 			DrawCardPop.transform.GetChild (0).GetComponent<Text> ().text = "十連超時抽";
 			DrawCardPop.transform.GetChild (1).GetComponent<Text> ().text = msg;
 			ShowPanel (DrawCardPop);
 		} else {
-			string msg = "主公，時之星塵不足了，請到交易所購買。";
+			string msg = "軍師閣下，時之星塵不足了，請到交易所購買。";
 			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "十連超時抽";
 			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
 			ShowPanel (NoMoneyPopup);
@@ -417,7 +417,7 @@ public class DrawCards : MonoBehaviour {
 	public void OnNoFreeDrawFeatherClicked(){
 		HidePanel(NoFreeDraw);
 		if (game.wealth [0].value < 400) {
-			string msg = "主公，銀羽不足了，請到交易所購買。";
+			string msg = "軍師閣下，銀羽不足了，請到交易所購買。";
 			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "人品抽";
 			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
 			ShowPanel (NoMoneyPopup);
@@ -429,7 +429,7 @@ public class DrawCards : MonoBehaviour {
 	public void OnNoFreeDrawStarDustClicked(){
 		HidePanel(NoFreeDraw);
 		if (game.wealth [1].value < 80) {
-			string msg = "主公，時之星塵不足了，請到交易所購買。";
+			string msg = "軍師閣下，時之星塵不足了，請到交易所購買。";
 			NoMoneyPopup.transform.GetChild (0).GetComponent<Text> ().text = "人品抽";
 			NoMoneyPopup.transform.GetChild (1).GetComponent<Text> ().text = msg;
 			ShowPanel (NoMoneyPopup);

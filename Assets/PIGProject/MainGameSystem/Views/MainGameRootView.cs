@@ -17,7 +17,8 @@ public class MainGameRootView : MainGameRootViewBase {
     
 	public Text gameOverText;
 	public GSHexGridManager gSHexGridManager;
-
+	public UserViewModel LocalUser;
+	
 	public Button InfoButton;
 	public Button InfoCloseButton;
 	public Button InfoAtkButton;
@@ -70,11 +71,11 @@ public class MainGameRootView : MainGameRootViewBase {
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
 		InfoText.text = missionInfo.text;
 		gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent<GSHexGridManager>();
-
+		LocalUser =  uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
+		
 		for (int i = 1; i <= 5; i++)
 			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
-		
-		//beginnerGuide = GameObject.Find("BeginnerGuide");
+			//beginnerGuide = GameObject.Find("BeginnerGuide");
 		BeginnerGuide();
 	}
 	
@@ -150,9 +151,12 @@ public class MainGameRootView : MainGameRootViewBase {
 			//	SceneName = "MainMenuScene"
 			//});
 		    */
-		   
+			
+			LocalUser.ScreenState = ScreenState.MainGame;
+									
 			loadingImage.SetActive (true);
 			StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
+			
 		});
 		
 		this.BindButtonToHandler(Leave2Button, () => { 
@@ -170,6 +174,8 @@ public class MainGameRootView : MainGameRootViewBase {
 			//	SceneName = "MainMenuScene"
 			//});
 		    */
+			
+			LocalUser.ScreenState = ScreenState.MainGame;
 			
 			loadingImage.SetActive (true);
 			StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
@@ -302,6 +308,8 @@ public class MainGameRootView : MainGameRootViewBase {
 			loadingBar.value=_async.progress;
 			yield return null;
 		}
+		
+		//UserManagementService.loadDB();
 	}
 	
 	/// <summary>

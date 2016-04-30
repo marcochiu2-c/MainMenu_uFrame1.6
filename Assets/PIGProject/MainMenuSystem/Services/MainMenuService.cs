@@ -94,7 +94,8 @@ public class MainMenuService : MainMenuServiceBase
 		//	else DisablePanel.gameObject.SetActive(false);
 		//}
 		
-		UserManagementService.loadDB();
+		//if (screenType.Name == "MenuScreenViewModel")
+		//	UserManagementService.loadDB();
 		
 		/*
 		if(mainScene == null)

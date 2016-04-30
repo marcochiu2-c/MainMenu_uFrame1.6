@@ -41,6 +41,7 @@ public class MenuScreenView : MenuScreenViewBase
 	public Button SampleButton;
 	
 	public MainScene MainScene;
+	public UserViewModel LocalUser;
 
 	public GameObject StorageHolder;
 //	public Endgame.ListView ItemPanel;
@@ -53,8 +54,9 @@ public class MenuScreenView : MenuScreenViewBase
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
 //		MenuScreenView.staticAcademyListViewColumns  = AcademyListView.Columns;
-
-    }
+		LocalUser =  uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
+		MainScene = GameObject.Find ("MainUIHolder").GetComponent<MainScene> ();
+	}
     
     public override void Bind() {
         base.Bind();
@@ -235,15 +237,18 @@ public class MenuScreenView : MenuScreenViewBase
 	{
 		base.IsActiveChanged(active);
 		//DisablePanel.gameObject.SetActive(!active);
-		/*
-		if (active == true)
+		Debug.Log ("MenuScreen is active? " + active + "LocalUser ScreenState: " + LocalUser.ScreenState);
+		
+		if (active == true && LocalUser.ScreenState == ScreenState.MainGame)
 		{
 			Debug.Log ("call reloadFromDB from MainScreenView");
-			MainScene.reloadFromDB();
+			MainScene.needReloadFromDB = true;
+			MainScene.CallMainScene();
+			//MainScene.reloadFromDB();
+			LocalUser.ScreenState = ScreenState.MainMenu;
 		}
 			
-		Debug.Log ("MenuScreen is active? " + active);
-		*/
+
 	}
 
 

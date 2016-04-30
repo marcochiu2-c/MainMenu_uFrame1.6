@@ -96,7 +96,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	void OnEnable(){
-		Invoke("SetDataPanel",0.5f);
+		InvokeRepeating("SetDataPanel",0.5f,1);
 	}
 
 
@@ -438,8 +438,12 @@ public class SchoolField : MonoBehaviour {
 		};
 		Debug.Log ("Soldier attributes: "+game.soldiers [AssigningSoldier - 1].attributes.ToString());
 		if (j ["trainingSoldiers"].AsInt != 0) {
-			for (var i = 0; i < 17; i++){
-				dataHolder.GetChild(i*2+1).GetComponent<Text>().text = (Mathf.Round(j[valueList[i]].AsFloat*100)/100).ToString();
+			for (var i = 0; i < 17; i++) {
+				dataHolder.GetChild (i * 2 + 1).GetComponent<Text> ().text = (Mathf.Round (j [valueList [i]].AsFloat * 100) / 100).ToString ();
+			}
+		} else {
+			for (var i = 0; i < 17; i++) {
+				dataHolder.GetChild (i * 2 + 1).GetComponent<Text> ().text = (Mathf.Round (j [valueList [i]].AsFloat * 100) / 100).ToString ();
 			}
 		}
 	}
@@ -767,7 +771,13 @@ public class SchoolField : MonoBehaviour {
 		Transform Axe				 = valueHolder.GetChild (0).GetChild (2).GetChild (4);
 		Transform Hammer			 = valueHolder.GetChild (0).GetChild (2).GetChild (5);
 
-		int trainingSoldiers = game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt;
+		// TODO Only for existing soldiers. New soldiers should be trained automatically without question to get a equalizer with the existings.
+		int trainingSoldiers;
+		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt > 0) {
+			trainingSoldiers = game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt;
+		} else {
+			trainingSoldiers = game.soldiers [AssigningSoldier - 1].quantity;
+		}
 		TotalTrainingTime = 0;
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
 		TotalTrainingTime += CalculateSoldierTrainingTime("Hit",trainingSoldiers,Hit.GetChild (1).GetChild (1).GetComponent<Slider> ().value- Mathf.Round(j ["Hit"].AsFloat*100)/100);

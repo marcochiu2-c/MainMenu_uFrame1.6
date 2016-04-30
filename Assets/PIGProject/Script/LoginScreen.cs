@@ -248,8 +248,8 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	IEnumerator LoadLevelWithBar (string level){
-		//        async = Application.LoadLevelAsync("MainMenuScene");
-		async = Application.LoadLevelAsync(3);
+		async = Application.LoadLevelAsync("MainMenuScene");
+		//async = Application.LoadLevelAsync(3);
 		while(!async.isDone){
 			slider.value=async.progress;
 			yield return null;

@@ -20,6 +20,7 @@ public class UserManagementService : UserManagementServiceBase
         base.Setup();
 		// for develop only
 		LocalUser.AuthorizationState = AuthorizationState.Authorized;
+		LocalUser.ScreenState = ScreenState.MainMenu;
 		//Debug.Log (MainScene == null ? "MainScene  is null" : MainScene.name);
 		//LocalUser.AuthorizationState = AuthorizationState.Unauthorized;
 		//Game game = Game.Instance;
@@ -37,7 +38,6 @@ public class UserManagementService : UserManagementServiceBase
 	
 	public void loadDB ()
 	{
-		
 		if(GameObject.Find ("MainUIHolder").GetComponent<MainScene> () != null)
 			MainScene = GameObject.Find ("MainUIHolder").GetComponent<MainScene> ();
 				
@@ -47,6 +47,4 @@ public class UserManagementService : UserManagementServiceBase
 		MainScene.needReloadFromDB = true;
 		MainScene.CallMainScene();
 	}
-	
-
 }
