@@ -65,6 +65,7 @@ public class SchoolField : MonoBehaviour {
 		game = Game.Instance;
 		wsc = WsClient.Instance;
 		SchoolField.AssigningSoldier = 1;
+		Debug.Log (game.counselor [0].toJSON ().ToString ());
 //		Debug.Log (TotalSoldiersAvailable());
 		InvokeRepeating ("ShowTotalSoldiersAvailableText", 0, 60);
 		AddButtonListener ();
@@ -875,7 +876,6 @@ public class SchoolField : MonoBehaviour {
 
 		if (j ["ETATrainingTime"] != null) {
 			if (Convert.ToDateTime( j ["ETATrainingTime"]) > DateTime.Now) {
-				Debug.Log (j["ETATrainingTime"]);
 				data += "\n訓練時間： " + Utilities.TimeUpdate.Time(Convert.ToDateTime( j ["ETATrainingTime"]));
 			}
 		}
@@ -902,6 +902,11 @@ public class SchoolField : MonoBehaviour {
 		DisablePanel.SetActive (false);
 		Debug.Log ("HidePanel");
 		panel.SetActive (false);
+	}
+
+	void ChangePanel(GameObject panel1, GameObject panel2){
+		panel1.SetActive (false);
+		panel2.SetActive (true);
 	}
 
 }

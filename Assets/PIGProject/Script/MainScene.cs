@@ -89,7 +89,6 @@ public class MainScene : MonoBehaviour {
 				reloadFromDB();
 			}else{
 				MainScene.needReloadFromDB = true;
-				Debug.Log ("User Id: "+0);
 			}
 			Store.GetStorageInfoFromDB();
 
@@ -100,15 +99,31 @@ public class MainScene : MonoBehaviour {
 		shop = GetComponent<Shop> ();
 		Invoke ("CallShop", 3);
 
-		InvokeRepeating("OnGeneralTrainComplete",1,1);
+
 		wsc.Send("notice_url","GET",new JSONData (MainScene.userId));
+		InvokeRepeating("OnGeneralTrainComplete",1,4);
+		InvokeRepeating("CheckObject",1,2);
 	}
 
 	void CallShop(){
 		shop.CallShop ();
 	}
 
-	void reloadFromDB(){
+	void CheckObject(){
+		if (game == null) {
+			Debug.Log ("Game object null");
+			game = Game.Instance;
+			silverFeatherText = GameObject.Find ("SilverFeatherText").GetComponents<Text> () [0];
+			resourceText = GameObject.Find ("ResourcesText").GetComponents<Text> () [0];
+			starDustText = GameObject.Find ("StardustText").GetComponents<Text> () [0];
+			MainScene.sValue = game.wealth[0].value.ToString();
+			MainScene.sdValue = game.wealth[1].value.ToString();
+			MainScene.rValue = game.wealth[2].value.ToString();
+			reloadFromDB();
+		}
+	}
+
+	public void reloadFromDB(){
 		wsc.Send("wealth","GET",new JSONData (MainScene.userId));
 		wsc.Send("counselors","GET",new JSONData (MainScene.userId));
 		wsc.Send("generals","GET",new JSONData (MainScene.userId));
@@ -207,6 +222,7 @@ public class MainScene : MonoBehaviour {
 		if (MainScene.CounselorLastInsertId != 0) {
 			count = game.counselor.Count;
 			game.counselor [count - 1].id = MainScene.CounselorLastInsertId;
+			Debug.Log (game.counselor[count-1].toJSON().ToString());
 			MainScene.CounselorLastInsertId = 0;
 		}
 
@@ -214,6 +230,7 @@ public class MainScene : MonoBehaviour {
 			count = game.general.Count;
 			game.general [count - 1].id = MainScene.GeneralLastInsertId;
 			MainScene.GeneralLastInsertId = 0;
+			wsc.Send("generals","GET",new JSONData (MainScene.userId));
 		}
 		if (MainScene.stardustValue != null || MainScene.silverFeatherValue != null || MainScene.resourceValue != null) {
 			game.wealth[0] = MainScene.silverFeatherValue;
