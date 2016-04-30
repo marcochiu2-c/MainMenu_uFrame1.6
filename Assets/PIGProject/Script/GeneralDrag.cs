@@ -13,6 +13,7 @@ public class GeneralDrag  : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 	private Vector3 _imagePosition = Vector3.zero;
 	
 	GameObject placeholder = null;
+	//ConferenceScreenView ConferenceV;
 	
 	public void OnBeginDrag(PointerEventData eventData) {
 		Debug.Log ("OnBeginDrag");
@@ -96,6 +97,7 @@ public class GeneralDrag  : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 			//Debug.Log ("ParentImage: " + parentImage);
 			//if(image != null)
 				//image.sprite = GeneralIcon.sprite;
+				
 		}
 		
 
