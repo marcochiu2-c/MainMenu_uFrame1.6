@@ -47,8 +47,16 @@ public class ArtisanHolder : MonoBehaviour {
 		SetPanel (game.armor);
 		SetPanel (game.shield);
 		latestEta = GetLatestEta ();
-		InvokeRepeating ("updateProductionEtaTimeText", 0, 1);
+
 		SetItemButtonActivateWhenJobComplete ();
+	}
+
+	void OnEnable(){
+		InvokeRepeating ("updateProductionEtaTimeText", 0.5f, 1);
+	}
+
+	void OnDisable(){
+		CancelInvoke ();
 	}
 
 	void CloseAllPanel(){

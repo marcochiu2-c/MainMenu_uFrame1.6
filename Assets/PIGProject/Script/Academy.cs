@@ -451,7 +451,7 @@ public class Academy : MonoBehaviour
 
 		Utilities.Panel.GetConfirmButton(LowerThanTrainer).onClick.AddListener (() => {
 			LowerThanTrainer.SetActive(false);
-
+			Debug.Log ("Closing LowerThanTrainer Panel");
 
 			if (AcademySelfLearn.isSelfStudy){
 				AcademySelfLearn.reCreateStudentItem(AcademySelfLearn.currentStudentPrefab.GetComponent<AcademySelfLearn>());
