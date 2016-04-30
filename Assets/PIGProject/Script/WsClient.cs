@@ -136,6 +136,9 @@ enum jsonFuncNumberEnum {
 	newAccountShield = 282,
 	newAccountCheckIn= 283,
 	newAccountTrainingSlots = 284,
+
+	// 400-401 Utilities
+	noticeURL = 400,
 };
 
 
@@ -376,6 +379,11 @@ public class WsClient {
 		case jsonFuncNumberEnum.getSoldier:
 			if (j["obj"]!="[  ]"){
 				MainScene.SoldierInfo = j["obj"];
+			}
+			break;
+		case jsonFuncNumberEnum.noticeURL:
+			if (j["obj"]!="[  ]"){
+				MainScene.noticeURL = j["obj"];
 			}
 			break;
 		default:

@@ -30,6 +30,7 @@ public class MainScene : MonoBehaviour {
 	public static string sValue ="";
 	public static string rValue ="";
 	public static string sdValue ="";
+	public static string noticeURL ="";
 	public static Wealth resourceValue = null;
 	public static Wealth stardustValue = null;
 	public static Wealth silverFeatherValue = null;
@@ -100,6 +101,7 @@ public class MainScene : MonoBehaviour {
 		Invoke ("CallShop", 3);
 
 		InvokeRepeating("OnGeneralTrainComplete",1,1);
+		wsc.Send("notice_url","GET",new JSONData (MainScene.userId));
 	}
 
 	void CallShop(){

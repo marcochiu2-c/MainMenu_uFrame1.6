@@ -12,8 +12,8 @@ public class noticetext : MonoBehaviour {
 
 	private IEnumerator Check()
 	{
-		WWW w = new WWW("http://www.shawnyip.info/Notice.txt"); // TODO URL have to be finalized.
-		Debug.Log ("http://www.shawnyip.info/Notice.txt");
+		WWW w = new WWW(MainScene.noticeURL); // TODO URL have to be finalized.
+		Debug.Log (MainScene.noticeURL);
 		yield return w;
 		if (w.error != null)
 		{
