@@ -23,5 +23,9 @@ namespace Utilities{
 		public static int GetFeatherFromStardust(int sd){
 			return sd * feather;
 		}
+
+		public static int GetStardustFromTime (TimeSpan ts){
+			return Mathf.CeilToInt((float)(ts.TotalHours * 10));
+		}
 	}
 }

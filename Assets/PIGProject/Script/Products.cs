@@ -31,6 +31,16 @@ public class ProductDict{
 	const int SHIELD = 2;
 	const int BUILDING = 3;
 
+	private static readonly ProductDict s_Instance = new ProductDict();
+
+	public static ProductDict Instance
+	{
+		get
+		{
+			return s_Instance;
+		}
+	}
+
 	public int count { get {
 			return products.Count;
 		} }

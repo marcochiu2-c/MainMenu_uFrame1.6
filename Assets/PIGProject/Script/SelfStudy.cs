@@ -25,7 +25,15 @@ public class SelfStudy : MonoBehaviour {
 	public static Sprite defaultSprite;
 	// Use this for initialization
 	void Start () {
+
+	}
+
+	void OnEnable(){
 		InvokeRepeating ("UpdateImageText", 0, 1);
+	}
+	
+	void OnDisable(){
+		CancelInvoke ();
 	}
 	
 	// Update is called once per frame
@@ -50,7 +58,7 @@ public class SelfStudy : MonoBehaviour {
 				if (i < 25) { 
 					co.attributes ["attributes"] ["IQ"].AsFloat = co.attributes ["attributes"] ["IQ"].AsFloat + 1;
 				} else if (i > 24 && i < 30) {
-					co.attributes ["attributes"] ["Leadership"].AsFloat = co.attributes ["attributes"] ["IQ"].AsFloat + 1;
+					co.attributes ["attributes"] ["Leadership"].AsFloat = co.attributes ["attributes"] ["Leadership"].AsFloat + 1;
 				} else if (i > 29 && i < 35) {
 					switch (type) {
 					case 2001:
@@ -108,6 +116,7 @@ public class SelfStudy : MonoBehaviour {
 	}
 
 	void UpdateImageText(){
+		Debug.Log ("UpdateImageText()");
 		int index = 0;
 		Counselor thisCounselor;
 		Game game = Game.Instance;
@@ -124,6 +133,14 @@ public class SelfStudy : MonoBehaviour {
 			ImageText.text = "";
 			image.sprite = defaultSprite;
 			isDropZoneEnabled = true;
+		}
+		if (it.Length == 2) {
+			Debug.Log (it[1]);
+			if (it[1] == "00:00:00"){
+				ImageText.text = "";
+				image.sprite = defaultSprite;
+				isDropZoneEnabled = true;
+			}
 		}
 	}
 
@@ -149,7 +166,7 @@ public class SelfStudy : MonoBehaviour {
 					leftHolder.GetChild(i*2).GetComponent<SelfStudy>().trainingObject = game.trainings[i+20];
 					leftHolder.GetChild(i*2).GetComponent<SelfStudy>().isDropZoneEnabled = false;
 				}else{
-					Debug.Log (leftHolder.GetChild(i*2).GetComponent<SelfStudy>());
+//					Debug.Log (leftHolder.GetChild(i*2).GetComponent<SelfStudy>());
 					leftHolder.GetChild(i*2).GetComponent<SelfStudy>().trainingType =0 ;
 					leftHolder.GetChild(i*2).GetComponent<SelfStudy>().targetId = 0;
 					leftHolder.GetChild(i*2).GetComponent<SelfStudy>().etaTimestamp = game.trainings[i+20].etaTimestamp;

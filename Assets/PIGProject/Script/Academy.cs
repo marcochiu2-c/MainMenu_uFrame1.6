@@ -9,6 +9,7 @@ using SimpleJSON;
 using UnityEngine.EventSystems;
 using System;
 using System.Linq;
+using Utilities;
 
 public enum ActivePopupEnum{
 	none,IQPopup,CommandedPopup,KnowledgePopup,FightingPopup
@@ -101,32 +102,28 @@ public class Academy : MonoBehaviour
 		AcademySelfLearn.commonPanel = SelfLearnScrollPanel;
 		
 		#region setListOfTrainings
-		List<Trainings> tList = game.trainings;
+//		List<Trainings> tList = game.trainings;
 
-		var tlCount = tList.Count;
-		
-		for (int k = 0 ; k < tlCount ; k++){
-			
-		}
+//		var tlCount = tList.Count;
+//		
+//		for (int k = 0 ; k < tlCount ; k++){
+//			
+//		}
 		
 		#endregion
-		
-
 
 		SetupStudentPrefabList ();
-		SetupAcademyTaughtPanel ();
-//		SetupAcademySelfLearnPanel ();
-		SetTeachItems (tList);
-//		SetSelfLearnItems (tList);
+//		SetupAcademyTaughtPanel ();
+//		SetTeachItems (tList);
 
 
 		//Get the default Self Study Sprite
 		SelfStudy.defaultSprite = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (0).GetChild (0).GetComponent<Image> ().sprite;
-		InvokeRepeating ("CallSelfStudyOnTrainingCompleted", 1, 1);
+//		InvokeRepeating ("CallSelfStudyOnTrainingCompleted", 1, 1);
 	}
 
 	public void SetupStudentPrefabList(){
-
+		Utilities.ShowLog.Log ("Counselor Wisdom: " + game.counselor [1].attributes.ToString());
 		for (int j = 0 ; j < game.counselor.Count; j++){
 			cStudentList.Add (new Counselor(game.counselor[j]));
 			cSelfLearnList.Add (new Counselor(game.counselor[j]));
@@ -341,6 +338,10 @@ public class Academy : MonoBehaviour
 		QAHolder.SetActive (true);
 		Academy.activePopup = activePopupName[btn.name];
 		Debug.Log (Academy.activePopup);
+		List<Trainings> tList = game.trainings;
+		SetupAcademyTaughtPanel ();
+		ShowLog.Log ("Trying Setup Teach Prefabs");
+		SetTeachItems (tList);
 		SetupStudentPrefabList();
 	}
 
@@ -383,6 +384,35 @@ public class Academy : MonoBehaviour
 		TeachHolder.transform.GetChild (1).GetChild (0).GetChild (2).GetComponent<Text> ().text = txt;
 	}
 
+	void DestroyPrefabObject(){
+		var count = AcademyStudent.Students.Count;
+		for (int i = 0 ; i < count ; i++){
+			GameObject.DestroyImmediate( AcademyStudent.Students[i].gameObject);
+		}
+		count =AcademySelfLearn.Students.Count;
+		for (int i = 0 ; i < count ; i++){
+			GameObject.DestroyImmediate( AcademySelfLearn.Students[i].gameObject);
+		}
+		for (int i = 0; i < 5 ; i++) {
+			GameObject.DestroyImmediate( AcademyTeach.IQTeach[i].gameObject);
+			GameObject.DestroyImmediate( AcademyTeach.CommandedTeach[i].gameObject);
+			GameObject.DestroyImmediate( AcademyTeach.KnowledgeTeach[i].gameObject);
+			GameObject.DestroyImmediate( AcademyTeach.FightingTeach[i].gameObject);
+		}
+		AcademyTeach.IQTeach = new List<AcademyTeach>();
+		AcademyTeach.CommandedTeach = new List<AcademyTeach>();
+		AcademyTeach.KnowledgeTeach = new List<AcademyTeach>();
+		AcademyTeach.FightingTeach = new List<AcademyTeach>();
+	}
+
+	void CloseAllPanel(){
+		SelfStudyHolder.SetActive(false);
+		TeachHolder.SetActive(false);
+		ConfirmTeacherBy.SetActive (false);
+		ConfirmTraining.SetActive (false);
+		LowerThanTrainer.SetActive (false);
+	}
+
 	void AddButtonListener(){
 		for (var i = 0; i < 4; i++) {
 			Transform child = buttons [i].transform;
@@ -395,44 +425,24 @@ public class Academy : MonoBehaviour
 		}
 		
 		backButton.onClick.AddListener (() => {
-			var count = AcademyStudent.Students.Count;
-			for (int i = 0 ; i < count ; i++){
-				GameObject.DestroyImmediate( AcademyStudent.Students[i].gameObject);
-//				AcademyStudent.Students.Remove(AcademyStudent.Students[0].gameObject.GetComponent<AcademyStudent>());
-			}
-			count =AcademySelfLearn.Students.Count;
-			for (int i = 0 ; i < count ; i++){
-				GameObject.DestroyImmediate( AcademySelfLearn.Students[i].gameObject);
-//				AcademySelfLearn.Students.Remove(AcademySelfLearn.Students[0].gameObject.GetComponent<AcademySelfLearn>());
-			}
+			DestroyPrefabObject();
 			AcademyStudent.Students = new List<AcademyStudent>();
 			AcademySelfLearn.Students = new List<AcademySelfLearn>();
 			Academy.activePopup = ActivePopupEnum.none;
-			SelfStudyHolder.SetActive(false);
-			TeachHolder.SetActive(false);
+			CloseAllPanel();
 			gameObject.SetActive(true);
 		});
 		closeButton.onClick.AddListener (() => {
-			var count = AcademyStudent.Students.Count;
-//			Debug.Log(count);
-			for (int i = 0 ; i < count ; i++){
-				GameObject.DestroyImmediate( AcademyStudent.Students[i].gameObject);
-//				AcademyStudent.Students.Remove(AcademyStudent.Students[i].gameObject.GetComponent<AcademyStudent>());
-			}
-			count =AcademySelfLearn.Students.Count;
-//			Debug.Log(count);
-			for (int i = 0 ; i < count ; i++){
-				GameObject.DestroyImmediate( AcademySelfLearn.Students[i].gameObject);
-//				AcademySelfLearn.Students.Remove(AcademySelfLearn.Students[i].gameObject.GetComponent<AcademySelfLearn>());
-			}
+			DestroyPrefabObject();
 			AcademyStudent.Students = new List<AcademyStudent>();
-//			Debug.Log (AcademyStudent.Students.Count);
 			AcademySelfLearn.Students = new List<AcademySelfLearn>();
+
 			Academy.activePopup = ActivePopupEnum.none;
-			SelfStudyHolder.SetActive(false);
-			TeachHolder.SetActive(false);
+			CloseAllPanel();
 			AcademyHolder.SetActive(false);
 			MainScene.MainUIHolder.SetActive(true);
+			Utilities.ShowLog.Log("Unused Assets to be unloaded");
+			Resources.UnloadUnusedAssets();
 		});
 		KnowledgeListHolder.transform.GetChild (3).GetComponent<Button> ().onClick.AddListener (() => {
 			KnowledgeListHolder.SetActive(false);
@@ -441,7 +451,7 @@ public class Academy : MonoBehaviour
 
 		Utilities.Panel.GetConfirmButton(LowerThanTrainer).onClick.AddListener (() => {
 			LowerThanTrainer.SetActive(false);
-
+			Debug.Log ("Closing LowerThanTrainer Panel");
 
 			if (AcademySelfLearn.isSelfStudy){
 				AcademySelfLearn.reCreateStudentItem(AcademySelfLearn.currentStudentPrefab.GetComponent<AcademySelfLearn>());
@@ -458,7 +468,6 @@ public class Academy : MonoBehaviour
 				AcademyStudent.Students.Remove(AcademyStudent.currentStudentPrefab.GetComponent<AcademyStudent>());
 				AcademyStudent.IsLevelNotReach = false;
 			}
-
 		});
 
 		Utilities.Panel.GetConfirmButton (ConfirmTeacherBy).onClick.AddListener (() => {
@@ -467,6 +476,7 @@ public class Academy : MonoBehaviour
 			Trainings obj  = AcademyStudent.currentTeachItem.trainingObject;
 			int index = game.trainings.FindIndex(x => x == obj);
 			Debug.Log("Training item index in DB: "+obj.id);
+			AcademyStudent.currentTeachItem.etaTimestamp = DateTime.Now+new TimeSpan(TrainingTimeTaught,0,0);
 			game.trainings[index].trainerId = AcademyStudent.currentTeachItem.trainerId;
 			game.trainings[index].targetId = AcademyStudent.currentTeachItem.targetId;
 			game.trainings[index].startTimestamp = DateTime.Now;
@@ -525,17 +535,17 @@ public class Academy : MonoBehaviour
 			game.trainings[index].startTimestamp = DateTime.Now;
 			game.trainings[index].etaTimestamp = DateTime.Now+new TimeSpan(TrainingTimeTaught * 2,0,0);
 			game.trainings[index].status = 1;
+			AcademySelfLearn.currentSelfStudy.ImageText.text =(game.counselor.Find(x => x.id == AcademySelfLearn.currentSelfStudy.targetId).attributes["attributes"]["Name"]).ToString().Trim (charToTrim) + " ";
 			if (index < 25){
 				game.trainings[index].type = 1;
-				AcademySelfLearn.currentSelfStudy.ImageText.text = (game.counselor[game.counselor.FindIndex(x => x.id == AcademySelfLearn.currentSelfStudy.targetId)].attributes["attributes"]["IQ"].AsInt+1).ToString();
+				AcademySelfLearn.currentSelfStudy.ImageText.text += (game.counselor.Find(x => x.id == AcademySelfLearn.currentSelfStudy.targetId).attributes["attributes"]["IQ"].AsInt+1).ToString();
 			}else if (index > 24 && index < 30){
 				game.trainings[index].type = 2;
-				AcademySelfLearn.currentSelfStudy.ImageText.text = (game.counselor[game.counselor.FindIndex(x => x.id == AcademySelfLearn.currentSelfStudy.targetId)].attributes["attributes"]["Leadership"].AsInt+1).ToString();
+				AcademySelfLearn.currentSelfStudy.ImageText.text += (game.counselor.Find(x => x.id == AcademySelfLearn.currentSelfStudy.targetId).attributes["attributes"]["Leadership"].AsInt+1).ToString();
 			}else if (index > 29 && index < 35){
 				game.trainings[index].type = KnowledgeOption.knowledge;
 				Debug.Log (KnowledgeOption.knowledge) ;
-				AcademySelfLearn.currentSelfStudy.ImageText.text = String.Format("{0} {1}({2})",
-				     (game.counselor[game.counselor.FindIndex(x => x.id == AcademySelfLearn.currentSelfStudy.targetId)].attributes["attributes"]["Name"]).ToString().Trim (charToTrim),
+				AcademySelfLearn.currentSelfStudy.ImageText.text = String.Format("{0}({1})",
 				     KnowledgeDict[KnowledgeOption.knowledge],
 				     (game.counselor.Find(x => x.id == game.trainings[index].targetId).attributes["attributes"]["IQ"].AsFloat+1).ToString()
 				);
@@ -594,115 +604,13 @@ public class Academy : MonoBehaviour
 		academyCategoryText.Add (ActivePopupEnum.FightingPopup, "陣法");
 	}
 
-	public Sprite GeungTseNga;
-	public Sprite NgHei;
-	public Sprite SuenMo;
 
-	public Sprite NgTseSeui;
-	public Sprite ChoGwai;
-	public Sprite GunChung;
-	public Sprite FanYi;
-	public Sprite ChuGotLeung;
-	public Sprite SuenBan;
-	public Sprite CheungLeung;
-	public Sprite LauBakWan;
-	public Sprite FanTseng;
-	public Sprite MiuFun;
-	public Sprite LauBingChung;
-	public Sprite YeLuChucai;
-	public Sprite FanManChing;
-	public Sprite TsengKwokFan;
-	public Sprite WongShekGong;
-	public Sprite WaiLiuTse;
-	public Sprite TinYeungJeui;
-	public Sprite PongGyun;
-	public Sprite PongTong;
-	public Sprite SiMaYi;
-	public Sprite ChowYu;
-	public Sprite YuHim;
-	public Sprite YeungKwokChung;
-	public Sprite ChiuTim;
-	public Sprite ChuBunDeui;
-	public Sprite SanYeungSau;
 
-	
-    /*
-	public static Dictionary<int,Sprite> GetImageDict(){
-		Academy a = new Academy ();
-		return a.imageDict;
-	}
-
-	public static Dictionary<int,string> GetNameDict(){
-		Academy a = new Academy ();
-		return a.nameDict;
-	}
-	*/
 
 	public void SetCharacters(){
 		LoadHeadPic headPic = LoadHeadPic.Instance;
 		imageDict = headPic.imageDict;
 		nameDict = headPic.nameDict;
-		// Add some images.
-//		imageDict.Add(/*"姜子牙",*/ 1,GeungTseNga);
-//		imageDict.Add(/*"吳起 ",*/ 2, NgHei);
-//		imageDict.Add(/*"孫武",*/ 3,SuenMo);
-//		imageDict.Add(/*"伍子胥",*/ 4,NgTseSeui);
-//		imageDict.Add(/*"曹劌",*/ 5,ChoGwai);
-//		imageDict.Add(/*"管仲",*/ 6,GunChung);
-//		imageDict.Add(/*"范蠡",*/ 7,FanYi);
-//		imageDict.Add(/*"諸葛亮",*/ 8,ChuGotLeung);
-//		imageDict.Add(/*"孫臏",*/ 9,SuenBan);
-//		imageDict.Add(/*"張良",*/ 10,CheungLeung);
-//		imageDict.Add(/*"劉基",*/ 11,LauBakWan);
-//		imageDict.Add(/*"范增",*/ 12,FanTseng);
-//		imageDict.Add(/*"苗訓",*/ 13,MiuFun);
-//		imageDict.Add(/*"劉秉忠",*/ 14,LauBingChung);
-//		imageDict.Add(/*"耶律楚材",*/ 15,YeLuChucai);
-//		imageDict.Add(/*"范文程",*/ 16,FanManChing);
-//		imageDict.Add(/*"曾國藩",*/ 17,TsengKwokFan);
-//		imageDict.Add(/*"黃石公",*/ 18,WongShekGong);
-//		imageDict.Add(/*"尉繚子",*/ 19,WaiLiuTse);
-//		imageDict.Add(/*"田穰苴",*/ 20,TinYeungJeui);
-//		imageDict.Add(/*"龐涓",*/ 21,PongGyun);
-//		imageDict.Add(/*"龐統",*/ 22,PongTong);
-//		imageDict.Add(/*"司馬懿",*/ 23,SiMaYi);
-//		imageDict.Add(/*"周瑜",*/ 24,ChowYu);
-//		imageDict.Add(/*"于謙",*/ 25,YuHim);
-//		imageDict.Add(/*"楊國忠",*/ 26,YeungKwokChung);
-//		imageDict.Add(/*"趙括",*/ 27,ChiuTim);
-//		imageDict.Add(/*"朱般懟",*/ 28,ChuBunDeui);
-//		imageDict.Add(/*"辰漾守",*/ 29,SanYeungSau);
-//		nameDict.Add (0, "");
-//		nameDict.Add(1,"姜子牙");
-//		nameDict.Add(2,"吳起");
-//		nameDict.Add(3,"孫武");
-//		nameDict.Add(4,"伍子胥");
-//		nameDict.Add(5,"曹劌");
-//		nameDict.Add(6,"管仲");
-//		nameDict.Add(7,"范蠡");
-//		nameDict.Add(8,"諸葛亮");
-//		nameDict.Add(9,"孫臏");
-//		nameDict.Add(10,"張良");
-//		nameDict.Add(11,"劉基");
-//		nameDict.Add(12,"范增");
-//		nameDict.Add(13,"苗訓");
-//		nameDict.Add(14,"劉秉忠");
-//		nameDict.Add(15,"耶律楚材");
-//		nameDict.Add(16,"范文程");
-//		nameDict.Add(17,"曾國藩");
-//		nameDict.Add(18,"黃石公");
-//		nameDict.Add(19,"尉繚子");
-//		nameDict.Add(20,"田穰苴");
-//		nameDict.Add(21,"龐涓");
-//		nameDict.Add(22,"龐統");
-//		nameDict.Add(23,"司馬懿");
-//		nameDict.Add(24,"周瑜");
-//		nameDict.Add(25,"于謙");
-//		nameDict.Add(26,"楊國忠");
-//		nameDict.Add(27,"趙括");
-//		nameDict.Add(28,"朱般懟");
-//		nameDict.Add(29,"辰漾守");
-
 	}
 }
 

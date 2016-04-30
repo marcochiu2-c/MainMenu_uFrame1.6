@@ -23,7 +23,7 @@ public class ArtisanHolder : MonoBehaviour {
 	public GameObject DetailPanel;
 	Button BackButton;
 	Button CloseButton;
-	static ProductDict p  = new ProductDict();
+	static ProductDict p  = ProductDict.Instance;
 	static int IdWeaponWhichProducing  = 0;
 	static int IdArmorWhichProducing   = 0;
 	static int IdShieldWhichProducing  = 0;
@@ -47,22 +47,52 @@ public class ArtisanHolder : MonoBehaviour {
 		SetPanel (game.armor);
 		SetPanel (game.shield);
 		latestEta = GetLatestEta ();
-		InvokeRepeating ("updateProductionEtaTimeText", 0, 1);
+
 		SetItemButtonActivateWhenJobComplete ();
+	}
+
+	void OnEnable(){
+		InvokeRepeating ("updateProductionEtaTimeText", 0.5f, 1);
+	}
+
+	void OnDisable(){
+		CancelInvoke ();
+	}
+
+	void CloseAllPanel(){
+		ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive(false);
+		ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive(false);
+		ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive(false);
+	}
+
+	void DestroyPrefabObject(){
+		var count = WeaponMaking.Weapons.Count;
+		for (int i = 0 ; i < count ; i++){
+			GameObject.DestroyImmediate( WeaponMaking.Weapons[i].gameObject);
+		}
+		count =WeaponMaking.Armors.Count;
+		for (int i = 0 ; i < count ; i++){
+			GameObject.DestroyImmediate( WeaponMaking.Armors[i].gameObject);
+		}
+		count =WeaponMaking.Shields.Count;
+		for (int i = 0 ; i < count ; i++){
+			GameObject.DestroyImmediate( WeaponMaking.Shields[i].gameObject);
+		}
+		WeaponMaking.Weapons = new List<WeaponMaking> ();
+		WeaponMaking.Armors = new List<WeaponMaking> ();
+		WeaponMaking.Shields = new List<WeaponMaking> ();
 	}
 
 	void AddButtonListener(){
 		BackButton.onClick.AddListener (() => {
-			ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive(false);
-			ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive(false);
-			ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive(false);
+			CloseAllPanel();
 			transform.GetChild(0).gameObject.SetActive(true);
 		});
 		CloseButton.onClick.AddListener (() => {
-			ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive(false);
-			ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive(false);
-			ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive(false);
+			CloseAllPanel();
 			gameObject.SetActive(false);
+			DestroyPrefabObject();
+			Resources.UnloadUnusedAssets();
 		});
 		EquipmentQHolder.transform.GetChild (2).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {  //Confirm
 			OnEquipmentQHolderConfirmed();
@@ -216,7 +246,7 @@ public class ArtisanHolder : MonoBehaviour {
 	}
 
 	void SetArtisanConfirmPopupText(){
-		ProductDict p = new ProductDict ();
+		ProductDict p = ProductDict.Instance;
 		string msg = "製造equipment需要amount的資源，確定製造嗎？";
 		msg = msg.Replace ("equipment", p.products [IdEquipmentToBeProduced].name);
 		msg = msg.Replace ("amount", (p.products[IdEquipmentToBeProduced].attributes["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced).ToString()) ;
@@ -234,7 +264,7 @@ public class ArtisanHolder : MonoBehaviour {
 	}
 
 	void SetNeedExtraResourcesPopupText(){
-		ProductDict p = new ProductDict ();
+		ProductDict p = ProductDict.Instance;
 		int cost = (p.products [IdEquipmentToBeProduced].attributes ["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced);
 		string msg = "主公，資源不足，需要額外使用amount 星塵進行制作嗎？";
 		msg = msg.Replace ("amount",Utilities.ExchangeRate.GetStardustFromResource(cost - game.wealth[2].value).ToString());
@@ -316,7 +346,7 @@ public class ArtisanHolder : MonoBehaviour {
 	void updateProductionEtaTimeText(){
 		if (game.artisans [latestEta].etaTimestamp > DateTime.Now) {
 			TimeSpan ts = game.artisans [latestEta].etaTimestamp.Subtract (DateTime.Now);
-			transform.GetChild (0).GetChild (2).GetChild (3).GetComponent<Text> ().text = string.Format ("生產中 {0:D2}:{1:D2}:{2:D2} 後完成", ts.Hours, ts.Minutes, ts.Seconds);
+			transform.GetChild (0).GetChild (2).GetChild (3).GetComponent<Text> ().text = string.Format ("生產中 {0} 後完成", Utilities.TimeUpdate.Time(ts));
 		} else {
 			transform.GetChild (0).GetChild (2).GetChild (3).GetComponent<Text> ().text = "生產中 00:00:00 後完成";
 		}

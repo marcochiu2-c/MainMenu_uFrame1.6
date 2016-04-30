@@ -1,4 +1,4 @@
-﻿#define TEST
+﻿//#define TEST
 using UnityEngine;
 using System;
 using System.Collections;
@@ -148,7 +148,7 @@ public class WsClient {
 	public WebSocket conn;
 	//string table = "";
 	//string result = "";
-
+	string protocol = "ws://";
 #if UNITY_EDITOR
 	private string ip = "192.168.100.64";   //My PC
 #else
@@ -177,42 +177,42 @@ public class WsClient {
 		bool success = TestConnection();
 		var count = 0;
 		if (success) {
-			Debug.Log ("Server check ok");
-			string server = String.Format("ws://{0}:{1}/",  ip,  port );
+			Utilities.ShowLog.Log ("Server check ok");
+			string server = String.Format(protocol+"{0}:{1}/",  ip,  port );
 			using (conn = new WebSocket (server,"game"));
 			conn.Connect ();
 
 			conn.OnOpen += (sender, e) => conn.Send ("Server Connected");
 
 			conn.OnError += (sender, e) => {
-				Debug.Log("Websocket Error");
-				Application.Quit();
+				Utilities.ShowLog.Log("Websocket Error");
+
 				conn.Close ();
 
 			};
 
 			conn.OnClose += (sender, e) => {
-//				Debug.Log("Websocket Close");
+//				Utilities.ShowLog.Log("Websocket Close");
 				conn.Close ();
 			};
 
 			conn.OnMessage += (sender, e) => { 
 				if (e.Data != "[]"){
-					Debug.Log("Received Message: " +e.Data);
-					Debug.Log (JSON.Parse(e.Data).ToString());
+					Utilities.ShowLog.Log("Received Message: " +e.Data);
+					Utilities.ShowLog.Log (JSON.Parse(e.Data).ToString());
 					handleMessage(JSON.Parse(e.Data));
 				}
 			};
 
 		} else {
-			Debug.Log ("Server check failed");
+			Utilities.ShowLog.Log ("Server check failed");
 			return;
 		}
 
 		conn.SslConfiguration.ServerCertificateValidationCallback =
 			(sender, certificate, chain, sslPolicyErrors) => {
 			// Do something to validate the server certificate.
-			Debug.Log ("Cert: " + certificate);
+			Utilities.ShowLog.Log ("Cert: " + certificate);
 
 			return true; // If the server certificate is valid.
 		};
@@ -238,7 +238,7 @@ public class WsClient {
 		case jsonFuncNumberEnum.getUserInformationByDeviceId:
 			if (j["obj"]!="[  ]"){
 				MainScene.UserInfo = (JSONClass)j ["obj"];
-				Debug.Log ("MainScene.UserInfo received");
+				Utilities.ShowLog.Log ("MainScene.UserInfo received");
 				LoginScreen.user = (JSONClass)j ["obj"];
 			}
 			break;
@@ -251,7 +251,7 @@ public class WsClient {
 		case jsonFuncNumberEnum.getPrivateChatHistories:
 			if (j["obj"]!="[  ]"){
 				jArray = (JSONArray)j ["obj"];
-				Debug.Log (j ["obj"] [1] ["message"]);
+				Utilities.ShowLog.Log (j ["obj"] [1] ["message"]);
 			}
 			break;
 		case jsonFuncNumberEnum.addGeneral:
@@ -350,11 +350,11 @@ public class WsClient {
 			break;
 		case jsonFuncNumberEnum.updateCheckInStatus: 
 			if (j["obj"]!="[  ]"){
-				Debug.Log(String.Format("Update Check In Status: {0}",(j["obj"]["success"].AsBool ? "Success" : "Failed")));
+				Utilities.ShowLog.Log(String.Format("Update Check In Status: {0}",(j["obj"]["success"].AsBool ? "Success" : "Failed")));
 			}
 			break;
 		case jsonFuncNumberEnum.getFriendshipInfo:
-//			Debug.Log(j);
+//			Utilities.ShowLog.Log(j);
 			if (j["obj"]!="[  ]"){
 				MainScene.FriendInfo = j["obj"];
 			}
@@ -417,16 +417,16 @@ public class WsClient {
 
 	public void Send(String json){
 		if (conn.IsAlive) {
-			Debug.Log ("Sending Command");
+			Utilities.ShowLog.Log ("Sending Command");
 			conn.Send (json);
 		} else {
-			Debug.Log ("Websocket Connection Lost!");
+			Utilities.ShowLog.Log ("Websocket Connection Lost!");
 			Application.Quit();
 		}
 	}
 
 	public void OnConnectionFailed(){
-		Debug.Log( "Connection lost");
+		Utilities.ShowLog.Log( "Connection lost");
 	}
 
 	public static DateTime UnixTimestampToDateTime(long timestamp,int tz)
@@ -447,15 +447,16 @@ public class WsClient {
 	}
 
 	public void Send(string table,string action, JSONNode j){
+		Game game = Game.Instance;
 		if (conn.IsAlive) {
 			JSONClass json = new JSONClass ();
 			json.Add ("action", new JSONData (action));
 			json.Add ("table", new JSONData (table));
 			json.Add ("data", j);
-			Debug.Log (json.ToString ());
+			Utilities.ShowLog.Log (json.ToString ());
 			conn.Send (json.ToString ());
 		} else {
-			Debug.Log ("Websocket Connection Lost!");
+			Utilities.ShowLog.Log ("Websocket Connection Lost!");
 			Application.Quit();
 		}
 	}
