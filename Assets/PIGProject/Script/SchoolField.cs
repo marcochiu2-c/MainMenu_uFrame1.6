@@ -46,7 +46,7 @@ public class SchoolField : MonoBehaviour {
 	public static int AssigningStarDust=0;
 	public static DateTime AssigningTime;
 	public static int AssigningQuantity = 0;
-	public static int TotalTrainingTime=0;
+	public static float TotalTrainingTime=0;
 	public static int refStarDust = 80;
 	public static int refResource =160000;
 //	public static int refFeather  = 400;
@@ -189,7 +189,9 @@ public class SchoolField : MonoBehaviour {
 			HidePanel(AdjustSoildersAttribute);
 
 		});
-
+		Utilities.Panel.GetConfirmButton (AssignNSPopup).onClick.AddListener (() => {
+			HidePanel(AssignNSPopup);
+		});
 		Panel.GetConfirmButton(TrainingQAHolder).onClick.AddListener (() => {
 			if (isSpeedUpQuestion){
 				ConfirmedSpeedUpTraining();
@@ -828,6 +830,7 @@ public class SchoolField : MonoBehaviour {
 		} else {
 			trainingSoldiers = game.soldiers [AssigningSoldier - 1].quantity;
 		}
+		Debug.Log ("Training Soldiers: " + trainingSoldiers);
 		TotalTrainingTime = 0;
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
 		TotalTrainingTime += CalculateSoldierTrainingTime("Hit",trainingSoldiers,Hit.GetChild (1).GetChild (1).GetComponent<Slider> ().value- Mathf.Round(j ["Hit"].AsFloat*100)/100);
@@ -847,7 +850,9 @@ public class SchoolField : MonoBehaviour {
 		TotalTrainingTime += CalculateSoldierTrainingTime("SpecialWeapon",trainingSoldiers,SpecialWeapon.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["SpecialWeapon"].AsFloat*100)/100);
 		TotalTrainingTime += CalculateSoldierTrainingTime("Axe",trainingSoldiers,Axe.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Axe"].AsFloat*100)/100);
 		TotalTrainingTime += CalculateSoldierTrainingTime("Hammer",trainingSoldiers,Hammer.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Hammer"].AsFloat*100)/100);
-		Debug.Log (TotalTrainingTime);
+		Debug.Log ("AttackSpeed: "+Mathf.Round(j ["AttackSpeed"].AsFloat*100)/100);
+		Debug.Log ("AS Target: "+AttackSpeed.GetChild (1).GetChild (1).GetComponent<Slider> ().value);
+
 		if (TotalTrainingTime > 0) {
 			HidePanel(AdjustSoildersAttribute);
 			ShowConfirmTrainingPanel(trainingSoldiers);
@@ -858,9 +863,10 @@ public class SchoolField : MonoBehaviour {
 
 	}
 
-	int CalculateSoldierTrainingTime(string type, int NumOfSoldiers, float AbilityToBeTrained){
-		int session = Mathf.RoundToInt ((float)NumOfSoldiers/1000);
-		int time = 0;
+	float CalculateSoldierTrainingTime(string type, int NumOfSoldiers, float AbilityToBeTrained){
+
+		int session = Mathf.CeilToInt ((float)NumOfSoldiers/1000);
+		float time = 0;
 		Dictionary<string,float> trainParam= new Dictionary<string, float> ();
 		trainParam.Add ("Hit", 0.8f);
 		trainParam.Add ("Dodge", 0.7f);
@@ -878,9 +884,9 @@ public class SchoolField : MonoBehaviour {
 		trainParam.Add ("HighEndSword", 0.5f);
 		trainParam.Add ("SpecialWeapon", 0.01f);
 		trainParam.Add ("Axe", 0.7f);
-		trainParam.Add ("Hammer", 0.7f);;
-
-		time = Mathf.RoundToInt (AbilityToBeTrained*session/trainParam[type]);
+		trainParam.Add ("Hammer", 0.7f);
+		Debug.Log ("Session: " + session);
+		time = AbilityToBeTrained*session/trainParam[type];Debug.Log ("Train Time: " + time * 3600);
 		return time*3600; //Return as number of secounds
 	}
 
