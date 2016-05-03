@@ -285,22 +285,28 @@ public class Wealth {
 	/// <summary>
 	/// Add wealth from value. (Array index of SilverFeather: 0, Stardust: 1, Resource: 2 </summary>
 	public void Add(int money){
-		value += money;
-		UpdateCurrency ();
+		if (money > 0) {
+			value += money;
+			UpdateCurrency ();
+		}
 	}
 	/// <summary>
 	/// Deduct wealth from value. (Array index of SilverFeather: 0, Stardust: 1, Resource: 2 </summary>
 	public void Deduct(int money){
-		value -= money;
-		UpdateCurrency ();
+		if (money > 0) {
+			value -= money;
+			UpdateCurrency ();
+		}
 	}
 
 
 	/// <summary>
 	/// Set wealth value. (Array index of SilverFeather: 0, Stardust: 1, Resource: 2 </summary>
 	public void Set (int money){
-		value = money;
-		UpdateCurrency ();
+		if (money > 0) {
+			value = money;
+			UpdateCurrency ();
+		}
 	}
 
 	/// <summary>

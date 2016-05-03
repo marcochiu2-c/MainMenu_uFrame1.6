@@ -216,6 +216,7 @@ public class SchoolField : MonoBehaviour {
 		HidePanel (TrainingQAHolder);
 		CompletingTrainingSoldiers (AssigningSoldier - 1);
 		TimeSpan trainTime = Convert.ToDateTime (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]) - DateTime.Now;
+
 		game.wealth [1].Deduct (ExchangeRate.GetStardustFromTime (trainTime));
 	}
 
@@ -226,7 +227,11 @@ public class SchoolField : MonoBehaviour {
 			string msg = msgSpeedUpTrainingConfirmation;
 			int cost = ExchangeRate.GetStardustFromTime (trainTime);
 			ShowPanel (TrainingQAHolder);
+			AssigningStarDust = cost;
 			Panel.GetMessageText (TrainingQAHolder).text = msg.Replace ("%sd%", cost.ToString ());
+
+			
+
 		}
 	}
 
@@ -434,7 +439,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public void OnWeaponButtonClicked(){
-		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0) {
+		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt > 0 || game.soldiers [AssigningSoldier - 1].quantity> 0) {
 			ShowNewWeaponPanel ();
 		} else {
 			HidePanel(ArmyListHolder);
@@ -444,7 +449,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public void OnArmorButtonClicked(){
-		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0) {
+		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0 || game.soldiers [AssigningSoldier - 1].quantity> 0) {
 			ShowNewArmorPanel ();
 		} else {
 			HidePanel(ArmorListHolder);
@@ -453,7 +458,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public void OnShieldButtonClicked(){
-		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0) {
+		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0 || game.soldiers [AssigningSoldier - 1].quantity> 0) {
 			ShowNewShieldPanel ();
 		} else {
 			HidePanel(ShieldListHolder);
@@ -728,6 +733,8 @@ public class SchoolField : MonoBehaviour {
 		}
 		Debug.Log( "時之星塵: "+AssigningStarDust);
 		msg = msg.Replace ("%sd%", AssigningStarDust.ToString ());
+
+
 		ConfirmSpeedUpHolder.transform.GetChild (1).GetComponent<Text> ().text = msg;
 		ShowPanel (ConfirmSpeedUpHolder);
 	}
@@ -738,6 +745,8 @@ public class SchoolField : MonoBehaviour {
 		if (AssigningStarDust > game.wealth [1].value) {
 			return;
 		}
+		Debug.Log ("AssigningStarDust: " + AssigningStarDust);
+		Debug.Log ("StarDust: " + game.wealth [1].value);
 		game.wealth [1].Deduct (AssigningStarDust);
 		if (AssigningWeaponId > 0) {
 			index = game.weapon.FindIndex (x => x.type == AssigningWeaponId);
