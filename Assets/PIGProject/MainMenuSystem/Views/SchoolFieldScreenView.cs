@@ -51,6 +51,11 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 	public GameObject SaveType;
 	public GameObject TrainingHolder;
 	public GameObject TrainingQHolder;
+	public GameObject TrainingQAHolder;
+	public GameObject TrainingEquHolder;
+	public GameObject TrainingEquConfirmAHolder;
+	public GameObject TrainingInProgress;
+	public GameObject ConfirmSpeedUpHolder;
 	public GameObject AssignNSHolder;
 	public GameObject ArmyQAHolder;
 	public GameObject ArmorQAHolder;
@@ -77,10 +82,28 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 			ShieldListHolder.gameObject.SetActive (false);
 			SaveType.gameObject.SetActive (false);
 			TrainingHolder.gameObject.SetActive (false);
+			TrainingQHolder.SetActive (false);
+			TrainingQAHolder.SetActive (false);
+			TrainingEquHolder.SetActive (false);
+			TrainingEquConfirmAHolder.SetActive (false);
+			TrainingInProgress.SetActive (false);
+			ConfirmSpeedUpHolder.SetActive (false);
 		});
 
 		this.BindButtonToHandler (closeTrainingButton, () => {
+			DisablePanel.SetActive (false);
+			MountListHolder.gameObject.SetActive (false);
+			ArmyListHolder.gameObject.SetActive (false);
+			ArmorListHolder.gameObject.SetActive (false);
+			ShieldListHolder.gameObject.SetActive (false);
+			SaveType.gameObject.SetActive (false);
 			TrainingHolder.gameObject.SetActive (false);
+			TrainingQHolder.SetActive (false);
+			TrainingQAHolder.SetActive (false);
+			TrainingEquHolder.SetActive (false);
+			TrainingEquConfirmAHolder.SetActive (false);
+			TrainingInProgress.SetActive (false);
+			ConfirmSpeedUpHolder.SetActive (false);
 			//ArmyQAHolder.gameObject.SetActive (false);
 			//MountQAHolder.gameObject.SetActive (false);
 			//ArmorQAHolder.gameObject.SetActive (false);
