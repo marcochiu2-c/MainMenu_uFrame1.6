@@ -12,7 +12,7 @@ using SimpleJSON;
 using Facebook.Unity;
 using Utilities;
 
-
+public enum EquipmentEnum {Weapon,Armor,Shield};
 
 public class MainScene : MonoBehaviour {
 	WsClient wsc;
@@ -54,6 +54,7 @@ public class MainScene : MonoBehaviour {
 	public static Nullable<DateTime> WarfareLastUpdate = null;
 	public static Nullable<DateTime> FriendLastUpdate = null;
 	Shop shop;
+
 
 	void Awake(){
 		DontDestroyOnLoad(gameObject);
@@ -105,7 +106,35 @@ public class MainScene : MonoBehaviour {
 		InvokeRepeating("QuitIfConnectionFailed",0,10);
 		InvokeRepeating ("OnSchoolFieldSoldierTrainComplete", 2, 4);
 		InvokeRepeating ("OnAcademyTrainingComplete", 3, 4);
+		InvokeRepeating ("OnArtisanJobsComplete", 3, 4);
 	}
+
+	void OnArtisanJobsComplete (){
+		Game game = Game.Instance;
+		int id= 0;
+		if (game.artisans [0].etaTimestamp <= DateTime.Now && (game.artisans[0].status == 1 || game.artisans[0].status==4)) {
+			id = game.weapon.FindIndex (x => x.type == game.artisans[0].targetId);
+			game.weapon[id].quantity += game.artisans[0].quantity;
+			game.weapon[id].UpdateObject();
+			game.artisans[0].status = 2;
+			game.artisans[0].UpdateObject();
+		}
+		if (game.artisans [1].etaTimestamp <= DateTime.Now && (game.artisans[1].status == 1 || game.artisans[1].status==4)) {
+			id = game.armor.FindIndex (x => x.type == game.artisans[1].targetId);
+			game.armor[id].quantity += game.artisans[1].quantity;
+			game.armor[id].UpdateObject();
+			game.artisans[1].status = 2;
+			game.artisans[1].UpdateObject();
+		}
+		if (game.artisans [2].etaTimestamp <= DateTime.Now && (game.artisans[2].status == 1 || game.artisans[2].status==4)) {
+			id = game.shield.FindIndex (x => x.type == game.artisans[2].targetId);
+			game.shield[id].quantity += game.artisans[1].quantity;
+			game.shield[id].UpdateObject();
+			game.artisans[2].status = 2;
+			game.artisans[2].UpdateObject();
+		}
+	}
+
 	void OnAcademyTrainingComplete(){
 		for (int i = 0; i < 40; i++) {
 			if (game.trainings[i].status == 1 && game.trainings[i].etaTimestamp < DateTime.Now){

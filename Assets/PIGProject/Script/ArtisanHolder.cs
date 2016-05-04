@@ -14,6 +14,8 @@ public class ArtisanHolder : MonoBehaviour {
 	public GameObject ArtisanWeaponPanel;
 	public GameObject ArtisanArmorPanel;
 	public GameObject ArtisanShieldPanel;
+
+
 	public GameObject DisablePopup;
 	public GameObject ArtisanConfirmPopup;
 	public GameObject NeedExtraResourcesPopup;
@@ -94,6 +96,7 @@ public class ArtisanHolder : MonoBehaviour {
 			DestroyPrefabObject();
 			Resources.UnloadUnusedAssets();
 		});
+
 		EquipmentQHolder.transform.GetChild (2).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {  //Confirm
 			OnEquipmentQHolderConfirmed();
 		});
