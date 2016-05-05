@@ -154,8 +154,10 @@ public class AcademyStudent : MonoBehaviour {
 
 	public void ConfirmTrainingIfOk(AcademyTeach aTeach){
 		Game game = Game.Instance;
-		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
-		GameObject ConfirmTeacherBy = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(7).gameObject;
+//		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
+//		GameObject ConfirmTeacherBy = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(7).gameObject;
+		GameObject LowerThanTrainer = Academy.staticLowerThanTrainer;
+		GameObject ConfirmTeacherBy = Academy.staticConfirmTeacherBy;
 		if (aTeach.trainerId != 0 && aTeach.targetId != 0) {
 			if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
 //			if (transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(0).GetComponent<Text>().text == "智商"){
@@ -172,7 +174,7 @@ public class AcademyStudent : MonoBehaviour {
 					ShowLowerThanTrainerPanel();
 				}
 
-			}else if (transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(0).GetComponent<Text>().text == "統率"){
+			}else if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "統率"){
 				if (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["Leadership"].AsFloat >
 				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat){
 					if(game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat < 
@@ -184,16 +186,17 @@ public class AcademyStudent : MonoBehaviour {
 				}else{
 					ShowLowerThanTrainerPanel();
 				}
-			}else if (transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(0).GetComponent<Text>().text == "學問"){
+			}else if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "學問"){
 				ShowKnowledgeListPanel(aTeach.trainerId,aTeach.targetId);
-			}else if (transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(0).GetComponent<Text>().text == "陣法"){
+			}else if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "陣法"){
 
 			}
 		}
 	}
 
 	public void ShowLowerThanTrainerPanel(string isMaxPoint=""){
-		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
+//		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
+		GameObject LowerThanTrainer = Academy.staticLowerThanTrainer;
 		LowerThanTrainer.SetActive(true);
 		if (isMaxPoint == "") {
 			Utilities.Panel.GetHeader (LowerThanTrainer).text = "青出於藍";
@@ -219,7 +222,7 @@ public class AcademyStudent : MonoBehaviour {
 
 	public void ShowKnowledgeListPanel(int teacher, int student){
 		Game game = Game.Instance;
-		GameObject panel = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.gameObject;
+		GameObject panel = Academy.staticKnowledgeListHolder;
 		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Woodworker"].AsInt > 
 			game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Woodworker"].AsInt) {
 			KnowledgeOption.Woodworker.interactable = true;
@@ -304,7 +307,7 @@ public class AcademyStudent : MonoBehaviour {
 		} else {
 			KnowledgeOption.Psychology.interactable = false;
 		}
-		panel.transform.GetChild (5).gameObject.SetActive (true);
+		panel.SetActive (true);
 	}
 
 	public void SetAttributeText(string panel){

@@ -31,8 +31,13 @@ public class WeaponMaking : MonoBehaviour {
 	void Start () {
 		Color.TryParseHexString ("#FFFFF12", out color);
 		AddButtonListener ();
+
+
 	}
-	
+
+
+
+
 	void AddButtonListener(){
 		Metalsmith.onClick.AddListener (() => {
 			OnMetalsmithClicked();
@@ -43,12 +48,12 @@ public class WeaponMaking : MonoBehaviour {
 			if (eta>DateTime.Now){
 				ArtisanHolder.IdEquipmentToBeProduced = id;
 				SetSpeedUpText();
-				ShowPanel(transform.parent.parent.parent.parent.GetChild(7).gameObject);
+				ShowPanel(ArtisanHolder.staticSpeedUpPopup);
 			}
 		});
 		Details.onClick.AddListener (() => {
 			SetDetailText();
-			ShowPanel(transform.parent.parent.parent.parent.GetChild(10).gameObject);
+			ShowPanel(ArtisanHolder.staticDetailPanel);
 		});
 	}
 
@@ -58,7 +63,7 @@ public class WeaponMaking : MonoBehaviour {
 		string msg2 = "\n\n對\n主公\n返回最頂吧";
 		string details = "";
 		string colonAndTab = "\t：\t";
-		Text tPanel = transform.parent.parent.parent.parent.GetChild (10).GetChild (1).GetChild (0).GetComponent<Text>();
+		Text tPanel = ArtisanHolder.staticDetailPanel.transform.GetChild (1).GetChild (0).GetComponent<Text>();
 		if (id > 5000 && id < 6000) {
 			details += "\n武器名稱"+colonAndTab+p.products[id].name;
 			details += "\n等級"+colonAndTab+p.products[id].attributes["Grade"];
@@ -110,23 +115,23 @@ public class WeaponMaking : MonoBehaviour {
 			type = 2;
 		}
 		if (game.artisans [type].etaTimestamp <= DateTime.Now) {
-			GameObject EquipmentQHolder = transform.parent.parent.parent.parent.GetChild(9).gameObject;
+			GameObject EquipmentQHolder = ArtisanHolder.staticEquipmentQHolder;
 			EquipmentQHolder.SetActive(true);
 		} else {
 			if (game.artisans [type].targetId == id){
 				ArtisanHolder.CancelType = type;
 				ArtisanHolder.CancelId   = id;
 				SetCancelPanel();
-				ShowPanel(transform.parent.parent.parent.parent.GetChild(8).gameObject); // Cancel Panel
+				ShowPanel(ArtisanHolder.staticJobCancelPopup); // Cancel Panel
 			}else{
-				HidePanel(transform.parent.parent.parent.parent.GetChild(8).gameObject); // Cancel Panel
+				HidePanel(ArtisanHolder.staticJobCancelPopup); // Cancel Panel
 			}
 		}
 	}
 
 	void SetCancelPanel(){
-		Game game = Game.Instance;
-		GameObject JobCancelPopup = transform.parent.parent.parent.parent.GetChild (8).gameObject;
+		Game game = Game.Instance;	
+		GameObject JobCancelPopup = ArtisanHolder.staticJobCancelPopup;
 		string msg = "主公，裝備製作需時，確定取消嗎？";
 		if (game.artisans [ArtisanHolder.CancelType].status == 4) {
 			msg = "主公，這項工作不能取消";
@@ -151,7 +156,7 @@ public class WeaponMaking : MonoBehaviour {
 		string msg = "主公，使用amount星塵進行加速嗎？";
 		ArtisanHolder.IdEquipmentToBeProduced = id;
 		msg = msg.Replace ("amount", (((int) (tdiff.TotalHours*10))).ToString ());
-		transform.parent.parent.parent.parent.GetChild (7).GetChild (1).GetComponent<Text> ().text = msg;
+		Utilities.Panel.GetMessageText (ArtisanHolder.staticSpeedUpPopup).text = msg;
 	}
 		                  
 	 public void SetPanel(Products p,int q, DateTime endTime){
@@ -169,11 +174,12 @@ public class WeaponMaking : MonoBehaviour {
 		
 	public void UpdateRemainingTime(){
 		ProductDict p = ProductDict.Instance;
-		if (eta > DateTime.Now) {
+
+		if (eta >= DateTime.Now) { // Job of this prefab ongoing
 			ts = eta.Subtract (DateTime.Now);
 			TimeRequire.transform.GetChild(0).GetComponent<Text>().text = Utilities.TimeUpdate.Time(ts);
 			transform.GetComponent<Image>().color = Color.green;
-		} else {
+		} else { // Job not started
 			TimeRequire.transform.GetChild(0).GetComponent<Text>().text = p.products[id].attributes["ProductionTime"]+"s";
 			transform.GetComponent<Image>().color = color;
 		}
@@ -181,11 +187,15 @@ public class WeaponMaking : MonoBehaviour {
 
 	public void UpdateButtonName(){
 		ProductDict p = ProductDict.Instance;
+
 		if (eta > DateTime.Now) {
+
 			ts = eta.Subtract (DateTime.Now);
-			Metalsmith.transform.GetChild(0).GetComponent<Text>().text = "取消";
+//			Metalsmith.transform.GetChild(0).GetComponent<Text>().text = "取消";
+			Utilities.Panel.GetHeader(Metalsmith.gameObject).text = "取消";
 		} else {
-			Metalsmith.transform.GetChild(0).GetComponent<Text>().text = "鍛冶";
+//			Metalsmith.transform.GetChild(0).GetComponent<Text>().text = "鍛冶";
+			Utilities.Panel.GetHeader(Metalsmith.gameObject).text = "鍛冶";
 		}
 	}
 	
@@ -197,11 +207,11 @@ public class WeaponMaking : MonoBehaviour {
 	}
 	
 	void ShowPanel(GameObject panel){
-		transform.parent.parent.parent.parent.GetChild(4).gameObject.SetActive (true);  //Show Disable Panel mask
+		ArtisanHolder.staticDisablePopup.SetActive (true);  //Show Disable Panel mask
 		panel.SetActive (true);
 	}
 	void HidePanel(GameObject panel){
-		transform.parent.parent.parent.parent.GetChild(4).gameObject.SetActive (false);  //Show Disable Panel mask
+		ArtisanHolder.staticDisablePopup.SetActive (false);  //Show Disable Panel mask
 		panel.SetActive (false);
 	}
 }

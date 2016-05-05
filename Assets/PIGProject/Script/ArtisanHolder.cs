@@ -33,6 +33,11 @@ public class ArtisanHolder : MonoBehaviour {
 	static int NumberOfEquipmentToBeProduced=0;
 	public static int CancelType = 0;
 	public static int CancelId   = 0;
+	public static GameObject staticDisablePopup;
+	public static GameObject staticSpeedUpPopup;
+	public static GameObject staticJobCancelPopup;
+	public static GameObject staticEquipmentQHolder;
+	public static GameObject staticDetailPanel;
 	int latestEta = 0;
 	// Use this for initialization
 	void Start () {
@@ -45,15 +50,23 @@ public class ArtisanHolder : MonoBehaviour {
 		BackButton = transform.GetChild (1).GetComponent<Button> ();
 		CloseButton = transform.GetChild (2).GetComponent<Button> ();
 		AddButtonListener ();
-		SetPanel (game.weapon);
-		SetPanel (game.armor);
-		SetPanel (game.shield);
+
 		latestEta = GetLatestEta ();
 
 		SetItemButtonActivateWhenJobComplete ();
+
+		staticDisablePopup = DisablePopup;
+		staticSpeedUpPopup = SpeedUpPopup;
+		staticJobCancelPopup = JobCancelPopup;
+		staticEquipmentQHolder = EquipmentQHolder;
+		staticDetailPanel = DetailPanel;
 	}
 
 	void OnEnable(){
+		game = Game.Instance;
+		SetPanel (game.weapon);
+		SetPanel (game.armor);
+		SetPanel (game.shield);
 		InvokeRepeating ("updateProductionEtaTimeText", 0.5f, 1);
 	}
 
@@ -61,10 +74,35 @@ public class ArtisanHolder : MonoBehaviour {
 		CancelInvoke ();
 	}
 
-	void CloseAllPanel(){
-		ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive(false);
-		ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive(false);
-		ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive(false);
+	void CloseAllPanel(string buttonName){
+		DisablePopup.SetActive (false);
+		if (buttonName == "Cancel") {
+			if (ArtisanConfirmPopup.activeSelf || NeedExtraResourcesPopup.activeSelf || SpeedUpPopup.activeSelf ||
+				 EquipmentQHolder.activeSelf || JobCancelPopup.activeSelf|| DetailPanel.activeSelf){
+				Debug.Log("CloseAllPanel()");
+				ArtisanConfirmPopup.SetActive (false);
+				NeedExtraResourcesPopup.SetActive (false);
+				SpeedUpPopup.SetActive (false);
+				EquipmentQHolder.SetActive (false);
+				JobCancelPopup.SetActive (false);
+				DetailPanel.SetActive (false);
+			} else {
+				ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive (false);
+				ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive (false);
+				ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive (false);
+			}
+		} else {
+			ArtisanConfirmPopup.SetActive (false);
+			NeedExtraResourcesPopup.SetActive (false);
+			SpeedUpPopup.SetActive (false);
+			EquipmentQHolder.SetActive (false);
+			JobCancelPopup.SetActive (false);
+			DetailPanel.SetActive (false);
+			ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive (false);
+			ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive (false);
+			ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive (false);
+			gameObject.SetActive(false);
+		}
 	}
 
 	void DestroyPrefabObject(){
@@ -87,12 +125,11 @@ public class ArtisanHolder : MonoBehaviour {
 
 	void AddButtonListener(){
 		BackButton.onClick.AddListener (() => {
-			CloseAllPanel();
+			CloseAllPanel("Cancel");
 			transform.GetChild(0).gameObject.SetActive(true);
 		});
 		CloseButton.onClick.AddListener (() => {
-			CloseAllPanel();
-			gameObject.SetActive(false);
+			CloseAllPanel("Close");
 			DestroyPrefabObject();
 			Resources.UnloadUnusedAssets();
 		});
@@ -241,9 +278,11 @@ public class ArtisanHolder : MonoBehaviour {
 		game.artisans [type].targetId = IdEquipmentToBeProduced;
 		game.artisans [type].resources = p.products [IdEquipmentToBeProduced].attributes ["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced;
 		game.artisans [type].details = " ";
-		game.artisans [type].quantity = NumberOfEquipmentToBeProduced;
+		game.artisans [type].quantity = Mathf.Abs (NumberOfEquipmentToBeProduced);
 		game.artisans [type].startTimestamp = DateTime.Now;
-		game.artisans [type].etaTimestamp = DateTime.Now.Add (new TimeSpan(p.products [IdEquipmentToBeProduced].attributes ["ProductionTime"].AsInt * NumberOfEquipmentToBeProduced * 1000 * 10000));
+		Debug.Log ("p.products [IdEquipmentToBeProduced].attributes [\"ProductionTime\"].AsInt: " + p.products [IdEquipmentToBeProduced].attributes ["ProductionTime"].AsInt);
+		Debug.Log ("NumberOfEquipmentToBeProduced: " + NumberOfEquipmentToBeProduced);
+		game.artisans [type].etaTimestamp = DateTime.Now.Add (new TimeSpan(0,0,Mathf.Abs(p.products [IdEquipmentToBeProduced].attributes ["ProductionTime"].AsInt * NumberOfEquipmentToBeProduced)));
 		game.artisans [type].status = 1;
 		game.artisans [type].UpdateObject ();
 	}
@@ -302,7 +341,7 @@ public class ArtisanHolder : MonoBehaviour {
 				wobj.transform.parent = ArtisanArmorPanel.transform;
 				Armor x = weapon[i] as Armor;
 				if (IdArmorWhichProducing == x.type){
-					wobj.SetPanel(p.products[x.type],x.quantity,game.artisans[0].etaTimestamp);
+					wobj.SetPanel(p.products[x.type],x.quantity,game.artisans[1].etaTimestamp);
 				}else{
 					wobj.SetPanel(p.products[x.type],x.quantity,DateTime.Now);
 				}
@@ -311,7 +350,7 @@ public class ArtisanHolder : MonoBehaviour {
 				wobj.transform.parent = ArtisanShieldPanel.transform;
 				Shield x = weapon[i] as Shield;
 				if(IdShieldWhichProducing == x.type){
-					wobj.SetPanel(p.products[x.type],x.quantity,game.artisans[0].etaTimestamp);
+					wobj.SetPanel(p.products[x.type],x.quantity,game.artisans[2].etaTimestamp);
 				}else{
 					wobj.SetPanel(p.products[x.type],x.quantity,DateTime.Now);
 				}

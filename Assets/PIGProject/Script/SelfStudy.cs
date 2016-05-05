@@ -213,6 +213,7 @@ public class SelfStudy : MonoBehaviour {
 					leftHolder.GetChild(i*2).GetComponent<SelfStudy>().trainingObject = game.trainings[i+30];
 					leftHolder.GetChild(i*2).GetComponent<SelfStudy>().isDropZoneEnabled = false;
 				}else{
+					Debug.Log ("p.trainingType: "+p);
 					p.trainingType =0 ;
 					p.targetId = 0;
 					p.etaTimestamp = game.trainings[i+30].etaTimestamp;

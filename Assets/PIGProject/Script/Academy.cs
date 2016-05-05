@@ -44,8 +44,11 @@ public class Academy : MonoBehaviour
 	public Transform SelfLearnScrollPanel;
 	public static Dictionary<int,Sprite> imageDict;
 	public static Dictionary<int,string> nameDict;
+	public static GameObject staticLowerThanTrainer;
+	public static GameObject staticConfirmTeacherBy;
 	public static GameObject staticTeachHolder;
 	public static GameObject staticSelfStudyHolder;
+	public static GameObject staticKnowledgeListHolder;
 	public static List<Counselor> cStudentList;
 	public static List<Counselor> cSelfLearnList;
 	bool firstCalled = false;
@@ -85,6 +88,9 @@ public class Academy : MonoBehaviour
 		staticTeachHolder = TeachHolder;
 		staticAcademyHolder = AcademyHolder;
 		staticSelfStudyHolder = SelfStudyHolder;
+		staticLowerThanTrainer = LowerThanTrainer;
+		staticConfirmTeacherBy = ConfirmTeacherBy;
+		staticKnowledgeListHolder = KnowledgeListHolder;
 
 		wsc = WsClient.Instance;
 		game = Game.Instance;
