@@ -166,20 +166,37 @@ public class WeaponMaking : MonoBehaviour {
 		Quantity.text = q.ToString();
 		//        Metalsmith.text = ms;
 		eta = endTime;
-		InvokeRepeating ("UpdateRemainingTime", 0, 1);
-		InvokeRepeating ("UpdateButtonName", 0, 1);
+		SetAutoRun();
 		id = p.id;
 		//        Details.text = details;
+	}
+
+	public void SetAutoRun(){
+		InvokeRepeating ("UpdateRemainingTime", 0, 1);
+		InvokeRepeating ("UpdateButtonName", 0, 1);
 	}
 		
 	public void UpdateRemainingTime(){
 		ProductDict p = ProductDict.Instance;
-
+		Game game = Game.Instance;
 		if (eta >= DateTime.Now) { // Job of this prefab ongoing
 			ts = eta.Subtract (DateTime.Now);
-			TimeRequire.transform.GetChild(0).GetComponent<Text>().text = Utilities.TimeUpdate.Time(ts);
-			transform.GetComponent<Image>().color = Color.green;
+			TimeRequire.transform.GetChild (0).GetComponent<Text> ().text = Utilities.TimeUpdate.Time (ts);
+			transform.GetComponent<Image> ().color = Color.green;
 		} else { // Job not started
+			if (ArtisanHolder.OpenedHolder == 1) {
+				if(id > 5000 && id < 6000){
+					Quantity.text = game.weapon.Find (x => x.type == id).quantity.ToString();
+				}
+			} else if (ArtisanHolder.OpenedHolder == 2) {
+				if(id > 6000 && id < 7000){
+					Quantity.text = game.armor.Find (x => x.type == id).quantity.ToString();
+				}
+			} else if (ArtisanHolder.OpenedHolder == 3){
+				if(id > 7000){
+					Quantity.text = game.shield.Find (x => x.type == id).quantity.ToString();
+				}
+			}
 			TimeRequire.transform.GetChild(0).GetComponent<Text>().text = p.products[id].attributes["ProductionTime"]+"s";
 			transform.GetComponent<Image>().color = color;
 		}

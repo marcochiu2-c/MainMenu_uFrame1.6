@@ -39,18 +39,21 @@ public class ArtisanScreenView : ArtisanScreenViewBase {
 			armsPopup.SetActive (true);
 			armorPopup.SetActive (false);
 			shieldPopup.SetActive (false);
+			ArtisanHolder.OpenedHolder = 1;
 		});
 
 		this.BindButtonToHandler (armorButton, () => {
 			armsPopup.SetActive (false);
 			armorPopup.SetActive (true);
 			shieldPopup.SetActive (false);
+			ArtisanHolder.OpenedHolder = 2;
 		});
 
 		this.BindButtonToHandler (shieldButton, () => {
 			armsPopup.SetActive (false);
 			armorPopup.SetActive (false);
 			shieldPopup.SetActive (true);
+			ArtisanHolder.OpenedHolder = 3;
 		});
     }
 }
