@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Text.RegularExpressions;
+using Utilities;
 
 public class SchoolField : MonoBehaviour {
 	public GameObject DollPanel;
@@ -29,6 +30,7 @@ public class SchoolField : MonoBehaviour {
 	public GameObject CannotTrainSoldierPopup;
 	public GameObject ConfirmSpeedUpHolder;
 	public Text TrainingQText;
+	bool isSpeedUpQuestion = false;
 
 	public static GameObject staticArmyQAHolder;
 	public static GameObject staticArmorQAHolder;
@@ -44,24 +46,24 @@ public class SchoolField : MonoBehaviour {
 	public static int AssigningStarDust=0;
 	public static DateTime AssigningTime;
 	public static int AssigningQuantity = 0;
-	public static int TotalTrainingTime=0;
+	public static float TotalTrainingTime=0;
 	public static int refStarDust = 80;
 	public static int refResource =160000;
 //	public static int refFeather  = 400;
 	Text SoldierSummary;
 	static ProductDict p;
 
-#region stringDefinition
+	#region stringDefinition
 	static string msgExistingSoldierQuantity= "現有兵數："; 
 	static string msgSoldierQuantityWantToTrain = "請輸入欲訓練士兵數目";
 	static string msgWarningSOldierQuantiyOverQuota = "<color=red>輸入兵數不能大於現有兵數</color>";
 	static string msgExtraEquipmentRequired = "訓練%SQ%個士兵需要製造額外%EQ%的裝備，找工匠嗎？";
+	static string msgExtraEquipmentRequiredForNewSoldiers = "裝備不足，請先找工匠。";
 	static string msgEquipmentReplacement = "確定更改%Orig%為%New%嗎？";
 	static string msgQuestionConfirmProductionTimeForExtraEquipment = "額外%EQ%的裝備需要%SU%物資和時間%TM%，立刻製作嗎？";
 	static string msgQuestionConfirmTimeForTrainingSOldiers = "訓練%SQ%的士兵需時%TT%，確定訓練嗎？";
-
-
-#endregion
+	static string msgSpeedUpTrainingConfirmation ="軍師閣下，可以用%sd%時之星塵加速訓練，確認？";
+	#endregion
 
 	Game game;
 	WsClient wsc;
@@ -69,7 +71,7 @@ public class SchoolField : MonoBehaviour {
 //	public bool hasTrainingQHolderShown = false;
 	RectTransform rt;
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 		CallSchoolField ();
 	}
 
@@ -80,7 +82,6 @@ public class SchoolField : MonoBehaviour {
 		SchoolField.AssigningSoldier = 1;
 //		Debug.Log (game.counselor [0].toJSON ().ToString ());
 //		Debug.Log (TotalSoldiersAvailable());
-
 		AddButtonListener ();
 		staticArmyQAHolder = ArmyQAHolder;
 		staticArmorQAHolder = ArmorQAHolder;
@@ -92,6 +93,7 @@ public class SchoolField : MonoBehaviour {
 		SetDataPanel ();
 		SetAdjustSoldierValues ();
 		p = ProductDict.Instance;
+
 	}
 
 	void OnEnable(){
@@ -99,7 +101,7 @@ public class SchoolField : MonoBehaviour {
 		InvokeRepeating ("UpdateSoldierSummaryPanel", 0, 1);
 		InvokeRepeating("SetDataPanel",0.5f,1);
 	}
-
+	
 	void OnDisable(){
 		CancelInvoke ();
 	}
@@ -108,6 +110,7 @@ public class SchoolField : MonoBehaviour {
 	void Update () {
 
 	}
+
 	
 	void AddButtonListener(){
 //		TrainingQAHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { Debug.Log ("OnTrainingQAHolderConfirmed()");OnTrainingQAHolderConfirmed(); });
@@ -117,12 +120,18 @@ public class SchoolField : MonoBehaviour {
 				ShowPanel(TrainingQHolder);
 			}
 		});
-		DollPanel.transform.GetChild (0).GetChild (1).GetComponent<Button> ().onClick.AddListener (() => {
-			DisablePanel.SetActive(true);
+		// Weapon Button
+		DollPanel.transform.GetChild (0).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {
 			OnWeaponButtonClicked (); });
+		// Speed Up Button for Training
+		DollPanel.transform.GetChild (0).GetChild (2).GetComponent<Button> ().onClick.AddListener (() => {
+			OnSpeedUpTrainingClicked();
+			 });
+		// Armor Button
 		DollPanel.transform.GetChild (1).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {
 			DisablePanel.SetActive(true);
 			OnArmorButtonClicked (); });
+		// Shield Button
 		DollPanel.transform.GetChild (1).GetChild (1).GetComponent<Button> ().onClick.AddListener (() => {
 			DisablePanel.SetActive(true);
 			OnShieldButtonClicked (); });
@@ -156,7 +165,6 @@ public class SchoolField : MonoBehaviour {
 		TrainingQHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => {  //confirm
 			Debug.Log ("Soldier number assignment confirmed.");
 			HidePanel(TrainingEquHolder);
-			game.soldiers[AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = int.Parse(TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text);
 			TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text = "";
 		});
 		TrainingQHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => {  //cancel
@@ -181,23 +189,45 @@ public class SchoolField : MonoBehaviour {
 			HidePanel(AdjustSoildersAttribute);
 
 		});
-
-		TrainingQAHolder.transform.GetChild (2).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {
-			ConfirmedTraining();
-		});
-		TrainingQAHolder.transform.GetChild (2).GetChild (1).GetComponent<Button> ().onClick.AddListener (() => {
-			CancelConfirmTraining();
-		});
 		Utilities.Panel.GetConfirmButton (AssignNSPopup).onClick.AddListener (() => {
 			HidePanel(AssignNSPopup);
 		});
-		Utilities.Panel.GetConfirmButton (ConfirmSpeedUpHolder).onClick.AddListener (() => {
-			OnSpeedUpProductionConfirmed();
+		Panel.GetConfirmButton(TrainingQAHolder).onClick.AddListener (() => {
+			if (isSpeedUpQuestion){
+				ConfirmedSpeedUpTraining();
+			}else{
+				ConfirmedTraining();
+			}
+			isSpeedUpQuestion = false;
 		});
-		Utilities.Panel.GetCancelButton (ConfirmSpeedUpHolder).onClick.AddListener (() => {
-			HidePanel(ConfirmSpeedUpHolder);
+		Panel.GetCancelButton(TrainingQAHolder).onClick.AddListener (() => {
+			if (isSpeedUpQuestion){
+				HidePanel (TrainingQAHolder);
+			}else{
+				CancelConfirmTraining();
+			}
+			isSpeedUpQuestion = false;
 		});
 
+
+	}
+
+	void ConfirmedSpeedUpTraining(){
+		HidePanel (TrainingQAHolder);
+		CompletingTrainingSoldiers (AssigningSoldier - 1);
+		TimeSpan trainTime = Convert.ToDateTime (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]) - DateTime.Now;
+		game.wealth [1].Deduct (ExchangeRate.GetStardustFromTime (trainTime));
+	}
+
+	void OnSpeedUpTrainingClicked(){
+		if (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"] != null) {
+			isSpeedUpQuestion = true;
+			TimeSpan trainTime = Convert.ToDateTime (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]) - DateTime.Now;
+			string msg = msgSpeedUpTrainingConfirmation;
+			int cost = ExchangeRate.GetStardustFromTime (trainTime);
+			ShowPanel (TrainingQAHolder);
+			Panel.GetMessageText (TrainingQAHolder).text = msg.Replace ("%sd%", cost.ToString ());
+		}
 	}
 
 	#region ShowSoldiersAvailable
@@ -238,22 +268,28 @@ public class SchoolField : MonoBehaviour {
 				TrainingQHolder.transform.GetChild(1).GetComponent<Text>().text=msgWarningSOldierQuantiyOverQuota+"\n"+msgSoldierQuantityWantToTrain;
 				Debug.Log ("Number of new soldiers cannot be larger than available, inputed: " + soldierQuantity);
 			} else {   //Valid number
-				transform.GetChild(9).GetChild(1).GetComponent<Text>().text= "msgSoldierQuantityWantToTrain";
+				transform.GetChild(9).GetChild(1).GetComponent<Text>().text= msgSoldierQuantityWantToTrain;
 				transform.GetChild (9).gameObject.SetActive (false);
 //				Debug.Log ("士兵數目："+s);
 				game.login.attributes["TotalDeductedSoldiers"].AsInt = game.login.attributes["TotalDeductedSoldiers"].AsInt + soldierQuantity;
-				game.soldiers[SchoolField.AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = soldierQuantity;
+				game.soldiers[SchoolField.AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = game.soldiers[SchoolField.AssigningSoldier-1].attributes["trainingSoldiers"].AsInt + soldierQuantity;
 				ShowTotalSoldiersAvailableText();
-//				wsc.Send ("users","SET",game.login.toJSON());
-				game.soldiers [SchoolField.AssigningSoldier - 1].UpdateObject();
+
 				s.text = "";
 				HidePanel( TrainingQHolder);
-//				CheckArmedEquipmentAvailability();
+				CheckArmedEquipmentAvailabilityForNewSoldiers();
 				SetDataPanel();
+				game.soldiers [SchoolField.AssigningSoldier - 1].UpdateObject();
 			}
 		} else {
 			return;
 		}
+	}
+
+	public void CheckArmedEquipmentAvailabilityForNewSoldiers(){
+		Game game = Game.Instance;
+		string msg = msgExtraEquipmentRequiredForNewSoldiers;
+		//TODO if Enough equipment, deduct equipments and go ahead, else either equipments not enough show message and stop
 	}
 
 	public static void CheckArmedEquipmentAvailability(){
@@ -262,8 +298,8 @@ public class SchoolField : MonoBehaviour {
 		var count = 0;
 		if (AssigningWeaponId != 0) {
 			count = game.weapon.Count;
-//			AssigningArmorId = 0;
-//			AssigningShieldId = 0;
+			AssigningArmorId = 0;
+			AssigningShieldId = 0;
 			for (int i = 0 ; i< count ; i++){
 				if(game.weapon[i].type == AssigningWeaponId){
 
@@ -280,8 +316,8 @@ public class SchoolField : MonoBehaviour {
 		}
 		if (AssigningArmorId != 0) {
 			count = game.weapon.Count;
-//			AssigningWeaponId = 0;
-//			AssigningShieldId = 0;
+			AssigningWeaponId = 0;
+			AssigningShieldId = 0;
 			for (int i = 0 ; i< count ; i++){
 				if(game.armor[i].type == AssigningArmorId){
 
@@ -299,8 +335,8 @@ public class SchoolField : MonoBehaviour {
 
 		if (AssigningShieldId != 0) {
 			count = game.shield.Count;
-//			AssigningWeaponId = 0;
-//			AssigningArmorId = 0;
+			AssigningWeaponId = 0;
+			AssigningArmorId = 0;
 			for (int i = 0 ; i< count ; i++){
 				if(game.shield[i].type == AssigningShieldId){
 					if (game.shield[i].quantity < game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt){
@@ -323,7 +359,11 @@ public class SchoolField : MonoBehaviour {
 		Transform panel = ArmyListHolder.transform.GetChild (1).GetChild (1).GetChild (0);
 		for (int i = 0; i < count; i++) {
 			SchoolFieldWeapon obj = Instantiate (Resources.Load ("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon> ();
-			obj.transform.localScale = new Vector3 (0.4f, 0.4f);
+#if UNITY_EDITOR
+			obj.transform.localScale = new Vector3 (0.6f, 0.6f, 0.6f);
+#else
+			obj.transform.localScale = new Vector3 (1f, 1f, 1f);
+#endif
 			obj.SetSchoolFieldWeapon (SchoolField.AssigningSoldier,
 								game.weapon [i].type,
 								p.products [game.weapon [i].type].name, 
@@ -343,7 +383,11 @@ public class SchoolField : MonoBehaviour {
 		Transform panel = ArmorListHolder.transform.GetChild (1).GetChild (1).GetChild (0);
 		for (int i = 0; i < count; i++) {
 			SchoolFieldWeapon obj = Instantiate (Resources.Load ("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon> ();
-			obj.transform.localScale = new Vector3 (0.4f, 0.4f);
+#if UNITY_EDITOR
+			obj.transform.localScale = new Vector3 (0.51f, 0.51f, 0.51f);
+#else
+			obj.transform.localScale = new Vector3 (1f, 1f, 1f);
+#endif
 			obj.SetSchoolFieldWeapon (SchoolField.AssigningSoldier,
 									  game.armor [i].type,
 			                          p.products [game.armor [i].type].name, 
@@ -364,7 +408,11 @@ public class SchoolField : MonoBehaviour {
 		Transform panel = ShieldListHolder.transform.GetChild (1).GetChild (1).GetChild (0);
 		for (int i = 0; i < count; i++) {
 			SchoolFieldWeapon obj = Instantiate (Resources.Load ("SchoolFieldWeaponPrefab") as GameObject).GetComponent<SchoolFieldWeapon> ();
-			obj.transform.localScale = new Vector3 (0.4f, 0.4f);
+#if UNITY_EDITOR
+			obj.transform.localScale = new Vector3 (0.51f, 0.51f, 0.51f);
+#else
+			obj.transform.localScale = new Vector3 (1f, 1f, 1f);
+#endif
 			obj.SetSchoolFieldWeapon (SchoolField.AssigningSoldier,
 			                          game.shield [i].type,
 			                          p.products [game.shield [i].type].name, 
@@ -386,7 +434,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public void OnWeaponButtonClicked(){
-		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0) {
+		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt > 0 || game.soldiers [AssigningSoldier - 1].quantity> 0) {
 			ShowNewWeaponPanel ();
 		} else {
 			HidePanel(ArmyListHolder);
@@ -396,7 +444,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public void OnArmorButtonClicked(){
-		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0) {
+		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0 || game.soldiers [AssigningSoldier - 1].quantity> 0) {
 			ShowNewArmorPanel ();
 		} else {
 			HidePanel(ArmorListHolder);
@@ -405,7 +453,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public void OnShieldButtonClicked(){
-		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0) {
+		if (game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt != 0 || game.soldiers [AssigningSoldier - 1].quantity> 0) {
 			ShowNewShieldPanel ();
 		} else {
 			HidePanel(ShieldListHolder);
@@ -430,7 +478,6 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public void SetDataPanel(){
-		Debug.Log ("SetDataPanel()");
 		Transform dataHolder = DataPanel.transform.GetChild (0).GetChild (0);
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
 		string[] valueList = new string[]{
@@ -441,10 +488,10 @@ public class SchoolField : MonoBehaviour {
 			"Sword",			"HighEndSword",	"SpecialSword",
 			"Axe",				"Hammer"
 		};
-		Debug.Log ("Soldier attributes: "+game.soldiers [AssigningSoldier - 1].attributes.ToString());
+//		Debug.Log ("Soldier attributes: "+game.soldiers [AssigningSoldier - 1].attributes.ToString());
 		if (j ["trainingSoldiers"].AsInt != 0) {
 			for (var i = 0; i < 17; i++) {
-				dataHolder.GetChild (i * 2 + 1).GetComponent<Text> ().text = (Mathf.Round (j [valueList [i]].AsFloat * 100) / 100).ToString ();
+				dataHolder.GetChild(i*2+1).GetComponent<Text>().text = (Mathf.Round(j[valueList[i]].AsFloat*100)/100).ToString();						dataHolder.GetChild (i * 2 + 1).GetComponent<Text> ().text = (Mathf.Round (j [valueList [i]].AsFloat * 100) / 100).ToString ();
 			}
 		} else {
 			for (var i = 0; i < 17; i++) {
@@ -584,7 +631,7 @@ public class SchoolField : MonoBehaviour {
 		msg = msg.Replace ("%SU%", AssigningResources.ToString());
 //		Debug.Log (time.ToString ());
 		if (time.TotalMinutes > 59) {
-			msg = msg.Replace ("%TM%", Utilities.TimeUpdate.Time(time));
+			msg = msg.Replace ("%TM%", TimeUpdate.Time(time));
 		} else {
 			msg = msg.Replace ("%TM%", time.Minutes + ":" + time.Seconds);
 		}
@@ -636,8 +683,8 @@ public class SchoolField : MonoBehaviour {
 		game.artisans [type - 1].etaTimestamp = AssigningTime;
 		game.artisans [type - 1].quantity = AssigningQuantity;
 		game.artisans [type - 1].status = 4;
-
 		TrainingEquConfirmHolder.transform.GetChild (1).GetComponent<Text> ().text = "";
+
 
 		// TODO add the ETA time to soldiers if new one is end later
 		game.soldiers [AssigningSoldier - 1].attributes.Add("eta_time",new JSONData(AssigningTime.ToString()));
@@ -691,7 +738,7 @@ public class SchoolField : MonoBehaviour {
 		if (AssigningStarDust > game.wealth [1].value) {
 			return;
 		}
-		game.wealth[1].Deduct(AssigningStarDust);
+		game.wealth [1].Deduct (AssigningStarDust);
 		if (AssigningWeaponId > 0) {
 			index = game.weapon.FindIndex (x => x.type == AssigningWeaponId);
 			game.weapon [index].quantity += AssigningQuantity;
@@ -701,9 +748,9 @@ public class SchoolField : MonoBehaviour {
 			game.armor [index].quantity += AssigningQuantity;
 			game.armor [index].UpdateObject ();
 		} else if (AssigningShieldId > 0) {
-			index = game.shield.FindIndex(x => x.type == AssigningShieldId);
-			game.shield[index].quantity += AssigningQuantity;
-			game.shield[index].UpdateObject();
+			index = game.shield.FindIndex (x => x.type == AssigningShieldId);
+			game.shield [index].quantity += AssigningQuantity;
+			game.shield [index].UpdateObject ();
 		}
 	}
 
@@ -783,6 +830,7 @@ public class SchoolField : MonoBehaviour {
 		} else {
 			trainingSoldiers = game.soldiers [AssigningSoldier - 1].quantity;
 		}
+		Debug.Log ("Training Soldiers: " + trainingSoldiers);
 		TotalTrainingTime = 0;
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
 		TotalTrainingTime += CalculateSoldierTrainingTime("Hit",trainingSoldiers,Hit.GetChild (1).GetChild (1).GetComponent<Slider> ().value- Mathf.Round(j ["Hit"].AsFloat*100)/100);
@@ -802,7 +850,9 @@ public class SchoolField : MonoBehaviour {
 		TotalTrainingTime += CalculateSoldierTrainingTime("SpecialWeapon",trainingSoldiers,SpecialWeapon.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["SpecialWeapon"].AsFloat*100)/100);
 		TotalTrainingTime += CalculateSoldierTrainingTime("Axe",trainingSoldiers,Axe.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Axe"].AsFloat*100)/100);
 		TotalTrainingTime += CalculateSoldierTrainingTime("Hammer",trainingSoldiers,Hammer.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Hammer"].AsFloat*100)/100);
-		Debug.Log (TotalTrainingTime);
+		Debug.Log ("AttackSpeed: "+Mathf.Round(j ["AttackSpeed"].AsFloat*100)/100);
+		Debug.Log ("AS Target: "+AttackSpeed.GetChild (1).GetChild (1).GetComponent<Slider> ().value);
+
 		if (TotalTrainingTime > 0) {
 			HidePanel(AdjustSoildersAttribute);
 			ShowConfirmTrainingPanel(trainingSoldiers);
@@ -813,9 +863,10 @@ public class SchoolField : MonoBehaviour {
 
 	}
 
-	int CalculateSoldierTrainingTime(string type, int NumOfSoldiers, float AbilityToBeTrained){
-		int session = Mathf.RoundToInt ((float)NumOfSoldiers/1000);
-		int time = 0;
+	float CalculateSoldierTrainingTime(string type, int NumOfSoldiers, float AbilityToBeTrained){
+
+		int session = Mathf.CeilToInt ((float)NumOfSoldiers/1000);
+		float time = 0;
 		Dictionary<string,float> trainParam= new Dictionary<string, float> ();
 		trainParam.Add ("Hit", 0.8f);
 		trainParam.Add ("Dodge", 0.7f);
@@ -833,9 +884,9 @@ public class SchoolField : MonoBehaviour {
 		trainParam.Add ("HighEndSword", 0.5f);
 		trainParam.Add ("SpecialWeapon", 0.01f);
 		trainParam.Add ("Axe", 0.7f);
-		trainParam.Add ("Hammer", 0.7f);;
-
-		time = Mathf.RoundToInt (AbilityToBeTrained*session/trainParam[type]);
+		trainParam.Add ("Hammer", 0.7f);
+		Debug.Log ("Session: " + session);
+		time = AbilityToBeTrained*session/trainParam[type];Debug.Log ("Train Time: " + time * 3600);
 		return time*3600; //Return as number of secounds
 	}
 
@@ -901,9 +952,9 @@ public class SchoolField : MonoBehaviour {
 
 	bool CheckIfTrainingOngoing(){
 		if (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"] != null) {
-//			Debug.Log ("There is a training for this soldier type");
-//			Debug.Log (Convert.ToDateTime( game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]).ToString());
-//			Debug.Log (DateTime.Now.ToString());
+			//			Debug.Log ("There is a training for this soldier type");
+			//			Debug.Log (Convert.ToDateTime( game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]).ToString());
+			//			Debug.Log (DateTime.Now.ToString());
 			if (Convert.ToDateTime (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]) < DateTime.Now) {
 				return true;
 			} else {
@@ -948,6 +999,50 @@ public class SchoolField : MonoBehaviour {
 		SoldierSummary.text = data;
 	}
 
+	public static void CompletingTrainingSoldiers(int s){
+		Game game = Game.Instance;
+		game.soldiers [s].attributes ["Hit"].AsFloat = game.soldiers [s].attributes ["TargetHit"].AsFloat;
+		game.soldiers [s].attributes ["Dodge"].AsFloat = game.soldiers [s].attributes ["TargetDodge"].AsFloat;
+		game.soldiers [s].attributes ["Strength"].AsFloat = game.soldiers [s].attributes ["TargetStrength"].AsFloat;
+		game.soldiers [s].attributes ["AttackSpeed"].AsFloat = game.soldiers [s].attributes ["TargetAttackSpeed"].AsFloat;
+		game.soldiers [s].attributes ["Morale"].AsFloat = game.soldiers [s].attributes ["TargetMorale"].AsFloat;
+		game.soldiers [s].attributes ["Wand"].AsFloat = game.soldiers [s].attributes ["TargetWand"].AsFloat;
+		game.soldiers [s].attributes ["PiercingLongWeapon"].AsFloat = game.soldiers [s].attributes ["TargetPiercingLongWeapon"].AsFloat;
+		game.soldiers [s].attributes ["Bows"].AsFloat = game.soldiers [s].attributes ["TargetBows"].AsFloat;
+		game.soldiers [s].attributes ["HighEndBows"].AsFloat = game.soldiers [s].attributes ["TargetHighEndBows"].AsFloat;
+		game.soldiers [s].attributes ["HiddenWeapon"].AsFloat = game.soldiers [s].attributes ["TargetHiddenWeapon"].AsFloat;
+		game.soldiers [s].attributes ["Knife"].AsFloat = game.soldiers [s].attributes ["TargetKnife"].AsFloat;
+		game.soldiers [s].attributes ["HackTypeLongWeapon"].AsFloat = game.soldiers [s].attributes ["TargetHackTypeLongWeapon"].AsFloat;
+		game.soldiers [s].attributes ["Sword"].AsFloat = game.soldiers [s].attributes ["TargetSword"].AsFloat;
+		game.soldiers [s].attributes ["HighEndSword"].AsFloat = game.soldiers [s].attributes ["TargetHighEndSword"].AsFloat;
+		game.soldiers [s].attributes ["SpecialWeapon"].AsFloat = game.soldiers [s].attributes ["TargetSpecialWeapon"].AsFloat;
+		game.soldiers [s].attributes ["Axe"].AsFloat = game.soldiers [s].attributes ["TargetAxe"].AsFloat;
+		game.soldiers [s].attributes ["Hammer"].AsFloat = game.soldiers [s].attributes ["TargetHammer"].AsFloat;
+		game.soldiers [s].attributes.Remove ("ETATrainingTime");
+		game.soldiers [s].attributes.Remove ("TargetHit");
+		game.soldiers [s].attributes.Remove ("TargetDodge");
+		game.soldiers [s].attributes.Remove ("TargetStrength");
+		game.soldiers [s].attributes.Remove ("TargetAttackSpeed");
+		game.soldiers [s].attributes.Remove ("TargetMorale");
+		game.soldiers [s].attributes.Remove ("TargetWand");
+		game.soldiers [s].attributes.Remove ("TargetPiercingLongWeapon");
+		game.soldiers [s].attributes.Remove ("TargetBows");
+		game.soldiers [s].attributes.Remove ("TargetHighEndBows");
+		game.soldiers [s].attributes.Remove ("TargetHiddenWeapon");
+		game.soldiers [s].attributes.Remove ("TargetKnife");
+		game.soldiers [s].attributes.Remove ("TargetHackTypeLongWeapon");
+		game.soldiers [s].attributes.Remove ("TargetSword");
+		game.soldiers [s].attributes.Remove ("TargetHighEndSword");
+		game.soldiers [s].attributes.Remove ("TargetSpecialWeapon");
+		game.soldiers [s].attributes.Remove ("TargetAxe");
+		game.soldiers [s].attributes.Remove ("TargetHammer");
+		if (game.soldiers [s].attributes ["trainingSoldiers"].AsInt > 0) {
+			game.soldiers [s].quantity = game.soldiers [s].attributes ["trainingSoldiers"].AsInt;
+		}
+		game.soldiers [s].attributes ["trainingSoldiers"].AsInt = 0;
+		game.soldiers [s].UpdateObject ();
+	}
+
 	static void staticShowPanel(GameObject panel){
 		staticDisablePanel.SetActive (true);
 		panel.SetActive (true);
@@ -971,7 +1066,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	void ChangePanel(GameObject panel1, GameObject panel2){
-		Debug.Log (panel1 + " panel is change to " + panel2);
+			Debug.Log (panel1 + " panel is change to " + panel2);
 		panel1.SetActive (false);
 		panel2.SetActive (true);
 	}

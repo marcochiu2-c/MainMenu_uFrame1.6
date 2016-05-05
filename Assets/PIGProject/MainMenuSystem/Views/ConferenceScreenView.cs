@@ -68,7 +68,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Dictionary<int,Sprite> imageDict;
 	public Dictionary<int,string> nameDict;
 	
-	private static int _whichGeneral;
+	public int[] generalIDArray = new int[5];	
+	public int whichTeam;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -85,7 +86,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		
 		GeneralList = game.general;
 		
-		_whichGeneral = 0;
+		whichTeam = 0;
 	}
     
     public override void Bind() {
@@ -174,7 +175,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			
 			GeneralHolder.gameObject.SetActive (true);
 			
-			_whichGeneral = 1;
+			whichTeam = 1;
 		});
 		
 		
@@ -187,7 +188,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			
 			GeneralHolder.gameObject.SetActive (true);
 			
-			_whichGeneral = 2;
+			whichTeam = 2;
 			
 		});
 		
@@ -200,7 +201,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			
 			GeneralHolder.gameObject.SetActive (true);
 			
-			_whichGeneral = 3;
+			whichTeam = 3;
 			
 		});
 		
@@ -213,7 +214,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			
 			GeneralHolder.gameObject.SetActive (true);
 			
-			_whichGeneral = 4;
+			whichTeam = 4;
 			
 		});
 		
@@ -226,7 +227,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			
 			GeneralHolder.gameObject.SetActive (true);
 			
-			_whichGeneral = 5;
+			whichTeam = 5;
 			
 		});
 		
@@ -240,6 +241,9 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			SoldierQuantityPanel.gameObject.SetActive (false);
 			*/
 			
+			//Debug.Log (game.weapon[5019].quantity);
+			
+			
 			//if(int.Parse(SoldierQuantityInput.text) > game.soldiers[this.ConferenceScreen.SoldierType].quantity)
 			if(int.Parse(SoldierQuantityInput.text) > 3000 || int.Parse(SoldierQuantityInput.text) < 0)
 			{
@@ -247,14 +251,46 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 				QunatityErrorText.text = "請重新輸入 (0~3000)";
 			}
 			
-			else
+			if(game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["weapon"].AsInt == 0)
 			{
-				this.ConferenceScreen.SoldierQuantity = int.Parse(SoldierQuantityInput.text);
-				SoldierQuantityText.text = "兵數: " + SoldierQuantityInput.text;
-				ExecuteSetSoldierData();
-				SoldierQuantityPanel.gameObject.SetActive (false);
+				Debug.Log("Enough Weapons");
 			}
 			
+		    else if(game.weapon.Find ( x => x.type == game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["weapon"].AsInt).quantity < int.Parse(SoldierQuantityInput.text))	
+			{
+				Debug.Log ("Please enter again");
+				QunatityErrorText.text = " weapons are not enough";
+				return;
+			}
+			
+			if(game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["armor"].AsInt == 0)
+			{
+				Debug.Log("No Armor");
+			}
+	
+			else if(game.armor.Find ( x => x.type == game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["armor"].AsInt).quantity	< int.Parse(SoldierQuantityInput.text))	
+			{
+				Debug.Log ("Please enter again");
+				QunatityErrorText.text = "armors are not enough";
+				return;
+			}
+			
+			if(game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["shield"].AsInt == 0)
+			{
+				Debug.Log("No Shield");
+			}
+			
+			else if(game.shield.Find ( x => x.type == game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["shield"].AsInt).quantity	< int.Parse(SoldierQuantityInput.text))
+			{
+				Debug.Log ("Please enter again");
+				QunatityErrorText.text = "shields are not enough";
+				return;
+			}
+			
+			this.ConferenceScreen.SoldierQuantity = int.Parse(SoldierQuantityInput.text);
+			SoldierQuantityText.text = "兵數: " + SoldierQuantityInput.text;
+			ExecuteSetSoldierData();
+			SoldierQuantityPanel.gameObject.SetActive (false);
 			
 		});
 		
@@ -265,7 +301,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		Image image;
 		Text iconText;
 		
-		switch (_whichGeneral)
+		switch (whichTeam)
 		{
 			
 			case 1:
@@ -302,17 +338,27 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	{
 		var type = character.type;
 		Debug.Log ("Type: " + type);
-		AcademySelfLearn ss = Instantiate(Resources.Load("GeneralPrefab") as GameObject).GetComponent<AcademySelfLearn>();
-		ss.transform.parent =  GeneralListHolder;
+		//AcademySelfLearn ss = Instantiate(Resources.Load("GeneralPrefab") as GameObject).GetComponent<AcademySelfLearn>();
+		GeneralAssign generalAssign = Instantiate(Resources.Load("GeneralPrefab") as GameObject).GetComponent<GeneralAssign>();
+		generalAssign.transform.parent = GeneralListHolder;
 		
-		ss.characterType = character.type;
-		ss.characterId = character.id;
-		ss.StudentPic =  imageDict[type];
-		ss.StudentImageText.text = nameDict[type];
-		//AcademySelfLearn.Students.Add (ss);
+		generalAssign.general_id = character.id;
+		generalAssign.generalIcon.sprite = imageDict[type];
+        generalAssign.generalName.text = nameDict[type];
+        generalAssign.generalIQ.text = "IQ: " + character.attributes["Rank"];
+		generalAssign.generalLv.text = "LV: " + character.attributes["IQ"];
 		
-		ss.transform.localScale = Vector3.one;
+		generalAssign.transform.localScale = Vector3.one;
+		
 		
 		Debug.Log ("Gen Genereal from ConfrenceScreen");
+	}
+	
+	public void PopUp()
+	{
+		Publish(new NotifyCommand()
+		{
+			Message = "General Assigned"
+		});
 	}
 }

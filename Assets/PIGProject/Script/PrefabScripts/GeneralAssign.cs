@@ -17,8 +17,11 @@ public class GeneralAssign : MonoBehaviour {
 	
 	public ConferenceScreenView ConferenceV;
 	public Image generalIcon;
+	public Text  generalName;
+	public Text generalIQ;
+	public Text generalLv;
 	public Button myBtn;
-	
+	public int general_id;
 	/*
 	public override void KernelLoaded()
 	{
@@ -35,6 +38,18 @@ public class GeneralAssign : MonoBehaviour {
 		myBtn.onClick.AddListener(() => { 
 			ConferenceV = GameObject.Find("ConferenceScreen").GetComponent<ConferenceScreenView>();
 			Debug.Log (ConferenceV == null ? "ConferenceV is null" : "Conference is: " + ConferenceV.name);
+			
+			for (int i = 0; i <  5; i++)
+			{
+				if(general_id == ConferenceV.generalIDArray[i])
+				{
+					ConferenceV.PopUp();
+					Debug.Log ("the general have been assigned");
+					return;
+				}
+			}
+			
+			ConferenceV.generalIDArray[ConferenceV.whichTeam - 1] = general_id;
 			CallConferenceView ();
 		});
 	}

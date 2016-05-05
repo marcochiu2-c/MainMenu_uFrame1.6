@@ -136,6 +136,9 @@ enum jsonFuncNumberEnum {
 	newAccountShield = 282,
 	newAccountCheckIn= 283,
 	newAccountTrainingSlots = 284,
+
+	// 400-401 Utilities
+	noticeURL = 400,
 };
 
 
@@ -183,6 +186,7 @@ public class WsClient {
 
 			conn.OnError += (sender, e) => {
 				Utilities.ShowLog.Log("Websocket Error");
+
 				conn.Close ();
 
 			};
@@ -379,6 +383,11 @@ public class WsClient {
 				MainScene.SoldierInfo = j["obj"];
 			}
 			break;
+		case jsonFuncNumberEnum.noticeURL:
+			if (j["obj"]!="[  ]"){
+				MainScene.noticeURL = j["obj"];
+			}
+			break;
 		default:
 			break;
 		}
@@ -438,8 +447,8 @@ public class WsClient {
 	}
 
 	public void Send(string table,string action, JSONNode j){
+		Game game = Game.Instance;
 		if (conn.IsAlive) {
-			Game game = Game.Instance;
 			JSONClass json = new JSONClass ();
 			json.Add ("action", new JSONData (action));
 			json.Add ("table", new JSONData (table));

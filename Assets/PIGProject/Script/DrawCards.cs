@@ -15,7 +15,6 @@ using Utilities;
 
 
 
-
 public class DrawCards : MonoBehaviour {
 	WsClient wsc;
 	Game game;
@@ -176,6 +175,7 @@ public class DrawCards : MonoBehaviour {
 	}
 
 	public void DrawSingleCard(){
+		game = Game.Instance;
 		int random = UnityEngine.Random.Range (1, numberOfCounselors + numberOfGenerals);
 		bool isCounselors = (random <= numberOfCounselors);
 		int result = (isCounselors) ? random : random - numberOfCounselors + 1000;
@@ -208,7 +208,6 @@ public class DrawCards : MonoBehaviour {
 		ShowCardPanel (result);
 	}
 
-
 	public void OnButtonDrawTenCards(){
 		if (true) {
 			DrawTenCards ();
@@ -216,6 +215,7 @@ public class DrawCards : MonoBehaviour {
 	}
 
 	public void DrawTenCards(){
+		game = Game.Instance;
 		//string[] storageJsonArray = new string[10];
 		JSONArray generalNode = new JSONArray();
 		JSONArray counselorNode = new JSONArray();
@@ -300,7 +300,6 @@ public class DrawCards : MonoBehaviour {
 		ShowCardPanel (num);
 	}
 
-	
 	void ShowNextFreeDrawTime(){
 		ShowLog.Log ("Time of next free draw:"+(Convert.ToDateTime( game.login.attributes["LastDrawTime"])+new TimeSpan(0,5,0)));	
 	}

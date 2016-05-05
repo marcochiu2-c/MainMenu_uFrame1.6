@@ -115,11 +115,9 @@ public class LoginScreen : MonoBehaviour {
 			user =null;
 		}
 		
-		
 		if (game.login.snsType==1){  // if account already login with SNS
-			ShowLog.Log ("account already login with SNS");
+			//			ShowLog.Log ("account already login with SNS");
 			if (userWithSns != " "){
-				
 				ShowLog.Log ("userWithSns: "+userWithSns);
 				if (!_CalledFBLogin){
 					ShowLog.Log ("FB Login not called"); 
@@ -129,22 +127,14 @@ public class LoginScreen : MonoBehaviour {
 				}
 			}
 		}	
-		
 		//		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
 		//			//TODO show Facebook register reminder first
 		//
 		//			GotoMainUI("MainMenuScene");
 		//		}
-		//		if (userWithSns != null)
-		//			ShowLog.Log (snsURL);
-		//		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
-		//			//TODO show Facebook register reminder first
-		//
-		//			GotoMainUI("MainMenuScene");
-		//		}
-		
 		if (userWithSns != null)
 			ShowLog.Log (snsURL);
+
 		if (newFBUserPanelActivated) {  // For device not link with SNS account and user choose to link with SNS
 			
 			if(game.login.id!=0){
@@ -194,6 +184,7 @@ public class LoginScreen : MonoBehaviour {
 		if (NewUserSNSAccountName.text.Trim () == "") {
 			ShowLog.Log ("User id: "+game.login.id);
 			if (game.login.id==0){
+				
 				return;
 			}
 		}
@@ -230,6 +221,7 @@ public class LoginScreen : MonoBehaviour {
 		json.Add ("table", new JSONData("users"));
 		json.Add ("data", jData);
 		wsc.conn.Send (json.ToString ());
+		
 		GotoMainUI ("MainMenuScene");
 	}
 	
@@ -248,12 +240,11 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	IEnumerator LoadLevelWithBar (string level){
-		//		async = Application.LoadLevelAsync("MainMenuScene");
-		async = Application.LoadLevelAsync(3);
+		async = Application.LoadLevelAsync("MainMenuScene");
 		while(!async.isDone){
 			slider.value=async.progress;
 			yield return null;
-		}
+		}	
 	}
 	
 	private bool LoginSNS(){
@@ -321,11 +312,13 @@ public class LoginScreen : MonoBehaviour {
 			ShowLog.Log(aToken.UserId);
 			snsURL = aToken.UserId;
 			// Print current access token's granted permissions
-			#if UNITY_EDITOR
+#if UNITY_EDITOR
 			foreach (string perm in aToken.Permissions) {
 				ShowLog.Log(perm);
 			}
-			#endif
+#endif
+			
+			
 			if (game.login.snsType==0){
 				SetupSocialNetworkAccount();
 			}

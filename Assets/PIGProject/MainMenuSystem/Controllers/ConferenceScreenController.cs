@@ -102,15 +102,13 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		
 		
 		//
-		
-		
     }
 
     public override void SetSoldierData(ConferenceScreenViewModel viewModel) {
         base.SetSoldierData(viewModel);
         
         int SoldierGroup = viewModel.Group;
-        int SoldierType = viewModel.SoldierType;
+        int SoldierType = viewModel.SoldierType - 1;
         
 		SoldierVM[SoldierGroup].AttackSpeed = game.soldiers[SoldierType].attributes["AttackSpeed"].AsInt;
 		SoldierVM[SoldierGroup].Physique = game.soldiers[SoldierType].attributes["Strength"].AsInt;
@@ -124,5 +122,8 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		SoldierVM[SoldierGroup].Health =  viewModel.SoldierQuantity ;
 		SoldierVM[SoldierGroup].Max_Health =  SoldierVM[SoldierGroup].Health;
 		
+		//TODO: change weapon quantity
+		
     }
+
 }
