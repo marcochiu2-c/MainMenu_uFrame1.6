@@ -41,7 +41,11 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button SQCloseBtn;
 	
 	public InputField SoldierQuantityInput;
-	public Text SoldierQuantityText;
+	public Text SoldierQuantityText1;
+	public Text SoldierQuantityText2;
+	public Text SoldierQuantityText3;
+	public Text SoldierQuantityText4;
+	public Text SoldierQuantityText5;
 	public Text QunatityErrorText;
 	public Game game;
 
@@ -79,6 +83,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public int whichTeam;
 	
 	private Button _selectSoldier;
+	private Text _soldierQuantityText;
+	
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -146,26 +152,31 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		
 		this.BindButtonToHandler (SelectSoldier1Btn, () => {
 			_selectSoldier = SelectSoldier1Btn;
+			_soldierQuantityText = SoldierQuantityText1;
 			SelectSoldierPanel.gameObject.SetActive (true);
 		});
 		
 		this.BindButtonToHandler (SelectSoldier2Btn, () => {
-			_selectSoldier = SelectSoldier1Btn;
+			_selectSoldier = SelectSoldier2Btn;
+			_soldierQuantityText = SoldierQuantityText2;
 			SelectSoldierPanel.gameObject.SetActive (true);
 		});
 		
 		this.BindButtonToHandler (SelectSoldier3Btn, () => {
-			_selectSoldier = SelectSoldier1Btn;
+			_selectSoldier = SelectSoldier3Btn;
+			_soldierQuantityText = SoldierQuantityText3;
 			SelectSoldierPanel.gameObject.SetActive (true);
 		});
 		
 		this.BindButtonToHandler (SelectSoldier4Btn, () => {
-			_selectSoldier = SelectSoldier1Btn;
+			_selectSoldier = SelectSoldier4Btn;
+			_soldierQuantityText = SoldierQuantityText4;
 			SelectSoldierPanel.gameObject.SetActive (true);
 		});
 		
 		this.BindButtonToHandler (SelectSoldier5Btn, () => {
-			_selectSoldier = SelectSoldier1Btn;
+			_selectSoldier = SelectSoldier5Btn;
+			_soldierQuantityText = SoldierQuantityText5;
 			SelectSoldierPanel.gameObject.SetActive (true);
 		});
 		
@@ -285,6 +296,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			
 			//Debug.Log (game.weapon[5019].quantity);
 			
+			//init
+			QunatityErrorText.text = "";
 			
 			//if(int.Parse(SoldierQuantityInput.text) > game.soldiers[this.ConferenceScreen.SoldierType].quantity)
 			if(int.Parse(SoldierQuantityInput.text) > 3000 || int.Parse(SoldierQuantityInput.text) < 0)
@@ -305,7 +318,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 				return;
 			}
 			
-			/*
+			
 			if(game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["armor"].AsInt == 0)
 			{
 				Debug.Log("No Armor");
@@ -317,7 +330,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 				QunatityErrorText.text = "armors are not enough";
 				return;
 			}
-			*/
+			
 			
 			if(game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["shield"].AsInt == 0)
 			{
@@ -332,7 +345,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			}
 			
 			this.ConferenceScreen.SoldierQuantity = int.Parse(SoldierQuantityInput.text);
-			SoldierQuantityText.text = "兵數: " + SoldierQuantityInput.text;
+			_soldierQuantityText.text = "兵數: " + SoldierQuantityInput.text;
 			ExecuteSetSoldierData();
 			SoldierQuantityPanel.gameObject.SetActive (false);
 			
