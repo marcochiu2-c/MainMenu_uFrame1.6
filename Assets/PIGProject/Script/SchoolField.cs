@@ -32,7 +32,7 @@ public class SchoolField : MonoBehaviour {
 	public GameObject TrainingInProgressPopup;
 	public GameObject ConfirmSpeedUpHolder;
 	public GameObject ArtisanHolder;
-	public Text TrainingQText;
+	public InputField TrainingQText;
 	bool isSpeedUpQuestion = false;
 
 	public static GameObject staticArmyQAHolder;
@@ -130,6 +130,7 @@ public class SchoolField : MonoBehaviour {
 		NewSoldierPanel.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => {
 			if (game.soldiers[AssigningSoldier-1].attributes["ETATrainingTime"] == null){
 				ShowPanel(TrainingQHolder);
+				TrainingQText.text = "";
 			}
 		});
 		// Weapon Button
@@ -299,7 +300,7 @@ public class SchoolField : MonoBehaviour {
 	#endregion
 
 	public void OnSetNewSoldierNumber(){
-		Text s = TrainingQText;
+		InputField s = TrainingQText;
 		string soldiers = Regex.Replace(s.text, "[^0-9]", "");
 		if (soldiers != "") {
 			int soldierQuantity = Int32.Parse (soldiers);
@@ -386,21 +387,24 @@ public class SchoolField : MonoBehaviour {
 			// TODO show error message and 
 			Panel.GetHeader(CannotTrainSoldierPopup).text = headerNotEnoughEquipementForNewSoldiers;
 			msg = msgNotEnoughEquipementForNewSoldiers;
-			Debug.Log("Enough Weapon: "+(soldierQuantity > game.weapon.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt).quantity));
-			if (soldierQuantity > game.weapon.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt).quantity){
-				msg += p.products[game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt].name+"："+
-					(soldierQuantity - game.weapon.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt).quantity).ToString()+"\n";
+			if (game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt > 0){
+				if (soldierQuantity > game.weapon.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt).quantity){
+					msg += p.products[game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt].name+"："+
+						(soldierQuantity - game.weapon.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt).quantity).ToString()+"\n";
+				}
 			}
-			Debug.Log("Enough Armor: "+(soldierQuantity > game.armor.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt).quantity));
-			if (soldierQuantity > game.armor.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt).quantity){
-				msg += p.products[game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt].name+"："+
-					(soldierQuantity - game.armor.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt).quantity).ToString()+"\n";
+			if (game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt > 0){
+				if (soldierQuantity > game.armor.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt).quantity){
+					msg += p.products[game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt].name+"："+
+						(soldierQuantity - game.armor.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt).quantity).ToString()+"\n";
+				}
 			}
-			if (soldierQuantity > game.shield.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt).quantity){
-				msg += p.products[game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt].name+"："+
-					(soldierQuantity - game.shield.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt).quantity).ToString()+"\n";
+			if (game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt > 0){
+				if (soldierQuantity > game.shield.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt).quantity){
+					msg += p.products[game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt].name+"："+
+						(soldierQuantity - game.shield.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt).quantity).ToString()+"\n";
+				}
 			}
-			
 			Panel.GetMessageText(TrainingEquHolder).text = msg;
 			Panel.GetCancelButton(TrainingEquHolder).transform.GetChild(0).GetComponent<Text>().text = "取消";
 			isNewSoldiers = true;
