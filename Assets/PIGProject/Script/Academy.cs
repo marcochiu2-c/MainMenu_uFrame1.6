@@ -125,7 +125,6 @@ public class Academy : MonoBehaviour
 
 		//Get the default Self Study Sprite
 		SelfStudy.defaultSprite = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (0).GetChild (0).GetComponent<Image> ().sprite;
-//		InvokeRepeating ("CallSelfStudyOnTrainingCompleted", 1, 1);
 	}
 
 	public void SetupStudentPrefabList(){
@@ -595,9 +594,6 @@ public class Academy : MonoBehaviour
 		AcademySelfLearn.isSelfStudy = false;
 	}
 
-	void CallSelfStudyOnTrainingCompleted(){
-		SelfStudy.OnTrainingCompleted ();
-	}
 
 	void SetDictionary(){
 		activePopupName.Add (btnName [0], ActivePopupEnum.IQPopup);
