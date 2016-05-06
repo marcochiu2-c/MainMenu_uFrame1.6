@@ -95,7 +95,7 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		//
     }
 
-    public override void SetSoldierVM(ConferenceScreenViewModel viewModel) {
-        base.SetSoldierVM(viewModel);
-    }
+//    public override void SetSoldierVM(ConferenceScreenViewModel viewModel) {
+//        base.SetSoldierVM(viewModel);
+//    }
 }
