@@ -74,7 +74,7 @@ public class SchoolField : MonoBehaviour {
 	static string msgCannotTrainSoldier = "軍師閣下，工匠正在忙碌，未能製造裝備，致未能訓練新兵，請先等工匠空閒時再來！";
 	static string headerCannotTrainSoldier = "未能訓練新兵";
 	static string headerNotEnoughEquipementForNewSoldiers = "裝備不足";
-	static string msgNotEnoughEquipementForNewSoldiers = "軍師閣下，下列裝備不足，請找工匠補充\n";
+	static string msgNotEnoughEquipementForNewSoldiers = "軍師閣下，下列裝備不足，\n請找工匠補充\n";
 	#endregion
 
 	Game game;
@@ -366,15 +366,15 @@ public class SchoolField : MonoBehaviour {
 		ShowTotalSoldiersAvailableText();
 		SetDataPanel();
 		TrainingQText.text = "";
-		int index = game.weapon.FindIndex (x => x.type == game.soldiers [AssigningSoldier - 1].attributes ["weapon"].AsInt);
-		game.weapon[index].quantity -= soldiers;
-		game.weapon [index].UpdateObject ();
-		index = game.armor.FindIndex (x => x.type == game.soldiers [AssigningSoldier - 1].attributes ["armor"].AsInt);
-		game.armor[index].quantity -= soldiers;
-		game.armor [index].UpdateObject ();
-		index = game.shield.FindIndex (x => x.type == game.soldiers [AssigningSoldier - 1].attributes ["shield"].AsInt);
-		game.shield[index].quantity -= soldiers;
-		game.shield [index].UpdateObject ();
+//		int index = game.weapon.FindIndex (x => x.type == game.soldiers [AssigningSoldier - 1].attributes ["weapon"].AsInt);
+//		game.weapon[index].quantity -= soldiers;
+//		game.weapon [index].UpdateObject ();
+//		index = game.armor.FindIndex (x => x.type == game.soldiers [AssigningSoldier - 1].attributes ["armor"].AsInt);
+//		game.armor[index].quantity -= soldiers;
+//		game.armor [index].UpdateObject ();
+//		index = game.shield.FindIndex (x => x.type == game.soldiers [AssigningSoldier - 1].attributes ["shield"].AsInt);
+//		game.shield[index].quantity -= soldiers;
+//		game.shield [index].UpdateObject ();
 
 		int soldierQuantity = game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt;
 		string msg = "";
@@ -471,14 +471,14 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public static void CheckArmedEquipmentAvailability(){
+		staticDisablePanel.SetActive (false);
 		Debug.Log ("CheckArmedEquipmentAvailability()");
 		Game game = Game.Instance;
 		string msg = msgExtraEquipmentRequired;
+		int numOfSoldiers = game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt + game.soldiers [AssigningSoldier - 1].quantity;
 		var count = 0;
 		if (AssigningWeaponId != 0) {
 			count = game.weapon.Count;
-			AssigningArmorId = 0;
-			AssigningShieldId = 0;
 			for (int i = 0 ; i< count ; i++){
 				if(game.weapon[i].type == AssigningWeaponId){
 					Debug.Log ("CheckArmedEquipmentAvailability(), Weapon Availability: "+game.weapon[i].quantity);
@@ -486,10 +486,12 @@ public class SchoolField : MonoBehaviour {
 					if (game.weapon[i].quantity < game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt){
 						Debug.Log ("CheckArmedEquipmentAvailability(): Weapon not enough.");
 						msg = msg.Replace("%SQ%",game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"]);
-						msg = msg.Replace("%EQ%",(game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt - game.weapon[i].quantity).ToString());
+						msg = msg.Replace("%EQ%",(numOfSoldiers - game.weapon[i].quantity).ToString());
 						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
 						staticShowPanel( staticTrainingEquHolder);
 					}else{
+						game.soldiers [AssigningSoldier - 1].attributes["weapon"].AsInt = AssigningWeaponId;
+						game.soldiers [AssigningSoldier - 1].UpdateObject();
 //						game.weapon[i].SetQuantity(game.weapon[i].quantity - game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt);
 					}
 				}
@@ -497,40 +499,45 @@ public class SchoolField : MonoBehaviour {
 		}
 		if (AssigningArmorId != 0) {
 			count = game.armor.Count;
-			AssigningWeaponId = 0;
-			AssigningShieldId = 0;
 			for (int i = 0 ; i< count ; i++){
 				if(game.armor[i].type == AssigningArmorId){
 
 					if (game.armor[i].quantity < game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt){
 						msg = msg.Replace("%SQ%",game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"]);
-						msg = msg.Replace("%EQ%",(game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt - game.armor[i].quantity).ToString());
+						msg = msg.Replace("%EQ%",(numOfSoldiers - game.armor[i].quantity).ToString());
 						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
 						staticShowPanel( staticTrainingEquHolder);
 					}else{
+						game.soldiers [AssigningSoldier - 1].attributes["armor"].AsInt = AssigningArmorId;
+						game.soldiers [AssigningSoldier - 1].UpdateObject();
 //						game.armor[i].SetQuantity(game.armor[i].quantity - game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt);
 					}
 				}
 			}
 		}
-
+		Debug.Log (AssigningShieldId);
 		if (AssigningShieldId != 0) {
+			Debug.Log (AssigningShieldId);
 			count = game.shield.Count;
-			AssigningWeaponId = 0;
-			AssigningArmorId = 0;
+
 			for (int i = 0 ; i< count ; i++){
 				if(game.shield[i].type == AssigningShieldId){
 					if (game.shield[i].quantity < game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt){
 						msg = msg.Replace("%SQ%",game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"]);
-						msg = msg.Replace("%EQ%",(game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt - game.shield[i].quantity).ToString());
+						msg = msg.Replace("%EQ%",(numOfSoldiers - game.shield[i].quantity).ToString());
 						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
 						staticShowPanel( staticTrainingEquHolder);
 					}else{
+						game.soldiers [AssigningSoldier - 1].attributes["shield"].AsInt = AssigningShieldId;
+						game.soldiers [AssigningSoldier - 1].UpdateObject();
 //						game.shield[i].SetQuantity(game.shield[i].quantity - game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt);
 					}
 				}
 			}
 		}
+		AssigningWeaponId = 0;
+		AssigningArmorId = 0;
+		AssigningShieldId = 0;
 	}
 
 	public void ShowNewWeaponPanel(){

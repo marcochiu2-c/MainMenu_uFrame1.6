@@ -583,6 +583,21 @@ public class Weapon {
 		UpdateObject ();
 	}
 
+	public void Increase(int q){
+		quantity += q;
+		UpdateObject ();
+	}
+
+	public bool Decrease(int q){
+		if (q > quantity) {
+			return false;
+		} else {
+			quantity -= q;
+		}
+		UpdateObject ();
+		return true;
+	}
+
 	/// <summary>
 	/// Update the Object to database</summary>
 	public void UpdateObject(){
@@ -634,6 +649,22 @@ public class Armor {
 		quantity = q;
 		UpdateObject ();
 	}
+
+	
+	public void Increase(int q){
+		quantity += q;
+		UpdateObject ();
+	}
+	
+	public bool Decrease(int q){
+		if (q > quantity) {
+			return false;
+		} else {
+			quantity -= q;
+		}
+		UpdateObject ();
+		return true;
+	}
 	
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
@@ -684,7 +715,23 @@ public class Shield {
 		quantity = q;
 		UpdateObject ();
 	}
+
 	
+	public void Increase(int q){
+		quantity += q;
+		UpdateObject ();
+	}
+	
+	public bool Decrease(int q){
+		if (q > quantity) {
+			return false;
+		} else {
+			quantity -= q;
+		}
+		UpdateObject ();
+		return true;
+	}
+
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("shield", "SET", toJSON());
