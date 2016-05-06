@@ -174,12 +174,13 @@ public class SchoolField : MonoBehaviour {
 		ArmorQAHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => { HidePanel(ArmorQAHolder);});
 		ShieldQAHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => { HidePanel(ShieldQAHolder);});
 		#endregion
-		TrainingQHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => {  //confirm
+		Panel.GetConfirmButton(TrainingQHolder).onClick.AddListener(() => {  //confirm
 			Debug.Log ("Soldier number assignment confirmed.");
 			HidePanel(TrainingQHolder);
-			TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text = "";
+//			TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text = "";
+			OnSetNewSoldierNumber();
 		});
-		TrainingQHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => {  //cancel
+		Panel.GetCancelButton(TrainingQHolder).onClick.AddListener(() => {  //cancel
 			HidePanel(TrainingQHolder);
 			TrainingQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text = "";
 		});
@@ -308,7 +309,6 @@ public class SchoolField : MonoBehaviour {
 				Debug.Log ("Number of new soldiers cannot be larger than available, inputed: " + soldierQuantity);
 			} else {   //Valid number
 				Panel.GetMessageText (TrainingQHolder).text= msgSoldierQuantityWantToTrain;
-
 				HidePanel( TrainingQHolder);
 				ShowConfirmNewSoldierTraining(soldierQuantity);
 
@@ -319,18 +319,22 @@ public class SchoolField : MonoBehaviour {
 	}
 
 
-	void ShowConfirmNewSoldierTraining(int soldierQuantity){
+	void ShowConfirmNewSoldierTraining(int soldierQuantity){Debug.Log ("ShowConfirmNewSoldierTraining()");
 		var p = ProductDict.Instance;
 		string msg = "";
 //		if (CheckArmedEquipmentAvailabilityForNewSoldiers (soldierQuantity)) {
-			float time = CalculateTrainingTimeForNewSoldiers (soldierQuantity);
-			game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt = soldierQuantity;
-			msg = msgShowConfirmNewSoldierTraining;
-			msg = msg.Replace ("%soldier%", soldierQuantity.ToString ());
-			msg = msg.Replace ("%time%", Utilities.TimeUpdate.Time (new TimeSpan (0, 0, (int)time)));
+		float time = CalculateTrainingTimeForNewSoldiers (soldierQuantity);
+		game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt = soldierQuantity;
+		msg = msgShowConfirmNewSoldierTraining;
+		msg = msg.Replace ("%soldier%", soldierQuantity.ToString ());
+		msg = msg.Replace ("%time%", Utilities.TimeUpdate.Time (new TimeSpan (0, 0, (int)time)));
+		if (time > 10) {
 			Panel.GetMessageText (TrainingQAHolder).text = msg;
 			Panel.GetHeader (TrainingQAHolder).text = headerTrainingQAHolder;
 			ShowPanel (TrainingQAHolder);
+		} else {
+			OnConfirmedNewSoldierTraining();
+		}
 //		} else {
 //			// TODO show error message and 
 //			Panel.GetHeader(CannotTrainSoldierPopup).text = headerNotEnoughEquipementForNewSoldiers;
@@ -1090,7 +1094,7 @@ public class SchoolField : MonoBehaviour {
 		msg = msg.Replace ("%TT%", Utilities.TimeUpdate.Time (time));
 		Panel.GetMessageText(TrainingQAHolder).text = msg;
 		Panel.GetHeader (TrainingQAHolder).text = headerTrainingQAHolder;
-		ShowPanel(TrainingQAHolder);
+		ShowPanel (TrainingQAHolder);
 	}
 
 	void ConfirmedTraining(){
