@@ -20,7 +20,12 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button defensiveLinup;
 	public Button standings;
 	
-	public Button SoldierTypeBtn;
+	public Button SelectSoldier1Btn;
+	public Button SelectSoldier2Btn;
+	public Button SelectSoldier3Btn;
+	public Button SelectSoldier4Btn;
+	public Button SelectSoldier5Btn;
+	
 	public Button SoldierType1;
 	public Button SoldierType2;
 	public Button SoldierType3;
@@ -32,6 +37,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button General4Btn;
 	public Button General5Btn;
 	
+	public Button SSCloseBtn;
+	public Button SQCloseBtn;
 	
 	public InputField SoldierQuantityInput;
 	public Text SoldierQuantityText;
@@ -70,6 +77,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	
 	public int[] generalIDArray = new int[5];	
 	public int whichTeam;
+	
+	private Button _selectSoldier;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -135,8 +144,35 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			Standings.gameObject.SetActive (true);
 		});
 		
-		this.BindButtonToHandler (SoldierTypeBtn, () => {
+		this.BindButtonToHandler (SelectSoldier1Btn, () => {
+			_selectSoldier = SelectSoldier1Btn;
 			SelectSoldierPanel.gameObject.SetActive (true);
+		});
+		
+		this.BindButtonToHandler (SelectSoldier2Btn, () => {
+			_selectSoldier = SelectSoldier1Btn;
+			SelectSoldierPanel.gameObject.SetActive (true);
+		});
+		
+		this.BindButtonToHandler (SelectSoldier3Btn, () => {
+			_selectSoldier = SelectSoldier1Btn;
+			SelectSoldierPanel.gameObject.SetActive (true);
+		});
+		
+		this.BindButtonToHandler (SelectSoldier4Btn, () => {
+			_selectSoldier = SelectSoldier1Btn;
+			SelectSoldierPanel.gameObject.SetActive (true);
+		});
+		
+		this.BindButtonToHandler (SelectSoldier5Btn, () => {
+			_selectSoldier = SelectSoldier1Btn;
+			SelectSoldierPanel.gameObject.SetActive (true);
+		});
+		
+		
+		this.BindButtonToHandler (SSCloseBtn, () => {
+			_selectSoldier = SelectSoldier1Btn;
+			SelectSoldierPanel.gameObject.SetActive (false);
 		});
 		
 		this.BindButtonToHandler (SoldierType1, () => {
@@ -144,7 +180,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			this.ConferenceScreen.SoldierType = 1;
 			//ExecuteSetSoldierData();
 			SelectSoldierPanel.gameObject.SetActive (false);
-			SoldierTypeBtn.GetComponentInChildren<Text>().text = "兵種一";
+			_selectSoldier.GetComponentInChildren<Text>().text = "兵種一";
 			SoldierQuantityPanel.gameObject.SetActive (true);
 		});
 		
@@ -153,7 +189,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			this.ConferenceScreen.SoldierType = 2;
 			//ExecuteSetSoldierData();
 			SelectSoldierPanel.gameObject.SetActive (false);
-			SoldierTypeBtn.GetComponentInChildren<Text>().text = "兵種二";
+			_selectSoldier.GetComponentInChildren<Text>().text = "兵種二";
 			SoldierQuantityPanel.gameObject.SetActive (true);
 		});
 		
@@ -162,8 +198,14 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			this.ConferenceScreen.SoldierType = 3;
 			//ExecuteSetSoldierData();
 			SelectSoldierPanel.gameObject.SetActive (false);
-			SoldierTypeBtn.GetComponentInChildren<Text>().text = "兵種三";
+			_selectSoldier.GetComponentInChildren<Text>().text = "兵種三";
 			SoldierQuantityPanel.gameObject.SetActive (true);
+		});
+		
+		this.BindButtonToHandler (SQCloseBtn, () => {
+			SelectSoldierPanel.gameObject.SetActive (true);
+			SoldierQuantityPanel.gameObject.SetActive (false);
+			
 		});
 		
 		this.BindButtonToHandler (General1Btn, () => {
@@ -263,6 +305,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 				return;
 			}
 			
+			/*
 			if(game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["armor"].AsInt == 0)
 			{
 				Debug.Log("No Armor");
@@ -274,6 +317,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 				QunatityErrorText.text = "armors are not enough";
 				return;
 			}
+			*/
 			
 			if(game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["shield"].AsInt == 0)
 			{
