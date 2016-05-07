@@ -44,6 +44,7 @@ public class CompanionScreenView : CompanionScreenViewBase {
 				GeneralsHolder.SetActive (false);
 			}
 		});
+		
 		this.BindButtonToHandler (closeButton, () => {
 			CounselorsHolder.SetActive (false);
 			GeneralsHolder.SetActive (false);

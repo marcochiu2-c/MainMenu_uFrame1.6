@@ -16,9 +16,11 @@ public class ArtisanScreenView : ArtisanScreenViewBase {
 
 	public Button armsButton;
 	public Button armorButton;
+	public Button shieldButton;
 
 	public GameObject armsPopup;
 	public GameObject armorPopup;
+	public GameObject shieldPopup;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -34,15 +36,24 @@ public class ArtisanScreenView : ArtisanScreenViewBase {
         // Any designer bindings are created in the base implementation.
 
 		this.BindButtonToHandler (armsButton, () => {
-			armsPopup.gameObject.SetActive (true);
-			armorPopup.gameObject.SetActive (false);
+			armsPopup.SetActive (true);
+			armorPopup.SetActive (false);
+			shieldPopup.SetActive (false);
+			ArtisanHolder.OpenedHolder = 1;
 		});
 
 		this.BindButtonToHandler (armorButton, () => {
-			armsPopup.gameObject.SetActive (false);
-			armorPopup.gameObject.SetActive (true);
+			armsPopup.SetActive (false);
+			armorPopup.SetActive (true);
+			shieldPopup.SetActive (false);
+			ArtisanHolder.OpenedHolder = 2;
 		});
 
-
+		this.BindButtonToHandler (shieldButton, () => {
+			armsPopup.SetActive (false);
+			armorPopup.SetActive (false);
+			shieldPopup.SetActive (true);
+			ArtisanHolder.OpenedHolder = 3;
+		});
     }
 }

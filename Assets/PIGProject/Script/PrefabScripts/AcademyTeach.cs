@@ -46,7 +46,7 @@ public class AcademyTeach : MonoBehaviour {
 	}
 
 	void OnTrainingCompleted(){
-		Debug.Log ("OnTrainingCompleted()");
+//		Debug.Log ("OnTrainingCompleted()");
 		Game game = Game.Instance;
 		if (etaTimestamp < DateTime.Now && trainingObject.status == 1){
 			if (trainingObject.id==1){

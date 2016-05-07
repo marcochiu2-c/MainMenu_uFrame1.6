@@ -12,7 +12,7 @@ using SimpleJSON;
 using Facebook.Unity;
 using Utilities;
 
-
+public enum EquipmentEnum {Weapon,Armor,Shield};
 
 public class MainScene : MonoBehaviour {
 	WsClient wsc;
@@ -21,6 +21,7 @@ public class MainScene : MonoBehaviour {
 	Text starDustText;
 	JSONClass json;
 	Game game;
+	GameObject ArtisanPanel;
 	public static GameObject MainUIHolder;
 	public static bool needReloadFromDB = true;
 	public static int userId = 0;
@@ -54,6 +55,7 @@ public class MainScene : MonoBehaviour {
 	public static Nullable<DateTime> WarfareLastUpdate = null;
 	public static Nullable<DateTime> FriendLastUpdate = null;
 	Shop shop;
+
 
 	void Awake(){
 		DontDestroyOnLoad(gameObject);
@@ -98,14 +100,48 @@ public class MainScene : MonoBehaviour {
 		shop = GetComponent<Shop> ();
 		Invoke ("CallShop", 3);
 
-
+		ArtisanPanel = transform.parent.FindChild ("ArtisanHolder").gameObject;
 		wsc.Send("notice_url","GET",new JSONData (MainScene.userId));
 		InvokeRepeating("OnGeneralTrainComplete",1,4);
 		InvokeRepeating("CheckObject",1,2);
 		InvokeRepeating("QuitIfConnectionFailed",0,10);
 		InvokeRepeating ("OnSchoolFieldSoldierTrainComplete", 2, 4);
 		InvokeRepeating ("OnAcademyTrainingComplete", 3, 4);
+		InvokeRepeating ("OnArtisanJobsComplete", 3, 4);
 	}
+
+	void OnArtisanJobsComplete (){
+		if (ArtisanPanel.activeSelf) {
+			return;
+		}
+		Game game = Game.Instance;
+		int id= 0;
+		if (game.artisans [0].etaTimestamp <= DateTime.Now && (game.artisans[0].status == 1 || game.artisans[0].status==4)) {
+			id = game.weapon.FindIndex (x => x.type == game.artisans[0].targetId);
+			game.weapon[id].quantity += game.artisans[0].quantity;
+			game.weapon[id].UpdateObject();
+			game.artisans[0].status = 3;
+			game.artisans[0].UpdateObject();
+			WeaponMaking.Weapons.Find(x => x.id == game.weapon[id].type).UpdateRemainingTime();
+		}
+		if (game.artisans [1].etaTimestamp <= DateTime.Now && (game.artisans[1].status == 1 || game.artisans[1].status==4)) {
+			id = game.armor.FindIndex (x => x.type == game.artisans[1].targetId);
+			game.armor[id].quantity += game.artisans[1].quantity;
+			game.armor[id].UpdateObject();
+			game.artisans[1].status = 3;
+			game.artisans[1].UpdateObject();
+			WeaponMaking.Armors.Find(x => x.id == game.armor[id].type).UpdateRemainingTime();
+		}
+		if (game.artisans [2].etaTimestamp <= DateTime.Now && (game.artisans[2].status == 1 || game.artisans[2].status==4)) {
+			id = game.shield.FindIndex (x => x.type == game.artisans[2].targetId);
+			game.shield[id].quantity += game.artisans[2].quantity;
+			game.shield[id].UpdateObject();
+			game.artisans[2].status = 3;
+			game.artisans[2].UpdateObject();
+			WeaponMaking.Shields.Find(x => x.id == game.shield[id].type).UpdateRemainingTime();
+		}
+	}
+
 	void OnAcademyTrainingComplete(){
 		for (int i = 0; i < 40; i++) {
 			if (game.trainings[i].status == 1 && game.trainings[i].etaTimestamp < DateTime.Now){

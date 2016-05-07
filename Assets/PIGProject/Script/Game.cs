@@ -285,22 +285,28 @@ public class Wealth {
 	/// <summary>
 	/// Add wealth from value. (Array index of SilverFeather: 0, Stardust: 1, Resource: 2 </summary>
 	public void Add(int money){
-		value += money;
-		UpdateCurrency ();
+		if (money > 0) {
+			value += money;
+			UpdateCurrency ();
+		}
 	}
 	/// <summary>
 	/// Deduct wealth from value. (Array index of SilverFeather: 0, Stardust: 1, Resource: 2 </summary>
 	public void Deduct(int money){
-		value -= money;
-		UpdateCurrency ();
+		if (money > 0) {
+			value -= money;
+			UpdateCurrency ();
+		}
 	}
 
 
 	/// <summary>
 	/// Set wealth value. (Array index of SilverFeather: 0, Stardust: 1, Resource: 2 </summary>
 	public void Set (int money){
-		value = money;
-		UpdateCurrency ();
+		if (money > 0) {
+			value = money;
+			UpdateCurrency ();
+		}
 	}
 
 	/// <summary>
@@ -577,6 +583,21 @@ public class Weapon {
 		UpdateObject ();
 	}
 
+	public void Increase(int q){
+		quantity += q;
+		UpdateObject ();
+	}
+
+	public bool Decrease(int q){
+		if (q > quantity) {
+			return false;
+		} else {
+			quantity -= q;
+		}
+		UpdateObject ();
+		return true;
+	}
+
 	/// <summary>
 	/// Update the Object to database</summary>
 	public void UpdateObject(){
@@ -628,6 +649,22 @@ public class Armor {
 		quantity = q;
 		UpdateObject ();
 	}
+
+	
+	public void Increase(int q){
+		quantity += q;
+		UpdateObject ();
+	}
+	
+	public bool Decrease(int q){
+		if (q > quantity) {
+			return false;
+		} else {
+			quantity -= q;
+		}
+		UpdateObject ();
+		return true;
+	}
 	
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
@@ -678,7 +715,23 @@ public class Shield {
 		quantity = q;
 		UpdateObject ();
 	}
+
 	
+	public void Increase(int q){
+		quantity += q;
+		UpdateObject ();
+	}
+	
+	public bool Decrease(int q){
+		if (q > quantity) {
+			return false;
+		} else {
+			quantity -= q;
+		}
+		UpdateObject ();
+		return true;
+	}
+
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("shield", "SET", toJSON());

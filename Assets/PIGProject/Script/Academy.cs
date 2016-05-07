@@ -44,8 +44,11 @@ public class Academy : MonoBehaviour
 	public Transform SelfLearnScrollPanel;
 	public static Dictionary<int,Sprite> imageDict;
 	public static Dictionary<int,string> nameDict;
+	public static GameObject staticLowerThanTrainer;
+	public static GameObject staticConfirmTeacherBy;
 	public static GameObject staticTeachHolder;
 	public static GameObject staticSelfStudyHolder;
+	public static GameObject staticKnowledgeListHolder;
 	public static List<Counselor> cStudentList;
 	public static List<Counselor> cSelfLearnList;
 	bool firstCalled = false;
@@ -85,6 +88,9 @@ public class Academy : MonoBehaviour
 		staticTeachHolder = TeachHolder;
 		staticAcademyHolder = AcademyHolder;
 		staticSelfStudyHolder = SelfStudyHolder;
+		staticLowerThanTrainer = LowerThanTrainer;
+		staticConfirmTeacherBy = ConfirmTeacherBy;
+		staticKnowledgeListHolder = KnowledgeListHolder;
 
 		wsc = WsClient.Instance;
 		game = Game.Instance;
@@ -119,7 +125,6 @@ public class Academy : MonoBehaviour
 
 		//Get the default Self Study Sprite
 		SelfStudy.defaultSprite = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (0).GetChild (0).GetComponent<Image> ().sprite;
-//		InvokeRepeating ("CallSelfStudyOnTrainingCompleted", 1, 1);
 	}
 
 	public void SetupStudentPrefabList(){
@@ -589,9 +594,6 @@ public class Academy : MonoBehaviour
 		AcademySelfLearn.isSelfStudy = false;
 	}
 
-	void CallSelfStudyOnTrainingCompleted(){
-		SelfStudy.OnTrainingCompleted ();
-	}
 
 	void SetDictionary(){
 		activePopupName.Add (btnName [0], ActivePopupEnum.IQPopup);

@@ -98,9 +98,6 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		SoldierVM[0].Health = soldierHealth;
 		//game.soldiers[SchoolField.AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = soldierQuantity;
 		//game.login.attributes["TotalDeductedSoldiers"].AsInt = game.login.attributes["TotalDeductedSoldiers"].AsInt + soldierQuantity;
-		
-		
-		
 		//
     }
 
@@ -125,5 +122,5 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		//TODO: change weapon quantity
 		
     }
-
 }
+
