@@ -405,10 +405,12 @@ public class SchoolField : MonoBehaviour {
 						(soldierQuantity - game.shield.Find (x => x.type == game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt).quantity).ToString()+"\n";
 				}
 			}
-			Panel.GetMessageText(TrainingEquHolder).text = msg;
-			Panel.GetCancelButton(TrainingEquHolder).transform.GetChild(0).GetComponent<Text>().text = "取消";
-			isNewSoldiers = true;
-			ShowPanel(TrainingEquHolder);
+			if (msg != msgNotEnoughEquipementForNewSoldiers){
+				Panel.GetMessageText(TrainingEquHolder).text = msg;
+				Panel.GetCancelButton(TrainingEquHolder).transform.GetChild(0).GetComponent<Text>().text = "取消";
+				isNewSoldiers = true;
+				ShowPanel(TrainingEquHolder);
+			}
 		}
 	}
 

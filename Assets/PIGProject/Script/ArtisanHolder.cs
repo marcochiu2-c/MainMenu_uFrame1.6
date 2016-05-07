@@ -410,9 +410,11 @@ public class ArtisanHolder : MonoBehaviour {
 	void HighlightProceedingJobs(){
 		if (game.artisans [0].etaTimestamp > DateTime.Now) {
 			IdWeaponWhichProducing = game.artisans[0].targetId;
-		}else if (game.artisans [1].etaTimestamp > DateTime.Now) {
+		}
+		if (game.artisans [1].etaTimestamp > DateTime.Now) {
 			IdArmorWhichProducing = game.artisans[1].targetId;
-		}else if (game.artisans [2].etaTimestamp > DateTime.Now) {
+		}
+		if (game.artisans [2].etaTimestamp > DateTime.Now) {
 			IdShieldWhichProducing = game.artisans[2].targetId;
 		}
 	}
