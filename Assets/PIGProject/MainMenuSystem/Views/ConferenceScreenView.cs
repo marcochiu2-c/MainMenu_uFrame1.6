@@ -102,6 +102,35 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		GeneralList = game.general;
 		
 		whichTeam = 0;
+		
+		//int userLevel = CharacterPage.UserLevelCalculator(game.login.exp);
+		
+		//Testing use
+		int userLevel = 30;
+		
+		if (userLevel > 10)
+		{
+			SelectSoldier2Btn.interactable = true;
+			General2Btn.interactable = true;	
+		}
+		
+		if (userLevel > 20)
+		{
+			SelectSoldier3Btn.interactable = true;
+			General3Btn.interactable = true;	
+		}
+		
+		if (userLevel > 30)
+		{
+			SelectSoldier4Btn.interactable = true;
+			General4Btn.interactable = true;	
+		}
+		
+		if (userLevel > 40)
+		{
+			SelectSoldier5Btn.interactable = true;
+			General5Btn.interactable = true;	
+		}	
 	}
     
     public override void Bind() {
