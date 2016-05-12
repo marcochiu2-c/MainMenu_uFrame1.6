@@ -17,6 +17,8 @@ public class NoticeScreenView : NoticeScreenViewBase {
 	public Button SignButton;
 	public Button NoticeButton;
 	public Button SpecialButton;
+	public Button BackButton;
+	public Button CloseButton;
 
 	public GameObject SignHolder;
 	public GameObject NoticeHolder;
@@ -42,6 +44,19 @@ public class NoticeScreenView : NoticeScreenViewBase {
 				Message = "Signed"
 			});
 		});*/
+
+		this.BindButtonToHandler (BackButton, () => {
+			SignHolder.SetActive (false);
+			NoticeHolder.SetActive (false);
+			SpecialHolder.SetActive(false);
+		});
+
+		this.BindButtonToHandler (CloseButton, () => {
+			SignHolder.SetActive (false);
+			NoticeHolder.SetActive (false);
+			SpecialHolder.SetActive(false);
+			gameObject.SetActive(false);
+		});
 
 		this.BindButtonToHandler (SignButton, () => {
 			SignHolder.gameObject.SetActive (true);

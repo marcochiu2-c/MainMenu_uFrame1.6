@@ -59,6 +59,7 @@ public class Academy : MonoBehaviour
 	public int TrainingTimeTaught = 10;  // in hours
 	public int TrainingCoolDownPeriod = 24; // in hours, cannot train again in the same slot for given hours.
 	public static GameObject staticAcademyHolder;
+	public static bool IsLevelNotReach=true;
 	WsClient wsc;
 	Game game;
 
@@ -210,11 +211,20 @@ public class Academy : MonoBehaviour
 				if(tr[i].targetId != 0){
 					si.KnowledgeText.text = (game.counselor.Find(x => x.id == tr[i].targetId).attributes["attributes"]["IQ"].AsFloat+1).ToString();
 				}
+				if ((i == 3 || i ==4) && IsLevelNotReach){
+					Debug.Log("AcademyTeach.IQTeach B");
+					si.TeacherImage.GetComponent<Button>().interactable = false;
+					si.StudentImage.GetComponent<Button>().interactable = false;
+				}
 			} else if (i> 4 && i<10) {
 				si = AcademyTeach.CommandedTeach[i-5];
 				if(tr[i].targetId != 0){
-					si.KnowledgeText.text = (game.counselor.Find(x => x.id == tr[i].targetId).attributes["attributes"]["Leadership"].AsFloat+1).ToString();
+					si.KnowledgeText.text = (game.counselor.Find(x => x.id == tr[i].targetId).attributes["attributes"]["Leadership"].AsFloat+1).ToString();			
 				}
+				if ((i == 8 || i ==9) && IsLevelNotReach){
+					si.TeacherImage.GetComponent<Button>().interactable = false;
+					si.StudentImage.GetComponent<Button>().interactable = false;
+				}	
 			} else if (i> 9 && i<15) {
 				si = AcademyTeach.KnowledgeTeach[i-10];
 				if(tr[i].targetId != 0){
@@ -223,9 +233,18 @@ public class Academy : MonoBehaviour
 					    (game.counselor.Find(x => x.id == tr[i].targetId).attributes["attributes"]["KnownKnowledge"][KnowledgeID[tr[i].type]].AsInt+1).ToString()
 					);
 				}
+				if ((i == 13 || i ==14) && IsLevelNotReach){
+					si.TeacherImage.GetComponent<Button>().interactable = false;
+					si.StudentImage.GetComponent<Button>().interactable = false;
+				}
 			} else if (i> 14 && i<20) {
 				si = AcademyTeach.FightingTeach[i-15];
+				if ((i == 18 || i ==19) && IsLevelNotReach){
+					si.TeacherImage.GetComponent<Button>().interactable = false;
+					si.StudentImage.GetComponent<Button>().interactable = false;
+				}
 			}
+
 			si.trainingObject = game.trainings[i];
 			si.etaTimestamp = tr[i].etaTimestamp;
 			if (trainerId != 0 && targetId !=0){

@@ -27,10 +27,15 @@ public class SelfStudy : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		AddButtonListener ();
+		Debug.Log ("GetSiblingIndex(): "+transform.GetSiblingIndex ());
 	}
 
 	void OnEnable(){
 		InvokeRepeating ("UpdateImageText", 0, 1);
+		// Disable some Self Study slot if level not reach
+		if (Academy.IsLevelNotReach && (transform.GetSiblingIndex() == 6 || transform.GetSiblingIndex() == 8)) {
+			GetComponent<Button>().interactable = false;
+		}
 	}
 	
 	void OnDisable(){
@@ -118,6 +123,7 @@ public class SelfStudy : MonoBehaviour {
 
 	void AddButtonListener(){
 		gameObject.GetComponent<Button> ().onClick.AddListener (() => {
+			Debug.Log(transform.GetSiblingIndex());
 			if (trainingObject.etaTimestamp < DateTime.Now && isDropZoneEnabled){
 				Academy.CounselorHolderFunction = "SelfStudy";
 				Academy.CounselorHolderButton = gameObject.GetComponent<Button>();
@@ -249,7 +255,6 @@ public class SelfStudy : MonoBehaviour {
 				}
 				FightingTrainingItems[i] = game.trainings[i+35];
 			}
-			Utilities.ShowLog.Log ("Size of imageDict: "+imageDict.Count);
 			if (p.targetId != 0){ // Utilities.ShowLog.Log ("SelfStudy.ShowPanelItems(): "+p.targetId);
 				p.image.sprite = imageDict[game.counselor.Find(x => x.id == p.targetId).attributes["type"].AsInt];
 			}else {
