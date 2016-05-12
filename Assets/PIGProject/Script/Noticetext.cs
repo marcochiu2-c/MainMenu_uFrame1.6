@@ -50,5 +50,6 @@ public class noticetext : MonoBehaviour {
 	void Start () {
 		//theText = GameObject.Find ("/_MainMenuSceneRoot//Canvas/NoticeHolder/NoticeHolder/NoticeMask/Text").GetComponent <Text>();
 		StartCoroutine (Check ());
+//		theText.text = MainScene.noticeText;
 	}
 }

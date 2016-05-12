@@ -27,10 +27,13 @@ public class MainScene : MonoBehaviour {
 	public static int userId = 0;
 	Wealth wealth;
 	public Button MainCharButton;
+	public static GameObject NoticeDialog;
+	public static GameObject DisablePanel;
 	public static string sValue ="";
 	public static string rValue ="";
 	public static string sdValue ="";
 	public static string noticeURL ="";
+	public static string noticeText ="";
 	public static Wealth resourceValue = null;
 	public static Wealth stardustValue = null;
 	public static Wealth silverFeatherValue = null;
@@ -97,11 +100,15 @@ public class MainScene : MonoBehaviour {
 			LoadBodyPic bodyPic = LoadBodyPic.SetCharacters();
 		}
 
+		DisablePanel = transform.Find ("DisablePanel").gameObject;
+		NoticeDialog = transform.Find ("NoticeDialog").gameObject;
+		AddButtonListener ();
 		shop = GetComponent<Shop> ();
 		Invoke ("CallShop", 3);
 
 		ArtisanPanel = transform.parent.FindChild ("ArtisanHolder").gameObject;
 		wsc.Send("notice_url","GET",new JSONData (MainScene.userId));
+		wsc.Send("notice_text","GET",new JSONData (MainScene.userId));
 		InvokeRepeating("OnGeneralTrainComplete",1,4);
 		InvokeRepeating("CheckObject",1,2);
 		InvokeRepeating("QuitIfConnectionFailed",0,10);
@@ -270,6 +277,15 @@ public class MainScene : MonoBehaviour {
 		}
 	}
 	
+
+	void AddButtonListener(){
+		Panel.GetConfirmButton(NoticeDialog).onClick.AddListener(()=>{
+			ShowLog.Log ("Close Notice Dialog");
+			HidePanel(NoticeDialog);
+		});
+	}
+
+
 
 	void CallShop(){
 		shop.CallShop ();
@@ -521,6 +537,16 @@ public class MainScene : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	void ShowPanel(GameObject panel){
+		DisablePanel.SetActive (true);
+		panel.SetActive (true);
+	}
+	
+	void HidePanel(GameObject panel){
+		DisablePanel.SetActive (false);
+		panel.SetActive (false);
 	}
 
 }
