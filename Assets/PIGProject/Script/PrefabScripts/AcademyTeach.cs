@@ -43,6 +43,7 @@ public class AcademyTeach : MonoBehaviour {
 		TeacherDropZone = TeacherImage.GetComponent ("DropZone") as DropZone;
 		StudentDropZone = StudentImage.GetComponent ("DropZone") as DropZone;
 		InvokeRepeating ("OnTrainingCompleted", 0, 1);
+		AddButtonListener ();
 	}
 
 	void OnTrainingCompleted(){
@@ -122,6 +123,24 @@ public class AcademyTeach : MonoBehaviour {
 		} 
 	}
 
+	void AddButtonListener(){
+		TeacherImage.GetComponent<Button> ().onClick.AddListener (delegate {
+			if (trainingObject.etaTimestamp < DateTime.Now){
+				Academy.CounselorHolderFunction = "TeacherImage";
+				Academy.CounselorHolderButton = TeacherImage.GetComponent<Button>();
+				Academy.staticCounselorHolder.SetActive(true);
+			}
+		});
+		StudentImage.GetComponent<Button> ().onClick.AddListener (delegate  {
+			if (trainingObject.etaTimestamp < DateTime.Now){
+				Academy.CounselorHolderFunction = "StudentImage";
+				Academy.CounselorHolderButton = StudentImage.GetComponent<Button>();
+				Academy.staticCounselorHolder.SetActive(true);
+			}
+		 });
+
+	}
+
 	// Update is called once per frame
 	void Update () {
 //		Debug.Log (Utilities.TimeUpdate.Time (etaTimestamp));
@@ -133,7 +152,7 @@ public class AcademyTeach : MonoBehaviour {
 		var count = items.Count;
 		Utilities.ShowLog.Log ("Count of the Prefabs: " + count);
 		for (var i =0; i < count; i++) {
-			items[i].transform.parent = AcademyTeach.commonPanel;
+			items[i].transform.SetParent(AcademyTeach.commonPanel);
 			RectTransform rTransform = items[i].GetComponent<RectTransform>();
 			rTransform.localScale= Vector3.one;
 		}
@@ -142,7 +161,7 @@ public class AcademyTeach : MonoBehaviour {
 	public static void hidePanelItems(List<AcademyTeach> items){
 		var count = items.Count;
 		for (var i =0; i < count; i++) {
-			items[i].transform.parent = null;
+			items[i].transform.SetParent(null);
 		}
 	}
 
