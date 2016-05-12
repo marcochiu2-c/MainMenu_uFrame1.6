@@ -295,7 +295,7 @@ public class SchoolField : MonoBehaviour {
 
 	int TotalSoldierGenerated(){
 		DateTime rt = game.login.registerTime;
-		return (int)DateTime.Now.Subtract (rt).TotalMinutes;
+		return ((int)DateTime.Now.Subtract (rt).TotalMinutes) * 3;
 	}
 	#endregion
 
