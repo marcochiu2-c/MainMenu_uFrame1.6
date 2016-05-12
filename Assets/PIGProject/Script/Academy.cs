@@ -428,11 +428,17 @@ public class Academy : MonoBehaviour
 		for (int i = 0 ; i < count ; i++){
 			GameObject.DestroyImmediate( AcademyStudentNew.person[i].gameObject);
 		}
-		for (int i = 0; i < 5 ; i++) {
-			GameObject.DestroyImmediate( AcademyTeach.IQTeach[i].gameObject);
-			GameObject.DestroyImmediate( AcademyTeach.CommandedTeach[i].gameObject);
-			GameObject.DestroyImmediate( AcademyTeach.KnowledgeTeach[i].gameObject);
-			GameObject.DestroyImmediate( AcademyTeach.FightingTeach[i].gameObject);
+		foreach (AcademyTeach go in AcademyTeach.IQTeach) {
+			GameObject.DestroyImmediate(go.gameObject);
+		}
+		foreach (AcademyTeach go in AcademyTeach.CommandedTeach) {
+			GameObject.DestroyImmediate(go.gameObject);
+		}
+		foreach (AcademyTeach go in AcademyTeach.KnowledgeTeach) {
+			GameObject.DestroyImmediate(go.gameObject);
+		}
+		foreach (AcademyTeach go in AcademyTeach.FightingTeach) {
+			GameObject.DestroyImmediate(go.gameObject);
 		}
 		AcademyTeach.IQTeach = new List<AcademyTeach>();
 		AcademyTeach.CommandedTeach = new List<AcademyTeach>();
