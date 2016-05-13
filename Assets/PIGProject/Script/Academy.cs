@@ -60,12 +60,16 @@ public class Academy : MonoBehaviour
 	public int TrainingCoolDownPeriod = 24; // in hours, cannot train again in the same slot for given hours.
 	public static GameObject staticAcademyHolder;
 	public static bool IsLevelNotReach=true;
+
+	Text SelfStudyInstructionText;
+	Text TeachInstructionText;
 	WsClient wsc;
 	Game game;
-
+	
 	public static ActivePopupEnum activePopup;
 	Dictionary<ActivePopupEnum,string> academyCategoryText = new Dictionary<ActivePopupEnum, string>();
 	Dictionary<string,ActivePopupEnum> activePopupName = new Dictionary<string, ActivePopupEnum>();
+	Dictionary<ActivePopupEnum,string> academyDescription = new Dictionary<ActivePopupEnum, string>();
 	private const int columnWidthCount = 5;
 	List<TechTreeObject> techTreeList = new List<TechTreeObject> ();
 	int numberOfTech = 0;
@@ -97,6 +101,8 @@ public class Academy : MonoBehaviour
 		staticConfirmTeacherBy = ConfirmTeacherBy;
 		staticKnowledgeListHolder = KnowledgeListHolder;
 		staticCounselorHolder = CounselorHolder;
+		SelfStudyInstructionText = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();
+		TeachInstructionText = TeachHolder.transform.GetChild (1).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();
 
 		wsc = WsClient.Instance;
 		game = Game.Instance;
@@ -377,6 +383,8 @@ public class Academy : MonoBehaviour
 //		TeachHolder.SetActive (true);
 		QAHolder.SetActive (true);
 		Academy.activePopup = activePopupName[btn.name];
+		SelfStudyInstructionText.text = academyDescription [Academy.activePopup];
+		TeachInstructionText.text = academyDescription [Academy.activePopup];
 		Debug.Log (Academy.activePopup);
 		List<Trainings> tList = game.trainings;
 		SetupAcademyTaughtPanel ();
@@ -684,6 +692,12 @@ public class Academy : MonoBehaviour
 		academyCategoryText.Add (ActivePopupEnum.CommandedPopup, "統率");
 		academyCategoryText.Add (ActivePopupEnum.KnowledgePopup, "學問");
 		academyCategoryText.Add (ActivePopupEnum.FightingPopup, "陣法");
+		academyDescription.Add(ActivePopupEnum.IQPopup, "智商\n\n正常人的智商介乎85~115之間，能夠率領百萬雄獅，智商當然並非一般常人可比，努力訓練謀士，率領百萬雄獅征戰天下。\n\n自修：於左方點選訓練空間，再選擇欲訓練的謀士即可。\n\n師承：於左方的訓練空間先選師傅，選擇謀士作為師傅，再選擇徒弟，並選擇謀士作為徒弟即可，徒弟會跟隨師傅進行特訓，特訓完成後，徒弟的智商即與師傅相同。");
+		academyDescription.Add(ActivePopupEnum.CommandedPopup, "統率\n\n統率，即是可以率領的士兵數目，戰場上，多一根矛便是多一根矛，殺對手一個片甲不留。\n\n自修：於左方點選訓練空間，再選擇欲訓練的謀士即可。\n\n師承：於左方的訓練空間先選師傅，選擇謀士作為師傅，再選擇徒弟，並選擇謀士作為徒弟即可，徒弟會跟隨師傅進行特訓，特訓完成後，徒弟的統率即與師傅相同。");
+		academyDescription.Add(ActivePopupEnum.KnowledgePopup, "學問\n\n除了智商、統率之外，學問亦是非常重要。學問可以鍛造各種更好的裝備。工欲善其事，必先利其器，努力學習吧。\n\n自修：於左方點選訓練空間，再選擇欲訓練的謀士即可。\n\n師承：於左方的訓練空間先選師傅，選擇謀士作為師傅，再選擇徒弟，並選擇謀士作為徒弟即可，徒弟會跟隨師傅進行特訓，特訓完成後，徒弟的學問即與師傅相同。");
+		academyDescription.Add(ActivePopupEnum.FightingPopup,"陣法\n\n陣法可以令對方陷入水深火熱之中，亦可以令己方立於不敗之地，善同陣法，可獲長勝。\n\n自修：於左方點選訓練空間，再選擇欲訓練的謀士即可。\n\n師承：於左方的訓練空間先選師傅，選擇謀士作為師傅，再選擇徒弟，並選擇謀士作為徒弟即可，徒弟會跟隨師傅進行特訓，特訓完成後，徒弟的陣法即與師傅相同。");
+
+
 	}
 
 
