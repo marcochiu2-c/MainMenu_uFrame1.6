@@ -56,10 +56,15 @@ public class MainGameRootView : MainGameRootViewBase {
 	public GameObject loadingImage;
 	public GameObject beginnerGuide;
 	public GameObject guideArrow;
+	public Dictionary<int,Sprite> imageDict;
+	public Image[] bottomGeneralIcon = new Image[5];
+	public SpriteRenderer[] GeneralSprite = new SpriteRenderer[5];
+	public Button[] SoldierBtn = new Button[5];
 	
 	private AsyncOperation _async;
 
 	public List<SoldierViewModel> SoldierVM = new List<SoldierViewModel>();
+	public List<SoldierView> SoldierV = new List<SoldierView>();
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -70,12 +75,26 @@ public class MainGameRootView : MainGameRootViewBase {
         // var vm = model as MainGameRootViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
 		InfoText.text = missionInfo.text;
+		
 		gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent<GSHexGridManager>();
 		LocalUser =  uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
 		
-		for (int i = 1; i <= 5; i++)
+		//get the ImageDict
+		LoadHeadPic headPic = LoadHeadPic.SetCharacters();
+		imageDict = headPic.imageDict;
+		
+		for (int i = 1; i <= LocalUser.TotalTeam ; i++) 
+		{
 			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
-			//beginnerGuide = GameObject.Find("BeginnerGuide");
+			SoldierV.Add(uFrameKernel.Container.Resolve<SoldierView>("Soldier" + i));
+			
+			Debug.Log ("ImageType: " + LocalUser.generalImageType[i - 1]);
+			bottomGeneralIcon[i - 1].sprite = imageDict[LocalUser.generalImageType[i - 1]];
+			GeneralSprite[i - 1].sprite = imageDict[LocalUser.generalImageType[i - 1]];
+			SoldierBtn[i - 1].gameObject.SetActive(true);	
+		}
+		
+		//beginnerGuide = GameObject.Find("BeginnerGuide");
 		BeginnerGuide();
 	}
 	

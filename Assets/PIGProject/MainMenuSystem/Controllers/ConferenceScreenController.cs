@@ -26,11 +26,13 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		LocalUser = uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
 		Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.Identifier);
 		//Debug.Log ("Game Wealth: " + game.wealth[1].toJSON().ToString());
-        GetSoldierValue();
+		game = Game.Instance;
     }
+
     
-    public void GetSoldierValue()
-    {
+    public override void InitSoldierValue(ConferenceScreenViewModel viewModel) {
+		base.InitSoldierValue(viewModel);
+        
 		float soldierHealth = 1000; 
 		int AssigningSoldier = 0;
 		/*
@@ -48,14 +50,14 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 				SenseStyle Sense
 		*/
 		
-		game = Game.Instance;
 		
-		for (int i = 1; i <= 5 ; i++)
+		/*
+		for (int i = 1; i <= LocalUser.TotalTeam ; i++)
 		{
-			// Get the Controllers, ViewModels and Views from Kernel
 			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
 			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
 		}
+		*/
 		
 		Debug.Log (game.soldiers[AssigningSoldier].attributes);
 		
@@ -89,38 +91,41 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 			
 			SoldierVM[i].Health = 2001;
 			SoldierVM[i].Max_Health = 2001;
-			
-			//Debug.Log ("AttackSpeed: " + SoldierVM[0].AttackSpeed);
 		}
 		
 		
 		/// Soldier Quatity: Set Number in TextField
-		SoldierVM[0].Health = soldierHealth;
+		//SoldierVM[0].Health = soldierHealth;
 		//game.soldiers[SchoolField.AssigningSoldier-1].attributes["trainingSoldiers"].AsInt = soldierQuantity;
 		//game.login.attributes["TotalDeductedSoldiers"].AsInt = game.login.attributes["TotalDeductedSoldiers"].AsInt + soldierQuantity;
 		//
     }
-
-    public override void SetSoldierData(ConferenceScreenViewModel viewModel) {
-        base.SetSoldierData(viewModel);
-        
-        int SoldierGroup = viewModel.Group;
-        int SoldierType = viewModel.SoldierType - 1;
-        
-		SoldierVM[SoldierGroup].AttackSpeed = game.soldiers[SoldierType].attributes["AttackSpeed"].AsInt;
-		SoldierVM[SoldierGroup].Physique = game.soldiers[SoldierType].attributes["Strength"].AsInt;
-		SoldierVM[SoldierGroup].HitPoint = game.soldiers[SoldierType].attributes["Hit"].AsInt;
-		SoldierVM[SoldierGroup].Dodge = game.soldiers[SoldierType].attributes["Dodge"].AsFloat;
-		SoldierVM[SoldierGroup].InitialMorale = game.soldiers[SoldierType].attributes["Morale"].AsInt;
-		SoldierVM[SoldierGroup].WeaponProficiency = 90;
-		SoldierVM[SoldierGroup].Prestige = 100;
+    
+	public override void SetSoldierData(ConferenceScreenViewModel viewModel) {
+		base.SetSoldierData(viewModel);
+		
+		int SoldierGroup = viewModel.Group - 1;
+		int SoldierType = viewModel.SoldierType - 1;
+		
+		Debug.Log("LocalUser AttackSpeed: " + LocalUser.Soldier[SoldierGroup].AttackSpeed);
+		Debug.Log("AttackSpeed: " + game.soldiers[SoldierType].attributes["AttackSpeed"].AsFloat);
+		
+		LocalUser.Soldier[SoldierGroup].AttackSpeed = game.soldiers[SoldierType].attributes["AttackSpeed"].AsFloat;
+		LocalUser.Soldier[SoldierGroup].Physique = game.soldiers[SoldierType].attributes["Strength"].AsFloat;
+		LocalUser.Soldier[SoldierGroup].HitPoint = game.soldiers[SoldierType].attributes["Hit"].AsFloat;
+		LocalUser.Soldier[SoldierGroup].Dodge = game.soldiers[SoldierType].attributes["Dodge"].AsFloat;
+		LocalUser.Soldier[SoldierGroup].InitialMorale = game.soldiers[SoldierType].attributes["Morale"].AsFloat;
+		LocalUser.Soldier[SoldierGroup].WeaponProficiency = 90;
+		LocalUser.Soldier[SoldierGroup].Prestige = 100;
 		//SoldierVM[i].Career = game.soldiers[AssigningSoldier].attributes["Career"].AsInt;
 		
-		SoldierVM[SoldierGroup].Health =  viewModel.SoldierQuantity ;
-		SoldierVM[SoldierGroup].Max_Health =  SoldierVM[SoldierGroup].Health;
+		LocalUser.Soldier[SoldierGroup].Health = viewModel.SoldierQuantity;
+		Debug.Log(viewModel.SoldierQuantity);
+		Debug.Log(LocalUser.Soldier[SoldierGroup].Health);
+		LocalUser.Soldier[SoldierGroup].Max_Health = viewModel.SoldierQuantity;
 		
 		//TODO: change weapon quantity
 		
-    }
+	}
 }
 

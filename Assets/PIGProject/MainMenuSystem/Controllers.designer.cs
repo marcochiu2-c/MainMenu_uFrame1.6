@@ -683,6 +683,7 @@ public class ConferenceScreenControllerBase : SubScreenController {
     public virtual void InitializeConferenceScreen(ConferenceScreenViewModel viewModel) {
         // This is called when a ConferenceScreenViewModel is created
         viewModel.SetSoldierData.Action = this.SetSoldierDataHandler;
+        viewModel.InitSoldierValue.Action = this.InitSoldierValueHandler;
         ConferenceScreenViewModelManager.Add(viewModel);
     }
     
@@ -694,8 +695,15 @@ public class ConferenceScreenControllerBase : SubScreenController {
     public virtual void SetSoldierData(ConferenceScreenViewModel viewModel) {
     }
     
+    public virtual void InitSoldierValue(ConferenceScreenViewModel viewModel) {
+    }
+    
     public virtual void SetSoldierDataHandler(SetSoldierDataCommand command) {
         this.SetSoldierData(command.Sender as ConferenceScreenViewModel);
+    }
+    
+    public virtual void InitSoldierValueHandler(InitSoldierValueCommand command) {
+        this.InitSoldierValue(command.Sender as ConferenceScreenViewModel);
     }
 }
 

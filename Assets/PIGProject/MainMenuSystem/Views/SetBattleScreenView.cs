@@ -36,10 +36,13 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 	public Button Mission14Button;
 	public Button Mission15Button;
 	
+	public Button GoToConferenceBtn;
+	
 	public GameObject DailyMission;
 	public GameObject SpecialMission;
 	public GameObject LimitedMission;
 	public GameObject HolidayMission;
+	public GameObject GoToConferencePanel;
 	
 	public MainGameRootViewModel MainGameVM;
 	public UserViewModel LocalUser;
@@ -68,7 +71,8 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
         // Use this.SetBattleScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
-
+		var evt = new RequestMainMenuScreenCommand();
+		
 		this.BindButtonToHandler (BackButton, () => {
 			DailyMission.gameObject.SetActive (false);
 			SpecialMission.gameObject.SetActive (false);
@@ -208,10 +212,35 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 			ChangetoMainGame();
 		});
 		
+		this.BindButtonToHandler (Mission15Button, () => {
+			if (LocalUser != null)
+				LocalUser.WinCondition = WinCondition.Tower;
+			
+			ChangetoMainGame();
+		});
+		
+		this.BindButtonToHandler (GoToConferenceBtn, () => {
+			evt.ScreenType = typeof(ConferenceScreenViewModel);
+			Publish(evt);
+			
+			DailyMission.gameObject.SetActive (false);
+			SpecialMission.gameObject.SetActive (false);
+			LimitedMission.gameObject.SetActive (false);
+			HolidayMission.gameObject.SetActive (false);
+			GoToConferencePanel.gameObject.SetActive(false);
+			
+		});
     }
     
     public void ChangetoMainGame()
     {
+		
+		if(LocalUser.SetTeam == false)
+		{
+			GoToConferencePanel.gameObject.SetActive(true);
+			return;
+		}
+		
 		Publish(new UnloadSceneCommand()
 		        {
 			SceneName = "MainMenuScene"

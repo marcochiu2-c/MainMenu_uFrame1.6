@@ -22,6 +22,7 @@ public class GeneralAssign : MonoBehaviour {
 	public Text generalLv;
 	public Button myBtn;
 	public int general_id;
+	public int general_type;
 	/*
 	public override void KernelLoaded()
 	{
@@ -56,6 +57,6 @@ public class GeneralAssign : MonoBehaviour {
 	
 	public void CallConferenceView ()
 	{
-		ConferenceV.AssignGeneral(generalIcon);
+		ConferenceV.AssignGeneral(general_type);
 	}
 }

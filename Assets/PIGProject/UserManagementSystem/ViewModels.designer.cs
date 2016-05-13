@@ -29,6 +29,10 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<ScreenState> _ScreenStateProperty;
     
+    private P<Int32> _TotalTeamProperty;
+    
+    private P<Boolean> _SetTeamProperty;
+    
     private ModelCollection<SoldierViewModel> _Soldier;
     
     public UserViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
@@ -62,6 +66,24 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<Int32> TotalTeamProperty {
+        get {
+            return _TotalTeamProperty;
+        }
+        set {
+            _TotalTeamProperty = value;
+        }
+    }
+    
+    public virtual P<Boolean> SetTeamProperty {
+        get {
+            return _SetTeamProperty;
+        }
+        set {
+            _SetTeamProperty = value;
+        }
+    }
+    
     public virtual AuthorizationState AuthorizationState {
         get {
             return AuthorizationStateProperty.Value;
@@ -89,6 +111,24 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual Int32 TotalTeam {
+        get {
+            return TotalTeamProperty.Value;
+        }
+        set {
+            TotalTeamProperty.Value = value;
+        }
+    }
+    
+    public virtual Boolean SetTeam {
+        get {
+            return SetTeamProperty.Value;
+        }
+        set {
+            SetTeamProperty.Value = value;
+        }
+    }
+    
     public virtual ModelCollection<SoldierViewModel> Soldier {
         get {
             return _Soldier;
@@ -103,6 +143,8 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         _AuthorizationStateProperty = new P<AuthorizationState>(this, "AuthorizationState");
         _WinConditionProperty = new P<WinCondition>(this, "WinCondition");
         _ScreenStateProperty = new P<ScreenState>(this, "ScreenState");
+        _TotalTeamProperty = new P<Int32>(this, "TotalTeam");
+        _SetTeamProperty = new P<Boolean>(this, "SetTeam");
         _Soldier = new ModelCollection<SoldierViewModel>(this, "Soldier");
     }
     
@@ -111,6 +153,8 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         this.AuthorizationState = (AuthorizationState)stream.DeserializeInt("AuthorizationState");;
         this.WinCondition = (WinCondition)stream.DeserializeInt("WinCondition");;
         this.ScreenState = (ScreenState)stream.DeserializeInt("ScreenState");;
+        this.TotalTeam = stream.DeserializeInt("TotalTeam");;
+        this.SetTeam = stream.DeserializeBool("SetTeam");;
         if (stream.DeepSerialize) {
             this.Soldier.Clear();
             this.Soldier.AddRange(stream.DeserializeObjectArray<SoldierViewModel>("Soldier"));
@@ -122,6 +166,8 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         stream.SerializeInt("AuthorizationState", (int)this.AuthorizationState);;
         stream.SerializeInt("WinCondition", (int)this.WinCondition);;
         stream.SerializeInt("ScreenState", (int)this.ScreenState);;
+        stream.SerializeInt("TotalTeam", this.TotalTeam);
+        stream.SerializeBool("SetTeam", this.SetTeam);
         if (stream.DeepSerialize) stream.SerializeArray("Soldier", this.Soldier);
     }
     
@@ -137,6 +183,10 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_WinConditionProperty, false, false, true, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_ScreenStateProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_TotalTeamProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_SetTeamProperty, false, false, false, false));
         list.Add(new ViewModelPropertyInfo(_Soldier, true, true, false, false));
     }
 }

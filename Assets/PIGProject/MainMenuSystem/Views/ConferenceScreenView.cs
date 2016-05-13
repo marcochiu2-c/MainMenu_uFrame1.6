@@ -78,8 +78,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public List<General> GeneralList;
 	public Dictionary<int,Sprite> imageDict;
 	public Dictionary<int,string> nameDict;
-	
-	public int[] generalIDArray = new int[5];	
+	public UserViewModel LocalUser;	
+	public int[] generalIDArray = new int[5];
 	public int whichTeam;
 	
 	private Button _selectSoldier;
@@ -93,7 +93,9 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
 		game = Game.Instance;
 		LoadHeadPic headPic = LoadHeadPic.SetCharacters();
+		LocalUser =  uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
 		
+		LocalUser.SetTeam = false;
 		imageDict = headPic.imageDict;
 		nameDict = headPic.nameDict;
 		Debug.Log ("HeadPIG: " + headPic.SuenMo);
@@ -106,31 +108,52 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		//int userLevel = CharacterPage.UserLevelCalculator(game.login.exp);
 		
 		//Testing use
-		int userLevel = 30;
+		int userLevel = 25;
+			
 		
 		if (userLevel > 10)
 		{
 			SelectSoldier2Btn.interactable = true;
-			General2Btn.interactable = true;	
+			General2Btn.interactable = true;
+			LocalUser.TotalTeam = 2;
 		}
 		
 		if (userLevel > 20)
 		{
 			SelectSoldier3Btn.interactable = true;
-			General3Btn.interactable = true;	
+			General3Btn.interactable = true;
+			LocalUser.TotalTeam = 3;
 		}
 		
 		if (userLevel > 30)
 		{
 			SelectSoldier4Btn.interactable = true;
-			General4Btn.interactable = true;	
+			General4Btn.interactable = true;
+			LocalUser.TotalTeam = 4;
 		}
 		
 		if (userLevel > 40)
 		{
 			SelectSoldier5Btn.interactable = true;
-			General5Btn.interactable = true;	
-		}	
+			General5Btn.interactable = true;
+			LocalUser.TotalTeam = 5;
+		}
+		
+		//ExecuteInitSoldierValue();
+		for (int i = 1; i <= LocalUser.TotalTeam ; i++)
+		{
+			LocalUser.Soldier.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
+			Debug.Log ("SoldierVM added");
+			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
+		}
+		
+		for (var i = 0 ; i < GeneralList.Count ; i++){
+			CreateSelfLearnItem (GeneralList[i]);
+		}
+		
+		//this.ConferenceScreen.Group = 1;
+		//AssignGeneral(GeneralList[0].type);
+		LocalUser.TotalTeam = 0;
 	}
     
     public override void Bind() {
@@ -182,30 +205,40 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		this.BindButtonToHandler (SelectSoldier1Btn, () => {
 			_selectSoldier = SelectSoldier1Btn;
 			_soldierQuantityText = SoldierQuantityText1;
+			this.ConferenceScreen.Group = 1;
+			
 			SelectSoldierPanel.gameObject.SetActive (true);
 		});
 		
 		this.BindButtonToHandler (SelectSoldier2Btn, () => {
 			_selectSoldier = SelectSoldier2Btn;
 			_soldierQuantityText = SoldierQuantityText2;
+			this.ConferenceScreen.Group = 2;
+			
 			SelectSoldierPanel.gameObject.SetActive (true);
 		});
 		
 		this.BindButtonToHandler (SelectSoldier3Btn, () => {
 			_selectSoldier = SelectSoldier3Btn;
 			_soldierQuantityText = SoldierQuantityText3;
+			this.ConferenceScreen.Group = 3;
+			
 			SelectSoldierPanel.gameObject.SetActive (true);
 		});
 		
 		this.BindButtonToHandler (SelectSoldier4Btn, () => {
 			_selectSoldier = SelectSoldier4Btn;
 			_soldierQuantityText = SoldierQuantityText4;
+			this.ConferenceScreen.Group = 4;
+			
 			SelectSoldierPanel.gameObject.SetActive (true);
 		});
 		
 		this.BindButtonToHandler (SelectSoldier5Btn, () => {
 			_selectSoldier = SelectSoldier5Btn;
-			_soldierQuantityText = SoldierQuantityText5;
+			_soldierQuantityText = SoldierQuantityText5;			
+			this.ConferenceScreen.Group = 5;
+			
 			SelectSoldierPanel.gameObject.SetActive (true);
 		});
 		
@@ -216,7 +249,6 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		});
 		
 		this.BindButtonToHandler (SoldierType1, () => {
-			this.ConferenceScreen.Group = 0;
 			this.ConferenceScreen.SoldierType = 1;
 			//ExecuteSetSoldierData();
 			SelectSoldierPanel.gameObject.SetActive (false);
@@ -225,7 +257,6 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		});
 		
 		this.BindButtonToHandler (SoldierType2, () => {
-			this.ConferenceScreen.Group = 0;
 			this.ConferenceScreen.SoldierType = 2;
 			//ExecuteSetSoldierData();
 			SelectSoldierPanel.gameObject.SetActive (false);
@@ -234,7 +265,6 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		});
 		
 		this.BindButtonToHandler (SoldierType3, () => {
-			this.ConferenceScreen.Group = 0;
 			this.ConferenceScreen.SoldierType = 3;
 			//ExecuteSetSoldierData();
 			SelectSoldierPanel.gameObject.SetActive (false);
@@ -249,68 +279,45 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		});
 		
 		this.BindButtonToHandler (General1Btn, () => {
-		
-			//int cslCount = Academy.cSelfLearnList.Count;
-			for (var i = 0 ; i < GeneralList.Count ; i++){
-				CreateSelfLearnItem (GeneralList[i]);
-			}
 			
 			GeneralHolder.gameObject.SetActive (true);
 			
+			this.ConferenceScreen.Group = 1;
 			whichTeam = 1;
 		});
 		
 		
 		this.BindButtonToHandler (General2Btn, () => {
 			
-			//int cslCount = Academy.cSelfLearnList.Count;
-			for (var i = 0 ; i < GeneralList.Count ; i++){
-				CreateSelfLearnItem (GeneralList[i]);
-			}
-			
 			GeneralHolder.gameObject.SetActive (true);
 			
+			this.ConferenceScreen.Group = 2;
 			whichTeam = 2;
-			
 		});
 		
 		this.BindButtonToHandler (General3Btn, () => {
 			
-			//int cslCount = Academy.cSelfLearnList.Count;
-			for (var i = 0 ; i < GeneralList.Count ; i++){
-				CreateSelfLearnItem (GeneralList[i]);
-			}
-			
 			GeneralHolder.gameObject.SetActive (true);
 			
+			this.ConferenceScreen.Group = 3;
 			whichTeam = 3;
-			
 		});
 		
 		this.BindButtonToHandler (General4Btn, () => {
 			
-			//int cslCount = Academy.cSelfLearnList.Count;
-			for (var i = 0 ; i < GeneralList.Count ; i++){
-				CreateSelfLearnItem (GeneralList[i]);
-			}
-			
 			GeneralHolder.gameObject.SetActive (true);
 			
+			this.ConferenceScreen.Group = 4;
 			whichTeam = 4;
-			
 		});
 		
 		this.BindButtonToHandler (General5Btn, () => {
 			
-			//int cslCount = Academy.cSelfLearnList.Count;
-			for (var i = 0 ; i < GeneralList.Count ; i++){
-				CreateSelfLearnItem (GeneralList[i]);
-			}
 			
 			GeneralHolder.gameObject.SetActive (true);
 			
+			this.ConferenceScreen.Group = 5;
 			whichTeam = 5;
-			
 		});
 		
 		
@@ -377,67 +384,67 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			_soldierQuantityText.text = "兵數: " + SoldierQuantityInput.text;
 			ExecuteSetSoldierData();
 			SoldierQuantityPanel.gameObject.SetActive (false);
-			
+			LocalUser.TotalTeam++;
+			LocalUser.SetTeam = true;
 		});
 		
     }
     
-    public void AssignGeneral (Image icon)
+    public void AssignGeneral (int type)
     {
 		Image image;
 		Text iconText;
 		
-		switch (whichTeam)
+		switch (this.ConferenceScreen.Group)
 		{
 			
 			case 1:
-			General1.transform.FindChild("Image").GetComponent<Image>().sprite = icon.sprite;
+			General1.transform.FindChild("Image").GetComponent<Image>().sprite = imageDict[type];
 			General1.transform.FindChild("Text").GetComponent<Text>().text = "";
 			//iconText.text = null;
 			break;
 			case 2:
-			General2.transform.FindChild("Image").GetComponent<Image>().sprite = icon.sprite;
+			General2.transform.FindChild("Image").GetComponent<Image>().sprite = imageDict[type];
 			General2.transform.FindChild("Text").GetComponent<Text>().text = "";
 			  break;
 			case 3:
-			General3.transform.FindChild("Image").GetComponent<Image>().sprite = icon.sprite;
+			General3.transform.FindChild("Image").GetComponent<Image>().sprite = imageDict[type];
 			General3.transform.FindChild("Text").GetComponent<Text>().text = "";
 			  break;
 			case 4:
-			General4.transform.FindChild("Image").GetComponent<Image>().sprite = icon.sprite;
+			General4.transform.FindChild("Image").GetComponent<Image>().sprite = imageDict[type];
 			General4.transform.FindChild("Text").GetComponent<Text>().text = "";
 			  break;
 			case 5:
-			General5.transform.FindChild("Image").GetComponent<Image>().sprite = icon.sprite;
+			General5.transform.FindChild("Image").GetComponent<Image>().sprite = imageDict[type];
 			General5.transform.FindChild("Text").GetComponent<Text>().text = "";
 			  break;
 			default:
-			General1.transform.FindChild("Image").GetComponent<Image>().sprite = icon.sprite;
+			General1.transform.FindChild("Image").GetComponent<Image>().sprite = imageDict[type];
 			General1.transform.FindChild("Text").GetComponent<Text>().text = "";
 			break;					  			
-		}
+		}			
 		
 		GeneralHolder.gameObject.SetActive (false);
+		
+		LocalUser.generalImageType[this.ConferenceScreen.Group - 1] = type ;
     }
     
 	public void CreateSelfLearnItem(General character)
 	{
 		var type = character.type;
-		Debug.Log ("Type: " + type);
-		//AcademySelfLearn ss = Instantiate(Resources.Load("GeneralPrefab") as GameObject).GetComponent<AcademySelfLearn>();
+		//Debug.Log ("Type: " + type);
 		GeneralAssign generalAssign = Instantiate(Resources.Load("GeneralPrefab") as GameObject).GetComponent<GeneralAssign>();
 		generalAssign.transform.parent = GeneralListHolder;
-		
 		generalAssign.general_id = character.id;
+		generalAssign.general_type = character.type;
 		generalAssign.generalIcon.sprite = imageDict[type];
         generalAssign.generalName.text = nameDict[type];
         generalAssign.generalIQ.text = "IQ: " + character.attributes["Rank"];
 		generalAssign.generalLv.text = "LV: " + character.attributes["IQ"];
 		
-		generalAssign.transform.localScale = Vector3.one;
+		generalAssign.transform.localScale = Vector3.one;		
 		
-		
-		Debug.Log ("Gen Genereal from ConfrenceScreen");
 	}
 	
 	public void PopUp()

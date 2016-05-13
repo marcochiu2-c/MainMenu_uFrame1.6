@@ -693,6 +693,8 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
     
     private Signal<SetSoldierDataCommand> _SetSoldierData;
     
+    private Signal<InitSoldierValueCommand> _InitSoldierValue;
+    
     public ConferenceScreenViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
@@ -760,9 +762,19 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
         }
     }
     
+    public virtual Signal<InitSoldierValueCommand> InitSoldierValue {
+        get {
+            return _InitSoldierValue;
+        }
+        set {
+            _InitSoldierValue = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
         this.SetSoldierData = new Signal<SetSoldierDataCommand>(this);
+        this.InitSoldierValue = new Signal<InitSoldierValueCommand>(this);
         _GroupProperty = new P<Int32>(this, "Group");
         _SoldierTypeProperty = new P<Int32>(this, "SoldierType");
         _SoldierQuantityProperty = new P<Int32>(this, "SoldierQuantity");
@@ -770,6 +782,10 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
     
     public virtual void ExecuteSetSoldierData() {
         this.SetSoldierData.OnNext(new SetSoldierDataCommand());
+    }
+    
+    public virtual void ExecuteInitSoldierValue() {
+        this.InitSoldierValue.OnNext(new InitSoldierValueCommand());
     }
     
     public override void Read(ISerializerStream stream) {
@@ -789,6 +805,7 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
         base.FillCommands(list);
         list.Add(new ViewModelCommandInfo("SetSoldierData", SetSoldierData) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("InitSoldierValue", InitSoldierValue) { ParameterType = typeof(void) });
     }
     
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {

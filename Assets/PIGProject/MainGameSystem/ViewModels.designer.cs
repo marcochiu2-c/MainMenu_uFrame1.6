@@ -439,7 +439,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<Single> _Max_HealthProperty;
     
-    private P<Int32> _AttackSpeedProperty;
+    private P<Single> _AttackSpeedProperty;
     
     private P<MoveStyle> _MovementProperty;
     
@@ -455,9 +455,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<Single> _PhysiqueProperty;
     
-    private P<Int32> _HitPointProperty;
-    
-    private P<Int32> _WeaponProficienyProperty;
+    private P<Single> _HitPointProperty;
     
     private P<Single> _DodgeProperty;
     
@@ -465,9 +463,9 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<Single> _DeadProperty;
     
-    private P<Int32> _InitialMoraleProperty;
+    private P<Single> _InitialMoraleProperty;
     
-    private P<Int32> _PrestigeProperty;
+    private P<Single> _PrestigeProperty;
     
     private P<Boolean> _DEBUGProperty;
     
@@ -485,9 +483,9 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<Boolean> _TimeStartedProperty;
     
-    private P<Int32> _WeaponProficiencyProperty;
+    private P<Single> _WeaponProficiencyProperty;
     
-    private P<Int32> _moraleStandardProperty;
+    private P<Single> _moraleStandardProperty;
     
     private P<EntityViewModel> _OpponentProperty;
     
@@ -527,7 +525,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual P<Int32> AttackSpeedProperty {
+    public virtual P<Single> AttackSpeedProperty {
         get {
             return _AttackSpeedProperty;
         }
@@ -599,21 +597,12 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual P<Int32> HitPointProperty {
+    public virtual P<Single> HitPointProperty {
         get {
             return _HitPointProperty;
         }
         set {
             _HitPointProperty = value;
-        }
-    }
-    
-    public virtual P<Int32> WeaponProficienyProperty {
-        get {
-            return _WeaponProficienyProperty;
-        }
-        set {
-            _WeaponProficienyProperty = value;
         }
     }
     
@@ -644,7 +633,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual P<Int32> InitialMoraleProperty {
+    public virtual P<Single> InitialMoraleProperty {
         get {
             return _InitialMoraleProperty;
         }
@@ -653,7 +642,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual P<Int32> PrestigeProperty {
+    public virtual P<Single> PrestigeProperty {
         get {
             return _PrestigeProperty;
         }
@@ -734,7 +723,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual P<Int32> WeaponProficiencyProperty {
+    public virtual P<Single> WeaponProficiencyProperty {
         get {
             return _WeaponProficiencyProperty;
         }
@@ -743,7 +732,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual P<Int32> moraleStandardProperty {
+    public virtual P<Single> moraleStandardProperty {
         get {
             return _moraleStandardProperty;
         }
@@ -824,7 +813,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual Int32 AttackSpeed {
+    public virtual Single AttackSpeed {
         get {
             return AttackSpeedProperty.Value;
         }
@@ -896,21 +885,12 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual Int32 HitPoint {
+    public virtual Single HitPoint {
         get {
             return HitPointProperty.Value;
         }
         set {
             HitPointProperty.Value = value;
-        }
-    }
-    
-    public virtual Int32 WeaponProficieny {
-        get {
-            return WeaponProficienyProperty.Value;
-        }
-        set {
-            WeaponProficienyProperty.Value = value;
         }
     }
     
@@ -941,7 +921,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual Int32 InitialMorale {
+    public virtual Single InitialMorale {
         get {
             return InitialMoraleProperty.Value;
         }
@@ -950,7 +930,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual Int32 Prestige {
+    public virtual Single Prestige {
         get {
             return PrestigeProperty.Value;
         }
@@ -1031,7 +1011,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual Int32 WeaponProficiency {
+    public virtual Single WeaponProficiency {
         get {
             return WeaponProficiencyProperty.Value;
         }
@@ -1040,7 +1020,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
-    public virtual Int32 moraleStandard {
+    public virtual Single moraleStandard {
         get {
             return moraleStandardProperty.Value;
         }
@@ -1127,7 +1107,7 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         this.ChangeHealth = new Signal<ChangeHealthCommand>(this);
         _HealthProperty = new P<Single>(this, "Health");
         _Max_HealthProperty = new P<Single>(this, "Max_Health");
-        _AttackSpeedProperty = new P<Int32>(this, "AttackSpeed");
+        _AttackSpeedProperty = new P<Single>(this, "AttackSpeed");
         _MovementProperty = new P<MoveStyle>(this, "Movement");
         _PowerProperty = new P<Int32>(this, "Power");
         _isAttackProperty = new P<Boolean>(this, "isAttack");
@@ -1135,13 +1115,12 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         _MAXROUNDSProperty = new P<Int32>(this, "MAXROUNDS");
         _NameProperty = new P<String>(this, "Name");
         _PhysiqueProperty = new P<Single>(this, "Physique");
-        _HitPointProperty = new P<Int32>(this, "HitPoint");
-        _WeaponProficienyProperty = new P<Int32>(this, "WeaponProficieny");
+        _HitPointProperty = new P<Single>(this, "HitPoint");
         _DodgeProperty = new P<Single>(this, "Dodge");
         _HurtProperty = new P<Single>(this, "Hurt");
         _DeadProperty = new P<Single>(this, "Dead");
-        _InitialMoraleProperty = new P<Int32>(this, "InitialMorale");
-        _PrestigeProperty = new P<Int32>(this, "Prestige");
+        _InitialMoraleProperty = new P<Single>(this, "InitialMorale");
+        _PrestigeProperty = new P<Single>(this, "Prestige");
         _DEBUGProperty = new P<Boolean>(this, "DEBUG");
         _counterProperty = new P<Int32>(this, "counter");
         _CounterProperty = new P<Int32>(this, "Counter");
@@ -1150,8 +1129,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         _WarTimeLimitInSecondProperty = new P<Int32>(this, "WarTimeLimitInSecond");
         _starttimeProperty = new P<Single>(this, "starttime");
         _TimeStartedProperty = new P<Boolean>(this, "TimeStarted");
-        _WeaponProficiencyProperty = new P<Int32>(this, "WeaponProficiency");
-        _moraleStandardProperty = new P<Int32>(this, "moraleStandard");
+        _WeaponProficiencyProperty = new P<Single>(this, "WeaponProficiency");
+        _moraleStandardProperty = new P<Single>(this, "moraleStandard");
         _OpponentProperty = new P<EntityViewModel>(this, "Opponent");
         _BattleStateProperty = new P<BattleState>(this, "BattleState");
         _PlayListProperty = new P<PlayList>(this, "PlayList");
@@ -1172,20 +1151,19 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         base.Read(stream);
         this.Health = stream.DeserializeFloat("Health");;
         this.Max_Health = stream.DeserializeFloat("Max_Health");;
-        this.AttackSpeed = stream.DeserializeInt("AttackSpeed");;
+        this.AttackSpeed = stream.DeserializeFloat("AttackSpeed");;
         this.Movement = (MoveStyle)stream.DeserializeInt("Movement");;
         this.Power = stream.DeserializeInt("Power");;
         this.isAttack = stream.DeserializeBool("isAttack");;
         this.Action = (ActionStyle)stream.DeserializeInt("Action");;
         this.MAXROUNDS = stream.DeserializeInt("MAXROUNDS");;
         this.Physique = stream.DeserializeFloat("Physique");;
-        this.HitPoint = stream.DeserializeInt("HitPoint");;
-        this.WeaponProficieny = stream.DeserializeInt("WeaponProficieny");;
+        this.HitPoint = stream.DeserializeFloat("HitPoint");;
         this.Dodge = stream.DeserializeFloat("Dodge");;
         this.Hurt = stream.DeserializeFloat("Hurt");;
         this.Dead = stream.DeserializeFloat("Dead");;
-        this.InitialMorale = stream.DeserializeInt("InitialMorale");;
-        this.Prestige = stream.DeserializeInt("Prestige");;
+        this.InitialMorale = stream.DeserializeFloat("InitialMorale");;
+        this.Prestige = stream.DeserializeFloat("Prestige");;
         this.DEBUG = stream.DeserializeBool("DEBUG");;
         this.counter = stream.DeserializeInt("counter");;
         this.Counter = stream.DeserializeInt("Counter");;
@@ -1194,8 +1172,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         this.WarTimeLimitInSecond = stream.DeserializeInt("WarTimeLimitInSecond");;
         this.starttime = stream.DeserializeFloat("starttime");;
         this.TimeStarted = stream.DeserializeBool("TimeStarted");;
-        this.WeaponProficiency = stream.DeserializeInt("WeaponProficiency");;
-        this.moraleStandard = stream.DeserializeInt("moraleStandard");;
+        this.WeaponProficiency = stream.DeserializeFloat("WeaponProficiency");;
+        this.moraleStandard = stream.DeserializeFloat("moraleStandard");;
         		if (stream.DeepSerialize) this.Opponent = stream.DeserializeObject<EntityViewModel>("Opponent");;
         this.BattleState = (BattleState)stream.DeserializeInt("BattleState");;
         this.Career = (Career)stream.DeserializeInt("Career");;
@@ -1207,20 +1185,19 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         base.Write(stream);
         stream.SerializeFloat("Health", this.Health);
         stream.SerializeFloat("Max_Health", this.Max_Health);
-        stream.SerializeInt("AttackSpeed", this.AttackSpeed);
+        stream.SerializeFloat("AttackSpeed", this.AttackSpeed);
         stream.SerializeInt("Movement", (int)this.Movement);;
         stream.SerializeInt("Power", this.Power);
         stream.SerializeBool("isAttack", this.isAttack);
         stream.SerializeInt("Action", (int)this.Action);;
         stream.SerializeInt("MAXROUNDS", this.MAXROUNDS);
         stream.SerializeFloat("Physique", this.Physique);
-        stream.SerializeInt("HitPoint", this.HitPoint);
-        stream.SerializeInt("WeaponProficieny", this.WeaponProficieny);
+        stream.SerializeFloat("HitPoint", this.HitPoint);
         stream.SerializeFloat("Dodge", this.Dodge);
         stream.SerializeFloat("Hurt", this.Hurt);
         stream.SerializeFloat("Dead", this.Dead);
-        stream.SerializeInt("InitialMorale", this.InitialMorale);
-        stream.SerializeInt("Prestige", this.Prestige);
+        stream.SerializeFloat("InitialMorale", this.InitialMorale);
+        stream.SerializeFloat("Prestige", this.Prestige);
         stream.SerializeBool("DEBUG", this.DEBUG);
         stream.SerializeInt("counter", this.counter);
         stream.SerializeInt("Counter", this.Counter);
@@ -1229,8 +1206,8 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         stream.SerializeInt("WarTimeLimitInSecond", this.WarTimeLimitInSecond);
         stream.SerializeFloat("starttime", this.starttime);
         stream.SerializeBool("TimeStarted", this.TimeStarted);
-        stream.SerializeInt("WeaponProficiency", this.WeaponProficiency);
-        stream.SerializeInt("moraleStandard", this.moraleStandard);
+        stream.SerializeFloat("WeaponProficiency", this.WeaponProficiency);
+        stream.SerializeFloat("moraleStandard", this.moraleStandard);
         if (stream.DeepSerialize) stream.SerializeObject("Opponent", this.Opponent);;
         stream.SerializeInt("BattleState", (int)this.BattleState);;
         stream.SerializeInt("Career", (int)this.Career);;
@@ -1268,8 +1245,6 @@ public partial class EntityViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_PhysiqueProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_HitPointProperty, false, false, false, false));
-        // PropertiesChildItem
-        list.Add(new ViewModelPropertyInfo(_WeaponProficienyProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_DodgeProperty, false, false, false, false));
         // PropertiesChildItem

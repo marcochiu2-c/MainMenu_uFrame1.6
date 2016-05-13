@@ -52,6 +52,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	public int sNum = 0;	//index for SoldierVM and SoldierV List
 	public bool selectPoint = false;
 	public bool beginner = true;
+	//public int totalTeam;
 	
 	public FlatHexPoint towerPoint = new FlatHexPoint(29, -5);
 	
@@ -70,20 +71,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	{
 		base.KernelLoaded();
 		
-		for (int i = 1; i <= 5; i++)
-		{
-			// Get the Controllers, ViewModels and Views from Kernel
-			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
-			TargetVM.Add(uFrameKernel.Container.Resolve<EnemyViewModel>("Enemy" + i));
-			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
-			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM.ActualHit() + " and " + SoldierVM.ActualDodge() + " and " + SoldierVM.ActualMorale());
-			
-			GameObject objEnemy = GameObject.Find("Enemy" + i);
-			TargetV.Add (objEnemy.GetComponent<EnemyView>() as EnemyView);
-			
-			GameObject objSoldier = GameObject.Find("Soldier" + i);
-			SoldierV.Add (objSoldier.GetComponent<SoldierView>() as SoldierView);
-		}
+		//TODO: use LocalUser to save the total team
+		//totalTeam = 3;
 		
 		LocalUser =  uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
 		MainGameVM = uFrameKernel.Container.Resolve<MainGameRootViewModel>("MainGameRoot");
@@ -91,8 +80,26 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		//Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.Identifier);
 		//Debug.Log (MainGameVM == null ? "MainGameVM is null" : MainGameVM.Identifier);
 		
+		for (int i = 1; i <= 5 ; i++)
+		{
+			TargetVM.Add(uFrameKernel.Container.Resolve<EnemyViewModel>("Enemy" + i));
+			
+			GameObject objEnemy = GameObject.Find("Enemy" + i);
+			TargetV.Add (objEnemy.GetComponent<EnemyView>() as EnemyView);
+		}
+		
+		for (int i = 1; i <= LocalUser.TotalTeam ; i++)
+		{
+			// Get the Controllers, ViewModels and Views from Kernel
+			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
+			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
+			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM.ActualHit() + " and " + SoldierVM.ActualDodge() + " and " + SoldierVM.ActualMorale());
+			GameObject objSoldier = GameObject.Find("Soldier" + i);
+			SoldierV.Add (objSoldier.GetComponent<SoldierView>() as SoldierView);
+		}
 		
 		MainGameVM.WinCondition = LocalUser.WinCondition;
+		MainGameVM.GameState = GameState.Playing;
 		
 		Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.WinCondition.ToString());
 		Debug.Log (MainGameVM == null ? "MainGameVM is null" : MainGameVM.WinCondition.ToString());
@@ -101,8 +108,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		MainGameVM.PlayerIQ = 200;
 		MainGameVM.SoldierCount = 5;
 		MainGameVM.EnemyCount = 4;
-				
-		MainGameVM.GameState = GameState.Playing;
 		
 		IQDisplay.text = "Player IQ: " + MainGameVM.PlayerIQ;
 		
@@ -1130,7 +1135,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		}
 		
 		SoldierV[sNum].RendererColor(Color.grey);
-		if (sNum < 4)
+		if (sNum < LocalUser.TotalTeam  - 1)
 			sNum++;
 		else
 		{
@@ -1238,7 +1243,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		}
 		
 		//Change sNum
-		if (sNum < 4)
+		if (sNum < LocalUser.TotalTeam - 1)
 			sNum++;
 		
 		else 

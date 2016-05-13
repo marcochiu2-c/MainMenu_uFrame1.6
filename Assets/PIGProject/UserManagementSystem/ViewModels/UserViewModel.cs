@@ -9,7 +9,10 @@ using uFrame.MVVM.Bindings;
 using uFrame.Serialization;
 using UnityEngine;
 using UniRx;
-
+using UnityEngine.UI;
 
 public partial class UserViewModel : UserViewModelBase {
+
+public int[] generalImageType = new int[5] ;
+
 }
