@@ -220,6 +220,7 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 		});
 		
 		this.BindButtonToHandler (GoToConferenceBtn, () => {
+			
 			evt.ScreenType = typeof(ConferenceScreenViewModel);
 			Publish(evt);
 			
@@ -240,6 +241,17 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 			GoToConferencePanel.gameObject.SetActive(true);
 			return;
 		}
+		
+		LocalUser.TotalTeam = 0;
+		Debug.Log("before goto Battle: " + LocalUser.Soldier.Count);
+		
+		for(int i = 0; i < LocalUser.Soldier.Count; i++)
+		{
+			if(LocalUser.Soldier[i].Max_Health > 0)
+				LocalUser.TotalTeam++;
+		}
+		
+		Debug.Log("TotalTeam: " + LocalUser.TotalTeam);
 		
 		Publish(new UnloadSceneCommand()
 		        {

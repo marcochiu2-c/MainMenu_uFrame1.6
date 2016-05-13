@@ -1025,6 +1025,8 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		SoldierVM[i].SoldierState = SoldierState.FINISH;
 		_soldierCount++;
 		
+		//Clear PlayList
+		SoldierVM[i].playlist.Clear();
 	}
 	
 	/// <summary>

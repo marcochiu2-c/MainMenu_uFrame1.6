@@ -83,7 +83,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public int whichTeam;
 	
 	private Button _selectSoldier;
-	private Text _soldierQuantityText;
+	private Text _soldierQuantityText = null;
 	
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
@@ -105,11 +105,11 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		
 		whichTeam = 0;
 		
-		//int userLevel = CharacterPage.UserLevelCalculator(game.login.exp);
+		int userLevel = CharacterPage.UserLevelCalculator(game.login.exp);
 		
 		//Testing use
-		int userLevel = 25;
-			
+		//int userLevel = 25;
+		LocalUser.TotalTeam = 1;
 		
 		if (userLevel > 10)
 		{
@@ -139,11 +139,15 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			LocalUser.TotalTeam = 5;
 		}
 		
+		Debug.Log (LocalUser.Soldier == null ? "SoldierVM is null" : LocalUser.Soldier.Count.ToString());
+		
 		//ExecuteInitSoldierValue();
-		for (int i = 1; i <= LocalUser.TotalTeam ; i++)
+		for (int i = 1; i <= LocalUser.TotalTeam &&LocalUser.Soldier.Count == 0; i++)
 		{
 			LocalUser.Soldier.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
+			LocalUser.Soldier[i - 1].Max_Health = 0;
 			Debug.Log ("SoldierVM added");
+			
 			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
 		}
 		
@@ -153,7 +157,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		
 		//this.ConferenceScreen.Group = 1;
 		//AssignGeneral(GeneralList[0].type);
-		LocalUser.TotalTeam = 0;
+		//LocalUser.TotalTeam = 0;
 	}
     
     public override void Bind() {
@@ -380,11 +384,13 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 				return;
 			}
 			
+			//need to check condition
+			//LocalUser.TotalTeam++;
+			
 			this.ConferenceScreen.SoldierQuantity = int.Parse(SoldierQuantityInput.text);
 			_soldierQuantityText.text = "兵數: " + SoldierQuantityInput.text;
 			ExecuteSetSoldierData();
 			SoldierQuantityPanel.gameObject.SetActive (false);
-			LocalUser.TotalTeam++;
 			LocalUser.SetTeam = true;
 		});
 		

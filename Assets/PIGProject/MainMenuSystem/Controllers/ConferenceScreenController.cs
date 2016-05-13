@@ -107,7 +107,7 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		int SoldierGroup = viewModel.Group - 1;
 		int SoldierType = viewModel.SoldierType - 1;
 		
-		Debug.Log("LocalUser AttackSpeed: " + LocalUser.Soldier[SoldierGroup].AttackSpeed);
+		Debug.Log("SoldierGroup: " +  SoldierGroup);
 		Debug.Log("AttackSpeed: " + game.soldiers[SoldierType].attributes["AttackSpeed"].AsFloat);
 		
 		LocalUser.Soldier[SoldierGroup].AttackSpeed = game.soldiers[SoldierType].attributes["AttackSpeed"].AsFloat;
@@ -120,8 +120,6 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		//SoldierVM[i].Career = game.soldiers[AssigningSoldier].attributes["Career"].AsInt;
 		
 		LocalUser.Soldier[SoldierGroup].Health = viewModel.SoldierQuantity;
-		Debug.Log(viewModel.SoldierQuantity);
-		Debug.Log(LocalUser.Soldier[SoldierGroup].Health);
 		LocalUser.Soldier[SoldierGroup].Max_Health = viewModel.SoldierQuantity;
 		
 		//TODO: change weapon quantity

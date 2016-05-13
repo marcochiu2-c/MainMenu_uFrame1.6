@@ -170,7 +170,12 @@ public class MainGameRootView : MainGameRootViewBase {
 			//	SceneName = "MainMenuScene"
 			//});
 		    */
-			
+			for(int i = 0; i < SoldierVM.Count ; i++)
+			{
+				SoldierVM[i].Counter = 0;
+				SoldierVM[i].playlist.Clear ();
+			}
+				
 			LocalUser.ScreenState = ScreenState.MainGame;
 									
 			loadingImage.SetActive (true);
@@ -193,6 +198,11 @@ public class MainGameRootView : MainGameRootViewBase {
 			//	SceneName = "MainMenuScene"
 			//});
 		    */
+			for(int i = 0; i < SoldierVM.Count ; i++)
+			{
+				SoldierVM[i].Counter = 0;
+				SoldierVM[i].playlist.Clear ();
+			}
 			
 			LocalUser.ScreenState = ScreenState.MainGame;
 			
