@@ -376,8 +376,8 @@ public class AcademyStudentNew: MonoBehaviour {
 	}
 
 	private void SetCharacters(){
-		LoadBodyPic bodyPic = LoadBodyPic.Instance;
-		imageDict = bodyPic.imageDict;
-		nameDict = bodyPic.nameDict;
+		LoadHeadPic headPic = LoadHeadPic.Instance;
+		imageDict = headPic.imageDict;
+		nameDict = headPic.nameDict;
 	}
 }

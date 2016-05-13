@@ -123,7 +123,6 @@ public class SelfStudy : MonoBehaviour {
 
 	void AddButtonListener(){
 		gameObject.GetComponent<Button> ().onClick.AddListener (() => {
-			Debug.Log(transform.GetSiblingIndex());
 			if (trainingObject.etaTimestamp < DateTime.Now && isDropZoneEnabled){
 				Academy.CounselorHolderFunction = "SelfStudy";
 				Academy.CounselorHolderButton = gameObject.GetComponent<Button>();
