@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class noticetext : MonoBehaviour {
+public class NoticeText : MonoBehaviour {
 
 	public Text theText;
 
@@ -49,6 +49,8 @@ public class noticetext : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//theText = GameObject.Find ("/_MainMenuSceneRoot//Canvas/NoticeHolder/NoticeHolder/NoticeMask/Text").GetComponent <Text>();
-		StartCoroutine (Check ());
+//		StartCoroutine (Check ());
+		Debug.Log (MainScene.noticeText);
+		theText.text = MainScene.noticeText;
 	}
 }

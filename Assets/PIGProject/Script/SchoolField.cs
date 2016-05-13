@@ -295,7 +295,7 @@ public class SchoolField : MonoBehaviour {
 
 	int TotalSoldierGenerated(){
 		DateTime rt = game.login.registerTime;
-		return (int)DateTime.Now.Subtract (rt).TotalMinutes;
+		return ((int)DateTime.Now.Subtract (rt).TotalMinutes) * 3;
 	}
 	#endregion
 
@@ -1279,7 +1279,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	void ChangePanel(GameObject panel1, GameObject panel2){
-			Debug.Log (panel1 + " panel is change to " + panel2);
+		Debug.Log (panel1 + " panel is change to " + panel2);
 		panel1.SetActive (false);
 		panel2.SetActive (true);
 	}

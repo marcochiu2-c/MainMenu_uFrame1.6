@@ -139,6 +139,7 @@ enum jsonFuncNumberEnum {
 
 	// 400-401 Utilities
 	noticeURL = 400,
+	noticeText= 401,
 };
 
 
@@ -386,6 +387,12 @@ public class WsClient {
 		case jsonFuncNumberEnum.noticeURL:
 			if (j["obj"]!="[  ]"){
 				MainScene.noticeURL = j["obj"];
+			}
+			break;
+		case jsonFuncNumberEnum.noticeText:
+			if (j["obj"]!="[  ]"){
+				MainScene.noticeText = j["obj"];
+//				Utilities.ShowLog.Log (MainScene.noticeText);
 			}
 			break;
 		default:

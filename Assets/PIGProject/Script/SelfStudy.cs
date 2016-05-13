@@ -20,16 +20,22 @@ public class SelfStudy : MonoBehaviour {
 //	public int targetType = 0;
 	public bool isDropZoneEnabled = true; 
 	public Trainings trainingObject { get; set; }
-
+	public static Dictionary<int,Sprite> imageDict;
+	public static Dictionary<int,string> nameDict;
 
 	public static Sprite defaultSprite;
 	// Use this for initialization
 	void Start () {
-
+		AddButtonListener ();
+		Debug.Log ("GetSiblingIndex(): "+transform.GetSiblingIndex ());
 	}
 
 	void OnEnable(){
 		InvokeRepeating ("UpdateImageText", 0, 1);
+		// Disable some Self Study slot if level not reach
+		if (Academy.IsLevelNotReach && (transform.GetSiblingIndex() == 6 || transform.GetSiblingIndex() == 8)) {
+			GetComponent<Button>().interactable = false;
+		}
 	}
 	
 	void OnDisable(){
@@ -115,8 +121,17 @@ public class SelfStudy : MonoBehaviour {
 //		}
 //	}
 
+	void AddButtonListener(){
+		gameObject.GetComponent<Button> ().onClick.AddListener (() => {
+			if (trainingObject.etaTimestamp < DateTime.Now && isDropZoneEnabled){
+				Academy.CounselorHolderFunction = "SelfStudy";
+				Academy.CounselorHolderButton = gameObject.GetComponent<Button>();
+				Academy.staticCounselorHolder.SetActive (true);
+			}
+		});
+	}
+
 	void UpdateImageText(){
-		Debug.Log ("UpdateImageText()");
 		int index = 0;
 		Counselor thisCounselor;
 		Game game = Game.Instance;
@@ -135,7 +150,7 @@ public class SelfStudy : MonoBehaviour {
 			isDropZoneEnabled = true;
 		}
 		if (it.Length == 2) {
-			Debug.Log (it[1]);
+//			Debug.Log (it[1]);
 			if (it[1] == "00:00:00"){
 				ImageText.text = "";
 				image.sprite = defaultSprite;
@@ -144,7 +159,7 @@ public class SelfStudy : MonoBehaviour {
 		}
 	}
 
-	public static void ShowPanelItems(string panel, Dictionary<int,Sprite> imageDict, Dictionary<int,string> nameDict ){
+	public static void ShowPanelItems(string panel){
 		Game game = Game.Instance;
 		Dictionary<int,string> KnowledgeDict = Utilities.SetDict.Knowledge ();
 		Dictionary<int,string> KnowledgeID = Utilities.SetDict.KnowledgeID ();
@@ -239,9 +254,8 @@ public class SelfStudy : MonoBehaviour {
 				}
 				FightingTrainingItems[i] = game.trainings[i+35];
 			}
-
-			if (p.targetId != 0){
-				p.image.sprite = imageDict[p.targetId];
+			if (p.targetId != 0){ // Utilities.ShowLog.Log ("SelfStudy.ShowPanelItems(): "+p.targetId);
+				p.image.sprite = imageDict[game.counselor.Find(x => x.id == p.targetId).attributes["type"].AsInt];
 			}else {
 				p.image.sprite = defaultSprite;
 			}
@@ -256,5 +270,11 @@ public class SelfStudy : MonoBehaviour {
 //
 //			}
 		}
+	}
+
+	public static void SetCharacters(){
+		LoadHeadPic headPic = LoadHeadPic.Instance;
+		imageDict = headPic.imageDict;
+		nameDict = headPic.nameDict;
 	}
 }
