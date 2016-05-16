@@ -1,4 +1,13 @@
-﻿using System.Collections;
+﻿#if UNITY_ANDROID && !UNITY_EDITOR
+#define ANDROID
+#endif
+		
+		
+#if UNITY_IPHONE && !UNITY_EDITOR
+#define IPHONE
+#endif
+
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -490,9 +499,13 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			ProCamera2D.enabled = false;
 		
 		if(_clicking == false) return;
-		
+	#if IPHONE || ANDROID
+		if(EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) return;
+	#else	
 		if(EventSystem.current.IsPointerOverGameObject()) return;
 		
+	#endif	
+
 		if (walkableGrid[point].IsWalkable == false || walkableGrid[point].IsEnemy == true && SoldierVM[sNum].SoldierState == SoldierState.MOVE)
 		{
 			myText.text = "Please Select Another Point";
