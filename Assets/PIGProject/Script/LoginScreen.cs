@@ -39,13 +39,15 @@ public class LoginScreen : MonoBehaviour {
 	
 	public GameObject loadingImageScreen;
 	private AsyncOperation async;
+
 	// Use this for initialization
 	void Awake() {
 		CallLoginScreen ();
-		
 	}
-	
+
 	private void CallLoginScreen(){
+
+
 		//		ProfileEvents.OnSoomlaProfileInitialized += () => {
 		//			debugText += "SoomlaProfile Initialized !"+"\n";
 		//			Soomla.SoomlaUtils.LogDebug("LoginScreen", "SoomlaProfile Initialized !");
@@ -90,8 +92,14 @@ public class LoginScreen : MonoBehaviour {
 		JSONNode json = new JSONClass ();
 		wsc.Send ("getUserInformationByDeviceId", "GET", new JSONData (deviceId));
 		
-		
+		Debug.Log("Application.loadedLevelName: "+Application.loadedLevelName);
 		//		ShowLog.Log ("NewFBUserPanel Active: " + newFBUserPanel.activeSelf);
+
+		if (PlayerPrefs.GetInt ("snsType") == 1) {
+			LoginSNS();
+			_CalledFBLogin = true;
+			GotoMainUI ("MainMenuScene");
+		}
 	}
 	
 	// Update is called once per frame
@@ -158,7 +166,7 @@ public class LoginScreen : MonoBehaviour {
 		
 		
 	}
-	
+
 	public void EnterGameNoSNS(){
 		if (game.login.id != 0) {
 			GotoMainUI ("MainMenuScene");
@@ -198,6 +206,9 @@ public class LoginScreen : MonoBehaviour {
 			j.Add ("name", new JSONData(NewUserSNSAccountName.text));
 			//j.Add ("name", NewUserSNSAccountName.text )// TODO grab name from UI
 			SubmitUserRegisterData (j);
+			PlayerPrefs.SetInt("snsType",1); // For facebook only
+			PlayerPrefs.SetString("snsURL",snsURL);
+			PlayerPrefs.Save();
 		} else {  // Link SNS with old user
 			JSONClass data = new JSONClass ();
 			JSONClass json = new JSONClass ();
@@ -212,6 +223,9 @@ public class LoginScreen : MonoBehaviour {
 			json.Add ("data", data);
 			ShowLog.Log (json.ToString ());
 			wsc.conn.Send (json.ToString ());
+			PlayerPrefs.SetInt("snsType",1); // For facebook only
+			PlayerPrefs.SetString("snsURL",snsURL);
+			PlayerPrefs.Save();
 		}
 	}
 	
@@ -329,6 +343,10 @@ public class LoginScreen : MonoBehaviour {
 			if (game.login.id!=0){
 				isSNSLoggedIn=true;
 				CheckUserSNSInDB();
+				PlayerPrefs.SetInt("snsType",1);
+				PlayerPrefs.SetString("snsURL",snsURL);
+				PlayerPrefs.Save();
+				Debug.Log ("Log in with FB success");
 			}
 		} else {
 			ShowLog.Log("User cancelled login");
