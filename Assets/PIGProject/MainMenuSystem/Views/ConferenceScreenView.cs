@@ -446,8 +446,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		generalAssign.general_type = character.type;
 		generalAssign.generalIcon.sprite = imageDict[type];
         generalAssign.generalName.text = nameDict[type];
-        generalAssign.generalIQ.text = "IQ: " + character.attributes["Rank"];
-		generalAssign.generalLv.text = "LV: " + character.attributes["IQ"];
+        generalAssign.generalIQ.text = "IQ: " + character.attributes["IQ"];
+		generalAssign.generalLv.text = "LV: " + character.attributes["Rank"];
 		
 		generalAssign.transform.localScale = Vector3.one;		
 		
