@@ -81,31 +81,37 @@ public class ArtisanHolder : MonoBehaviour {
 		Game game = Game.Instance;
 		int id= 0;
 		if (game.artisans [0].etaTimestamp <= DateTime.Now && (game.artisans[0].status == (int)TrainingStatus.OnGoing || game.artisans[0].status==4)) {
-			id = game.weapon.FindIndex (x => x.type == game.artisans[0].targetId);
-			game.weapon[id].quantity += game.artisans[0].quantity;
-			game.weapon[id].UpdateObject();
-//			game.artisans[0].status = 3;
-//			game.artisans[0].UpdateObject();
-			game.artisans[0].Completed();
-			WeaponMaking.Weapons.Find(x => x.id == game.weapon[id].type).UpdateRemainingTime();
+			if (game.artisans[0].targetId > 0){
+				id = game.weapon.FindIndex (x => x.type == game.artisans[0].targetId);
+				game.weapon[id].quantity += game.artisans[0].quantity;
+				game.weapon[id].UpdateObject();
+	//			game.artisans[0].status = 3;
+	//			game.artisans[0].UpdateObject();
+				game.artisans[0].Completed();
+				WeaponMaking.Weapons.Find(x => x.id == game.weapon[id].type).UpdateRemainingTime();
+			}
 		}
 		if (game.artisans [1].etaTimestamp <= DateTime.Now && (game.artisans[1].status == (int)TrainingStatus.OnGoing || game.artisans[1].status==4)) {
-			id = game.armor.FindIndex (x => x.type == game.artisans[1].targetId);
-			game.armor[id].quantity += game.artisans[1].quantity;
-			game.armor[id].UpdateObject();
-//			game.artisans[1].status = 3;
-//			game.artisans[1].UpdateObject();
-			game.artisans[1].Completed();
-			WeaponMaking.Armors.Find(x => x.id == game.armor[id].type).UpdateRemainingTime();
+			if (game.artisans[1].targetId > 0){
+				id = game.armor.FindIndex (x => x.type == game.artisans[1].targetId);
+				game.armor[id].quantity += game.artisans[1].quantity;
+				game.armor[id].UpdateObject();
+	//			game.artisans[1].status = 3;
+	//			game.artisans[1].UpdateObject();
+				game.artisans[1].Completed();
+				WeaponMaking.Armors.Find(x => x.id == game.armor[id].type).UpdateRemainingTime();
+			}
 		}
 		if (game.artisans [2].etaTimestamp <= DateTime.Now && (game.artisans[2].status == (int)TrainingStatus.OnGoing || game.artisans[2].status==4)) {
-			id = game.shield.FindIndex (x => x.type == game.artisans[2].targetId);
-			game.shield[id].quantity += game.artisans[2].quantity;
-			game.shield[id].UpdateObject();
-//			game.artisans[2].status = 3;
-//			game.artisans[2].UpdateObject();
-			game.artisans[2].Completed();
-			WeaponMaking.Shields.Find(x => x.id == game.shield[id].type).UpdateRemainingTime();
+			if (game.artisans[2].targetId > 0){
+				id = game.shield.FindIndex (x => x.type == game.artisans[2].targetId);
+				game.shield[id].quantity += game.artisans[2].quantity;
+				game.shield[id].UpdateObject();
+	//			game.artisans[2].status = 3;
+	//			game.artisans[2].UpdateObject();
+				game.artisans[2].Completed();
+				WeaponMaking.Shields.Find(x => x.id == game.shield[id].type).UpdateRemainingTime();
+			}
 		}
 	}
 

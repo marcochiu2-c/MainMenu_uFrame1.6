@@ -131,7 +131,7 @@ public class Academy : MonoBehaviour
 		
 		#endregion
 
-		SetupStudentPrefabList ();
+//		SetupStudentPrefabList ();
 //		SetupAcademyTaughtPanel ();
 //		SetTeachItems (tList);
 
@@ -161,6 +161,7 @@ public class Academy : MonoBehaviour
 			}
 		}  
 		cslCount = Academy.cStudentList.Count;
+		Debug.Log ("Count of Students: "+cslCount);
 		for (var i = 0 ; i < cslCount ; i++){
 //			CreateStudentItem (Academy.cStudentList[i]);
 			StartCoroutine( CreateStudentItemNew(Academy.cStudentList[i]));
@@ -476,6 +477,9 @@ public class Academy : MonoBehaviour
 		foreach (AcademyTeach go in AcademyTeach.FightingTeach) {
 			GameObject.DestroyImmediate(go.gameObject);
 		}
+		cStudentList.Clear ();
+		cSelfLearnList.Clear ();
+
 		AcademyTeach.IQTeach = new List<AcademyTeach>();
 		AcademyTeach.CommandedTeach = new List<AcademyTeach>();
 		AcademyTeach.KnowledgeTeach = new List<AcademyTeach>();
