@@ -389,11 +389,11 @@ public class WsClient {
 				MainScene.SoldierInfo = j["obj"];
 			}
 			break;
-		case jsonFuncNumberEnum.noticeURL:
-			if (j["obj"]!="[  ]"){
-				MainScene.noticeURL = j["obj"];
-			}
-			break;
+//		case jsonFuncNumberEnum.noticeURL:
+//			if (j["obj"]!="[  ]"){
+//				MainScene.noticeURL = j["obj"];
+//			}
+//			break;
 		case jsonFuncNumberEnum.noticeText:
 			if (j["obj"]!="[  ]"){
 				MainScene.noticeText = j["obj"];

@@ -32,12 +32,9 @@ public class Companion : MonoBehaviour
 	public Transform CounselorsHolder;
 	public Button CounselorsButton;
 	public Button GeneralsButton;
-	public GameObject CardHolder;
 
 	Dictionary<int,Sprite> imageDict;
 	Dictionary<int,string> nameDict;
-
-	public static Transform staticCompanionHolder;
 	public static List<General> cGeneralList;
 	public static List<Counselor> cCounselorList;
 
@@ -57,7 +54,6 @@ public class Companion : MonoBehaviour
 		CallCompanion ();
 	}
 	
-
 	public void CallCompanion(){
 		
 		wsc = WsClient.Instance;
@@ -72,7 +68,6 @@ public class Companion : MonoBehaviour
 		CounselorScrollPanel = CounselorsHolder.GetChild (1).GetChild (1).GetChild (0);
 		GeneralScrollPanel = GeneralsHolder.GetChild (1).GetChild (1).GetChild (0);
 
-		staticCompanionHolder = CompanionHolder.transform;
 
 		SetupPrefabList ();
 

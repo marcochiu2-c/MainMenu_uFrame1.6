@@ -14,8 +14,6 @@ public class ArtisanHolder : MonoBehaviour {
 	public GameObject ArtisanWeaponPanel;
 	public GameObject ArtisanArmorPanel;
 	public GameObject ArtisanShieldPanel;
-
-
 	public GameObject DisablePopup;
 	public GameObject ArtisanConfirmPopup;
 	public GameObject NeedExtraResourcesPopup;
@@ -25,21 +23,15 @@ public class ArtisanHolder : MonoBehaviour {
 	public GameObject DetailPanel;
 	Button BackButton;
 	Button CloseButton;
-	static ProductDict p  = ProductDict.Instance;
+	Text LeftTimeText;
+	static ProductDict p  = new ProductDict();
 	static int IdWeaponWhichProducing  = 0;
 	static int IdArmorWhichProducing   = 0;
 	static int IdShieldWhichProducing  = 0;
-	public static int OpenedHolder = 0;
 	public static int IdEquipmentToBeProduced = 0;
 	static int NumberOfEquipmentToBeProduced=0;
 	public static int CancelType = 0;
 	public static int CancelId   = 0;
-	public static GameObject staticDisablePopup;
-	public static GameObject staticSpeedUpPopup;
-	public static GameObject staticJobCancelPopup;
-	public static GameObject staticEquipmentQHolder;
-	public static GameObject staticDetailPanel;
-
 	int latestEta = 0;
 	// Use this for initialization
 	void Start () {
@@ -49,125 +41,31 @@ public class ArtisanHolder : MonoBehaviour {
 
 	public void CallArtisanHolder(){
 		game = Game.Instance;
-		BackButton = transform.GetChild (1).GetComponent<Button> ();
-		CloseButton = transform.GetChild (2).GetComponent<Button> ();
+		BackButton = transform.GetChild (2).GetComponent<Button> ();
+		CloseButton = transform.GetChild (3).GetComponent<Button> ();
+		LeftTimeText = transform.GetChild (0).GetChild (2).GetChild (3).GetChild (0).GetComponent<Text> ();
 		AddButtonListener ();
-
-		latestEta = GetLatestEta ();
-
-		SetItemButtonActivateWhenJobComplete ();
-
-		staticDisablePopup = DisablePopup;
-		staticSpeedUpPopup = SpeedUpPopup;
-		staticJobCancelPopup = JobCancelPopup;
-		staticEquipmentQHolder = EquipmentQHolder;
-		staticDetailPanel = DetailPanel;
-	}
-
-	void OnEnable(){
-		game = Game.Instance;
 		SetPanel (game.weapon);
 		SetPanel (game.armor);
 		SetPanel (game.shield);
-		InvokeRepeating ("updateProductionEtaTimeText", 0.5f, 1);
-		InvokeRepeating ("OnArtisanJobsComplete", 0.5f, 1);
-	}
-
-	void OnDisable(){
-		CancelInvoke ();
-	}
-
-	void OnArtisanJobsComplete (){
-		Game game = Game.Instance;
-		int id= 0;
-		if (game.artisans [0].etaTimestamp <= DateTime.Now && (game.artisans[0].status == 1 || game.artisans[0].status==4)) {
-			id = game.weapon.FindIndex (x => x.type == game.artisans[0].targetId);
-			game.weapon[id].quantity += game.artisans[0].quantity;
-			game.weapon[id].UpdateObject();
-			game.artisans[0].status = 3;
-			game.artisans[0].UpdateObject();
-			WeaponMaking.Weapons.Find(x => x.id == game.weapon[id].type).UpdateRemainingTime();
-		}
-		if (game.artisans [1].etaTimestamp <= DateTime.Now && (game.artisans[1].status == 1 || game.artisans[1].status==4)) {
-			id = game.armor.FindIndex (x => x.type == game.artisans[1].targetId);
-			game.armor[id].quantity += game.artisans[1].quantity;
-			game.armor[id].UpdateObject();
-			game.artisans[1].status = 3;
-			game.artisans[1].UpdateObject();
-			WeaponMaking.Armors.Find(x => x.id == game.armor[id].type).UpdateRemainingTime();
-		}
-		if (game.artisans [2].etaTimestamp <= DateTime.Now && (game.artisans[2].status == 1 || game.artisans[2].status==4)) {
-			id = game.shield.FindIndex (x => x.type == game.artisans[2].targetId);
-			game.shield[id].quantity += game.artisans[2].quantity;
-			game.shield[id].UpdateObject();
-			game.artisans[2].status = 3;
-			game.artisans[2].UpdateObject();
-			WeaponMaking.Shields.Find(x => x.id == game.shield[id].type).UpdateRemainingTime();
-		}
-	}
-
-	void CloseAllPanel(string buttonName){
-		DisablePopup.SetActive (false);
-		if (buttonName == "Cancel") {
-			if (ArtisanConfirmPopup.activeSelf || NeedExtraResourcesPopup.activeSelf || SpeedUpPopup.activeSelf ||
-				 EquipmentQHolder.activeSelf || JobCancelPopup.activeSelf|| DetailPanel.activeSelf){
-				Debug.Log("CloseAllPanel()");
-				ArtisanConfirmPopup.SetActive (false);
-				NeedExtraResourcesPopup.SetActive (false);
-				SpeedUpPopup.SetActive (false);
-				EquipmentQHolder.SetActive (false);
-				JobCancelPopup.SetActive (false);
-				DetailPanel.SetActive (false);
-			} else {
-				ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive (false);
-				ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive (false);
-				ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive (false);
-				OpenedHolder = 0;
-			}
-		} else {
-			OpenedHolder = 0;
-			ArtisanConfirmPopup.SetActive (false);
-			NeedExtraResourcesPopup.SetActive (false);
-			SpeedUpPopup.SetActive (false);
-			EquipmentQHolder.SetActive (false);
-			JobCancelPopup.SetActive (false);
-			DetailPanel.SetActive (false);
-			ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive (false);
-			ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive (false);
-			ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive (false);
-			gameObject.SetActive(false);
-		}
-	}
-
-	void DestroyPrefabObject(){
-		var count = WeaponMaking.Weapons.Count;
-		for (int i = 0 ; i < count ; i++){
-			GameObject.DestroyImmediate( WeaponMaking.Weapons[i].gameObject);
-		}
-		count =WeaponMaking.Armors.Count;
-		for (int i = 0 ; i < count ; i++){
-			GameObject.DestroyImmediate( WeaponMaking.Armors[i].gameObject);
-		}
-		count =WeaponMaking.Shields.Count;
-		for (int i = 0 ; i < count ; i++){
-			GameObject.DestroyImmediate( WeaponMaking.Shields[i].gameObject);
-		}
-		WeaponMaking.Weapons = new List<WeaponMaking> ();
-		WeaponMaking.Armors = new List<WeaponMaking> ();
-		WeaponMaking.Shields = new List<WeaponMaking> ();
+		latestEta = GetLatestEta ();
+		InvokeRepeating ("updateProductionEtaTimeText", 0, 1);
+		SetItemButtonActivateWhenJobComplete ();
 	}
 
 	void AddButtonListener(){
 		BackButton.onClick.AddListener (() => {
-			CloseAllPanel("Cancel");
+			ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive(false);
+			ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive(false);
+			ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive(false);
 			transform.GetChild(0).gameObject.SetActive(true);
 		});
 		CloseButton.onClick.AddListener (() => {
-			CloseAllPanel("Close");
-			DestroyPrefabObject();
-			Resources.UnloadUnusedAssets();
+			ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive(false);
+			ArtisanArmorPanel.transform.parent.parent.gameObject.SetActive(false);
+			ArtisanShieldPanel.transform.parent.parent.gameObject.SetActive(false);
+			gameObject.SetActive(false);
 		});
-
 		EquipmentQHolder.transform.GetChild (2).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {  //Confirm
 			OnEquipmentQHolderConfirmed();
 		});
@@ -301,36 +199,26 @@ public class ArtisanHolder : MonoBehaviour {
 	}
 
 	void SetJob(){
-		DateTime  eta = DateTime.Now.Add (new TimeSpan(0,0,Mathf.Abs(p.products [IdEquipmentToBeProduced].attributes ["ProductionTime"].AsInt * NumberOfEquipmentToBeProduced)));;
 		int type=0;
 		if (IdEquipmentToBeProduced > 5000 && IdEquipmentToBeProduced < 6000) {
 			type = 0;
-			WeaponMaking.Weapons.Find (x => x.id == IdEquipmentToBeProduced).eta = eta;
-			WeaponMaking.Weapons.Find (x => x.id == IdEquipmentToBeProduced).SetAutoRun();
 		}else if (IdEquipmentToBeProduced > 6000 && IdEquipmentToBeProduced < 7000) {
 			type = 1;
-			WeaponMaking.Armors.Find (x => x.id == IdEquipmentToBeProduced).eta = eta;
-			WeaponMaking.Armors.Find (x => x.id == IdEquipmentToBeProduced).SetAutoRun();
 		}else if (IdEquipmentToBeProduced > 7000 && IdEquipmentToBeProduced < 8000) {
 			type = 2;
-			WeaponMaking.Shields.Find (x => x.id == IdEquipmentToBeProduced).eta = eta;
-			WeaponMaking.Shields.Find (x => x.id == IdEquipmentToBeProduced).SetAutoRun();
 		}
 		game.artisans [type].targetId = IdEquipmentToBeProduced;
 		game.artisans [type].resources = p.products [IdEquipmentToBeProduced].attributes ["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced;
 		game.artisans [type].details = " ";
-		game.artisans [type].quantity = Mathf.Abs (NumberOfEquipmentToBeProduced);
+		game.artisans [type].quantity = NumberOfEquipmentToBeProduced;
 		game.artisans [type].startTimestamp = DateTime.Now;
-		Debug.Log ("p.products [IdEquipmentToBeProduced].attributes [\"ProductionTime\"].AsInt: " + p.products [IdEquipmentToBeProduced].attributes ["ProductionTime"].AsInt);
-		Debug.Log ("NumberOfEquipmentToBeProduced: " + NumberOfEquipmentToBeProduced);
-		game.artisans [type].etaTimestamp = DateTime.Now.Add (new TimeSpan(0,0,Mathf.Abs(p.products [IdEquipmentToBeProduced].attributes ["ProductionTime"].AsInt * NumberOfEquipmentToBeProduced)));
+		game.artisans [type].etaTimestamp = DateTime.Now.Add (new TimeSpan(p.products [IdEquipmentToBeProduced].attributes ["ProductionTime"].AsInt * NumberOfEquipmentToBeProduced * 1000 * 10000));
 		game.artisans [type].status = 1;
 		game.artisans [type].UpdateObject ();
-		latestEta = GetLatestEta ();
 	}
 
 	void SetArtisanConfirmPopupText(){
-		ProductDict p = ProductDict.Instance;
+		ProductDict p = new ProductDict ();
 		string msg = "製造equipment需要amount的資源，確定製造嗎？";
 		msg = msg.Replace ("equipment", p.products [IdEquipmentToBeProduced].name);
 		msg = msg.Replace ("amount", (p.products[IdEquipmentToBeProduced].attributes["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced).ToString()) ;
@@ -348,7 +236,7 @@ public class ArtisanHolder : MonoBehaviour {
 	}
 
 	void SetNeedExtraResourcesPopupText(){
-		ProductDict p = ProductDict.Instance;
+		ProductDict p = new ProductDict ();
 		int cost = (p.products [IdEquipmentToBeProduced].attributes ["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced);
 		string msg = "主公，資源不足，需要額外使用amount 星塵進行制作嗎？";
 		msg = msg.Replace ("amount",Utilities.ExchangeRate.GetStardustFromResource(cost - game.wealth[2].value).ToString());
@@ -378,30 +266,27 @@ public class ArtisanHolder : MonoBehaviour {
 				}else{
 					wobj.SetPanel(p.products[x.type],x.quantity,DateTime.Now);
 				}
-				WeaponMaking.Weapons.Add (wobj);
 			}else if (panel == "Armor"){
 				wsi = WeaponMaking.Armors;
 				wobj.transform.parent = ArtisanArmorPanel.transform;
 				Armor x = weapon[i] as Armor;
 				if (IdArmorWhichProducing == x.type){
-					wobj.SetPanel(p.products[x.type],x.quantity,game.artisans[1].etaTimestamp);
+					wobj.SetPanel(p.products[x.type],x.quantity,game.artisans[0].etaTimestamp);
 				}else{
 					wobj.SetPanel(p.products[x.type],x.quantity,DateTime.Now);
 				}
-				WeaponMaking.Armors.Add (wobj);
 			}else if (panel == "Shield"){
 				wsi = WeaponMaking.Armors;
 				wobj.transform.parent = ArtisanShieldPanel.transform;
 				Shield x = weapon[i] as Shield;
 				if(IdShieldWhichProducing == x.type){
-					wobj.SetPanel(p.products[x.type],x.quantity,game.artisans[2].etaTimestamp);
+					wobj.SetPanel(p.products[x.type],x.quantity,game.artisans[0].etaTimestamp);
 				}else{
 					wobj.SetPanel(p.products[x.type],x.quantity,DateTime.Now);
 				}
-				WeaponMaking.Shields.Add (wobj);
 			}
 			RectTransform rTransform = wobj.GetComponent<RectTransform>();
-//			wsi.Add (wobj);
+			wsi.Add (wobj);
 			rTransform.localScale=Vector3.one;
 		}
 
@@ -410,11 +295,9 @@ public class ArtisanHolder : MonoBehaviour {
 	void HighlightProceedingJobs(){
 		if (game.artisans [0].etaTimestamp > DateTime.Now) {
 			IdWeaponWhichProducing = game.artisans[0].targetId;
-		}
-		if (game.artisans [1].etaTimestamp > DateTime.Now) {
+		}else if (game.artisans [1].etaTimestamp > DateTime.Now) {
 			IdArmorWhichProducing = game.artisans[1].targetId;
-		}
-		if (game.artisans [2].etaTimestamp > DateTime.Now) {
+		}else if (game.artisans [2].etaTimestamp > DateTime.Now) {
 			IdShieldWhichProducing = game.artisans[2].targetId;
 		}
 	}
@@ -434,9 +317,11 @@ public class ArtisanHolder : MonoBehaviour {
 
 	void updateProductionEtaTimeText(){
 		if (game.artisans [latestEta].etaTimestamp > DateTime.Now) {
-			transform.GetChild (0).GetChild (2).GetChild (3).GetComponent<Text> ().text = string.Format ("生產中 {0} 後完成", Utilities.TimeUpdate.Time(game.artisans [latestEta].etaTimestamp));
+			TimeSpan ts = game.artisans [latestEta].etaTimestamp.Subtract (DateTime.Now);
+			LeftTimeText.text = string.Format ("生產中 {0:D2}:{1:D2}:{2:D2} 後完成", ts.Hours, ts.Minutes, ts.Seconds);
+			LeftTimeText.text = string.Format ("生產中 "+Utilities.TimeUpdate.Time(ts)+" 後完成");
 		} else {
-			transform.GetChild (0).GetChild (2).GetChild (3).GetComponent<Text> ().text = "生產中 00:00:00 後完成";
+			LeftTimeText.GetComponent<Text> ().text = "生產中 00:00:00 後完成";
 		}
 	}
 
@@ -450,20 +335,17 @@ public class ArtisanHolder : MonoBehaviour {
 
 	void OnWeaponJobComplete(){
 		SetItemButtonInteractable (ArtisanWeaponPanel, true);
-//		game.artisans [0].status = 3;
-//		game.artisans [0].UpdateObject ();
+		game.artisans [0].Completed ();
 	}
 
 	void OnArmorJobComplete(){
 		SetItemButtonInteractable (ArtisanArmorPanel, true);
-//		game.artisans [1].status = 3;
-//		game.artisans [1].UpdateObject ();
+		game.artisans [1].Completed ();
 	}
 
 	void OnShieldJobComplete(){
 		SetItemButtonInteractable (ArtisanShieldPanel, true);
-//		game.artisans [2].status = 3;
-//		game.artisans [2].UpdateObject ();
+		game.artisans [2].Completed ();
 	}
 
 	void SetItemButtonActivateWhenJobComplete(){

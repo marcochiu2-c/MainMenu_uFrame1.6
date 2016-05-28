@@ -205,12 +205,21 @@ public class Academy : MonoBehaviour
 		Dictionary<int,string> KnowledgeDict = Utilities.SetDict.Knowledge ();
 		Dictionary<int,string> KnowledgeID = Utilities.SetDict.KnowledgeID ();
 		AcademyTeach si = new AcademyTeach();
+		int trainerType=0;
+		int targetType=0;
 
 		int trainCount = 20;
 		for (int i =0; i< trainCount; i++) {
 			int trainingType = tr[i].type;
 			int trainerId = tr[i].trainerId;
+			if (trainerId > 0){
+				trainerType = game.counselor.Find (x  => x.id == trainerId).type;
+			}
 			int targetId = tr[i].targetId;
+			if(targetId > 0){
+				targetType = game.counselor.Find (x  => x.id == targetId).type;
+			}
+			Debug.Log("SetTeachItems(): "+ tr[i].trainerId);
 //		GameObject sp=null;
 			if (i<5) {
 				si = AcademyTeach.IQTeach[i];
@@ -254,10 +263,10 @@ public class Academy : MonoBehaviour
 			si.trainingObject = game.trainings[i];
 			si.etaTimestamp = tr[i].etaTimestamp;
 			if (trainerId != 0 && targetId !=0){
-				si.TeacherPic = imageDict [trainerId];
-			    si.TeacherImageText.text = nameDict [trainerId];
-				si.StudentPic = imageDict [targetId];
-				si.StudentImageText.text = nameDict [targetId];
+				si.TeacherPic = imageDict [trainerType];
+			    si.TeacherImageText.text = nameDict [trainerType];
+				si.StudentPic = imageDict [targetType];
+				si.StudentImageText.text = nameDict [targetType];
 				si.trainerId = trainerId;
 
 //				si.TeacherDropZone.enabled = false;
@@ -268,9 +277,9 @@ public class Academy : MonoBehaviour
 				si.trainingType = tr[i].type;
 			}else{
 				si.TeacherPic = null;
-				si.TeacherImageText.text = nameDict [trainerId];
+				si.TeacherImageText.text = "";
 				si.StudentPic = null;
-				si.StudentImageText.text = nameDict [targetId];
+				si.StudentImageText.text = "";
 				si.isDropZoneEnabled = true;
 			}
 			if (i<5) {
@@ -564,7 +573,7 @@ public class Academy : MonoBehaviour
 			game.trainings[index].targetId = AcademyStudentNew.currentTeachItem.targetId;
 			game.trainings[index].startTimestamp = DateTime.Now;
 			game.trainings[index].etaTimestamp = DateTime.Now+new TimeSpan(TrainingTimeTaught,0,0);
-			game.trainings[index].status = 1;
+			game.trainings[index].status = (int)TrainingStatus.OnGoing;
 			if (index < 5){
 				game.trainings[index].type = 1;
 				AcademyStudentNew.currentTeachItem.KnowledgeText.text = (game.counselor.Find(x => x.id == AcademyStudentNew.currentTeachItem.targetId).attributes["attributes"]["IQ"].AsInt+1).ToString();
@@ -625,7 +634,7 @@ public class Academy : MonoBehaviour
 //			game.trainings[index].targetId = AcademySelfLearn.currentSelfStudy.targetId;
 			game.trainings[index].startTimestamp = DateTime.Now;
 			game.trainings[index].etaTimestamp = DateTime.Now+new TimeSpan(TrainingTimeTaught * 2,0,0);
-			game.trainings[index].status = 1;
+			game.trainings[index].status = (int)TrainingStatus.OnGoing;
 			ss.ImageText.text = nameDict[ss.trainingType];
 			if (index < 25){
 				game.trainings[index].type = 1;

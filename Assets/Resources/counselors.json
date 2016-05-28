@@ -14,7 +14,7 @@
     "HighestLeadership":1000000,
     "Prestige":0,
     "KnownFormation"{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"吳起",
@@ -31,7 +31,7 @@
     "HighestLeadership":900000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"孫武",
@@ -48,7 +48,7 @@
     "HighestLeadership":1000000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"伍子胥",
@@ -65,7 +65,7 @@
     "HighestLeadership":650000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"曹劌",
@@ -82,7 +82,7 @@
     "HighestLeadership":650000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"管仲",
@@ -99,7 +99,7 @@
     "HighestLeadership":700000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"范蠡",
@@ -116,7 +116,7 @@
     "HighestLeadership":700000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"諸葛亮",
@@ -133,7 +133,7 @@
     "HighestLeadership":1000000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"孫臏",
@@ -150,7 +150,7 @@
     "HighestLeadership":900000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"張良",
@@ -167,7 +167,7 @@
     "HighestLeadership":750000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"劉基",
@@ -184,7 +184,7 @@
     "HighestLeadership":750000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"范增",
@@ -201,7 +201,7 @@
     "HighestLeadership":750000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"苗訓",
@@ -218,7 +218,7 @@
     "HighestLeadership":700000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"劉秉忠",
@@ -235,7 +235,7 @@
     "HighestLeadership":700000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"耶律楚材",
@@ -252,7 +252,7 @@
     "HighestLeadership":750000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"范文程",
@@ -269,7 +269,7 @@
     "HighestLeadership":650000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"曾國藩",
@@ -286,7 +286,7 @@
     "HighestLeadership":700000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"黃石公",
@@ -303,7 +303,7 @@
     "HighestLeadership":900000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"尉繚子",
@@ -320,7 +320,7 @@
     "HighestLeadership":850000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"田穰苴",
@@ -337,7 +337,7 @@
     "HighestLeadership":750000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"龐涓",
@@ -354,7 +354,7 @@
     "HighestLeadership":850000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"龐統",
@@ -371,7 +371,7 @@
     "HighestLeadership":850000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"司馬懿",
@@ -388,7 +388,7 @@
     "HighestLeadership":850000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"周瑜",
@@ -405,7 +405,7 @@
     "HighestLeadership":850000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"于謙",
@@ -422,7 +422,7 @@
     "HighestLeadership":750000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"楊國忠",
@@ -439,7 +439,7 @@
     "HighestLeadership":500000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"趙括",
@@ -456,7 +456,7 @@
     "HighestLeadership":600000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"朱般懟",
@@ -473,7 +473,7 @@
     "HighestLeadership":500000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   },
   {
     "Name":"辰漾守",
@@ -490,6 +490,6 @@
     "HighestLeadership":750000,
     "Prestige":0,
     "KnownFormation":{ },
-    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0}
+    "KnownKnowledge":{"Woodworker":0,"MetalFabrication":0,"ChainSteel":0,"MetalProcessing":0,"Crafts":0,"Geometry":0,"Physics":0,"Chemistry":0,"PeriodicTable":0,"Pulley":0,"Anatomy":0,"Catapult":0,"GunpowderModulation":0,"Psychology":0,"EasternWeaponTechnology":0,"WesternWeaponTechnology":0,"IChing":0}
   }
 ]

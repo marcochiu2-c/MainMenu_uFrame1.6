@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SimpleJSON;
 using UnityEngine;
+using System.Linq;
 
 
 [Serializable]
@@ -747,11 +748,12 @@ public class Trainings {
 	public DateTime startTimestamp { get; set; }
 	public DateTime etaTimestamp { get; set; }
 	public int status { get; set; }
+	public JSONClass attributes { get; set; }
 
 	public Trainings(){
 	}
 
-	public Trainings(int i, int t, int tr, int tid, DateTime sts, DateTime ets, int s){
+	public Trainings(int i, int t, int tr, int tid, DateTime sts, DateTime ets, int s, string attr){
 		id = i;
 		type = t;
 		trainerId = tr;
@@ -759,6 +761,7 @@ public class Trainings {
 		startTimestamp = sts;
 		etaTimestamp = ets;
 		status = s;
+		attributes = (JSONClass) JSON.Parse(attr);;
 	}
 
 	public Trainings(JSONNode j){
@@ -769,6 +772,7 @@ public class Trainings {
 		startTimestamp = Convert.ToDateTime(j ["start_timestamp"]);
 		etaTimestamp = Convert.ToDateTime(j ["eta_timestamp"]);
 		status = j ["training_status"].AsInt;
+		attributes = (JSONClass)j ["attributes"];
 	}
 
 	public JSONClass toJSON(){
@@ -781,19 +785,21 @@ public class Trainings {
 		j ["start_time"] = new JSONData (WsClient.JSDate(startTimestamp));
 		j ["eta_time"] = new JSONData (WsClient.JSDate(etaTimestamp));
 		j ["status"] = new JSONData (status);
+		j ["attributes"] = attributes;
 		j.Add ("userId", new JSONData (game.login.id));
+
 		return j;
 	}
 
 	public string ToString(){
 		return toJSON ().ToString ();
 	}
-	
+
 	public void Completed(){
 		type = 0;
 		trainerId = 0;
 		targetId = 0;
-		status = 3;
+		status = (int)TrainingStatus.Completed;
 		UpdateObject ();
 	}
 
@@ -1074,6 +1080,11 @@ public class Artisans {
 
 	public string ToString(){
 		return toJSON ().ToString ();
+	}
+
+	public void Completed(){
+		status = (int)TrainingStatus.Completed;
+		UpdateObject ();
 	}
 	
 	public void UpdateObject(){
