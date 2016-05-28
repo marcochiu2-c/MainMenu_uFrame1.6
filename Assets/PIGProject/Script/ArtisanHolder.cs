@@ -437,9 +437,9 @@ public class ArtisanHolder : MonoBehaviour {
 
 	void updateProductionEtaTimeText(){
 		if (game.artisans [latestEta].etaTimestamp > DateTime.Now) {
-			transform.GetChild (0).GetChild (2).GetChild (3).GetComponent<Text> ().text = string.Format ("生產中 {0} 後完成", Utilities.TimeUpdate.Time(game.artisans [latestEta].etaTimestamp));
+			transform.GetChild (0).GetChild (2).GetChild (3).GetChild (0).GetComponent<Text> ().text = string.Format ("生產中 {0} 後完成", Utilities.TimeUpdate.Time(game.artisans [latestEta].etaTimestamp));
 		} else {
-			transform.GetChild (0).GetChild (2).GetChild (3).GetComponent<Text> ().text = "生產中 00:00:00 後完成";
+			transform.GetChild (0).GetChild (2).GetChild (3).GetChild (0).GetComponent<Text> ().text = "生產中 00:00:00 後完成";
 		}
 	}
 
