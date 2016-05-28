@@ -156,6 +156,7 @@ public class MainGameRootView : MainGameRootViewBase {
 		});
 		
 		this.BindButtonToHandler(LeaveButton, () => { 
+			var evt = new RequestMainMenuScreenCommand();
 			
 			/*
 			Publish(new UnloadSceneCommand()
@@ -181,9 +182,13 @@ public class MainGameRootView : MainGameRootViewBase {
 			loadingImage.SetActive (true);
 			StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
 			
+			evt.ScreenType = typeof(MenuScreenViewModel);
+			Publish(evt);
+			
 		});
 		
 		this.BindButtonToHandler(Leave2Button, () => { 
+			var evt = new RequestMainMenuScreenCommand();
 			
 			/*
 			Publish(new UnloadSceneCommand()
@@ -208,6 +213,9 @@ public class MainGameRootView : MainGameRootViewBase {
 			
 			loadingImage.SetActive (true);
 			StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
+			
+			evt.ScreenType = typeof(MenuScreenViewModel);
+			Publish(evt);
 		});
 
 		this.BindButtonToHandler(InfoAtkButton, () => { 
@@ -314,7 +322,7 @@ public class MainGameRootView : MainGameRootViewBase {
 		if (this.MainGameRoot.EnemyCount <= 0)
 		{
 			Debug.Log ("You Win");
-			gameOverText.text = "You Win";
+			gameOverText.text = "勝利";
 			gameOverText.gameObject.SetActive(true);
 			ExecuteGameOver();
 		}
@@ -323,7 +331,7 @@ public class MainGameRootView : MainGameRootViewBase {
 		else
 		{
 			Debug.Log ("You Lose");
-			gameOverText.text = "GameOver";
+			gameOverText.text = "落敗";
 			gameOverText.gameObject.SetActive(true);
 			ExecuteGameOver();
 		}
