@@ -8,7 +8,7 @@ public class PageUpDown : MonoBehaviour {
 	public Button fSecondPage,fThirdPage, bSecondPage, bFirstPage;
 
 	public Transform Page1, Page2, Page3, SecondPageLeft, SecondPageRight, ThirdPageLeft, FirstPageRight;
-
+	
 	public void toSecondPage(){
 //		PageContent.DOLocalMoveX (0, 0.5f, PageContent.DOLocalMoveX (-680, 0.5f));
 		Page1.DOLocalMoveX (-860 * 2, 0.1f);
@@ -27,7 +27,7 @@ public class PageUpDown : MonoBehaviour {
 		Page3.DOLocalMoveX (-860, 0.1f);
 		FirstPageRight.DOLocalMoveX (-840, 0.1f);
 		SecondPageLeft.DOLocalMoveX (-420*2, 0.1f);
-		SecondPageRight.DOLocalMoveX (420, 0.1f);
+		SecondPageRight.DOLocalMoveX (420*3, 0.1f);
 		ThirdPageLeft.DOLocalMoveX (-420, 0.1f);
 	}
 

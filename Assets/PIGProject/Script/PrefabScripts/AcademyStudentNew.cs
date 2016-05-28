@@ -201,6 +201,18 @@ public class AcademyStudentNew: MonoBehaviour {
 		} else {
 			KnowledgeOption.MetalFabrication.interactable = false;
 		}
+		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["EasternHistory"].AsInt > 
+		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["EasternHistory"].AsInt) {
+			KnowledgeOption.EasternHistory.interactable = true;
+		} else {
+			KnowledgeOption.EasternHistory.interactable = false;
+		}
+		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["WesternHistory"].AsInt > 
+		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["WesternHistory"].AsInt) {
+			KnowledgeOption.WesternHistory.interactable = true;
+		} else {
+			KnowledgeOption.WesternHistory.interactable = false;
+		}
 		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["ChainSteel"].AsInt > 
 		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["ChainSteel"].AsInt) {
 			KnowledgeOption.ChainSteel.interactable = true;
@@ -272,6 +284,12 @@ public class AcademyStudentNew: MonoBehaviour {
 			KnowledgeOption.Psychology.interactable = true;
 		} else {
 			KnowledgeOption.Psychology.interactable = false;
+		}
+		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["IChing"].AsInt > 
+		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["IChing"].AsInt) {
+			KnowledgeOption.IChing.interactable = true;
+		} else {
+			KnowledgeOption.IChing.interactable = false;
 		}
 		panel.SetActive (true);
 	}

@@ -2,9 +2,16 @@
 using UnityEngine.UI;
 using System.Collections;
 
+public enum Knowledge {
+	Woodworker=2001, MetalFabrication=2002, EasternHistory=2003, WesternHistory=2004, ChainSteel=2005, MetalProcessing=2006, Crafts=2007, Geometry=2008,
+	Physics=2009, Chemistry=2010, PeriodicTable=2011, Pulley=2012, Anatomy=2013, Catapult=2014, GunpowderModulation=2015, Psychology=2016, IChing=2017
+}
+
 public class KnowledgeOption : MonoBehaviour {
 	public static Button Woodworker;
 	public static Button MetalFabrication;
+	public static Button EasternHistory;
+	public static Button WesternHistory;
 	public static Button ChainSteel;
 	public static Button MetalProcessing;
 	public static Button Crafts;
@@ -17,24 +24,28 @@ public class KnowledgeOption : MonoBehaviour {
 	public static Button Catapult;
 	public static Button GunpowderModulation;
 	public static Button Psychology;
+	public static Button IChing;
 	public static int knowledge;
 	public static string knowledgeName;
 
 	public static void AssignButton(GameObject panel){
 		Woodworker = panel.transform.GetChild (2).GetChild (0).GetComponent<Button>();
 		MetalFabrication = panel.transform.GetChild (2).GetChild (1).GetComponent<Button>();
-		ChainSteel = panel.transform.GetChild (2).GetChild (2).GetComponent<Button>();
-		MetalProcessing = panel.transform.GetChild (2).GetChild (3).GetComponent<Button>();
-		Crafts = panel.transform.GetChild (2).GetChild (4).GetComponent<Button>();
-		Geometry = panel.transform.GetChild (2).GetChild (5).GetComponent<Button>();
-		Physics = panel.transform.GetChild (2).GetChild (6).GetComponent<Button>();
-		Chemistry = panel.transform.GetChild (2).GetChild (7).GetComponent<Button>();
-		PeriodicTable = panel.transform.GetChild (2).GetChild (8).GetComponent<Button>();
-		Pulley = panel.transform.GetChild (2).GetChild (9).GetComponent<Button>();
-		Anatomy = panel.transform.GetChild (2).GetChild (10).GetComponent<Button>();
-		Catapult = panel.transform.GetChild (2).GetChild (11).GetComponent<Button>();
-		GunpowderModulation = panel.transform.GetChild (2).GetChild (12).GetComponent<Button>();
-		Psychology = panel.transform.GetChild (2).GetChild (13).GetComponent<Button>();
+		EasternHistory = panel.transform.GetChild (2).GetChild (2).GetComponent<Button>();
+		WesternHistory = panel.transform.GetChild (2).GetChild (3).GetComponent<Button>();
+		ChainSteel = panel.transform.GetChild (2).GetChild (4).GetComponent<Button>();
+		MetalProcessing = panel.transform.GetChild (2).GetChild (5).GetComponent<Button>();
+		Crafts = panel.transform.GetChild (2).GetChild (6).GetComponent<Button>();
+		Geometry = panel.transform.GetChild (2).GetChild (7).GetComponent<Button>();
+		Physics = panel.transform.GetChild (2).GetChild (8).GetComponent<Button>();
+		Chemistry = panel.transform.GetChild (2).GetChild (9).GetComponent<Button>();
+		PeriodicTable = panel.transform.GetChild (2).GetChild (10).GetComponent<Button>();
+		Pulley = panel.transform.GetChild (2).GetChild (11).GetComponent<Button>();
+		Anatomy = panel.transform.GetChild (2).GetChild (12).GetComponent<Button>();
+		Catapult = panel.transform.GetChild (2).GetChild (13).GetComponent<Button>();
+		GunpowderModulation = panel.transform.GetChild (2).GetChild (14).GetComponent<Button>();
+		Psychology = panel.transform.GetChild (2).GetChild (15).GetComponent<Button>();
+		IChing = panel.transform.GetChild (2).GetChild (16).GetComponent<Button>();
 	}
 
 	public static void AddButtonListener(GameObject panel,GameObject parent){

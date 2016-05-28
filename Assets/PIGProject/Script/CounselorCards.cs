@@ -42,7 +42,6 @@ public class CounselorCards{
 		KnownFormation = kFormation;
 		KnownKnowledge = kKnowledge;
 	}
-	
 
 	public CounselorCards (SimpleJSON.JSONClass j, int cnt =0){
 		id = cnt;

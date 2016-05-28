@@ -5,6 +5,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum GeneralTrainPanel { Courage = 0, Force = 1, Strength = 2, None = -1 };
+
+
 public class GeneralTrainPrefab : MonoBehaviour {
 	public static List<GeneralTrainPrefab> GTrain = new List<GeneralTrainPrefab>();
 	public static GeneralTrainPrefab currentPrefab;
@@ -39,22 +42,31 @@ public class GeneralTrainPrefab : MonoBehaviour {
 				currentPrefab.gameObject.GetComponent<Image>().color = defaultColor;
 			}
 			// Set the clicked item to be currentPrefab
-			Debug.Log ("game.trainings[0].status: "+game.trainings[40].status);
-			if(GeneralTrain.OpenedPanel == 0){
-				if (game.trainings[40].status ==1){
+
+			if(GeneralTrain.OpenedPanel == (int)GeneralTrainPanel.Courage){
+				Debug.Log ("game.trainings[40].status: "+game.trainings[40].status);
+				if (game.trainings[40].status ==(int)TrainingStatus.OnGoing){
 					return;
+				}else{
+					currentPrefab = gameObject.GetComponent<GeneralTrainPrefab> ();
+					currentPrefab.GetComponent<Image>().color = Color.green;
 				}
-			}else if (GeneralTrain.OpenedPanel == 1){
-				if (game.trainings[41].status ==1){
+			}else if (GeneralTrain.OpenedPanel == (int)GeneralTrainPanel.Force){
+				Debug.Log ("game.trainings[41].status: "+game.trainings[41].status);
+				if (game.trainings[41].status ==(int)TrainingStatus.OnGoing){
 					return;
+				}else{
+					currentPrefab = gameObject.GetComponent<GeneralTrainPrefab> ();
+					currentPrefab.GetComponent<Image>().color = Color.green;
 				}
-			}else if (GeneralTrain.OpenedPanel == 2){
-				if (game.trainings[42].status ==1){
+			}else if (GeneralTrain.OpenedPanel == (int)GeneralTrainPanel.Strength){
+				Debug.Log ("game.trainings[42].status: "+game.trainings[42].status);
+				if (game.trainings[42].status ==(int)TrainingStatus.OnGoing){
 					return;
+				}else{
+					currentPrefab = gameObject.GetComponent<GeneralTrainPrefab> ();
+					currentPrefab.GetComponent<Image>().color = Color.green;
 				}
-			}else{
-				currentPrefab = gameObject.GetComponent<GeneralTrainPrefab> ();
-				currentPrefab.GetComponent<Image>().color = Color.green;
 			}
 		}else{
 			currentPrefab.gameObject.GetComponent<Image>().color = defaultColor;

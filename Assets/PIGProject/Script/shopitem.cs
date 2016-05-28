@@ -22,7 +22,7 @@ public class shopitem : MonoBehaviour {
 		}
 		
 		print(textFile.text);
-		
+
 		firstTime.text = (textLines [0] + "\n" + textLines [1]);
 		firstTimePrice.text = (textLines [2]);
 
