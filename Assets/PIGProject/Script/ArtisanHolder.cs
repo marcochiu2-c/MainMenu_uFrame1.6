@@ -49,8 +49,8 @@ public class ArtisanHolder : MonoBehaviour {
 
 	public void CallArtisanHolder(){
 		game = Game.Instance;
-		BackButton = transform.GetChild (1).GetComponent<Button> ();
-		CloseButton = transform.GetChild (2).GetComponent<Button> ();
+		BackButton = transform.GetChild (2).GetComponent<Button> ();
+		CloseButton = transform.GetChild (3).GetComponent<Button> ();
 		AddButtonListener ();
 
 		latestEta = GetLatestEta ();
