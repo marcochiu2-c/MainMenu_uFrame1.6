@@ -150,11 +150,14 @@ public class WsClient {
 	public WebSocket conn;
 	//string table = "";
 	//string result = "";
-	string protocol = "ws://";
 #if UNITY_EDITOR
+	string protocol = "wss://";
 	private string ip = "192.168.100.64";   //My PC
-	private int port = 8000; 
+	private int port = 3389; 
+	//	private string ip = "23.91.96.158";     //Production server
+	//	private int port = 3389; 
 #else
+	string protocol = "wss://";
 	private string ip = "23.91.96.158";     //Production server
 	private int port = 3389; 
 #endif

@@ -272,7 +272,8 @@ public class GeneralTrain : MonoBehaviour {
 		panelDict.Add("Courage",40);
 		panelDict.Add ("Force", 41);
 		panelDict.Add("Strength",42);
-		if (game.trainings[panelDict[panel]].status == 1 || isTraining(GeneralTrainPrefab.currentPrefab.general.id)){
+		if (game.trainings[panelDict[panel]].status == 1 ||
+		 isTraining(GeneralTrainPrefab.currentPrefab.general.id)){
 			return;
 		}
 		if(GeneralTrainPrefab.currentPrefab != null){
