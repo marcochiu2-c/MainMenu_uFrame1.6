@@ -118,7 +118,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		MainGameVM.SoldierCount = 5;
 		MainGameVM.EnemyCount = 4;
 		
-		IQDisplay.text = "Player IQ: " + MainGameVM.PlayerIQ;
+		IQDisplay.text = "IQ: " + MainGameVM.PlayerIQ;
 		
 		walkableGrid = (FlatHexGrid<GSCell>) Grid.CastValues<GSCell, FlatHexPoint>();
 		
@@ -371,7 +371,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 	{
 		if(MainGameVM.PlayerIQ == 0)
 		{
-			myText.text = "Not enough IQ";
+			myText.text = "IQ不足";
 			return;
 		}
 		
@@ -436,7 +436,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 						if(TargetVM[j].Action == ActionStyle.A_ATK)
 							goto EndofAttack;
 						
-						myText.text = "Target Selected";
+						myText.text = "目標已選取";
 						
 						//Save the information into playlist
 						SoldierVM[sNum].playlist.Insert((int)SoldierVM[sNum].Counter, new PlayList(SoldierVM[sNum].CurrentPointLocation, SoldierVM[sNum].Movement ,SoldierVM[sNum].Action, TargetVM[j], TargetV[j]));
@@ -455,10 +455,10 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				SoldierVM[sNum].Counter++;
 				
 				if (SoldierVM[sNum].Action == ActionStyle.STANDBY || SoldierVM[sNum].Action == ActionStyle.YAWP || SoldierVM[sNum].Action == ActionStyle.SEARCH || SoldierVM[sNum].Action == ActionStyle.A_ATK)
-					myText.text = "OK, Please Move";
+					myText.text = "請移動";
 				else
 				{
-					myText.text = "You can't Attack, Please select another Point";
+					myText.text = "無法攻擊，請選擇其他地方";
 					return;
 				}
 			}
@@ -477,11 +477,11 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			selectPoint = false;
 			
 			MainGameVM.PlayerIQ -= 10;
-			IQDisplay.text = "Player IQ: " + MainGameVM.PlayerIQ;
+			IQDisplay.text = "IQ: " + MainGameVM.PlayerIQ;
 			
 			if(MainGameVM.PlayerIQ == 0)
 			{
-				myText.text = "Please Click Play Button";
+				myText.text = "請按「戰鬥開始」";
 			}
 			
 		}//End of ATTACK State
@@ -508,7 +508,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 
 		if (walkableGrid[point].IsWalkable == false || walkableGrid[point].IsEnemy == true && SoldierVM[sNum].SoldierState == SoldierState.MOVE)
 		{
-			myText.text = "Please Select Another Point";
+			myText.text = "請選擇其他地方";
 			return;
 		}
 		
@@ -538,7 +538,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				markNode.Color = ExampleUtils.Colors[3];
 				_savePoint = point;
 				
-				myText.text = "Please Select Move Style";
+				myText.text = "請選擇移動模式";
 			}
 			
 			//Clicked on Attack State, a blue markNode will be created
@@ -878,7 +878,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 						if(neighbor == TargetVM[x].CurrentPointLocation)
 						{
 							Debug.Log ("YAWP!!!!");
-							myText.text = SoldierVM[i].Name + " YAWP!!!";
+							myText.text = SoldierVM[i].Name + " 吼!!!";
 							yield return new WaitForSeconds(0.3f);
 							var finishPoint = SoldierVM[i].playlist[j].SavePointLocation + DirectionPoint(SoldierVM[i].playlist[j].SavePointLocation, TargetVM[x].CurrentPointLocation);
 							PathFinding(TargetVM[x].CurrentPointLocation, finishPoint, MoveStyle.FAST, TargetV[x], TargetVM[x], null);
@@ -920,7 +920,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 						if(neighbor == TargetVM[x].CurrentPointLocation)
 						{
 							Debug.Log ("SEARCH!!!!");
-							myText.text = SoldierVM[i].Name + " Enemy Finds!!!";
+							myText.text = SoldierVM[i].Name + " 敵軍發現!";
 							//yield return new WaitForSeconds(0.3f);
 							var finishPoint = TargetVM[x].CurrentPointLocation + DirectionPoint(TargetVM[x].CurrentPointLocation, SoldierVM[i].playlist[j].SavePointLocation);
 							
@@ -1154,13 +1154,13 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			sNum++;
 		else
 		{
-			myText.text = "Please Click Play Button";
+			myText.text = "請按「戰鬥開始」";
 			return;
 		}
 		
 		SoldierVM[sNum].SoldierState = SoldierState.MOVE;
 		selectPoint = false;
-		myText.text = ("Please Move Soldier" + (sNum + 1));
+		myText.text = ("請移動將士" + (sNum + 1));
 		
 		//Debug.Log (Cinematics.CinematicTargets);
 		//Cinematics.GoToNextTarget();
@@ -1211,7 +1211,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				SoldierVM[sNum].playlist.RemoveAt(SoldierVM[sNum].playlist.Count - 1);
 				SoldierVM[sNum].Counter--;
 				MainGameVM.PlayerIQ +=10;
-				IQDisplay.text = "Player IQ: " + MainGameVM.PlayerIQ;
+				IQDisplay.text = "IQ: " + MainGameVM.PlayerIQ;
 			}
 			
 			SoldierVM[sNum].CurrentPointLocation = SoldierVM[sNum].playlist[SoldierVM[sNum].playlist.Count - 1].SavePointLocation;
@@ -1222,7 +1222,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		{
 			SoldierVM[sNum].CurrentPointLocation = new FlatHexPoint(sNum, 0);
 			SoldierV[sNum].transform.position = Map[SoldierVM[sNum].CurrentPointLocation];
-			myText.text = "Not more action redo";
+			myText.text = "已沒有上一步";
 		}
 		
 		SoldierVM[sNum].SoldierState = SoldierState.MOVE;
@@ -1269,7 +1269,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		//Change Camera position
 		SoldierVM[sNum].SoldierState = SoldierState.MOVE;
 		selectPoint = false;
-		myText.text = ("Please Move Soldier" + (sNum + 1));
+		myText.text = ("請移動將士" + (sNum + 1));
 		
 		//Debug.Log (Cinematics.CinematicTargets);
 		//Cinematics.GoToNextTarget();
@@ -1327,7 +1327,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 		//Change Camera position
 		SoldierVM[sNum].SoldierState = SoldierState.MOVE;
 		selectPoint = false;
-		myText.text = ("Please Move Soldier" + (sNum + 1));
+		myText.text = ("請移動將士" + (sNum + 1));
 	}
 	
 	/*

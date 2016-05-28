@@ -354,7 +354,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		    else if(game.weapon.Find ( x => x.type == game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["weapon"].AsInt).quantity < int.Parse(SoldierQuantityInput.text))	
 			{
 				Debug.Log ("Please enter again");
-				QunatityErrorText.text = " weapons are not enough";
+				QunatityErrorText.text = "武器數量不足";
 				return;
 			}
 			
@@ -367,7 +367,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			else if(game.armor.Find ( x => x.type == game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["armor"].AsInt).quantity	< int.Parse(SoldierQuantityInput.text))	
 			{
 				Debug.Log ("Please enter again");
-				QunatityErrorText.text = "armors are not enough";
+				QunatityErrorText.text = "防具數量不足";
 				return;
 			}
 			
@@ -380,7 +380,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			else if(game.shield.Find ( x => x.type == game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["shield"].AsInt).quantity	< int.Parse(SoldierQuantityInput.text))
 			{
 				Debug.Log ("Please enter again");
-				QunatityErrorText.text = "shields are not enough";
+				QunatityErrorText.text = "盾數量不足";
 				return;
 			}
 			
@@ -457,7 +457,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	{
 		Publish(new NotifyCommand()
 		{
-			Message = "General Assigned"
+			Message = "將士已編成到隊伍"
 		});
 	}
 }
