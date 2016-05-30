@@ -214,6 +214,10 @@ public class LoginScreen : MonoBehaviour {
 		//		cla.loadingBar = slider;
 		//		cla.loadingImage = loadImage;
 		//		cla.ClickAsync(5);
+		JSONClass json = new JSONClass ();
+		json.Add ("action", new JSONData("SET"));
+		json.Add ("table", new JSONData("login"));
+		wsc.conn.Send (json.ToString ());
 		loadingImageScreen.SetActive (true);
 		newUserPanel.SetActive (false);
 		newFBUserPanel.SetActive (false);

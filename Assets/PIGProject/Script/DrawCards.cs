@@ -144,7 +144,8 @@ public class DrawCards : MonoBehaviour {
 			gameObject.SetActive(false);
 			TenDrawHolder.SetActive(false);
 			calledByDrawTenCards = false;
-
+			wsc.Send ("counselors", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("generals", "GET", new JSONData (MainScene.userId));
 		});
 
 
