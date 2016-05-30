@@ -508,7 +508,7 @@ public class MainScene : MonoBehaviour {
 			for (var i = 0; i < count; i++) {
 				game.trainings.Add (new Trainings (MainScene.TrainingInfo[i]));
 			}
-			List<Knowledge> list = TechTree.GetAvailableKnowlegdeList ();
+//			List<Knowledge> list = TechTree.GetAvailableKnowlegdeList ();
 			MainScene.TrainingInfo = null;
 		}
 		if (MainScene.ArtisanInfo != null) {

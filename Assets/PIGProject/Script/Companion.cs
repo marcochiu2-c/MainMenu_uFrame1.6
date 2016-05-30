@@ -25,8 +25,8 @@ public class Companion : MonoBehaviour
 	}
 	
 	string[] qaBtnName = new string[2];
-	public Button closeButton;
-	public Button backButton;
+	public Button CloseButton;
+	public Button BackButton;
 	public GameObject CompanionHolder;
 	public Transform GeneralsHolder;
 	public Transform CounselorsHolder;
@@ -53,7 +53,7 @@ public class Companion : MonoBehaviour
 	private const int columnWidthCount = 5;
 	
 	// Use this for initialization
-	void Start(){
+	void OnEnable(){
 		CallCompanion ();
 	}
 	
@@ -75,15 +75,26 @@ public class Companion : MonoBehaviour
 		staticCompanionHolder = CompanionHolder.transform;
 
 		SetupPrefabList ();
+		AddButtonListener ();
 
 		//Get the default Self Study Sprite
 //		SelfStudy.defaultSprite = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (0).GetChild (0).GetComponent<Image> ().sprite;
 
 	}
-	
+
+	public void AddButtonListener(){
+		CloseButton.onClick.AddListener (() => {
+			foreach (CompanionPrefab co in CompanionPrefab.person) {
+				GameObject.DestroyImmediate(co.gameObject);
+			}
+			CompanionPrefab.person.Clear();
+		});
+	}
+
 	public void SetupPrefabList(){
 		cCounselorList = game.counselor;
 		cGeneralList = game.general;
+
 		CompanionPrefab obj;
 		int count = cCounselorList.Count;
 		for (int i = 0; i < count; i++) {
@@ -104,7 +115,8 @@ public class Companion : MonoBehaviour
 			CompanionPrefab.person.Add(obj);
 		}
 
-
+		Debug.Log ("Count of Counselor Prefab: "+CounselorsHolder.transform.GetChild (1).GetChild(1).GetChild(0).childCount);
+		Debug.Log ("Count of General Prefab: "+GeneralsHolder.transform.GetChild (1).GetChild(1).GetChild(0).childCount);
 //		
 //		int cslCount = 0; 
 //		List<Trainings> tList = game.trainings;
