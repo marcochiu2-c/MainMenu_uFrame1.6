@@ -158,7 +158,10 @@ public class SchoolField : MonoBehaviour {
 			OnWeaponButtonClicked (); });
 		// Speed Up Button for Training
 		DollPanel.transform.GetChild (0).GetChild (2).GetComponent<Button> ().onClick.AddListener (() => {
-			OnSpeedUpTrainingClicked();
+			TimeSpan trainTime = Convert.ToDateTime (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]) - DateTime.Now;
+			if (ExchangeRate.GetStardustFromTime (trainTime) <= game.wealth[1].value){
+				OnSpeedUpTrainingClicked();
+			}
 			 });
 		// Armor Button
 		DollPanel.transform.GetChild (1).GetChild (0).GetComponent<Button> ().onClick.AddListener (() => {
