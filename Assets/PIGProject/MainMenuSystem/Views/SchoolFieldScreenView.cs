@@ -62,7 +62,7 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 	public GameObject ArmyQAHolder;
 	public GameObject ArmorQAHolder;
 	public GameObject ShieldQAHolder;
-
+	
 	protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
 		base.InitializeViewModel(model);
 		// NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
@@ -220,10 +220,6 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 			UnmountEquipment.gameObject.SetActive (true);
 		});
 		this.BindButtonToHandler (closeUnmountEquipmentButton, () => {
-			SchoolField.staticUnmountAllToggle.isOn = false;
-			SchoolField.staticUnmountWeaponToggle.isOn = false;
-			SchoolField.staticUnmountArmorToggle.isOn = false;
-			SchoolField.staticUnmountShieldToggle.isOn = false;
 			UnmountEquipment.gameObject.SetActive (false);
 		});
 	}
