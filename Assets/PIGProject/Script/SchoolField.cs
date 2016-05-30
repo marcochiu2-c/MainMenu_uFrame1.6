@@ -48,6 +48,12 @@ public class SchoolField : MonoBehaviour {
 	public static GameObject staticTrainingEquHolder;
 	public static GameObject staticDisablePanel;
 
+	public static Toggle staticUnmountAllToggle;
+	public static Toggle staticUnmountWeaponToggle;
+	public static Toggle staticUnmountArmorToggle;
+	public static Toggle staticUnmountShieldToggle;
+
+
 	public static int AssigningWeaponId=0;
 	public static int AssigningArmorId=0;
 	public static int AssigningShieldId=0;
@@ -60,6 +66,7 @@ public class SchoolField : MonoBehaviour {
 	public static float TotalTrainingTime=0;
 	public static int refStarDust = 80;
 	public static int refResource =160000;
+	
 //	public static int refFeather  = 400;
 	Text SoldierSummary;
 	static ProductDict p;
@@ -107,6 +114,12 @@ public class SchoolField : MonoBehaviour {
 		staticShieldQAHolder = ShieldQAHolder;
 		staticTrainingEquHolder = TrainingEquHolder;
 		staticDisablePanel = DisablePanel;
+
+		staticUnmountAllToggle = UnmountAllToggle;
+		staticUnmountWeaponToggle = UnmountWeaponToggle;
+		staticUnmountArmorToggle = UnmountArmorToggle;
+		staticUnmountShieldToggle = UnmountShieldToggle;
+
 		DisablePanel.SetActive (false);
 		SoldierSummary = DollPanel.transform.GetChild (2).GetComponent<Text>();
 		SetDataPanel ();
@@ -195,17 +208,24 @@ public class SchoolField : MonoBehaviour {
 		
 		TrainingEquHolder.transform.GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(() => { 
 			Debug.Log("isNewSoldiers: "+isNewSoldiers);
-			if (!isNewSoldiers){
-				OnGoArtisanButtonClicked();
-			}else{
-				isNewSoldiers = false;
-				Panel.GetCancelButton(TrainingEquHolder).transform.GetChild(0).GetComponent<Text>().text = "變更裝備";
-				HidePanel(TrainingEquHolder);
-				var evt = new RequestMainMenuScreenCommand();
-				evt.ScreenType = typeof(ArtisanScreenViewModel);
-				var uFC = new uFrameComponent();
-				uFC.Publish(evt);
-			}
+//			if (!isNewSoldiers){
+//				OnGoArtisanButtonClicked();
+//			}else{
+//				isNewSoldiers = false;
+//				Panel.GetCancelButton(TrainingEquHolder).transform.GetChild(0).GetComponent<Text>().text = "變更裝備";
+//				HidePanel(TrainingEquHolder);
+//				var evt = new RequestMainMenuScreenCommand();
+//				evt.ScreenType = typeof(ArtisanScreenViewModel);
+//				var uFC = new uFrameComponent();
+//				uFC.Publish(evt);
+//			}
+			isNewSoldiers = false;
+			Panel.GetCancelButton(TrainingEquHolder).transform.GetChild(0).GetComponent<Text>().text = "變更裝備";
+			HidePanel(TrainingEquHolder);
+			var evt = new RequestMainMenuScreenCommand();
+			evt.ScreenType = typeof(ArtisanScreenViewModel);
+			var uFC = new uFrameComponent();
+			uFC.Publish(evt);
 		});
 		TrainingEquHolder.transform.GetChild(2).GetChild(1).GetComponent<Button>().onClick.AddListener(() => {
 			Panel.GetCancelButton(TrainingEquHolder).transform.GetChild(0).GetComponent<Text>().text = "變更裝備";
@@ -264,6 +284,10 @@ public class SchoolField : MonoBehaviour {
 				game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt = 0;
 			}
 			game.soldiers[AssigningSoldier - 1].UpdateObject();
+			UnmountAllToggle.isOn=false;
+			UnmountWeaponToggle.isOn=false;
+			UnmountArmorToggle.isOn=false;
+			UnmountShieldToggle.isOn=false;
 			HidePanel(UnmountWeaponPanel);
 		});
 	}
@@ -514,9 +538,11 @@ public class SchoolField : MonoBehaviour {
 				if(game.weapon[i].type == AssigningWeaponId){
 					Debug.Log ("CheckArmedEquipmentAvailability(), Weapon Availability: "+game.weapon[i].quantity);
 					Debug.Log ("CheckArmedEquipmentAvailability(), Assigning Number of soldiers: "+game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"]);
-					if (game.weapon[i].quantity < game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt){
+					if (game.weapon[i].quantity < game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt + game.soldiers [AssigningSoldier - 1].quantity){
+						game.soldiers [AssigningSoldier - 1].attributes["weapon"].AsInt = game.weapon[i].type;
+						game.soldiers[AssigningSoldier - 1].UpdateObject();
 						Debug.Log ("CheckArmedEquipmentAvailability(): Weapon not enough.");
-						msg = msg.Replace("%SQ%",game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"]);
+						msg = msg.Replace("%SQ%",(game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt + game.soldiers [AssigningSoldier - 1].quantity).ToString());
 						msg = msg.Replace("%EQ%",(numOfSoldiers - game.weapon[i].quantity).ToString());
 						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
 						staticShowPanel( staticTrainingEquHolder);
@@ -533,8 +559,10 @@ public class SchoolField : MonoBehaviour {
 			for (int i = 0 ; i< count ; i++){
 				if(game.armor[i].type == AssigningArmorId){
 
-					if (game.armor[i].quantity < game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt){
-						msg = msg.Replace("%SQ%",game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"]);
+					if (game.armor[i].quantity < game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt + game.soldiers [AssigningSoldier - 1].quantity){
+						game.soldiers [AssigningSoldier - 1].attributes["armor"].AsInt = game.armor[i].type;
+						game.soldiers[AssigningSoldier - 1].UpdateObject();
+						msg = msg.Replace("%SQ%",(game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt + game.soldiers [AssigningSoldier - 1].quantity).ToString());
 						msg = msg.Replace("%EQ%",(numOfSoldiers - game.armor[i].quantity).ToString());
 						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
 						staticShowPanel( staticTrainingEquHolder);
@@ -553,8 +581,10 @@ public class SchoolField : MonoBehaviour {
 
 			for (int i = 0 ; i< count ; i++){
 				if(game.shield[i].type == AssigningShieldId){
-					if (game.shield[i].quantity < game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt){
-						msg = msg.Replace("%SQ%",game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"]);
+					if (game.shield[i].quantity < game.soldiers [AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt + game.soldiers [AssigningSoldier - 1].quantity){
+						game.soldiers [AssigningSoldier - 1].attributes["shield"].AsInt = game.shield[i].type;
+						game.soldiers[AssigningSoldier - 1].UpdateObject();
+						msg = msg.Replace("%SQ%",(game.soldiers[AssigningSoldier - 1].attributes["trainingSoldiers"].AsInt + game.soldiers [AssigningSoldier - 1].quantity).ToString());
 						msg = msg.Replace("%EQ%",(numOfSoldiers - game.shield[i].quantity).ToString());
 						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
 						staticShowPanel( staticTrainingEquHolder);
