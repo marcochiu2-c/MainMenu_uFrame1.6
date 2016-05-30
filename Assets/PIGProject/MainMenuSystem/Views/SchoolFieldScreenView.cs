@@ -21,7 +21,7 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 	public Button MountButton;
 	public Button ArmorButton;
 	public Button ShieldButton;
-	public Button SaveButton;
+	public Button UnmountButton;
 	public Button BufferButton;
 	public Button TrainingButton;
 	public Button AssignSoldierButton;
@@ -39,6 +39,7 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 	public Button ArmorQAHolderCancelButton;
 	public Button ShieldQAHolderCancelButton;
 	public Button closeTrainingButton;
+	public Button closeUnmountEquipmentButton;
 
 	public GameObject DisablePanel;
 	public GameObject ArmyListHolder;
@@ -49,7 +50,7 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 	//public GameObject MountQAHolder;
 	//public GameObject ArmorQAHolder;
 	//public GameObject ShieldQAHolder;
-	public GameObject SaveType;
+	public GameObject UnmountEquipment;
 	public GameObject TrainingHolder;
 	public GameObject TrainingQHolder;
 	public GameObject TrainingQAHolder;
@@ -61,7 +62,7 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 	public GameObject ArmyQAHolder;
 	public GameObject ArmorQAHolder;
 	public GameObject ShieldQAHolder;
-	
+
 	protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
 		base.InitializeViewModel(model);
 		// NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
@@ -77,6 +78,37 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 		
 		this.BindButtonToHandler (BackButton, () => {
 			DisablePanel.SetActive (false);
+			/*
+<<<<<<< HEAD
+			MountListHolder.SetActive (false);
+			ArmyListHolder.SetActive (false);
+			ArmorListHolder.SetActive (false);
+			ShieldListHolder.SetActive (false);
+			SaveType.SetActive (false);
+			TrainingHolder.SetActive (false);
+			TrainingQHolder.SetActive(false);
+			AssignNSHolder.SetActive(false);
+			ArmyQAHolder.SetActive(false);
+			ArmorQAHolder.SetActive(false);
+			ShieldQAHolder.SetActive(false);
+		});
+
+		this.BindButtonToHandler (CloseButton, () => {
+			DisablePanel.SetActive (false);
+			MountListHolder.SetActive (false);
+			ArmyListHolder.SetActive (false);
+			ArmorListHolder.SetActive (false);
+			ShieldListHolder.SetActive (false);
+			SaveType.SetActive (false);
+			TrainingHolder.SetActive (false);
+			TrainingQHolder.SetActive(false);
+			AssignNSHolder.SetActive(false);
+			ArmyQAHolder.SetActive(false);
+			ArmorQAHolder.SetActive(false);
+			ShieldQAHolder.SetActive(false);
+
+=======
+*/
 			MountListHolder.gameObject.SetActive (false);
 			ArmyListHolder.gameObject.SetActive (false);
 			ArmorListHolder.gameObject.SetActive (false);
@@ -84,7 +116,7 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 			ArmyQAHolder.SetActive (false);
 			ArmorQAHolder.SetActive (false);
 			ShieldQAHolder.SetActive (false);
-			SaveType.gameObject.SetActive (false);
+//			SaveType.gameObject.SetActive (false);
 			TrainingHolder.gameObject.SetActive (false);
 			TrainingQHolder.SetActive (false);
 			TrainingQAHolder.SetActive (false);
@@ -103,7 +135,7 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 			ArmyQAHolder.SetActive (false);
 			ArmorQAHolder.SetActive (false);
 			ShieldQAHolder.SetActive (false);
-			SaveType.gameObject.SetActive (false);
+//			SaveType.gameObject.SetActive (false);
 			TrainingHolder.gameObject.SetActive (false);
 			TrainingQHolder.SetActive (false);
 			TrainingQAHolder.SetActive (false);
@@ -116,11 +148,9 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 
 
 		this.BindButtonToHandler (closeTrainingButton, () => {
-			TrainingHolder.gameObject.SetActive (false);
-			//ArmyQAHolder.gameObject.SetActive (false);
-			//MountQAHolder.gameObject.SetActive (false);
-			//ArmorQAHolder.gameObject.SetActive (false);
-			//ShieldQAHolder.gameObject.SetActive (false);
+			DisablePanel.SetActive (false);
+			TrainingHolder.SetActive (false);
+
 		});
 
 		this.BindButtonToHandler (ArmyButton, () => {
@@ -139,9 +169,9 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 //			ShieldListHolder.gameObject.SetActive (true);
 		});
 
-		this.BindButtonToHandler (SaveButton, () => {
-			SaveType.gameObject.SetActive (true);
-		});
+//		this.BindButtonToHandler (SaveButton, () => {
+//			SaveType.gameObject.SetActive (true);
+//		});
 
 		this.BindButtonToHandler (TrainingButton, () => {
 			TrainingHolder.gameObject.SetActive (true);
@@ -151,7 +181,6 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 //			TrainingQHolder.gameObject.SetActive (true);
 		});
 		this.BindButtonToHandler (AssignSoldierConfirmButton, () => {
-			DisablePanel.SetActive(false);
 			AssignNSHolder.gameObject.SetActive (false);
 		});
 		this.BindButtonToHandler (SoldierType1Button, () => {
@@ -186,6 +215,16 @@ public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 		});
 		this.BindButtonToHandler (ShieldQAHolderCancelButton, () => {
 			ShieldQAHolder.SetActive(false);
+		});
+		this.BindButtonToHandler (UnmountButton, () => {
+			UnmountEquipment.gameObject.SetActive (true);
+		});
+		this.BindButtonToHandler (closeUnmountEquipmentButton, () => {
+			SchoolField.staticUnmountAllToggle.isOn = false;
+			SchoolField.staticUnmountWeaponToggle.isOn = false;
+			SchoolField.staticUnmountArmorToggle.isOn = false;
+			SchoolField.staticUnmountShieldToggle.isOn = false;
+			UnmountEquipment.gameObject.SetActive (false);
 		});
 	}
 }
