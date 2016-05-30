@@ -40,6 +40,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button SSCloseBtn;
 	public Button SQCloseBtn;
 	
+	public Button GoToSchoolFieldBtn;
+	
 	public InputField SoldierQuantityInput;
 	public Text SoldierQuantityText1;
 	public Text SoldierQuantityText2;
@@ -165,6 +167,25 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
         // Use this.ConferenceScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+		var evt = new RequestMainMenuScreenCommand();
+		
+		this.BindButtonToHandler (GoToSchoolFieldBtn, () => {
+			
+			evt.ScreenType = typeof(SchoolFieldScreenViewModel);
+			Publish(evt);
+			
+			QunatityErrorText.text = "";
+			
+			SelectSoldierPanel.gameObject.SetActive (false);
+			SoldierQuantityPanel.gameObject.SetActive (false);
+			GoToSchoolFieldBtn.gameObject.SetActive(false);
+			
+			ArmyAttack.gameObject.SetActive (false);
+			ArmyGarrison.gameObject.SetActive (false);
+			MilitaryAdviser.gameObject.SetActive (false);
+			DefensiveLinup.gameObject.SetActive (false);
+			Standings.gameObject.SetActive (false);
+		});
 
 		this.BindButtonToHandler (armyAttack, () => {
 			ArmyAttack.gameObject.SetActive (true);
@@ -354,8 +375,10 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		    else if(game.weapon.Find ( x => x.type == game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["weapon"].AsInt).quantity < int.Parse(SoldierQuantityInput.text))	
 			{
 				Debug.Log ("Please enter again");
-				QunatityErrorText.text = "武器數量不足";
+				QunatityErrorText.text = "武器數量不足, 可前往校場作為調整";
+				GoToSchoolFieldBtn.gameObject.SetActive(true);
 				return;
+				
 			}
 			
 			
@@ -364,10 +387,11 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 				Debug.Log("No Armor");
 			}
 	
-			else if(game.armor.Find ( x => x.type == game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["armor"].AsInt).quantity	< int.Parse(SoldierQuantityInput.text))	
+			else if(game.armor.Find ( x => x.type == game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["armor"].AsInt).quantity < int.Parse(SoldierQuantityInput.text))	
 			{
 				Debug.Log ("Please enter again");
-				QunatityErrorText.text = "防具數量不足";
+				QunatityErrorText.text = "防具數量不足, 可前往校場作為調整";
+				GoToSchoolFieldBtn.gameObject.SetActive(true);
 				return;
 			}
 			
@@ -380,8 +404,10 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			else if(game.shield.Find ( x => x.type == game.soldiers[this.ConferenceScreen.SoldierType - 1].attributes["shield"].AsInt).quantity	< int.Parse(SoldierQuantityInput.text))
 			{
 				Debug.Log ("Please enter again");
-				QunatityErrorText.text = "盾數量不足";
+				QunatityErrorText.text = "盾數量不足, 可前往校場作為調整";
+				GoToSchoolFieldBtn.gameObject.SetActive(true);
 				return;
+				
 			}
 			
 			//need to check condition
