@@ -52,7 +52,7 @@ public class KnowledgeOption : MonoBehaviour {
 		Woodworker.onClick.AddListener (() => {
 			knowledge = 2001;
 			knowledgeName = "Woodworker";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -62,7 +62,7 @@ public class KnowledgeOption : MonoBehaviour {
 		MetalFabrication.onClick.AddListener (() => {
 			knowledge = 2002;
 			knowledgeName = "MetalFabrication";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -72,7 +72,7 @@ public class KnowledgeOption : MonoBehaviour {
 		ChainSteel.onClick.AddListener (() => {
 			knowledge = 2003;
 			knowledgeName = "ChainSteel";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -82,7 +82,7 @@ public class KnowledgeOption : MonoBehaviour {
 		MetalProcessing.onClick.AddListener (() => {
 			knowledge = 2004;
 			knowledgeName = "MetalProcessing";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -92,7 +92,7 @@ public class KnowledgeOption : MonoBehaviour {
 		Crafts.onClick.AddListener (() => {
 			knowledge = 2005;
 			knowledgeName = "Crafts";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -102,7 +102,7 @@ public class KnowledgeOption : MonoBehaviour {
 		Geometry.onClick.AddListener (() => {
 			knowledge = 2006;
 			knowledgeName = "Geometry";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -112,7 +112,7 @@ public class KnowledgeOption : MonoBehaviour {
 		Physics.onClick.AddListener (() => {
 			knowledge = 2007;
 			knowledgeName = "Physics";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -122,7 +122,7 @@ public class KnowledgeOption : MonoBehaviour {
 		Chemistry.onClick.AddListener (() => {
 			knowledge = 2008;
 			knowledgeName = "Chemistry";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -132,7 +132,7 @@ public class KnowledgeOption : MonoBehaviour {
 		PeriodicTable.onClick.AddListener (() => {
 			knowledge = 2009;
 			knowledgeName = "PeriodicTable";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -142,7 +142,7 @@ public class KnowledgeOption : MonoBehaviour {
 		Pulley.onClick.AddListener (() => {
 			knowledge = 2010;
 			knowledgeName = "Pulley";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -152,7 +152,7 @@ public class KnowledgeOption : MonoBehaviour {
 		Anatomy.onClick.AddListener (() => {
 			knowledge = 2011;
 			knowledgeName = "Anatomy";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -162,7 +162,7 @@ public class KnowledgeOption : MonoBehaviour {
 		Catapult.onClick.AddListener (() => {
 			knowledge = 2012;
 			knowledgeName = "Catapult";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -172,7 +172,7 @@ public class KnowledgeOption : MonoBehaviour {
 		GunpowderModulation.onClick.AddListener (() => {
 			knowledge = 2013;
 			knowledgeName = "GunpowderModulation";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
@@ -182,7 +182,7 @@ public class KnowledgeOption : MonoBehaviour {
 		Psychology.onClick.AddListener (() => {
 			knowledge = 2014;
 			knowledgeName = "Psychology";
-			if (AcademySelfLearn.isSelfStudy){
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{
 				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
