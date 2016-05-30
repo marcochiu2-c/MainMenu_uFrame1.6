@@ -40,6 +40,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button SSCloseBtn;
 	public Button SQCloseBtn;
 	
+	public Button CloseBtn;
+	
 	public Button GoToSchoolFieldBtn;
 	
 	public InputField SoldierQuantityInput;
@@ -153,6 +155,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
 		}
 		
+		
 		for (var i = 0 ; i < GeneralList.Count ; i++){
 			CreateSelfLearnItem (GeneralList[i]);
 		}
@@ -185,6 +188,9 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			MilitaryAdviser.gameObject.SetActive (false);
 			DefensiveLinup.gameObject.SetActive (false);
 			Standings.gameObject.SetActive (false);
+			
+			GeneralHolder.gameObject.SetActive (false);
+			
 		});
 
 		this.BindButtonToHandler (armyAttack, () => {
@@ -193,6 +199,11 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			MilitaryAdviser.gameObject.SetActive (false);
 			DefensiveLinup.gameObject.SetActive (false);
 			Standings.gameObject.SetActive (false);
+			
+			GeneralList = game.general;
+			for (var i = 0 ; i < GeneralList.Count ; i++){
+				CreateSelfLearnItem (GeneralList[i]);
+			}
 		});
 
 		this.BindButtonToHandler (armyGarrison, () => {
@@ -418,6 +429,22 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			ExecuteSetSoldierData();
 			SoldierQuantityPanel.gameObject.SetActive (false);
 			LocalUser.SetTeam = true;
+		});
+		
+		this.BindButtonToHandler (CloseBtn, () => {
+			
+			SelectSoldierPanel.gameObject.SetActive (false);
+			SoldierQuantityPanel.gameObject.SetActive (false);
+			GoToSchoolFieldBtn.gameObject.SetActive(false);
+			
+			ArmyAttack.gameObject.SetActive (false);
+			ArmyGarrison.gameObject.SetActive (false);
+			MilitaryAdviser.gameObject.SetActive (false);
+			DefensiveLinup.gameObject.SetActive (false);
+			Standings.gameObject.SetActive (false);
+			
+			GeneralHolder.gameObject.SetActive (false);
+			
 		});
 		
     }
