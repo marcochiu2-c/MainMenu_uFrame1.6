@@ -32,7 +32,14 @@ public class SchoolField : MonoBehaviour {
 	public GameObject TrainingInProgressPopup;
 	public GameObject ConfirmSpeedUpHolder;
 	public GameObject ArtisanHolder;
+	public GameObject UnmountWeaponPanel;
 	public InputField TrainingQText;
+	public Button UnmountConfirm;
+	public Toggle UnmountAllToggle;
+	public Toggle UnmountWeaponToggle;
+	public Toggle UnmountArmorToggle;
+	public Toggle UnmountShieldToggle;
+
 	bool isSpeedUpQuestion = false;
 
 	public static GameObject staticArmyQAHolder;
@@ -244,7 +251,21 @@ public class SchoolField : MonoBehaviour {
 			HidePanel(CannotTrainSoldierPopup);
 			TrainingQText.text = "";
 		});
-
+		UnmountConfirm.onClick.AddListener (() => {
+			if (UnmountAllToggle.isOn){
+				game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt = 0;
+				game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt = 0;
+				game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt = 0;
+			}else if (UnmountWeaponToggle.isOn){
+				game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt = 0;
+			}else if (UnmountArmorToggle.isOn){
+				game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt = 0;
+			}else if (UnmountShieldToggle.isOn){
+				game.soldiers[AssigningSoldier - 1].attributes["shield"].AsInt = 0;
+			}
+			game.soldiers[AssigningSoldier - 1].UpdateObject();
+			HidePanel(UnmountWeaponPanel);
+		});
 	}
 
 	void ConfirmedSpeedUpTraining(){
