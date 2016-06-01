@@ -451,21 +451,21 @@ public class TechTree : MonoBehaviour {
 //		int level = CharacterPage.UserLevelCalculator (game.login.exp);
 		int count = 0;
 		TechItem techs = TechItems [(int)tech];
-		if (tech == Tech.WeaponTechnology) {
-//			Debug.Log("Weapon Tech, Tech requirement: "+string.Join(",", TechItems[0].TechRequirement.Select(x => x.ToString()).ToArray()));
-			Debug.Log("Weapon Tech, Tech requirement: "+ TechItems[0].TechRequirement.Count);
-			Debug.Log("Weapon Tech, Knowledge requirement: "+string.Join(",", TechItems[0].KnowledgeRequirement.Select(x => x.ToString()).ToArray()));
-			Debug.Log("Knowledge List:"+string.Join(",", knowledgeList.Select(x => x.ToString()).ToArray()));
-			Debug.Log("Tech List:"+string.Join(",", techList.Select(x => x.ToString()).ToArray()));
-		}
-		if (tech == Tech.EasternWeaponTechnology) {
-//			Debug.Log("Eastern Weapon Tech, Tech requirement: "+string.Join(",", TechItems[1].TechRequirement.Select(x => x.ToString()).ToArray()));
-			Debug.Log("Eastern Weapon Tech, Tech requirement: "+ TechItems[1].TechRequirement.Count);
-		}
-		if (tech == Tech.Tempered) {
-			Debug.Log("Tempered, Tech requirement: "+string.Join(",", TechItems[6].TechRequirement.Select(x => x.ToString()).ToArray()));
-			Debug.Log("Tempered, Knowledge requirement: "+string.Join(",", TechItems[6].KnowledgeRequirement.Select(x => x.ToString()).ToArray()));
-		}
+//		if (tech == Tech.WeaponTechnology) {
+////			Debug.Log("Weapon Tech, Tech requirement: "+string.Join(",", TechItems[0].TechRequirement.Select(x => x.ToString()).ToArray()));
+//			Debug.Log("Weapon Tech, Tech requirement: "+ TechItems[0].TechRequirement.Count);
+//			Debug.Log("Weapon Tech, Knowledge requirement: "+string.Join(",", TechItems[0].KnowledgeRequirement.Select(x => x.ToString()).ToArray()));
+//			Debug.Log("Knowledge List:"+string.Join(",", knowledgeList.Select(x => x.ToString()).ToArray()));
+//			Debug.Log("Tech List:"+string.Join(",", techList.Select(x => x.ToString()).ToArray()));
+//		}
+//		if (tech == Tech.EasternWeaponTechnology) {
+////			Debug.Log("Eastern Weapon Tech, Tech requirement: "+string.Join(",", TechItems[1].TechRequirement.Select(x => x.ToString()).ToArray()));
+//			Debug.Log("Eastern Weapon Tech, Tech requirement: "+ TechItems[1].TechRequirement.Count);
+//		}
+//		if (tech == Tech.Tempered) {
+//			Debug.Log("Tempered, Tech requirement: "+string.Join(",", TechItems[6].TechRequirement.Select(x => x.ToString()).ToArray()));
+//			Debug.Log("Tempered, Knowledge requirement: "+string.Join(",", TechItems[6].KnowledgeRequirement.Select(x => x.ToString()).ToArray()));
+//		}
 		if (techs.MinimumIQ > highestIQ /*|| techs.MinimumLevel > level*/) {
 			return false;
 		}
