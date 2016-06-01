@@ -82,7 +82,7 @@ public class AcademyStudentNew: MonoBehaviour {
 	public void ConfirmSelfStudyIfOk(SelfStudy aSelfStudy){
 		Game game = Game.Instance;
 		Text Title = Academy.staticSelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
-		GameObject ConfirmTraining = Academy.staticAcademyHolder.transform.GetChild (1).GetChild(6).gameObject;
+		GameObject ConfirmTraining = Academy.staticConfirmTeacherBy;
 		if (aSelfStudy.targetId != 0) {
 			if (Title.text == "智商"){
 				if (game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["IQ"].AsFloat <
@@ -153,7 +153,6 @@ public class AcademyStudentNew: MonoBehaviour {
 	}
 
 	public void ShowLowerThanTrainerPanel(string isMaxPoint=""){
-		//		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
 		GameObject LowerThanTrainer = Academy.staticLowerThanTrainer;
 		LowerThanTrainer.SetActive(true);
 		if (isMaxPoint == "") {
@@ -167,7 +166,6 @@ public class AcademyStudentNew: MonoBehaviour {
 
 	public void ShowKnowledgeListPanel(int student){
 		Game game = Game.Instance;
-		GameObject KnowledgeListHolder = Academy.staticAcademyHolder.transform.GetChild (1).GetChild (5).gameObject;
 		KnowledgeOption.Woodworker.interactable = true;
 		KnowledgeOption.MetalFabrication.interactable = true;
 		KnowledgeOption.ChainSteel.interactable = true;
@@ -183,7 +181,7 @@ public class AcademyStudentNew: MonoBehaviour {
 		KnowledgeOption.GunpowderModulation.interactable = true;
 		KnowledgeOption.Psychology.interactable = true;
 		
-		KnowledgeListHolder.SetActive (true);
+		Academy.staticKnowledgeListHolder.SetActive (true);
 	}
 
 	public void ShowKnowledgeListPanel(int teacher, int student){

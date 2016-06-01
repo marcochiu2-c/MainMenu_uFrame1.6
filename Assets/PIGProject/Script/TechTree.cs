@@ -157,7 +157,9 @@ public class TechTree : MonoBehaviour {
 
 	void OnEnable () {
 		game = Game.Instance;
-		SetupStudentPrefabList ();
+		if (TechTreePrefab.person.Count == 0) {
+			SetupStudentPrefabList ();
+		}
 		staticCounselorButtons = CounselorButtons;
 		staticCounselorPanel = CounselorList.transform;
 		staticTotalIQText = TotalIQText;
@@ -258,10 +260,12 @@ public class TechTree : MonoBehaviour {
 				SetupTechTreeDiagram ();
 				TreeDiagram.SetActive(true);
 			}else{
-				Panel.GetHeader(MessageDialog).text = "未選軍師";
-				Panel.GetMessageText(MessageDialog).text = "軍師閣下，請先選擇至少一個軍師";
-				DialogCommand = TechTreeDialogCommand.NoCounselorSelected;
-				ShowPanel(MessageDialog);
+				if (game.trainings [43].etaTimestamp < DateTime.Now){
+					Panel.GetHeader(MessageDialog).text = "未選軍師";
+					Panel.GetMessageText(MessageDialog).text = "軍師閣下，請先選擇至少一個軍師";
+					DialogCommand = TechTreeDialogCommand.NoCounselorSelected;
+					ShowPanel(MessageDialog);
+				}
 			}
 		});
 		BackButton.onClick.AddListener (() => {
@@ -339,17 +343,26 @@ public class TechTree : MonoBehaviour {
 	void OnCounselorButtonClicked(string name){
 		if (game.trainings [43].etaTimestamp < DateTime.Now) {  // training not started
 			if (name == "Button") {
+				//TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 0;
 			}else if (name == "Button (1)") {
+				//TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 1;
 			}else if (name == "Button (2)") {
+				//TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 2;
 			}else if (name == "Button (3)") {
+				//TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 3;
 			}else if (name == "Button (4)") {
+//				TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 4;
 			}
 			CounselorList.SetActive (true);
+		}
+		TechTreePrefab c = TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor [AssigningCounselorSlot]);
+		if (c != null) {
+			c.gameObject.SetActive (true);
 		}
 	}
 
