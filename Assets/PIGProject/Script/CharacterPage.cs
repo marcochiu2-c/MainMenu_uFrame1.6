@@ -248,6 +248,6 @@ public class CharacterPage : MonoBehaviour {
 		}else{
 			level = 99;   
 		}
-		return level;
+		return level+1;
 	}
 }
