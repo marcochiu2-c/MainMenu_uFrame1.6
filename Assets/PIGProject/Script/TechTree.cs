@@ -44,9 +44,9 @@ public class TechTree : MonoBehaviour {
 	public GameObject BasicScienceHolder;
 	public GameObject IChingHolder;
 	public GameObject TreeDiagram;
-	public GameObject MessageDialog;
-	public GameObject ConfirmDialog;
-	public GameObject DisablePanel;
+	public static GameObject MessageDialog;
+	public static GameObject ConfirmDialog;
+	public static GameObject DisablePanel;
 
 	public Button WeaponTechnologyButton;
 	public Button PotteryButton;
@@ -145,8 +145,8 @@ public class TechTree : MonoBehaviour {
 		int totalIQ = 2160000;
 		Debug.Log ("Total IQ: " + totalIQ  * (TechItems [tech].Weight / 114));
 		Debug.Log ("Level: " + level);
-		Debug.Log ("Level IQ: " + LevelIQPercentage [level+1]);
-		return Mathf.RoundToInt (totalIQ*(TechItems[tech].Weight/114)*(LevelIQPercentage[level+1]/100f));
+		Debug.Log ("Level IQ: " + LevelIQPercentage [level]);
+		return Mathf.RoundToInt (totalIQ*(TechItems[tech].Weight/114)*(LevelIQPercentage[level]/100f));
 	}
 
 
@@ -397,8 +397,8 @@ public class TechTree : MonoBehaviour {
 //			game.trainings[43].UpdateObject();
 		TechnologyLabel.text = TechItems[(int)AssigningTech].Item;
 		Debug.Log ("Total Training Hours: "+GetTotalTrainingHours ());
-		Panel.GetHeader (ConfirmDialog).text = "Confirm Training?";
-		Panel.GetMessageText (ConfirmDialog).text = "Training take time: "+TimeUpdate.Time( GetTotalTrainingHours());
+		Panel.GetHeader (ConfirmDialog).text = "進行科研";
+		Panel.GetMessageText (ConfirmDialog).text = "軍師閣下，進行科研需時 "+TimeUpdate.Time( GetTotalTrainingHours());
 		Debug.Log ("Assigning Tech Level : "+ (game.login.attributes[Enum.GetName(typeof(Tech),AssigningTech)].AsInt));
 		DialogCommand = TechTreeDialogCommand.ConfirmTraining;
 		ConfirmDialog.SetActive (true);
@@ -424,7 +424,9 @@ public class TechTree : MonoBehaviour {
 
 	TimeSpan GetTotalTrainingHours(){
 		Debug.Log ("Total Counselor IQ: " + TotalIQOfCounselors ());
-		float seconds = 3600 / TotalIQOfCounselors() * GetIQRequirement((int)AssigningTech,CharacterPage.UserLevelCalculator(game.login.exp)) ;
+		var tech = Enum.GetName (typeof(Tech), AssigningTech);
+		Debug.Log (tech+" Level: "+game.login.attributes[tech].AsInt);
+		float seconds = 3600 / TotalIQOfCounselors() * GetIQRequirement((int)AssigningTech,game.login.attributes[tech].AsInt) ;
 		return new TimeSpan (0,0,(int)seconds);
 	}
 
