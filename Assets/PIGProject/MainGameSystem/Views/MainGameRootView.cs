@@ -45,6 +45,9 @@ public class MainGameRootView : MainGameRootViewBase {
 
 	public GameObject InfoPanel;
 	public GameObject BlockPanel;
+	public GameObject ExpPanel;
+	public GameObject SilverFeatherPanel;
+	public GameObject ResourcePanel;
 	public TextAsset atkInfo;
 	public TextAsset moveInfo;
 	public TextAsset missionInfo;
@@ -65,6 +68,9 @@ public class MainGameRootView : MainGameRootViewBase {
 
 	public List<SoldierViewModel> SoldierVM = new List<SoldierViewModel>();
 	public List<SoldierView> SoldierV = new List<SoldierView>();
+	
+	public Game game;
+	public int TotalExp = 5010732;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -75,6 +81,7 @@ public class MainGameRootView : MainGameRootViewBase {
         // var vm = model as MainGameRootViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
 		InfoText.text = missionInfo.text;
+		game = Game.Instance;
 		
 		gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent<GSHexGridManager>();
 		LocalUser =  uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
@@ -324,7 +331,30 @@ public class MainGameRootView : MainGameRootViewBase {
 			Debug.Log ("You Win");
 			gameOverText.text = "勝利";
 			gameOverText.gameObject.SetActive(true);
+			
 			ExecuteGameOver();
+			
+			int expAdd = Mathf.RoundToInt(40 * Mathf.Pow(1.1f, LocalUser.UserLevel - 1) / TotalExp * 1000000);
+			game.login.exp += expAdd;
+			//SilverFeather
+			game.wealth[0].Add(expAdd * 9);
+			//Resource
+			game.wealth[2].Add (expAdd  * 400);
+			game.login.UpdateObject();
+			
+			ExpPanel.gameObject.SetActive(true);
+			ExpPanel.transform.FindChild("Text").GetComponent<Text>().text = "所得經驗： " + expAdd;
+			
+			SilverFeatherPanel.gameObject.SetActive(true);
+			SilverFeatherPanel.transform.FindChild("Text").GetComponent<Text>().text = "所得銀羽： " + expAdd * 9;
+			
+			ResourcePanel.gameObject.SetActive(true);
+			ResourcePanel.transform.FindChild("Text").GetComponent<Text>().text = "所得物資： " + expAdd * 400;
+			
+			Debug.Log("Add Exp: " + expAdd);
+			Debug.Log("User Exp: " + game.login.exp);
+			
+			
 		}
 		
 		//else if(this.MainGameRoot.SoldierCount == 0)

@@ -33,6 +33,8 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<Boolean> _SetTeamProperty;
     
+    private P<Int32> _UserLevelProperty;
+    
     private ModelCollection<SoldierViewModel> _Soldier;
     
     public UserViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
@@ -84,6 +86,15 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<Int32> UserLevelProperty {
+        get {
+            return _UserLevelProperty;
+        }
+        set {
+            _UserLevelProperty = value;
+        }
+    }
+    
     public virtual AuthorizationState AuthorizationState {
         get {
             return AuthorizationStateProperty.Value;
@@ -129,6 +140,15 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual Int32 UserLevel {
+        get {
+            return UserLevelProperty.Value;
+        }
+        set {
+            UserLevelProperty.Value = value;
+        }
+    }
+    
     public virtual ModelCollection<SoldierViewModel> Soldier {
         get {
             return _Soldier;
@@ -145,6 +165,7 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         _ScreenStateProperty = new P<ScreenState>(this, "ScreenState");
         _TotalTeamProperty = new P<Int32>(this, "TotalTeam");
         _SetTeamProperty = new P<Boolean>(this, "SetTeam");
+        _UserLevelProperty = new P<Int32>(this, "UserLevel");
         _Soldier = new ModelCollection<SoldierViewModel>(this, "Soldier");
     }
     
@@ -155,6 +176,7 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         this.ScreenState = (ScreenState)stream.DeserializeInt("ScreenState");;
         this.TotalTeam = stream.DeserializeInt("TotalTeam");;
         this.SetTeam = stream.DeserializeBool("SetTeam");;
+        this.UserLevel = stream.DeserializeInt("UserLevel");;
         if (stream.DeepSerialize) {
             this.Soldier.Clear();
             this.Soldier.AddRange(stream.DeserializeObjectArray<SoldierViewModel>("Soldier"));
@@ -168,6 +190,7 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         stream.SerializeInt("ScreenState", (int)this.ScreenState);;
         stream.SerializeInt("TotalTeam", this.TotalTeam);
         stream.SerializeBool("SetTeam", this.SetTeam);
+        stream.SerializeInt("UserLevel", this.UserLevel);
         if (stream.DeepSerialize) stream.SerializeArray("Soldier", this.Soldier);
     }
     
@@ -187,6 +210,8 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         list.Add(new ViewModelPropertyInfo(_TotalTeamProperty, false, false, false, false));
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_SetTeamProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_UserLevelProperty, false, false, false, false));
         list.Add(new ViewModelPropertyInfo(_Soldier, true, true, false, false));
     }
 }

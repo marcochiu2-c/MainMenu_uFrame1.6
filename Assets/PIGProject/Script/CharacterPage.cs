@@ -50,7 +50,7 @@ public class CharacterPage : MonoBehaviour {
 		if (exp <41) {
 			level = 0;   
 		}else if (exp <93) {
-			level = 1;   
+			level = 1;
 		}else if (exp <121) {
 			level = 2;   
 		}else if (exp <157) {
@@ -248,6 +248,6 @@ public class CharacterPage : MonoBehaviour {
 		}else{
 			level = 99;   
 		}
-		return level;
+		return level + 1;
 	}
 }

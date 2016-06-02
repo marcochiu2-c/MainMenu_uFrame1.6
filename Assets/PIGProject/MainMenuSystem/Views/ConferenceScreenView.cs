@@ -89,7 +89,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	private Button _selectSoldier;
 	private Text _soldierQuantityText = null;
 	
-    
+	public int TotalExp = 5010732;
+	
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
@@ -109,8 +110,10 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		
 		whichTeam = 0;
 		
-		int userLevel = CharacterPage.UserLevelCalculator(game.login.exp);
+		LocalUser.UserLevel = CharacterPage.UserLevelCalculator(game.login.exp);
+		int userLevel = LocalUser.UserLevel;
 		
+		Debug.Log ("UserLevel: " + userLevel);
 		//Testing use
 		//int userLevel = 25;
 		LocalUser.TotalTeam = 1;
@@ -142,6 +145,9 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			General5Btn.interactable = true;
 			LocalUser.TotalTeam = 5;
 		}
+		
+		//int expTest = Mathf.RoundToInt(40 * Mathf.Pow(1.1f, LocalUser.UserLevel) / TotalExp * 1000000);
+		//Debug.Log ("Add Exp Trial: " + expTest);
 		
 		Debug.Log (LocalUser.Soldier == null ? "SoldierVM is null" : LocalUser.Soldier.Count.ToString());
 		
