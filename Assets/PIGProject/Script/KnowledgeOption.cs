@@ -69,8 +69,29 @@ public class KnowledgeOption : MonoBehaviour {
 			}
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
-		ChainSteel.onClick.AddListener (() => {
+		EasternHistory.onClick.AddListener (() => {
 			knowledge = 2003;
+			knowledgeName = "EasternHistory";
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
+			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
+		});
+		WesternHistory.onClick.AddListener (() => {
+			knowledge = 2004;
+			knowledgeName = "WesternHistory";
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
+			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
+		});
+
+		ChainSteel.onClick.AddListener (() => {
+			knowledge = 2005;
 			knowledgeName = "ChainSteel";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -80,7 +101,7 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		MetalProcessing.onClick.AddListener (() => {
-			knowledge = 2004;
+			knowledge = 2006;
 			knowledgeName = "MetalProcessing";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -90,7 +111,7 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Crafts.onClick.AddListener (() => {
-			knowledge = 2005;
+			knowledge = 2007;
 			knowledgeName = "Crafts";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -100,7 +121,7 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Geometry.onClick.AddListener (() => {
-			knowledge = 2006;
+			knowledge = 2008;
 			knowledgeName = "Geometry";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -110,7 +131,7 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Physics.onClick.AddListener (() => {
-			knowledge = 2007;
+			knowledge = 2009;
 			knowledgeName = "Physics";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -120,7 +141,7 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Chemistry.onClick.AddListener (() => {
-			knowledge = 2008;
+			knowledge = 2010;
 			knowledgeName = "Chemistry";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -130,7 +151,7 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		PeriodicTable.onClick.AddListener (() => {
-			knowledge = 2009;
+			knowledge = 2011;
 			knowledgeName = "PeriodicTable";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -140,7 +161,7 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Pulley.onClick.AddListener (() => {
-			knowledge = 2010;
+			knowledge = 2012;
 			knowledgeName = "Pulley";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -150,7 +171,7 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Anatomy.onClick.AddListener (() => {
-			knowledge = 2011;
+			knowledge = 2013;
 			knowledgeName = "Anatomy";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -160,7 +181,7 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Catapult.onClick.AddListener (() => {
-			knowledge = 2012;
+			knowledge = 2014;
 			knowledgeName = "Catapult";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -170,7 +191,7 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		GunpowderModulation.onClick.AddListener (() => {
-			knowledge = 2013;
+			knowledge = 2015;
 			knowledgeName = "GunpowderModulation";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
@@ -180,8 +201,18 @@ public class KnowledgeOption : MonoBehaviour {
 			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
 		});
 		Psychology.onClick.AddListener (() => {
-			knowledge = 2014;
+			knowledge = 2016;
 			knowledgeName = "Psychology";
+			if (Academy.staticSelfStudyHolder.activeSelf == true){
+				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
+			}else{
+				parent.GetComponent<Academy>().ConfirmTeacherBy.SetActive(true);
+			}
+			parent.GetComponent<Academy>().KnowledgeListHolder.SetActive(false);
+		});
+		IChing.onClick.AddListener (() => {
+			knowledge = 2017;
+			knowledgeName = "IChing";
 			if (Academy.staticSelfStudyHolder.activeSelf == true){
 				parent.GetComponent<Academy>().ConfirmTraining.SetActive(true);
 			}else{

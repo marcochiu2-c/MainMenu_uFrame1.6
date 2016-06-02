@@ -552,97 +552,19 @@ public class TechTree : MonoBehaviour {
 		int numOfEnum = Enum.GetNames (typeof(Knowledge)).Length;
 		List<Knowledge> list = new List<Knowledge> ();
 		int co;
+
 		for (int i = 0; i < 5; i++) {
-//			if (game.trainings[43].attributes["TechTreeCounselors"].Count==0){
-//				continue;
-//			}
+
 			co = game.counselor.FindIndex (x  => x.id == AssigningCounselor[i]);
 			if (co < 0){
 				continue;
 			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["Woodworker"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.Woodworker)){
-					list.Add (Knowledge.Woodworker);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["MetalFabrication"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.MetalFabrication)){
-					list.Add (Knowledge.MetalFabrication);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["EasternHistory"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.EasternHistory)){
-					list.Add (Knowledge.EasternHistory);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["WesternHistory"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.WesternHistory)){
-					list.Add (Knowledge.WesternHistory);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["ChainSteel"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.ChainSteel)){
-					list.Add (Knowledge.ChainSteel);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["MetalProcessing"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.MetalProcessing)){
-					list.Add (Knowledge.MetalProcessing);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["Crafts"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.Crafts)){
-					list.Add (Knowledge.Crafts);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["Geometry"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.Geometry)){
-					list.Add (Knowledge.Geometry);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["Physics"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.Physics)){
-					list.Add (Knowledge.Physics);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["Chemistry"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.Chemistry)){
-					list.Add (Knowledge.Chemistry);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["PeriodicTable"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.PeriodicTable)){
-					list.Add (Knowledge.PeriodicTable);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["Pulley"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.Pulley)){
-					list.Add (Knowledge.Pulley);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["Anatomy"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.Anatomy)){
-					list.Add (Knowledge.Anatomy);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["Catapult"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.Catapult)){
-					list.Add (Knowledge.Catapult);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["GunpowderModulation"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.GunpowderModulation)){
-					list.Add (Knowledge.GunpowderModulation);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["Psychology"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.Psychology)){
-					list.Add (Knowledge.Psychology);
-				}
-			}
-			if (game.counselor[co].attributes["attributes"]["KnownKnowledge"]["IChing"].AsInt > 0){
-				if (!list.Exists(x => x == Knowledge.IChing)){
-					list.Add (Knowledge.IChing);
+
+			for (int j = 2001; j < numOfEnum+2001 ; j++){
+				if (game.counselor[co].attributes["attributes"]["KnownKnowledge"][Enum.GetName (typeof(Knowledge),(Knowledge)j)].AsInt > 0){
+					if (!list.Exists(x => x == (Knowledge)j)){
+						list.Add ((Knowledge)j);
+					}
 				}
 			}
 			if (list.Count==numOfEnum){
