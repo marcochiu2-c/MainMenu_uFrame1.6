@@ -431,7 +431,7 @@ public class TechTree : MonoBehaviour {
 		TechnologyLabel.text = TechItems[(int)AssigningTech].Item;
 		Debug.Log ("Total Training Hours: "+GetTotalTrainingHours ());
 		Panel.GetHeader (ConfirmDialog).text = "進行科研";
-		Panel.GetMessageText (ConfirmDialog).text = "軍師閣下，進行科研需時 "+TimeUpdate.Time( GetTotalTrainingHours());
+		Panel.GetMessageText (ConfirmDialog).text = "軍師閣下，進行科研「"+TechItems[(int)AssigningTech].Item+"」需時 "+TimeUpdate.Time( GetTotalTrainingHours());
 		Debug.Log ("Assigning Tech Level : "+ (game.login.attributes[Enum.GetName(typeof(Tech),AssigningTech)].AsInt));
 		DialogCommand = TechTreeDialogCommand.ConfirmTraining;
 		ConfirmDialog.SetActive (true);
