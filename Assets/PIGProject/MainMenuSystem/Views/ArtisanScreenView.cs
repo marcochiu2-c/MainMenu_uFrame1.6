@@ -17,6 +17,7 @@ public class ArtisanScreenView : ArtisanScreenViewBase {
 	public Button armsButton;
 	public Button armorButton;
 	public Button shieldButton;
+	public Button backButton;
 
 	public GameObject armsPopup;
 	public GameObject armorPopup;
@@ -54,6 +55,12 @@ public class ArtisanScreenView : ArtisanScreenViewBase {
 			armorPopup.SetActive (false);
 			shieldPopup.SetActive (true);
 			ArtisanHolder.OpenedHolder = 3;
+		});
+
+		this.BindButtonToHandler (backButton,()=>{
+			armsPopup.SetActive (false);
+			armorPopup.SetActive (false);
+			shieldPopup.SetActive (false);
 		});
     }
 }

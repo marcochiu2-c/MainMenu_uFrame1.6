@@ -334,27 +334,40 @@ public class MainGameRootView : MainGameRootViewBase {
 			
 			ExecuteGameOver();
 			
+			
 			int expAdd = Mathf.RoundToInt(40 * Mathf.Pow(1.1f, LocalUser.UserLevel - 1) / TotalExp * 1000000);
+			int silverFeatherGain = expAdd * 9;
+			int resourceGain = expAdd * 400;
 			game.login.exp += expAdd;
 			//SilverFeather
-			game.wealth[0].Add(expAdd * 9);
+			game.wealth[0].Add(silverFeatherGain);
 			//Resource
-			game.wealth[2].Add (expAdd  * 400);
+			game.wealth[2].Add (resourceGain);
 			game.login.UpdateObject();
 			
 			ExpPanel.gameObject.SetActive(true);
 			ExpPanel.transform.FindChild("Text").GetComponent<Text>().text = "所得經驗： " + expAdd;
 			
 			SilverFeatherPanel.gameObject.SetActive(true);
-			SilverFeatherPanel.transform.FindChild("Text").GetComponent<Text>().text = "所得銀羽： " + expAdd * 9;
+			SilverFeatherPanel.transform.FindChild("Text").GetComponent<Text>().text = "所得銀羽： " + silverFeatherGain;
 			
-			ResourcePanel.gameObject.SetActive(true);
-			ResourcePanel.transform.FindChild("Text").GetComponent<Text>().text = "所得物資： " + expAdd * 400;
+			//ResourcePanel.gameObject.SetActive(true);
+			//ResourcePanel.transform.FindChild("Text").GetComponent<Text>().text = "所得物資： " + resourceGain;
+			
+			
+			LocalUser.SilverFeatherGain = silverFeatherGain;
+			LocalUser.ResourceGain = resourceGain;
+			
 			
 			Debug.Log("Add Exp: " + expAdd);
 			Debug.Log("User Exp: " + game.login.exp);
 			
-			
+			/*
+			WsClient wsc = WsClient.Instance;
+			JSONClass j = new JSONClass ();
+			j["battle"] = "Win the Battle";
+			wsc.Send ("wealth", "SET", j);
+			*/
 		}
 		
 		//else if(this.MainGameRoot.SoldierCount == 0)

@@ -52,6 +52,15 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Text SoldierQuantityText5;
 	public Text QunatityErrorText;
 	public Game game;
+	
+	public Text TotalSoldierQunatityText;
+	public Text TotalGeneralText;
+	public Text TotalPlayerText;
+	public Text DeadSoldiersText;
+	public Text AliveSoldiersText;
+	public Text LoseGearText;
+	public Text SilverFeatherGainText;
+	public Text ResourceGainText;
 
 	public GameObject ArmyAttack;
 	public GameObject ArmyGarrison;
@@ -242,6 +251,18 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			MilitaryAdviser.gameObject.SetActive (false);
 			DefensiveLinup.gameObject.SetActive (false);
 			Standings.gameObject.SetActive (true);
+			
+			
+			TotalSoldierQunatityText.text = LocalUser.TotalSoldierQunatity.ToString();
+			TotalGeneralText.text = LocalUser.TotalGeneral.ToString();
+			TotalPlayerText.text = LocalUser.TotalPlayer.ToString();
+			DeadSoldiersText.text = LocalUser.DeadSoldiers.ToString();
+			AliveSoldiersText.text = LocalUser.AliveSoldiers.ToString();
+			LoseGearText.text = LocalUser.LoseGear.ToString();
+			SilverFeatherGainText.text = LocalUser.SilverFeatherGain.ToString();
+			ResourceGainText.text = LocalUser.ResourceGain.ToString();
+			
+			
 		});
 		
 		this.BindButtonToHandler (SelectSoldier1Btn, () => {
@@ -429,6 +450,11 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			
 			//need to check condition
 			//LocalUser.TotalTeam++;
+			/*
+			LocalUser.TotalSoldierQunatity += int.Parse(SoldierQuantityInput.text);
+			LocalUser.TotalGeneral = 1;
+			LocalUser.TotalPlayer = 1;
+			*/
 			
 			this.ConferenceScreen.SoldierQuantity = int.Parse(SoldierQuantityInput.text);
 			_soldierQuantityText.text = "兵數: " + SoldierQuantityInput.text;

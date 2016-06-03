@@ -238,6 +238,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 					randomPoint = walkableGrid.RandomItem();
 				
 				TargetVM[i].CurrentPointLocation = randomPoint;
+				walkableGrid[randomPoint].IsEnemy = true;
 			}
 			
 			//Ambush Enemy2
