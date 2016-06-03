@@ -151,7 +151,7 @@ public class MainScene : MonoBehaviour {
 		string techName = "";
 		if (game.trainings[43].status == 1 && game.trainings[43].etaTimestamp < DateTime.Now){
 			techName = Enum.GetName(typeof(Tech),game.trainings[43].type);
-			lo.attributes.Add(techName,new JSONData(lo.attributes[techName].AsInt)+1);
+			lo.attributes.Add(techName,new JSONData(lo.attributes[techName].AsInt+1));
 			lo.UpdateObject();
 			game.trainings [43].status = 3;
 			game.trainings [43].trainerId = 0;
