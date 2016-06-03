@@ -58,6 +58,8 @@ public class TechTree : MonoBehaviour {
 	public Button BackButton;
 	public Button CloseButton;
 
+	List<Button> TechButtons;
+
 	public static List<Button> staticCounselorButtons;
 	public static Transform staticCounselorPanel;
 	public static Text staticTotalIQText;
@@ -157,6 +159,7 @@ public class TechTree : MonoBehaviour {
 
 	void OnEnable () {
 		game = Game.Instance;
+		MapTechButtons ();
 		if (TechTreePrefab.person.Count == 0) {
 			SetupStudentPrefabList ();
 		} else {
@@ -175,6 +178,27 @@ public class TechTree : MonoBehaviour {
 		InvokeRepeating ("SetRemainingTime", 0, 1);
 //		SetupTechTreeDiagram ();
 		CallTechTree ();
+	}
+
+	void MapTechButtons(){
+		TechButtons = new List<Button>();
+		for (int i = 0; i < 7; i++) {
+			TechButtons.Add ( WeaponTechnologyHolder.transform.GetChild (i).gameObject.GetComponent<Button> ());
+		}
+		for (int i = 0; i < 4; i++) {
+			TechButtons.Add (PotteryHolder.transform.GetChild (i).gameObject.GetComponent<Button> ());
+		}
+		TechButtons.Add ( SeamEdgeHolder.transform.GetChild(0).gameObject.GetComponent<Button>());
+		TechButtons.Add ( SeamEdgeHolder.transform.GetChild(1).gameObject.GetComponent<Button>());
+		TechButtons.Add ( SeamEdgeHolder.transform.GetChild(2).gameObject.GetComponent<Button>());
+		for (int i = 0; i < 8; i++) {
+			TechButtons.Add ( MiningHolder.transform.GetChild (i).gameObject.GetComponent<Button> ());
+		}
+		TechButtons.Add ( WoodworkerHolder.transform.GetChild (0).gameObject.GetComponent<Button> ());
+		for (int i = 0; i < 19; i++) {
+			TechButtons.Add ( BasicScienceHolder.transform.GetChild (i).gameObject.GetComponent<Button> ());
+		}
+		TechButtons.Add ( IChingHolder.transform.GetChild (0).gameObject.GetComponent<Button> ());
 	}
 
 	void OnDisable(){
@@ -446,7 +470,7 @@ public class TechTree : MonoBehaviour {
 //		int level = CharacterPage.UserLevelCalculator (game.login.exp);
 		int count = 0;
 		TechItem techs = TechItems [(int)tech];
-		ShowLog.Log (tech);
+
 		ShowLog.Log (techs.Item);
 //		if (tech == Tech.WeaponTechnology) {
 ////			Debug.Log("Weapon Tech, Tech requirement: "+string.Join(",", TechItems[0].TechRequirement.Select(x => x.ToString()).ToArray()));
@@ -470,7 +494,7 @@ public class TechTree : MonoBehaviour {
 
 		count = techs.TechRequirement.Count;
 		for (int i = 0; i < count ; i++){	
-			if (!knowledgeList.Exists(x => (int)x == techs.TechRequirement[i])){
+			if (!techList.Exists(x => (int)x == techs.TechRequirement[i])){
 				ShowLog.Log("No Required Tech: "+(Tech)techs.TechRequirement[i]);
 				return false;
 			}
@@ -530,7 +554,7 @@ public class TechTree : MonoBehaviour {
 		Game game = Game.Instance;
 		int numOfEnum = Enum.GetNames (typeof(Tech)).Length;
 		List<Tech> list = new List<Tech> ();
-		int count = game.counselor.Count;
+
 		for (int j = 1; j < numOfEnum+1 ; j++){
 		    if (game.login.attributes[Enum.GetName(typeof(Tech),(Tech)j)].AsInt > 0){
 				if (!list.Exists(x => x == (Tech)j)){
@@ -577,153 +601,143 @@ public class TechTree : MonoBehaviour {
 	void SetupTechTreeDiagram(){
 		JSONClass tech = game.login.attributes;
 		List<Knowledge> knowledges = GetAvailableKnowlegdeList ();
-		for (int i = 0; i < 7; i++) {
-			WeaponTechnologyHolder.transform.GetChild (i).gameObject.GetComponent<Button> ().interactable = false;
+		int count = TechButtons.Count;
+		for (int i = 0; i< count; i++) {
+			if (isTrainingValid ((Tech)(i+1))) {
+				TechButtons[i].interactable = true;
+			}else{
+				TechButtons[i].interactable = false;
+			}
 		}
-		PotteryHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = false;
-		PotteryHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = false;
-		PotteryHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = false;
-		PotteryHolder.transform.GetChild(3).gameObject.GetComponent<Button>().interactable = false;
-		SeamEdgeHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = false;
-		SeamEdgeHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = false;
-		SeamEdgeHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = false;
-		for (int i = 0; i < 8; i++) {
-			MiningHolder.transform.GetChild (i).gameObject.GetComponent<Button> ().interactable = false;
-		}
-		WoodworkerHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = false;
-		for (int i = 0; i < 19; i++) {
-			BasicScienceHolder.transform.GetChild (i).gameObject.GetComponent<Button> ().interactable = false;
-		}
-		IChingHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = false;
-		if (isTrainingValid (Tech.WeaponTechnology)) {
-			WeaponTechnologyHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.EasternWeaponTechnology)) {
-			WeaponTechnologyHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.WesternWeaponTechnology)) {
-			WeaponTechnologyHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.FinePolished)) {
-			WeaponTechnologyHolder.transform.GetChild(3).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Reinforcement)) {
-			WeaponTechnologyHolder.transform.GetChild(4).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.EquipmentWeight)) {
-			WeaponTechnologyHolder.transform.GetChild(5).gameObject.SetActive(true);
-		}
-		if (isTrainingValid (Tech.Tempered)) {
-			WeaponTechnologyHolder.transform.GetChild(6).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Pottery)) {
-			PotteryHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.MetalComponents)) {
-			PotteryHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Mechanical)) {
-			PotteryHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.SpecialProduction)) {
-			PotteryHolder.transform.GetChild(3).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.SeamEdge)) {
-			SeamEdgeHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.TanningOperation)) {
-			SeamEdgeHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.ArmorSystem)) {
-			SeamEdgeHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Mining)) {
-			MiningHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Bronze)) {
-			MiningHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.MetalFabrication)) {
-			MiningHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.CastingFencing)) {
-			MiningHolder.transform.GetChild(3).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.CastingFencing)) {
-			MiningHolder.transform.GetChild(4).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.GunProduction)) {
-			MiningHolder.transform.GetChild(5).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.SystemShield)) {
-			MiningHolder.transform.GetChild(6).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.ProductionCrossbow)) {
-			MiningHolder.transform.GetChild(7).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.WoodWorker)) {
-			WoodworkerHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Geometry)) {
-			BasicScienceHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Physics)) {
-			BasicScienceHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.BasicScience)) {
-			BasicScienceHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Chemistry)) {
-			BasicScienceHolder.transform.GetChild(3).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.PeriodicTable)) {
-			BasicScienceHolder.transform.GetChild(4).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.MagnesiumApplications)) {
-			BasicScienceHolder.transform.GetChild(5).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Biology)) {
-			BasicScienceHolder.transform.GetChild(6).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.BodyStructure)) {
-			BasicScienceHolder.transform.GetChild(7).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Kinetics)) {
-			BasicScienceHolder.transform.GetChild(8).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Nutrition)) {
-			BasicScienceHolder.transform.GetChild(9).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.ScienceTraining)) {
-			BasicScienceHolder.transform.GetChild(10).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.CoalApplication)) {
-			BasicScienceHolder.transform.GetChild(11).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.ChainSteel)) {
-			BasicScienceHolder.transform.GetChild(12).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Psychology)) {
-			BasicScienceHolder.transform.GetChild(13).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.MindReading)) {
-			BasicScienceHolder.transform.GetChild(14).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.MindControl)) {
-			BasicScienceHolder.transform.GetChild(15).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.PaperMaking)) {
-			BasicScienceHolder.transform.GetChild(16).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Typography)) {
-			BasicScienceHolder.transform.GetChild(17).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.Compass)) {
-			BasicScienceHolder.transform.GetChild(18).gameObject.GetComponent<Button>().interactable = true;
-		}
-		if (isTrainingValid (Tech.IChing)) {
-			IChingHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
-		}
+//		if (isTrainingValid (Tech.WeaponTechnology)) {
+//			WeaponTechnologyHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.EasternWeaponTechnology)) {
+//			WeaponTechnologyHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.WesternWeaponTechnology)) {
+//			WeaponTechnologyHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.FinePolished)) {
+//			WeaponTechnologyHolder.transform.GetChild(3).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Reinforcement)) {
+//			WeaponTechnologyHolder.transform.GetChild(4).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.EquipmentWeight)) {
+//			WeaponTechnologyHolder.transform.GetChild(5).gameObject.SetActive(true);
+//		}
+//		if (isTrainingValid (Tech.Tempered)) {
+//			WeaponTechnologyHolder.transform.GetChild(6).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Pottery)) {
+//			PotteryHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.MetalComponents)) {
+//			PotteryHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Mechanical)) {
+//			PotteryHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.SpecialProduction)) {
+//			PotteryHolder.transform.GetChild(3).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.SeamEdge)) {
+//			SeamEdgeHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.TanningOperation)) {
+//			SeamEdgeHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.ArmorSystem)) {
+//			SeamEdgeHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Mining)) {
+//			MiningHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Bronze)) {
+//			MiningHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.MetalFabrication)) {
+//			MiningHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.CastingFencing)) {
+//			MiningHolder.transform.GetChild(3).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.CastingFencing)) {
+//			MiningHolder.transform.GetChild(4).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.GunProduction)) {
+//			MiningHolder.transform.GetChild(5).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.SystemShield)) {
+//			MiningHolder.transform.GetChild(6).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.ProductionCrossbow)) {
+//			MiningHolder.transform.GetChild(7).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.WoodWorker)) {
+//			WoodworkerHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Geometry)) {
+//			BasicScienceHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Physics)) {
+//			BasicScienceHolder.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.BasicScience)) {
+//			BasicScienceHolder.transform.GetChild(2).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Chemistry)) {
+//			BasicScienceHolder.transform.GetChild(3).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.PeriodicTable)) {
+//			BasicScienceHolder.transform.GetChild(4).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.MagnesiumApplications)) {
+//			BasicScienceHolder.transform.GetChild(5).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Biology)) {
+//			BasicScienceHolder.transform.GetChild(6).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.BodyStructure)) {
+//			BasicScienceHolder.transform.GetChild(7).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Kinetics)) {
+//			BasicScienceHolder.transform.GetChild(8).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Nutrition)) {
+//			BasicScienceHolder.transform.GetChild(9).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.ScienceTraining)) {
+//			BasicScienceHolder.transform.GetChild(10).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.CoalApplication)) {
+//			BasicScienceHolder.transform.GetChild(11).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.ChainSteel)) {
+//			BasicScienceHolder.transform.GetChild(12).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Psychology)) {
+//			BasicScienceHolder.transform.GetChild(13).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.MindReading)) {
+//			BasicScienceHolder.transform.GetChild(14).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.MindControl)) {
+//			BasicScienceHolder.transform.GetChild(15).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.PaperMaking)) {
+//			BasicScienceHolder.transform.GetChild(16).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Typography)) {
+//			BasicScienceHolder.transform.GetChild(17).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.Compass)) {
+//			BasicScienceHolder.transform.GetChild(18).gameObject.GetComponent<Button>().interactable = true;
+//		}
+//		if (isTrainingValid (Tech.IChing)) {
+//			IChingHolder.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
+//		}
 	}
 
 	public void OnTechButtonClicked(){
