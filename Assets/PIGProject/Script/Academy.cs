@@ -47,6 +47,7 @@ public class Academy : MonoBehaviour
 	public static Dictionary<int,string> nameDict;
 	public static GameObject staticLowerThanTrainer;
 	public static GameObject staticConfirmTeacherBy;
+	public static GameObject staticConfirmTraining;
 	public static GameObject staticTeachHolder;
 	public static GameObject staticSelfStudyHolder;
 	public static GameObject staticKnowledgeListHolder;
@@ -99,6 +100,7 @@ public class Academy : MonoBehaviour
 		staticSelfStudyHolder = SelfStudyHolder;
 		staticLowerThanTrainer = LowerThanTrainer;
 		staticConfirmTeacherBy = ConfirmTeacherBy;
+		staticConfirmTraining = ConfirmTraining;
 		staticKnowledgeListHolder = KnowledgeListHolder;
 		staticCounselorHolder = CounselorHolder;
 		SelfStudyInstructionText = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();

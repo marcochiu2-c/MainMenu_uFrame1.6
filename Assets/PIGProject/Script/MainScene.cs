@@ -142,28 +142,37 @@ public class MainScene : MonoBehaviour {
 		InvokeRepeating ("OnSchoolFieldSoldierTrainComplete", 2, 4);
 		InvokeRepeating ("OnAcademyTrainingComplete", 3, 4);
 		InvokeRepeating ("OnArtisanJobsComplete", 3, 4);
-//		InvokeRepeating ("OnTechTreeTrainingComplete", 2, 4);
+		InvokeRepeating ("OnTechTreeTrainingComplete", 2, 4);
 	}
 
 	void OnTechTreeTrainingComplete(){
 		Game game = Game.Instance;
 		Login lo = game.login;
 		string techName = "";
-		for (int i = 43; i < 48; i++) {
-			if (game.trainings[i].status == 1 && game.trainings[i].etaTimestamp < DateTime.Now){
-				techName = Enum.GetName(typeof(Tech),game.trainings[i].type);
-				lo.attributes.Add(techName,new JSONData(lo.attributes[techName].AsInt)+1);
-				lo.UpdateObject();
-				game.trainings [i].Completed();
+		if (game.trainings[43].status == 1 && game.trainings[43].etaTimestamp < DateTime.Now){
+			techName = Enum.GetName(typeof(Tech),game.trainings[43].type);
+			lo.attributes.Add(techName,new JSONData(lo.attributes[techName].AsInt+1));
+			lo.UpdateObject();
+			game.trainings [43].status = 3;
+			game.trainings [43].trainerId = 0;
+			game.trainings [43].targetId = 0;
+			game.trainings [43].type = 0;
+			game.trainings [43].attributes ["TechTreeCounselors"] = new JSONArray();
+			game.trainings [43].UpdateObject();
+			if (TechTree.staticTotalIQText != null){
+				for (int i = 0; i < 5; i++){
+					TechTree.staticCounselorButtons[i].GetComponent<Image>().sprite = null;
+					TechTree.staticCounselorButtons[i].transform.GetChild(0).GetComponent<Text>().text = "";
+				}
+				TechTree.staticTotalIQText.text = "";
+				TechTree.staticTechnologyLabel.text = "";
+				TechTree.staticFromLv.text = "";
+				TechTree.staticToLv.text = "";
+				TechTree.staticRemainTrainingTime.text = "00:00:00";
 			}
-//			lo.UpdateObject();
-//			game.trainings [i].status = 3;
-//			game.trainings [i].trainerId = 0;
-//			game.trainings [i].targetId = 0;
-//			game.trainings [i].type = 0;
-//			game.trainings [i].UpdateObject();
-
 		}
+
+
 	}
 
 	void OnArtisanJobsComplete (){
