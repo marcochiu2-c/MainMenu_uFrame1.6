@@ -5,15 +5,13 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Utilities;
 
-public class AcademyStudentNew: MonoBehaviour {
+public class TechTreePrefab: MonoBehaviour {
 	public Image image;
 	public Text Name;
 	public Text AttrName;
 	public Text AttrValue;
 
-	public static List<AcademyStudentNew> person = new List<AcademyStudentNew>();
-	public static AcademyTeach currentTeachItem;
-	public static Transform commonPanel;
+	public static List<TechTreePrefab> person = new List<TechTreePrefab>();
 	public Counselor counselor;
 	private Game game;
 	GameObject CardHolder;
@@ -25,7 +23,6 @@ public class AcademyStudentNew: MonoBehaviour {
 		game = Game.Instance;
 //		CardHolder = Companion.staticCompanionHolder.GetChild (3).gameObject;
 		SetCharacters ();
-		AddButtonListener ();
 	}
 	
 	// Update is called once per frame
@@ -34,55 +31,31 @@ public class AcademyStudentNew: MonoBehaviour {
 
 	//TODO  Disallow any assignment in any OnGoing Jobs
 
-	void AddButtonListener(){
-		AcademyTeach at;
+	public void AddButtonListener(){
 		GetComponent<Button> ().onClick.AddListener (() => {
-			Academy.staticCounselorHolder.SetActive(false);
-
-			if (Academy.CounselorHolderFunction == "SelfStudy"){
-				SelfStudy ss =  Academy.CounselorHolderButton.GetComponent<SelfStudy>();
-				ss.targetId = counselor.id;
-				ss.trainingType = counselor.type;
-				ss.image.sprite = imageDict[counselor.type];
-				ss.ImageText.text = nameDict[counselor.type];
-				ss.etaTimestamp = DateTime.Now+new TimeSpan(20,0,0);
-				ConfirmSelfStudyIfOk(ss);
-				gameObject.SetActive(false);
-			}else if (Academy.CounselorHolderFunction == "TeacherImage"){
-				at = Academy.CounselorHolderButton.transform.parent.GetComponent<AcademyTeach>();
-//				if (AttrName.text!=""){
-					currentTeachItem = at;
-					at.trainerId = counselor.id;
-					at.trainingType = counselor.type;
-					at.TeacherPic = imageDict[counselor.type];
-					at.TeacherImageText.text = nameDict[counselor.type];
-					string category = Academy.staticTeachHolder.transform.GetChild (0).GetComponent<Text>().text;
-					//					AcademyStudent.showSkillsOptionPanel(category);
-					ConfirmTrainingIfOk(at);
-					gameObject.SetActive(false);
-//				}else{
-
-
-//				}
-			}else if (Academy.CounselorHolderFunction == "StudentImage"){
-				at = Academy.CounselorHolderButton.transform.parent.GetComponent<AcademyTeach>();
-//				if (AttrName.text!=""){
-					currentTeachItem = at;
-					at.targetId = counselor.id;
-					at.targetType = counselor.type;
-					at.StudentPic = imageDict[counselor.type];
-					at.StudentImageText.text = nameDict[counselor.type];
-					ConfirmTrainingIfOk(at);
-					gameObject.SetActive(false);
-//				}
-			}
+//			SelfStudy ss =  Academy.CounselorHolderButton.GetComponent<SelfStudy>();
+//			ss.targetId = counselor.id;
+//			ss.trainingType = counselor.type;
+//			ss.image.sprite = imageDict[counselor.type];
+//			ss.ImageText.text = nameDict[counselor.type];
+//			ss.etaTimestamp = DateTime.Now+new TimeSpan(20,0,0);
+//			ConfirmSelfStudyIfOk(ss);
+			Debug.Log("Assigning counselor id: "+counselor.id);
+			//game.trainings[43].attributes["TechTreeCounselors"][TechTree.AssigningCounselorSlot].AsInt = counselor.id;
+			TechTree.AssigningCounselor[TechTree.AssigningCounselorSlot] = counselor.id;
+			TechTree.staticCounselorButtons[TechTree.AssigningCounselorSlot].GetComponent<Image>().sprite = imageDict[counselor.type];
+			TechTree.staticCounselorButtons[TechTree.AssigningCounselorSlot].transform.GetChild(0).GetComponent<Text>().text = nameDict[counselor.type];
+			gameObject.SetActive(false);
+			TechTree.staticCounselorPanel.gameObject.SetActive(false);
+			Debug.Log ("Assigned Counselors after assignment: "+game.trainings[43].attributes["TechTreeCounselors"].Count);
+			TechTree.staticTotalIQText.text = TechTree.TotalIQOfCounselors().ToString();
 		});
 	}
 
 	public void ConfirmSelfStudyIfOk(SelfStudy aSelfStudy){
 		Game game = Game.Instance;
 		Text Title = Academy.staticSelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
-		GameObject ConfirmTraining = Academy.staticConfirmTeacherBy;
+		GameObject ConfirmTraining = Academy.staticAcademyHolder.transform.GetChild (1).GetChild(6).gameObject;
 		if (aSelfStudy.targetId != 0) {
 			if (Title.text == "智商"){
 				if (game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["IQ"].AsFloat <
@@ -153,6 +126,7 @@ public class AcademyStudentNew: MonoBehaviour {
 	}
 
 	public void ShowLowerThanTrainerPanel(string isMaxPoint=""){
+		//		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
 		GameObject LowerThanTrainer = Academy.staticLowerThanTrainer;
 		LowerThanTrainer.SetActive(true);
 		if (isMaxPoint == "") {
@@ -166,6 +140,7 @@ public class AcademyStudentNew: MonoBehaviour {
 
 	public void ShowKnowledgeListPanel(int student){
 		Game game = Game.Instance;
+		GameObject KnowledgeListHolder = Academy.staticAcademyHolder.transform.GetChild (1).GetChild (5).gameObject;
 		KnowledgeOption.Woodworker.interactable = true;
 		KnowledgeOption.MetalFabrication.interactable = true;
 		KnowledgeOption.ChainSteel.interactable = true;
@@ -181,7 +156,7 @@ public class AcademyStudentNew: MonoBehaviour {
 		KnowledgeOption.GunpowderModulation.interactable = true;
 		KnowledgeOption.Psychology.interactable = true;
 		
-		Academy.staticKnowledgeListHolder.SetActive (true);
+		KnowledgeListHolder.SetActive (true);
 	}
 
 	public void ShowKnowledgeListPanel(int teacher, int student){
@@ -296,7 +271,8 @@ public class AcademyStudentNew: MonoBehaviour {
 		counselor = c;
 		image.sprite =  imageDict[counselor.type];
 		Name.text = nameDict[counselor.type];
-		showPanelItems (Academy.staticCounselorHolder.transform);
+		SetPanel ();
+		showPanelItems (TechTree.staticCounselorPanel);
 	}
 //
 //	void ShowCardPanel(){
@@ -332,17 +308,9 @@ public class AcademyStudentNew: MonoBehaviour {
 //		Debug.Log("Knowledge: "+counselor.attributes["attributes"]["KnownKnowledge"].ToString());
 //		
 //	}
-	public void SetPanel(ActivePopupEnum panel){
-		if (panel == ActivePopupEnum.IQPopup) {
-			AttrName.text = "智商：";
-			AttrValue.text = counselor.attributes["attributes"]["IQ"];
-		} else if (panel == ActivePopupEnum.CommandedPopup) {
-			AttrName.text = "統率：";
-			AttrValue.text = counselor.attributes["attributes"]["Leadership"];
-		} else if (panel == ActivePopupEnum.KnowledgePopup || panel == ActivePopupEnum.FightingPopup) {
-			AttrName.text = "";
-			AttrValue.text = "";
-		}
+	public void SetPanel(){
+		AttrName.text = "智商：";
+		AttrValue.text = counselor.attributes["attributes"]["IQ"];
 	}
 
 	public void showPanelItems( Transform panel){
@@ -351,8 +319,8 @@ public class AcademyStudentNew: MonoBehaviour {
 		transform.SetParent( panel.GetChild(1).GetChild(1).GetChild(0));
 //		string panelName = panel.parent.parent.parent.name;
 
-			Name.text = counselor.attributes["attributes"]["Name"].ToString().Trim (charToTrim);
-			image.sprite = headPic.imageDict[counselor.type];
+		Name.text = counselor.attributes["attributes"]["Name"].ToString().Trim (charToTrim);
+		image.sprite = headPic.imageDict[counselor.type];
 		
 		RectTransform rTransform = transform.GetComponent<RectTransform>();
 		rTransform.localScale= Vector3.one;

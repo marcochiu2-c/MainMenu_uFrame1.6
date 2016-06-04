@@ -296,11 +296,13 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	void ConfirmedSpeedUpTraining(){
-		HidePanel (TrainingQAHolder);
+		Debug.Log ("Speed up Training Confirmed");
+
 		CompletingTrainingSoldiers (AssigningSoldier - 1);
 		TimeSpan trainTime = Convert.ToDateTime (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]) - DateTime.Now;
-
-		game.wealth [1].Deduct (ExchangeRate.GetStardustFromTime (trainTime));
+		Debug.Log (AssigningStarDust);
+		game.wealth [1].Deduct (AssigningStarDust);
+		HidePanel (TrainingQAHolder);
 	}
 
 	void OnSpeedUpTrainingClicked(){

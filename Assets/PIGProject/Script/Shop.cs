@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using SimpleJSON;
 using System;
 using UnityEngine.UI;
+using Utilities;
 
 
 public class ProductDesc{
@@ -58,7 +59,7 @@ public class Shop : MonoBehaviour {
 	public Button firstChargeButton;
 	public Button monthlySubscriptionButton;
 	
-	string googlePublicKey ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgQiRcQJ6Gv0KaZm3SRQ2qntuyiHgrA2cXhwXsOc3aTF3hzncp86wIAHGmlblZDo6g04YLdSJxuEpqXmEW77utWtRnO8lQI8kbh52VbyhUxeOv1q6vJKjymrCSFsWaIlp31ki7CQDA9YWq7nMGFXlzfV9cMEJwqTfMyzwMoPR2hqtd80zJ9IIP4vIBDb9lPLT/MNgJ6gwDu6wDAUjEyM2Gjs1MfqEzUuoTF02V9u5dT4axDks3uP8fI2PiLOUwvju45faMQP6ujtMqHNzOOHSN6zu8RfcrXFFG/+UgCtUl/YgWNmy81rdnN8Kh2Wk9RW2FXV1vbnBbHWuKO26mIWofQIDAQAB";
+	string googlePublicKey ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0MgHyYj9uNDoSYWb//fv+QA8UB6bFmiPjtDK2keV9aniCYsj4csyHp5y4Q69lFGUneRe3jMGauaqm/uld3eK0UjBJTstpITffD7UQm3QFa8qTpOQkck337uT75s7FjrvVuz+8q4v23nDRPEgPL1RNTrPFjxkoQHQ94+Tm3xexPN5zWkkUgVAP2bJkhkRmrd1AeQ8i0x4CryPWCEO3CxF7IEwiXtQ2JqM4I9NDB4MKtU6Bi9q+/j2po0DU2YtZvgMnbw7aEyd6n2W1p1W9EUwJHYVs/OUqA8OhEuPnT9DneYZPT00BJkrTxBHjF40OPd42UK/4wOxgqtcOE5a1MyxKQIDAQAB";
 	
 
 	// Use this for initialization
@@ -67,9 +68,8 @@ public class Shop : MonoBehaviour {
 	}
 	
 	public void CallShop(){
-		if (_isInitialized) {
-			return;
-		}
+		Utilities.ShowLog.Log ("CallShop()");
+
 		game = Game.Instance;
 		wsc = WsClient.Instance;
 		
@@ -84,7 +84,7 @@ public class Shop : MonoBehaviour {
 			{RESOURCE_276W,new ProductDesc("resource",2760000)} , {RESOURCE_736W,new ProductDesc("resource",7360000)} ,
 			{RESOURCE_996W,new ProductDesc("resource",9960000)} , {RESOURCE_1576W,new ProductDesc("resource",15760000)} ,
 		};
-		
+		Utilities.ShowLog.Log (prodIdDict[STARDUST_380].name);
 		//Set Currency type
 		currencyDict = new Dictionary<string, int> () {
 			{"feather",1},{"stardust",2},{"resource",3}
@@ -124,14 +124,14 @@ public class Shop : MonoBehaviour {
 		options.verifyMode = OptionsVerifyMode.VERIFY_ONLY_KNOWN;
 		options.prefferedStoreNames = new string[] { OpenIAB_Android.STORE_GOOGLE };
 		options.availableStoreNames = new string[] { OpenIAB_Android.STORE_GOOGLE };
-		options.storeKeys = new Dictionary<string, string> { {OpenIAB_Android.STORE_GOOGLE, googlePublicKey} };
+		options.storeKeys.Add(OpenIAB_Android.STORE_GOOGLE, googlePublicKey);
 		//options.storeKeys = new Dictionary<string, string> { { OpenIAB_Android.STORE_YANDEX, yandexPublicKey } };
 		//options.storeKeys = new Dictionary<string, string> { { OpenIAB_Android.STORE_SLIDEME, slideMePublicKey } };
 		options.storeSearchStrategy = SearchStrategy.INSTALLER_THEN_BEST_FIT;
 		
 		// Transmit options and start the service
 		OpenIAB.init(options);
-		Invoke ("CheckInventory", 5); // check inventory after IAB initialized.
+//		Invoke ("CheckInventory", 5); // check inventory after IAB initialized.
 	}
 	
 	// Update is called once per frame
@@ -168,14 +168,18 @@ public class Shop : MonoBehaviour {
 	private void billingSupportedEvent()
 	{
 		_isInitialized = true;
+		CheckInventory ();
 		Debug.Log("billingSupportedEvent");
 	}
+
 	private void billingNotSupportedEvent(string error)
 	{
 		Debug.Log("billingNotSupportedEvent: " + error);
 	}
+
 	private void queryInventorySucceededEvent(Inventory inventory)
 	{
+		Game game = Game.Instance;
 		Debug.Log("queryInventorySucceededEvent: " + inventory);
 		if (inventory != null)
 		{
@@ -190,14 +194,38 @@ public class Shop : MonoBehaviour {
 					if (p.Sku == FIRST_CHARGE){
 						firstChargeButton.interactable = false;
 					}else if (p.Sku ==MONTHLY_SUBSCRIPTION){
+						Debug.Log(Convert.ToDateTime( game.login.attributes["MonthCardRedeem"])); // when no timestamp
+						if (game.login.attributes["MonthCardRedeem"]==null){
+							game.wealth[1].Add (20);
+							SetMonthCardRedeem();
+						}else if (Convert.ToDateTime( game.login.attributes["MonthCardRedeem"]).Date < DateTime.Now.Date){ // When the timestamp is before today
+							game.wealth[1].Add (20);
+							SetMonthCardRedeem();
+						}else{
+
+						}
 						monthlySubscriptionBought = true;
 					}
 					//                    UnConsumedInventoryNewUpdate = true;
 				}
 			}
 		}
-		
+
 	}
+
+	void SetMonthCardRedeem(){
+		ShowMonthCardDailyRedeem ();
+		game.login.attributes.Add("MonthCardRedeem",new JSONData(DateTime.Now.ToString()));
+		game.login.UpdateObject ();
+	}
+
+	void ShowMonthCardDailyRedeem(){
+		Utilities.Panel.GetHeader (MainScene.NoticeDialog).text = "月咭";
+		Utilities.Panel.GetMessageText (MainScene.NoticeDialog).text = "軍師閣下，請接受20星塵軍餉，助你揮軍發展。";
+
+		ShowMainScenePanel (MainScene.NoticeDialog);
+	}
+
 	private void queryInventoryFailedEvent(string error)
 	{
 		Debug.Log("queryInventoryFailedEvent: " + error);
@@ -213,27 +241,27 @@ public class Shop : MonoBehaviour {
 		var js = new JSONClass ();
 		if ((purchase.Sku != MONTHLY_SUBSCRIPTION) && (purchase.Sku != FIRST_CHARGE)) { // For purchased virtual currency
 			OpenIAB.consumeProduct (purchase);
-			
+
 			j.Add ("Event", "Event: User, " + game.login.id + " has purchased an item.");
 			j ["OriginalJson"] = purchase.OriginalJson;
 			j ["OrderId"] = purchase.OrderId;
-			
-			json ["data"] = j;
-			json ["table"] = "log";
-			json ["action"] = "NEW";
-			wsc.Send (json.ToString ());  // log purchases in server
-			
-			var item = prodIdDict [purchase.Sku].name;
-			game.wealth[currencyDict [item]-1].Add ( prodIdDict [purchase.Sku].quantity );
+
+			wsc.Send("log","NEW",j);
+			Debug.Log("SKU: "+purchase.Sku);
+			Debug.Log("Product ID: "+prodIdDict [purchase.Sku]);
+			var item = prodIdDict [STARDUST_380].name;
+			game.wealth [currencyDict [item] - 1].Add (prodIdDict [purchase.Sku].quantity);
 		} else if (purchase.Sku == FIRST_CHARGE) {
 			//set gifts.
 			
 			//            json ["table"] = "storage";
 			//            json ["action"] = "NEW";
 			//            wsc.Send (json.ToString ())
-			game.wealth[0].Add ( 400 );
-			game.wealth[1].Add ( 80 );
-			game.wealth[2].Add ( 160000 );
+			game.wealth [0].Add (400);
+			game.wealth [1].Add (80);
+			game.wealth [2].Add (160000);
+		} else if (purchase.Sku == MONTHLY_SUBSCRIPTION) {
+			game.wealth[1].Add(150);
 		}
 		
 	}
@@ -277,6 +305,7 @@ public class Shop : MonoBehaviour {
 		if (product != MONTHLY_SUBSCRIPTION){
 			OpenIAB.purchaseProduct (product);
 		} else {
+			Utilities.ShowLog.Log ("Product: "+product);
 			OpenIAB.purchaseSubscription(product);
 		}
 	}
@@ -288,5 +317,15 @@ public class Shop : MonoBehaviour {
 			OpenIAB.queryInventory ();
 		}
 	}
+
+	static void ShowMainScenePanel(GameObject panel){
+		MainScene.DisablePanel.SetActive (true);
+		panel.SetActive (true);
+	}
 	
+	static void HideMainScenePanel(GameObject panel){
+		MainScene.DisablePanel.SetActive (false);
+		panel.SetActive (false);
+	}
+
 }
