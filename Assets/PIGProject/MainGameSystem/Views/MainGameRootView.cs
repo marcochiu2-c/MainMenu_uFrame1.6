@@ -358,6 +358,15 @@ public class MainGameRootView : MainGameRootViewBase {
 			LocalUser.SilverFeatherGain = silverFeatherGain;
 			LocalUser.ResourceGain = resourceGain;
 			
+			for(int i = 0; i < SoldierVM.Count; i++)
+			{
+				LocalUser.TotalSoldierQunatity += (int)SoldierVM[i].Max_Health;
+				LocalUser.AliveSoldiers += (int)SoldierVM[i].Health;
+				LocalUser.DeadSoldiers += (int)SoldierVM[i].Max_Health - (int)SoldierVM[i].Health;
+				LocalUser.TotalGeneral ++;
+			}
+			
+			LocalUser.TotalPlayer = 1;
 			
 			Debug.Log("Add Exp: " + expAdd);
 			Debug.Log("User Exp: " + game.login.exp);
