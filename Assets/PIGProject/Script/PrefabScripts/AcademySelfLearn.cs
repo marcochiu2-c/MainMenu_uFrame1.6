@@ -123,14 +123,14 @@ public class AcademySelfLearn : MonoBehaviour {
 			if (Title.text == "智商"){
 				if (game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["IQ"].AsFloat <
 				    game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["HighestIQ"].AsFloat){
-					ConfirmTraining.SetActive(true);
+					Academy.ShowPanel(ConfirmTraining);
 				}else{
 					ShowLowerThanTrainerPanel("isMaxPoint");
 				}
 			}else if (Title.text == "統率"){
 				if (game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["Leadership"].AsFloat <
 				    game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["HighestLeadership"].AsFloat){
-					ConfirmTraining.SetActive(true);
+					Academy.ShowPanel(ConfirmTraining);
 				}else{
 					ShowLowerThanTrainerPanel("isMaxPoint");
 				}
@@ -145,7 +145,7 @@ public class AcademySelfLearn : MonoBehaviour {
 	
 	public void ShowLowerThanTrainerPanel(string isMaxPoint=""){
 		GameObject LowerThanTrainer = Academy.staticAcademyHolder.transform.GetChild (1).GetChild(8).gameObject;
-		LowerThanTrainer.SetActive(true);
+		Academy.ShowPanel(LowerThanTrainer);
 		if (isMaxPoint == "") {
 			Utilities.Panel.GetHeader (LowerThanTrainer).text = "青出於藍";
 			Utilities.Panel.GetMessageText (LowerThanTrainer).text = "所選軍師之能力高於師傅，請重新選擇。";

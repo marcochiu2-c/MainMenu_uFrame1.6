@@ -164,7 +164,7 @@ public class AcademyStudent : MonoBehaviour {
 				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["IQ"].AsFloat){
 					if(game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["IQ"].AsFloat < 
 					   game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["HighestIQ"].AsFloat){
-						ConfirmTeacherBy.SetActive(true);
+						Academy.ShowPanel(ConfirmTeacherBy);
 					}else{
 						ShowLowerThanTrainerPanel("isMaxPoint");
 					}
@@ -177,7 +177,7 @@ public class AcademyStudent : MonoBehaviour {
 				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat){
 					if(game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat < 
 					   game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["HighestLeadership"].AsFloat){
-						ConfirmTeacherBy.SetActive(true);
+						Academy.ShowPanel(ConfirmTeacherBy);
 					}else{
 						ShowLowerThanTrainerPanel("isMaxPoint");
 					}
@@ -194,7 +194,7 @@ public class AcademyStudent : MonoBehaviour {
 
 	public void ShowLowerThanTrainerPanel(string isMaxPoint=""){
 		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
-		LowerThanTrainer.SetActive(true);
+		Academy.ShowPanel(LowerThanTrainer);
 		if (isMaxPoint == "") {
 			Utilities.Panel.GetHeader (LowerThanTrainer).text = "青出於藍";
 			Utilities.Panel.GetMessageText (LowerThanTrainer).text = "所選軍師之能力高於師傅，請重新選擇。";
@@ -205,14 +205,14 @@ public class AcademyStudent : MonoBehaviour {
 	}
 
 	public static void ShowIsMaxPointPanel(GameObject LowerThanTrainer){
-		LowerThanTrainer.SetActive(true);
+		Academy.ShowPanel(LowerThanTrainer);
 		Utilities.Panel.GetHeader(LowerThanTrainer).text = "學有所成";
 		Utilities.Panel.GetMessageText(LowerThanTrainer).text = "所選軍師徒弟智商已達頂點，請重新選擇。";
 	}
 
 	public static void ShowLevelNotReachPanel(){
 		GameObject LowerThanTrainer = Academy.staticAcademyHolder.transform.GetChild(1).GetChild(8).gameObject;
-		LowerThanTrainer.SetActive(true);
+		Academy.ShowPanel(LowerThanTrainer);
 		Utilities.Panel.GetHeader(LowerThanTrainer).text = "功能未開放";
 		Utilities.Panel.GetMessageText(LowerThanTrainer).text = "請耐心等候。";
 	}

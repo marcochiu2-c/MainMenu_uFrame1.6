@@ -52,6 +52,7 @@ public class Academy : MonoBehaviour
 	public static GameObject staticSelfStudyHolder;
 	public static GameObject staticKnowledgeListHolder;
 	public static GameObject staticCounselorHolder;
+	public static GameObject DisablePanel;
 	public static List<Counselor> cStudentList;
 	public static List<Counselor> cSelfLearnList;
 	bool firstCalled = false;
@@ -105,6 +106,7 @@ public class Academy : MonoBehaviour
 		staticCounselorHolder = CounselorHolder;
 		SelfStudyInstructionText = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();
 		TeachInstructionText = TeachHolder.transform.GetChild (1).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();
+		DisablePanel = transform.FindChild ("DisablePanel").gameObject;
 
 		wsc = WsClient.Instance;
 		game = Game.Instance;
@@ -393,7 +395,7 @@ public class Academy : MonoBehaviour
 		GameObject teacherPopup = GameObject.Find ("TeachHolder");
 //		SelfStudyHolder.SetActive (true);
 //		TeachHolder.SetActive (true);
-		QAHolder.SetActive (true);
+		ShowPanel (QAHolder);
 		Academy.activePopup = activePopupName[btn.name];
 		SelfStudyInstructionText.text = academyDescription [Academy.activePopup];
 		TeachInstructionText.text = academyDescription [Academy.activePopup];
@@ -416,7 +418,7 @@ public class Academy : MonoBehaviour
 	}
 
 	void OnQAButtonClick(Button btn){
-		QAHolder.SetActive (false);
+		HidePanel (QAHolder);
 		if (btn.name == "SelfStudyButton") {
 			SelfStudyHolder.SetActive(true);
 		} else {
@@ -492,15 +494,18 @@ public class Academy : MonoBehaviour
 	void CloseAllPanel(string action){
 		if (action == "Back") {
 			if (ConfirmTeacherBy.activeSelf || ConfirmTraining.activeSelf || LowerThanTrainer.activeSelf || CounselorHolder.activeSelf) {
+				DisablePanel.SetActive(false);
 				ConfirmTeacherBy.SetActive (false);
 				ConfirmTraining.SetActive (false);
 				LowerThanTrainer.SetActive (false);
 				CounselorHolder.SetActive (false);
 			} else {
+				DisablePanel.SetActive(false);
 				SelfStudyHolder.SetActive (false);
 				TeachHolder.SetActive (false);
 			}
 		} else if (action == "Close") {
+			DisablePanel.SetActive(false);
 			ConfirmTeacherBy.SetActive (false);
 			ConfirmTraining.SetActive (false);
 			LowerThanTrainer.SetActive (false);
@@ -547,28 +552,22 @@ public class Academy : MonoBehaviour
 		});
 
 		Utilities.Panel.GetConfirmButton(LowerThanTrainer).onClick.AddListener (() => {
-			LowerThanTrainer.SetActive(false);
+			HidePanel(LowerThanTrainer);
 			Debug.Log ("Closing LowerThanTrainer Panel");
-
-			if (AcademySelfLearn.isSelfStudy){
-				AcademySelfLearn.reCreateStudentItem(AcademySelfLearn.currentStudentPrefab.GetComponent<AcademySelfLearn>());
-				GameObject.Destroy(AcademySelfLearn.currentStudentPrefab);
-				AcademySelfLearn.Students.Remove(AcademySelfLearn.currentStudentPrefab.GetComponent<AcademySelfLearn>());
-
-				AcademySelfLearn.isSelfStudy = false;
+			if (AcademySelfLearn.currentSelfStudy != null){
+				AcademyStudentNew.person.Find (x => x.counselor.id == AcademySelfLearn.currentSelfStudy.targetId).gameObject.SetActive(true);
+				ResetSelfStudyItem();
 				return;
 			}
+			AcademyStudentNew.person.Find (x => x.counselor.id == AcademyStudentNew.currentTeachItem.trainerId).gameObject.SetActive(true);
+			AcademyStudentNew.person.Find (x => x.counselor.id == AcademyStudentNew.currentTeachItem.targetId).gameObject.SetActive(true);
 			ResetTeachPanel();
-			if (AcademyStudent.IsLevelNotReach){
-				AcademyStudent.reCreateStudentItem(AcademyStudent.currentStudentPrefab.GetComponent<AcademyStudent>(),false);
-				GameObject.Destroy(AcademyStudent.currentStudentPrefab);
-				AcademyStudent.Students.Remove(AcademyStudent.currentStudentPrefab.GetComponent<AcademyStudent>());
-				AcademyStudent.IsLevelNotReach = false;
-			}
+//			AcademyStudent.IsLevelNotReach = false;
+			
 		});
 
 		Utilities.Panel.GetConfirmButton (ConfirmTeacherBy).onClick.AddListener (() => {
-			ConfirmTeacherBy.SetActive(false);
+			HidePanel(ConfirmTeacherBy);
 			//TODO set training object
 //			Trainings obj  = AcademyStudent.currentTeachItem.trainingObject;
 			Trainings obj  = AcademyStudentNew.currentTeachItem.trainingObject;
@@ -604,14 +603,14 @@ public class Academy : MonoBehaviour
 		});
 
 		Utilities.Panel.GetCancelButton (ConfirmTeacherBy).onClick.AddListener (() => {
-			ConfirmTeacherBy.SetActive(false);
+			HidePanel(ConfirmTeacherBy);
 			AcademyStudentNew.person.Find (x => x.counselor.id == AcademyStudentNew.currentTeachItem.trainerId).gameObject.SetActive(true);
 			AcademyStudentNew.person.Find (x => x.counselor.id == AcademyStudentNew.currentTeachItem.targetId).gameObject.SetActive(true);
 			ResetTeachPanel();
 		});
 
 		Utilities.Panel.GetConfirmButton (ConfirmTraining).onClick.AddListener (() => {
-			ConfirmTraining.SetActive(false);
+			HidePanel(ConfirmTraining);
 			char[] charToTrim = { '"' };
 			Dictionary<int,string> KnowledgeDict = Utilities.SetDict.Knowledge();
 			//TODO set training object
@@ -663,11 +662,10 @@ public class Academy : MonoBehaviour
 			KnowledgeOption.knowledge = 0;
 			KnowledgeOption.knowledgeName ="";
 		});
-
 		Utilities.Panel.GetCancelButton (ConfirmTraining).onClick.AddListener (() => {
-			ConfirmTraining.SetActive(false);
-			AcademyStudentNew.person.Find (x => x.counselor.id == AcademyStudentNew.currentTeachItem.trainerId).gameObject.SetActive(true);
-			AcademyStudentNew.person.Find (x => x.counselor.id == AcademyStudentNew.currentTeachItem.targetId).gameObject.SetActive(true);
+			HidePanel(ConfirmTraining);
+			AcademyStudentNew.person.Find (x => x.counselor.id == AcademySelfLearn.currentSelfStudy.targetId).gameObject.SetActive(true);
+//			AcademyStudentNew.person.Find (x => x.counselor.id == AcademyStudentNew.currentTeachItem.targetId).gameObject.SetActive(true);
 			ResetSelfStudyItem();
 		});
 	}
@@ -687,7 +685,7 @@ public class Academy : MonoBehaviour
 	}
 
 	void ResetSelfStudyItem(){
-		AcademySelfLearn.reCreateStudentItem (AcademySelfLearn.currentSelfStudy);
+//		AcademySelfLearn.reCreateStudentItem (AcademySelfLearn.currentSelfStudy);
 		AcademySelfLearn.currentSelfStudy.image.sprite = null;
 		AcademySelfLearn.currentSelfStudy.ImageText.text = "";
 		AcademySelfLearn.currentSelfStudy.targetId=0;
@@ -715,7 +713,23 @@ public class Academy : MonoBehaviour
 
 	}
 
-
+	public static void ShowPanel(GameObject panel){
+		DisablePanel.SetActive (true);
+		Debug.Log ("ShowPanel");
+		panel.SetActive (true);
+	}
+	
+	public static void HidePanel(GameObject panel){
+		DisablePanel.SetActive (false);
+		Debug.Log ("HidePanel");
+		panel.SetActive (false);
+	}
+	
+	public static void ChangePanel(GameObject panel1, GameObject panel2){
+		Debug.Log (panel1 + " panel is change to " + panel2);
+		panel1.SetActive (false);
+		panel2.SetActive (true);
+	}
 
 
 	public void SetCharacters(){

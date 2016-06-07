@@ -41,6 +41,8 @@ public class AcademyStudentNew: MonoBehaviour {
 
 			if (Academy.CounselorHolderFunction == "SelfStudy"){
 				SelfStudy ss =  Academy.CounselorHolderButton.GetComponent<SelfStudy>();
+				AcademySelfLearn.currentSelfStudy = ss;
+				currentTeachItem = null;
 				ss.targetId = counselor.id;
 				ss.trainingType = counselor.type;
 				ss.image.sprite = imageDict[counselor.type];
@@ -50,31 +52,27 @@ public class AcademyStudentNew: MonoBehaviour {
 				gameObject.SetActive(false);
 			}else if (Academy.CounselorHolderFunction == "TeacherImage"){
 				at = Academy.CounselorHolderButton.transform.parent.GetComponent<AcademyTeach>();
-//				if (AttrName.text!=""){
-					currentTeachItem = at;
-					at.trainerId = counselor.id;
-					at.trainingType = counselor.type;
-					at.TeacherPic = imageDict[counselor.type];
-					at.TeacherImageText.text = nameDict[counselor.type];
-					string category = Academy.staticTeachHolder.transform.GetChild (0).GetComponent<Text>().text;
-					//					AcademyStudent.showSkillsOptionPanel(category);
-					ConfirmTrainingIfOk(at);
-					gameObject.SetActive(false);
-//				}else{
+				AcademySelfLearn.currentSelfStudy = null;
+				currentTeachItem = at;
+				at.trainerId = counselor.id;
+				at.trainingType = counselor.type;
+				at.TeacherPic = imageDict[counselor.type];
+				at.TeacherImageText.text = nameDict[counselor.type];
+				string category = Academy.staticTeachHolder.transform.GetChild (0).GetComponent<Text>().text;
+				//					AcademyStudent.showSkillsOptionPanel(category);
+				ConfirmTrainingIfOk(at);
+				gameObject.SetActive(false);
 
-
-//				}
 			}else if (Academy.CounselorHolderFunction == "StudentImage"){
 				at = Academy.CounselorHolderButton.transform.parent.GetComponent<AcademyTeach>();
-//				if (AttrName.text!=""){
-					currentTeachItem = at;
-					at.targetId = counselor.id;
-					at.targetType = counselor.type;
-					at.StudentPic = imageDict[counselor.type];
-					at.StudentImageText.text = nameDict[counselor.type];
-					ConfirmTrainingIfOk(at);
-					gameObject.SetActive(false);
-//				}
+				AcademySelfLearn.currentSelfStudy = null;
+				currentTeachItem = at;
+				at.targetId = counselor.id;
+				at.targetType = counselor.type;
+				at.StudentPic = imageDict[counselor.type];
+				at.StudentImageText.text = nameDict[counselor.type];
+				ConfirmTrainingIfOk(at);
+				gameObject.SetActive(false);
 			}
 		});
 	}
@@ -82,19 +80,19 @@ public class AcademyStudentNew: MonoBehaviour {
 	public void ConfirmSelfStudyIfOk(SelfStudy aSelfStudy){
 		Game game = Game.Instance;
 		Text Title = Academy.staticSelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
-		GameObject ConfirmTraining = Academy.staticConfirmTeacherBy;
+		GameObject ConfirmTraining = Academy.staticConfirmTraining;
 		if (aSelfStudy.targetId != 0) {
 			if (Title.text == "智商"){
 				if (game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["IQ"].AsFloat <
 				    game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["HighestIQ"].AsFloat){
-					ConfirmTraining.SetActive(true);
+					Academy.ShowPanel(ConfirmTraining);
 				}else{
 					ShowLowerThanTrainerPanel("isMaxPoint");
 				}
 			}else if (Title.text == "統率"){
 				if (game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["Leadership"].AsFloat <
 				    game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["HighestLeadership"].AsFloat){
-					ConfirmTraining.SetActive(true);
+					Academy.ShowPanel(ConfirmTraining);
 				}else{
 					ShowLowerThanTrainerPanel("isMaxPoint");
 				}
@@ -117,17 +115,17 @@ public class AcademyStudentNew: MonoBehaviour {
 		GameObject ConfirmTeacherBy = Academy.staticConfirmTeacherBy;
 		if (aTeach.trainerId != 0 && aTeach.targetId != 0) {
 			if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
-				//			if (transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(0).GetComponent<Text>().text == "智商"){
-				//				Debug.Log (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["IQ"].AsFloat);
+
 				if (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["IQ"].AsFloat >
 				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["IQ"].AsFloat){
 					if(game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["IQ"].AsFloat < 
 					   game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["HighestIQ"].AsFloat){
-						ConfirmTeacherBy.SetActive(true);
+						Academy.ShowPanel(ConfirmTeacherBy);
 					}else{
 						ShowLowerThanTrainerPanel("isMaxPoint");
 					}
 				}else{
+					Debug.Log("Trainer: "+AcademyStudentNew.person.Find (x => x.counselor.id == AcademyStudentNew.currentTeachItem.trainerId));
 					ShowLowerThanTrainerPanel();
 				}
 				
@@ -136,7 +134,7 @@ public class AcademyStudentNew: MonoBehaviour {
 				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat){
 					if(game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat < 
 					   game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["HighestLeadership"].AsFloat){
-						ConfirmTeacherBy.SetActive(true);
+						Academy.ShowPanel(ConfirmTeacherBy);
 					}else{
 						ShowLowerThanTrainerPanel("isMaxPoint");
 					}
@@ -154,7 +152,7 @@ public class AcademyStudentNew: MonoBehaviour {
 
 	public void ShowLowerThanTrainerPanel(string isMaxPoint=""){
 		GameObject LowerThanTrainer = Academy.staticLowerThanTrainer;
-		LowerThanTrainer.SetActive(true);
+		Academy.ShowPanel(LowerThanTrainer);
 		if (isMaxPoint == "") {
 			Utilities.Panel.GetHeader (LowerThanTrainer).text = "青出於藍";
 			Utilities.Panel.GetMessageText (LowerThanTrainer).text = "所選軍師之能力高於師傅，請重新選擇。";
