@@ -84,7 +84,7 @@ public class Shop : MonoBehaviour {
 			{RESOURCE_276W,new ProductDesc("resource",2760000)} , {RESOURCE_736W,new ProductDesc("resource",7360000)} ,
 			{RESOURCE_996W,new ProductDesc("resource",9960000)} , {RESOURCE_1576W,new ProductDesc("resource",15760000)} ,
 		};
-		Utilities.ShowLog.Log (prodIdDict[STARDUST_380].name);
+
 		//Set Currency type
 		currencyDict = new Dictionary<string, int> () {
 			{"feather",1},{"stardust",2},{"resource",3}

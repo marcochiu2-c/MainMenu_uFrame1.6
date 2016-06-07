@@ -14,62 +14,117 @@ using UnityEngine.UI;
 
 public class SchoolFieldScreenView : SchoolFieldScreenViewBase {
 
-	public Button BackButton;
-	public Button CloseButton;
-	public Button SoldierButton;
-	public Button ArmyButton;
-	public Button MountButton;
-	public Button ArmorButton;
-	public Button ShieldButton;
-	public Button UnmountButton;
-	public Button BufferButton;
-	public Button TrainingButton;
-	public Button AssignSoldierButton;
-	public Button AssignSoldierConfirmButton;
-	public Button SoldierType1Button;
-	public Button SoldierType2Button;
-	public Button SoldierType3Button;
-	public Button SoldierType4Button;
-	public Button SoldierType5Button;
-	public Button SoldierType6Button;
-	public Button SoldierType7Button;
-	public Button SoldierType8Button;
+	public static Button BackButton;
+	public static Button CloseButton;
+	public static Button SoldierButton;
+	public static Button ArmyButton;
+	public static Button MountButton;
+	public static Button ArmorButton;
+	public static Button ShieldButton;
+	public static Button UnmountButton;
+//	public Button BufferButton;
+	public static Button TrainingButton;
+	public static Button AssignSoldierButton;
+	public static Button AssignSoldierConfirmButton;
+	public static Button SoldierType1Button;
+	public static Button SoldierType2Button;
+	public static Button SoldierType3Button;
+	public static Button SoldierType4Button;
+	public static Button SoldierType5Button;
+	public static Button SoldierType6Button;
+	public static Button SoldierType7Button;
+	public static Button SoldierType8Button;
 
-	public Button ArmyQAHolderCancelButton;
-	public Button ArmorQAHolderCancelButton;
-	public Button ShieldQAHolderCancelButton;
-	public Button closeTrainingButton;
-	public Button closeUnmountEquipmentButton;
+	public static Button ArmyQAHolderCancelButton;
+	public static Button ArmorQAHolderCancelButton;
+	public static Button ShieldQAHolderCancelButton;
+	public static Button closeTrainingButton;
+	public static Button closeUnmountEquipmentButton;
 
-	public GameObject DisablePanel;
-	public GameObject ArmyListHolder;
-	public GameObject MountListHolder;
-	public GameObject ArmorListHolder;
-	public GameObject ShieldListHolder;
+	public static GameObject DisablePanel;
+	public static GameObject ArmyListHolder;
+	public static GameObject MountListHolder;
+	public static GameObject ArmorListHolder;
+	public static GameObject ShieldListHolder;
 	//public GameObject ArmyQAHolder;
 	//public GameObject MountQAHolder;
 	//public GameObject ArmorQAHolder;
 	//public GameObject ShieldQAHolder;
-	public GameObject UnmountEquipment;
-	public GameObject TrainingHolder;
-	public GameObject TrainingQHolder;
-	public GameObject TrainingQAHolder;
-	public GameObject TrainingEquHolder;
-	public GameObject TrainingEquConfirmAHolder;
-	public GameObject TrainingInProgress;
-	public GameObject ConfirmSpeedUpHolder;
-	public GameObject AssignNSHolder;
-	public GameObject ArmyQAHolder;
-	public GameObject ArmorQAHolder;
-	public GameObject ShieldQAHolder;
+	public static GameObject UnmountEquipment;
+	public static GameObject TrainingHolder;
+	public static GameObject TrainingQHolder;
+	public static GameObject TrainingQAHolder;
+	public static GameObject TrainingEquHolder;
+	public static GameObject TrainingEquConfirmAHolder;
+	public static GameObject TrainingInProgress;
+	public static GameObject ConfirmSpeedUpHolder;
+	public static GameObject AssignNSHolder;
+	public static GameObject ArmyQAHolder;
+	public static GameObject ArmorQAHolder;
+	public static GameObject ShieldQAHolder;
+	public static GameObject DollPanel;
+	public static GameObject DataPanel;
+	public static GameObject NewSoldierPanel;
 	
 	protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
 		base.InitializeViewModel(model);
 		// NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
 		// var vm = model as SchoolFieldScreenViewModel;
 		// This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+		AssignGameObjectVariable ();
 	}
-	
+
+	public void AssignGameObjectVariable(){
+//		ArmyButton = ScreenUIContainer.transform.GetChild (1).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Button>();
+		Transform PanelHolder = ScreenUIContainer.transform.GetChild (1);
+		DollPanel = PanelHolder.GetChild (0).GetChild (0).gameObject;
+		DataPanel = PanelHolder.GetChild (0).GetChild (1).gameObject;
+		NewSoldierPanel = PanelHolder.GetChild (0).GetChild (2).gameObject;
+		AssignNSHolder = ScreenUIContainer.transform.Find ("AssignNSPopup").gameObject;
+		DisablePanel = ScreenUIContainer.transform.Find ("DisablePanel").gameObject;
+		ArmyListHolder = ScreenUIContainer.transform.Find ("ArmyListHolder").gameObject;
+		MountListHolder = ScreenUIContainer.transform.Find ("MountListHolder").gameObject;
+		ArmorListHolder = ScreenUIContainer.transform.Find ("AromrListHolder").gameObject;
+		ShieldListHolder = ScreenUIContainer.transform.Find ("ShieldListHolder").gameObject;
+		UnmountEquipment = ScreenUIContainer.transform.Find ("UnmountEquipment").gameObject;
+		TrainingHolder = ScreenUIContainer.transform.Find ("AdjustSoildersAttribute").gameObject;
+		TrainingQHolder = ScreenUIContainer.transform.Find ("TrainingQHolder").gameObject;
+		TrainingQAHolder = ScreenUIContainer.transform.Find ("TrainingQAHolder").gameObject;
+		TrainingEquHolder = ScreenUIContainer.transform.Find ("TrainingEquHolder").gameObject;
+		TrainingEquConfirmAHolder = ScreenUIContainer.transform.Find ("TrainEquConfirmHolder").gameObject;
+		TrainingInProgress = ScreenUIContainer.transform.Find ("TrainingInProgress").gameObject;
+		ConfirmSpeedUpHolder = ScreenUIContainer.transform.Find ("ConfirmSpeedUpHolder").gameObject;
+		ArmyQAHolder = ScreenUIContainer.transform.Find ("ArmysQAHolder").gameObject;
+		ArmorQAHolder = ScreenUIContainer.transform.Find ("ArmorsQAHolder").gameObject;
+		ShieldQAHolder = ScreenUIContainer.transform.Find ("ShieldQAHolder").gameObject;
+
+		ArmyButton = DollPanel.transform.GetChild (0).GetChild(0).GetComponent<Button> ();
+		MountButton = DollPanel.transform.GetChild (0).GetChild(1).GetComponent<Button> ();
+		SoldierButton = DollPanel.transform.GetChild (0).GetChild(2).GetComponent<Button> ();
+		ArmorButton = DollPanel.transform.GetChild (1).GetChild(0).GetComponent<Button> ();
+		ShieldButton = DollPanel.transform.GetChild (1).GetChild(1).GetComponent<Button> ();
+		UnmountButton = DollPanel.transform.GetChild (1).GetChild(2).GetComponent<Button> ();
+		TrainingButton = DataPanel.transform.GetChild (1).GetComponent<Button> ();
+		AssignSoldierButton = NewSoldierPanel.transform.GetChild (1).GetComponent<Button> ();
+		AssignSoldierConfirmButton = Utilities.Panel.GetConfirmButton (AssignNSHolder);
+		SoldierType1Button = PanelHolder.GetChild (1).GetChild (0).GetComponent<Button> ();
+		SoldierType2Button = PanelHolder.GetChild (1).GetChild (1).GetComponent<Button> ();
+		SoldierType3Button = PanelHolder.GetChild (1).GetChild (2).GetComponent<Button> ();
+		SoldierType4Button = PanelHolder.GetChild (1).GetChild (3).GetComponent<Button> ();
+		SoldierType5Button = PanelHolder.GetChild (1).GetChild (4).GetComponent<Button> ();
+		SoldierType6Button = PanelHolder.GetChild (1).GetChild (5).GetComponent<Button> ();
+		SoldierType7Button = PanelHolder.GetChild (1).GetChild (6).GetComponent<Button> ();
+		SoldierType8Button = PanelHolder.GetChild (1).GetChild (7).GetComponent<Button> ();
+		BackButton = ScreenUIContainer.transform.Find ("BackButton").GetComponent<Button> ();
+		CloseButton = ScreenUIContainer.transform.Find ("CloseButton").GetComponent<Button> ();
+		ArmyQAHolderCancelButton = Utilities.Panel.GetCancelButton (ArmyQAHolder);
+		ArmorQAHolderCancelButton = Utilities.Panel.GetCancelButton (ArmorQAHolder);
+		ShieldQAHolderCancelButton = Utilities.Panel.GetCancelButton (ShieldQAHolder);
+		closeTrainingButton = TrainingHolder.transform.GetChild (8).GetChild (1).GetComponent<Button> ();
+		closeUnmountEquipmentButton = Utilities.Panel.GetCancelButton (UnmountEquipment);
+	}
+
+
 	public override void Bind() {
 		base.Bind();
 		// Use this.SchoolFieldScreen to access the viewmodel.
