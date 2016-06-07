@@ -14,22 +14,38 @@ using UnityEngine.UI;
 
 public class CompanionScreenView : CompanionScreenViewBase {
 
-	public Button counselorsButton;
-	public Button soldiersButton;
+	public static Button counselorsButton;
+	public static Button soldiersButton;
 
-	public Button backButton;
-	public Button closeButton;
+	public static Button backButton;
+	public static Button closeButton;
 
-	public GameObject CounselorsHolder;
-	public GameObject GeneralsHolder;
-	public GameObject CardHolder;
+	public static GameObject CounselorsHolder;
+	public static GameObject GeneralsHolder;
+	public static GameObject CardHolder;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as CompanionScreenViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
-    }
+		AssignGameObjectVariable ();
+	}
+	
+	public void AssignGameObjectVariable(){
+		Transform panel = ScreenUIContainer.transform.Find ("Panel");
+		Transform popupHolder = panel.Find ("PopupHolder");
+		Transform btnHolder = panel.Find ("ButtonHolder");
+		
+		CounselorsHolder = popupHolder.Find ("CounselorsHolder").gameObject;
+		GeneralsHolder = popupHolder.Find ("GeneralsHolder").gameObject;
+		CardHolder = ScreenUIContainer.transform.Find ("CardHolder").gameObject;
+		
+		counselorsButton = btnHolder.Find ("CounselorsButton").GetComponent<Button>();
+		soldiersButton = btnHolder.Find ("GeneralButton").GetComponent<Button>();
+		backButton = ScreenUIContainer.transform.Find ("BackButton").GetComponent<Button>();
+		closeButton = ScreenUIContainer.transform.Find ("CloseButton").GetComponent<Button>();
+	}
     
     public override void Bind() {
         base.Bind();

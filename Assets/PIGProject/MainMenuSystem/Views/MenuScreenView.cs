@@ -19,28 +19,29 @@ public class MenuScreenView : MenuScreenViewBase
 	//public Button LevelSelectButton;
     //public Button SettingsButton;
     //public Button ExitButton;
-	public Button NoticeButton;
+//	public Transform heading;
+	public static Button NoticeButton;
 	//public Button HeadButton;
-	public Button CardButton;
-	public Button SetBattleButton;
-	public Button CharPageButton;
-	public Button ShopButton;
-	public Button AcademyButton;
-	public Button ArtisanButton;
-	public Button TrainButton;
-	public Button ConferenceButton;
-	public Button ParallelButton;
-	public Button CompanionButton;
-	public Button TechnologyTreeButton;
-	public Button StorageButton;
-	public Button BuySFButton;
-	public Button BuyRButton;
-	public Button BuySDButton;
-	public Button SchoolFieldButton;
+	public static Button CardButton;
+	public static Button SetBattleButton;
+	public static Button CharPageButton;
+	public static Button ShopButton;
+	public static Button AcademyButton;
+	public static Button ArtisanButton;
+	public static Button TrainButton;
+	public static Button ConferenceButton;
+	public static Button ParallelButton;
+	public static Button CompanionButton;
+	public static Button TechnologyTreeButton;
+	public static Button StorageButton;
+	public static Button BuySFButton;
+	public static Button BuyRButton;
+	public static Button BuySDButton;
+	public static Button SchoolFieldButton;
 	
-	public Button SampleButton;
+//	public Button SampleButton;
 	
-	public MainScene MainScene;
+	public static MainScene MainScene;
 	public UserViewModel LocalUser;
 
 	public GameObject StorageHolder;
@@ -54,8 +55,35 @@ public class MenuScreenView : MenuScreenViewBase
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
 //		MenuScreenView.staticAcademyListViewColumns  = AcademyListView.Columns;
+
+		Debug.Log ("InitializeViewModel()");
+		AssignGameObjectVariable ();
 		LocalUser =  uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
+	}
+
+	public void AssignGameObjectVariable(){
+
 		MainScene = GameObject.Find ("MainUIHolder").GetComponent<MainScene> ();
+		Transform BuildingHolder = MainScene.transform.GetChild (0).GetChild (0);
+		NoticeButton = BuildingHolder.GetChild (1).GetChild (2).GetComponent<Button> ();
+		CardButton = BuildingHolder.GetChild (0).GetChild (1).GetComponent<Button> ();
+		SetBattleButton = BuildingHolder.GetChild (1).GetChild (0).GetComponent<Button> ();
+		CharPageButton = ScreenUIContainer.transform.parent.GetChild(1).GetChild (0).GetComponent<Button> ();
+		ShopButton = BuildingHolder.GetChild (0).GetChild (2).GetComponent<Button> ();
+
+		AcademyButton = BuildingHolder.GetChild (2).Find ("Academy").GetComponent<Button> ();
+		ArtisanButton = BuildingHolder.GetChild (2).Find ("Artisan").GetComponent<Button> ();
+		TrainButton = BuildingHolder.GetChild (2).Find ("Train").GetComponent<Button> ();
+		SchoolFieldButton = BuildingHolder.GetChild (2).Find ("SchoolField").GetComponent<Button> ();
+		ConferenceButton = BuildingHolder.GetChild(1).Find("Conference").GetComponent<Button> ();
+		ParallelButton = BuildingHolder.GetChild(2).Find("Parallel").GetComponent<Button> ();
+		CompanionButton = BuildingHolder.GetChild(1).Find("Companion").GetComponent<Button> ();
+		TechnologyTreeButton = BuildingHolder.GetChild (0).Find ("TechnologyTree").GetComponent<Button> ();
+		StorageButton = BuildingHolder.GetChild (0).Find ("Storage").GetComponent<Button> ();
+		BuySFButton = ScreenUIContainer.transform.GetChild (0).GetChild (2).GetComponent<Button> ();
+		BuyRButton = ScreenUIContainer.transform.GetChild (1).GetChild (2).GetComponent<Button> ();
+		BuySDButton = ScreenUIContainer.transform.GetChild (2).GetChild (2).GetComponent<Button> ();
+
 	}
     
     public override void Bind() {
@@ -219,11 +247,11 @@ public class MenuScreenView : MenuScreenViewBase
 				//Publish(new MainMenuFinishedEvent());
 			});
 
-		this.BindButtonToHandler(SampleButton, () =>
-			{
-				evt.ScreenType = typeof(SampleScreenViewModel);
-				Publish(evt);
-			});
+//		this.BindButtonToHandler(SampleButton, () =>
+//			{
+//				evt.ScreenType = typeof(SampleScreenViewModel);
+//				Publish(evt);
+//			});
         // This follows the same logic, but we use Method Group syntax.
         // And we do not publish event. We just quit.
 		//this.BindButtonToHandler(ExitButton, Application.Quit);

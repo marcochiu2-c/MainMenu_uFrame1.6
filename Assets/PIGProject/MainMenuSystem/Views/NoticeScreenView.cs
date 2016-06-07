@@ -14,23 +14,40 @@ using UnityEngine.UI;
 
 public class NoticeScreenView : NoticeScreenViewBase {
 
-	public Button SignButton;
-	public Button NoticeButton;
-	public Button SpecialButton;
-	public Button BackButton;
-	public Button CloseButton;
+	public static Button SignButton;
+	public static Button NoticeButton;
+	public static Button SpecialButton;
+	public static Button BackButton;
+	public static Button CloseButton;
 
-	public GameObject SignHolder;
-	public GameObject NoticeHolder;
-	public GameObject SpecialHolder;
+	public static GameObject SignHolder;
+	public static GameObject NoticeHolder;
+	public static GameObject SpecialHolder;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as NoticeScreenViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+		AssignGameObjectVariable ();
     }
     
+	void AssignGameObjectVariable(){
+		Utilities.ShowLog.Log ("Which Container: "+ScreenUIContainer);
+		SignHolder = ScreenUIContainer.transform.Find ("SignHolder").gameObject;
+		NoticeHolder = ScreenUIContainer.transform.Find ("NoticeHolder").gameObject;
+		SpecialHolder = ScreenUIContainer.transform.Find ("SpecialHolder").gameObject;
+
+		Transform bgImage = ScreenUIContainer.transform.Find ("BackgroundImage");
+
+		SignButton = bgImage.Find ("SignButton").GetComponent<Button> ();
+		NoticeButton = bgImage.Find ("NoticeButton").GetComponent<Button> ();
+		SpecialButton = bgImage.Find ("SpecialDealButton").GetComponent<Button> ();
+
+		BackButton = ScreenUIContainer.transform.Find ("BackButton").GetComponent<Button> ();
+		CloseButton = ScreenUIContainer.transform.Find ("CloseButton").GetComponent<Button> ();
+
+	}
 
     public override void Bind() {
         base.Bind();

@@ -106,7 +106,7 @@ public class Academy : MonoBehaviour
 		staticCounselorHolder = CounselorHolder;
 		SelfStudyInstructionText = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();
 		TeachInstructionText = TeachHolder.transform.GetChild (1).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();
-		DisablePanel = transform.FindChild ("DisablePanel").gameObject;
+		DisablePanel = AcademyScreenView.DisablePanel;
 
 		wsc = WsClient.Instance;
 		game = Game.Instance;
@@ -224,7 +224,7 @@ public class Academy : MonoBehaviour
 			if(targetId > 0){
 				targetType = game.counselor.Find (x  => x.id == targetId).type;
 			}
-			Debug.Log("SetTeachItems(): "+ tr[i].trainerId);
+//			Debug.Log("SetTeachItems(): "+ tr[i].trainerId);
 //		GameObject sp=null;
 			if (i<5) {
 				si = AcademyTeach.IQTeach[i];

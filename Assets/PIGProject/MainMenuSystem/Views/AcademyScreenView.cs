@@ -14,28 +14,26 @@ using UnityEngine.UI;
 
 public class AcademyScreenView : AcademyScreenViewBase {
 	
-	public Button IQButton;
-	public Button CommandedButton;
-	public Button KnowledgeButton;
-	public Button FightingButton;
-	public Button BackButton;
-	public Button CloseButton;
-	public Button SelfStudyButton;
-	public Button TeachButton;
+	public static Button IQButton;
+	public static Button CommandedButton;
+	public static Button KnowledgeButton;
+	public static Button FightingButton;
+	public static Button BackButton;
+	public static Button CloseButton;
+	public static Button SelfStudyButton;
+	public static Button TeachButton;
 	
+	public static GameObject DisablePanel;
+	public static GameObject qaHolder;
 	
-	public GameObject qaHolder;
-	
-	public GameObject SelfStudyHolder;
-	public GameObject TeachHolder;
-	public Text SelfStudyPopupTitle;
-	public Text TeachPopupTitle;
+	public static GameObject SelfStudyHolder;
+	public static GameObject TeachHolder;
+	public static Text SelfStudyPopupTitle;
+	public static Text TeachPopupTitle;
 	//	public Text button5;
 	
 	Academy academy;
-	
-	
-	public GameObject Popup;
+
 	//	public GameObject CommandedPopup;
 	//	public GameObject KnowledgePopup;
 	//	public GameObject FightingPopup;
@@ -45,6 +43,29 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		// NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
 		// var vm = model as AcademyScreenViewModel;
 		// This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+		AssignGameObjectVariable ();
+	}
+
+	public void AssignGameObjectVariable(){
+		Transform panel = ScreenUIContainer.transform.Find ("Panel");
+		Transform btnHolder = panel.Find ("ButtonHolder");
+		DisablePanel = panel.Find ("DisablePanel").gameObject;
+		qaHolder = panel.Find ("QAHolder").gameObject;
+		SelfStudyHolder = panel.Find ("SelfStudyHolder").gameObject;
+		TeachHolder = panel.Find ("TeachHolder").gameObject;
+		IQButton = btnHolder.Find ("IQButton").GetComponent<Button> ();
+		CommandedButton = btnHolder.Find ("CommandedButton").GetComponent<Button> ();
+		KnowledgeButton = btnHolder.Find ("KnowledgeButton").GetComponent<Button> ();
+		FightingButton = btnHolder.Find ("FightingButton").GetComponent<Button> ();
+
+		SelfStudyButton = qaHolder.transform.GetChild (1).GetChild (0).GetComponent<Button> ();
+		TeachButton = qaHolder.transform.GetChild (1).GetChild (1).GetComponent<Button> ();
+
+		SelfStudyPopupTitle = SelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
+		TeachPopupTitle = Utilities.Panel.GetHeader (TeachHolder);
+
+		BackButton = ScreenUIContainer.transform.Find ("BackButton").GetComponent<Button>();
+		CloseButton = ScreenUIContainer.transform.Find ("CloseButton").GetComponent<Button>();
 	}
 	
 	public override void Bind() {

@@ -14,23 +14,40 @@ using UnityEngine.UI;
 
 public class StorageScreenView : StorageScreenViewBase {
 
-	public Button weaponButton;
-	public Button armorButton;
-	public Button sheildButton;
-	public Button mountsButton;
+	public static Button weaponButton;
+	public static Button armorButton;
+	public static Button shieldButton;
+	public static Button mountsButton;
 
-	public GameObject weaponGrid;
-	public GameObject armorGrid;
-	public GameObject sheildGrid;
-	public GameObject mountsGrid;
-	public GameObject panel;
+	public static GameObject weaponGrid;
+	public static GameObject armorGrid;
+	public static GameObject shieldGrid;
+	public static GameObject mountsGrid;
+	public static GameObject panel;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as StorageScreenViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
-    }
+		AssignGameObjectVariable ();
+	}
+	
+	public void AssignGameObjectVariable(){
+		panel = ScreenUIContainer.transform.Find ("Heading").gameObject;
+		Transform popupHolder = ScreenUIContainer.transform.Find ("PopupHolder");
+		Transform btnGroup = ScreenUIContainer.transform.Find ("ButtonGroup");
+		
+		weaponGrid = popupHolder.Find ("WeaponGridList").gameObject;
+		armorGrid = popupHolder.Find ("ArmorGridList").gameObject;
+		shieldGrid = popupHolder.Find ("ShieldGridList").gameObject;
+		mountsGrid = popupHolder.Find ("MountsGridList").gameObject;
+		
+		weaponButton = btnGroup.Find ("WeaponButton").GetComponent<Button>();
+		armorButton = btnGroup.Find ("ArmorButton").GetComponent<Button>();
+		shieldButton = btnGroup.Find ("SheildButton").GetComponent<Button>();
+		mountsButton = btnGroup.Find ("MountsButton").GetComponent<Button>();
+	}
     
     public override void Bind() {
         base.Bind();
@@ -41,7 +58,7 @@ public class StorageScreenView : StorageScreenViewBase {
 		this.BindButtonToHandler (weaponButton, () => {
 			weaponGrid.gameObject.SetActive (true);
 			armorGrid.gameObject.SetActive (false);
-			sheildGrid.gameObject.SetActive (false);
+			shieldGrid.gameObject.SetActive (false);
 			mountsGrid.gameObject.SetActive (false);
 
 //			Debug.Log (text);
@@ -55,21 +72,21 @@ public class StorageScreenView : StorageScreenViewBase {
 		this.BindButtonToHandler (armorButton, () => {
 			weaponGrid.gameObject.SetActive (false);
 			armorGrid.gameObject.SetActive (true);
-			sheildGrid.gameObject.SetActive (false);
+			shieldGrid.gameObject.SetActive (false);
 			mountsGrid.gameObject.SetActive (false);
 		});
 
-		this.BindButtonToHandler (sheildButton, () => {
+		this.BindButtonToHandler (shieldButton, () => {
 			weaponGrid.gameObject.SetActive (false);
 			armorGrid.gameObject.SetActive (false);
-			sheildGrid.gameObject.SetActive (true);
+			shieldGrid.gameObject.SetActive (true);
 			mountsGrid.gameObject.SetActive (false);
 		});
 
 		this.BindButtonToHandler (mountsButton, () => {
 			weaponGrid.gameObject.SetActive (false);
 			armorGrid.gameObject.SetActive (false);
-			sheildGrid.gameObject.SetActive (false);
+			shieldGrid.gameObject.SetActive (false);
 			mountsGrid.gameObject.SetActive (true);
 		});
 

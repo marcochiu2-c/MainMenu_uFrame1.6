@@ -14,21 +14,37 @@ using UnityEngine.UI;
 
 public class ArtisanScreenView : ArtisanScreenViewBase {
 
-	public Button armsButton;
-	public Button armorButton;
-	public Button shieldButton;
-	public Button backButton;
+	public static Button armsButton;
+	public static Button armorButton;
+	public static Button shieldButton;
+	public static Button backButton;
 
-	public GameObject armsPopup;
-	public GameObject armorPopup;
-	public GameObject shieldPopup;
+	public static GameObject armsPopup;
+	public static GameObject armorPopup;
+	public static GameObject shieldPopup;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as ArtisanScreenViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
-    }
+		AssignGameObjectVariable ();
+	}
+	
+	public void AssignGameObjectVariable(){
+		Transform holder = ScreenUIContainer.transform.Find ("Holder");
+		Transform popupHolder = holder.Find ("PopupHolder");
+		Transform btnHolder = holder.Find ("ButtonHolder");
+
+		armsPopup = popupHolder.Find ("ArtisanArmsPopup").gameObject;
+		armorPopup = popupHolder.Find ("ArmorPopup").gameObject;
+		shieldPopup = popupHolder.Find ("ShieldPopup").gameObject;
+
+		armsButton = btnHolder.Find ("ArmsButton").GetComponent<Button>();
+		armorButton = btnHolder.Find ("ArmorButton").GetComponent<Button>();
+		shieldButton = btnHolder.Find ("ShieldButton").GetComponent<Button>();
+		backButton = ScreenUIContainer.transform.Find ("BackButton").GetComponent<Button>();
+	}
     
     public override void Bind() {
         base.Bind();
