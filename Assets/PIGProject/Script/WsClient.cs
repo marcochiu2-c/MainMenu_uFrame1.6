@@ -136,10 +136,16 @@ enum jsonFuncNumberEnum {
 	newAccountShield = 282,
 	newAccountCheckIn= 283,
 	newAccountTrainingSlots = 284,
+	newAccountTeams = 285,
 
 	// 400-401 Utilities
 	noticeURL = 400,
 	noticeText= 401,
+	
+	// 410-419 Teams
+	updateTeam = 410,
+	getTeams   = 411,
+	
 };
 
 
@@ -398,6 +404,12 @@ public class WsClient {
 			if (j["obj"]!="[  ]"){
 				MainScene.noticeText = j["obj"];
 //				Utilities.ShowLog.Log (MainScene.noticeText);
+			}
+			break;
+		case jsonFuncNumberEnum.newAccountTeams:
+		case jsonFuncNumberEnum.getTeams:
+			if (j["obj"]!="[  ]"){
+				MainScene.TeamInfo = j["obj"];
 			}
 			break;
 		default:

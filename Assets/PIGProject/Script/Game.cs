@@ -26,6 +26,7 @@ public class Game{
 	public List<Shield> shield { get; set; }
 	public List<Artisans> artisans { get; set; }
 	public List<Soldiers> soldiers { get; set; }
+	public List<Teams> teams { get ; set; }
 
 	private static readonly Game s_Instance = new Game();
 	
@@ -56,6 +57,7 @@ public class Game{
 		storage = new List<Storage> ();
 		checkinStatus = new CheckInStatus ();
 		artisans = new List<Artisans> ();
+		teams = new List<Teams> ();
 		//_additionalData = new Dictionary<string, Newtonsoft.Json.Linq.JToken>();
 	}
 
@@ -1090,6 +1092,58 @@ public class Artisans {
 	public void UpdateObject(){
 		WsClient wsc = WsClient.Instance;
 		wsc.Send ("artisan", "SET", toJSON());
+	}
+}
+
+[Serializable]
+public class Teams {
+	public int id { get; set; }
+	public int generalId { get; set; }
+	public JSONClass generalJson { get; set; }
+	public int soldierQuantity { get; set; }
+	public JSONClass soldierJson { get; set; }
+	public int status { get; set; }
+
+	public Teams(){
+	}
+
+	public Teams(JSONNode j){
+		id = j ["team_id"].AsInt;
+		generalId = j ["general_id"].AsInt;
+		if (j ["general_json"].ToString ().Length != 0) {
+			generalJson = (JSONClass)j ["general_json"];
+		} else {
+			generalJson = (JSONClass)JSONClass.Parse ("{ }");
+		};
+		soldierQuantity = j ["soldier_quantity"].AsInt;
+		if (j ["soldier_json"].ToString ().Length != 0) {
+			soldierJson = (JSONClass)j ["soldier_json"];
+		} else {
+			soldierJson = (JSONClass)JSONClass.Parse ("{ }");
+		};
+		status = j ["status"].AsInt;
+	}
+
+	public JSONClass toJSON(){
+		Game game = Game.Instance;
+		JSONClass j = new JSONClass ();
+		j.Add ("team_id", new JSONData (id));
+		j.Add ("general_id", new JSONData (generalId));
+		j.Add ("general_json",new JSONData( generalJson));
+		j.Add ("soldier_quantity", new JSONData (soldierQuantity));
+		j.Add ("soldier_json",new JSONData( soldierJson));
+		j.Add ("status", new JSONData (status));
+		j.Add ("userId", new JSONData (game.login.id));
+		return j;
+	}
+
+	public string ToString(){
+		return toJSON ().ToString ();
+	}
+
+	public void UpdateObject(){
+		WsClient wsc = WsClient.Instance;
+		wsc.Send ("team", "SET", toJSON());
 	}
 }
 

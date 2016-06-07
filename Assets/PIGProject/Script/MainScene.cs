@@ -54,6 +54,7 @@ public class MainScene : MonoBehaviour {
 	public static JSONNode TrainingInfo = null;
 	public static JSONNode ArtisanInfo = null;
 	public static JSONNode SoldierInfo = null;
+	public static JSONNode TeamInfo = null;
 	public static Nullable<DateTime> GeneralLastUpdate = null;
 	public static Nullable<DateTime> CounselorLastUpdate = null;
 	public static Nullable<DateTime> StorageLastUpdate = null;
@@ -395,6 +396,7 @@ public class MainScene : MonoBehaviour {
 			wsc.Send ("artisan", "GET", new JSONData (MainScene.userId));
 			wsc.Send ("getCheckinInfo", "GET", new JSONData (MainScene.userId));
 			wsc.Send ("training", "GET", new JSONData (MainScene.userId));
+			wsc.Send ("team", "GET", new JSONData(MainScene.userId));
 			MainScene.needReloadFromDB = false;
 			Utilities.ShowLog.Log ("Game Wealth from reloadFromDB: " + game.wealth [0].toJSON ().ToString ());
 		}
@@ -562,6 +564,14 @@ public class MainScene : MonoBehaviour {
 			}
 //			Debug.Log ("Number of training soldiers of First team: "+game.soldiers[0].attributes["trainingSoldiers"]);
 			MainScene.SoldierInfo = null;
+		}
+		if (MainScene.TeamInfo != null) {
+			game.teams = new List<Teams> ();
+			count = MainScene.TeamInfo.Count;
+			for (var i = 0; i < count; i++) {
+				game.teams.Add (new Teams (MainScene.TeamInfo[i]));
+			}
+			MainScene.TeamInfo = null;
 		}
 		if (MainScene.newUserId != 0) {
 			game.login.id = MainScene.newUserId;
