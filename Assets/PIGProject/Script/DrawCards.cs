@@ -10,6 +10,7 @@ using SimpleJSON;
 using WebSocketSharp;
 using System.Linq;
 using Utilities;
+using uFrame.Kernel;
 
 
 
@@ -22,30 +23,20 @@ public class DrawCards : MonoBehaviour {
 	List<GeneralCards> generalList = new List<GeneralCards>();
 	List<CounselorCards> counselorList = new List<CounselorCards> ();
 
-	public GameObject DisablePanel;
+	public static GameObject DisablePanel;
 
-	public GameObject TenDrawHolder;
-	public GameObject SingleCardHolder;
+	public static GameObject TenDrawHolder;
+	public static GameObject SingleCardHolder;
 
-	public GameObject CardQAHolder;
-	public GameObject NoFreeDraw;
-	public GameObject DrawCardPop;
-	public GameObject NoMoneyPopup;
-	public GameObject ShopHolder;
+	public static GameObject CardQAHolder;
+	public static GameObject NoFreeDraw;
+	public static GameObject DrawCardPop;
+	public static GameObject NoMoneyPopup;
 
 	Dictionary<int,Sprite> imageDict;
 	Dictionary<int,string> nameDict;
-	public Button backButton;
-	public Button closeButton;
-
-	public Button CardQAConfirm;
-	public Button NoFreeDrawSuperDraw;
-	public Button NoFreeDrawTimeTravelDraw;
-	public Button NoFreeDrawDecline;
-	public Button DrawCardPopConfirm;
-	public Button DrawCardPopCancel;
-	public Button NoMoneyPopupConfirm;
-	public Button NoMoneyPopupCancel;
+	public static Button backButton;
+	public static Button closeButton;
 
 
 	Dictionary<string,int> drawCost;
@@ -91,7 +82,7 @@ public class DrawCards : MonoBehaviour {
 	}
 
 	public void CallDrawCards(){
-
+		AssignGameObjectVariable ();
 		AddButtonListener ();
 		json = new JSONClass ();
 		SetCharacters ();
@@ -109,6 +100,18 @@ public class DrawCards : MonoBehaviour {
 		drawCost.Add ("TimeTravelDraw", 80);
 		drawCost.Add ("TenSuperDraw", 3600);
 		drawCost.Add ("TenTimeTravelDraw", 720);
+	}
+
+	void AssignGameObjectVariable(){
+		DisablePanel = transform.Find ("DisablePanel").gameObject;
+		TenDrawHolder = transform.Find ("10sDrawHolder").gameObject;
+		SingleCardHolder = transform.Find ("SignleCardHolder").gameObject;
+		CardQAHolder = transform.Find ("CardQAholder").gameObject;
+		NoFreeDraw = transform.Find ("NoFreeDraw").gameObject;
+		DrawCardPop = transform.Find ("DrawCardPop").gameObject;
+		NoMoneyPopup = transform.Find ("NoMoneyPopup").gameObject;
+		backButton = transform.Find ("BackButton").GetComponent<Button> ();
+		closeButton = transform.Find ("CloseButton").GetComponent<Button> ();
 	}
 
 	// Update is called once per frame
@@ -149,28 +152,28 @@ public class DrawCards : MonoBehaviour {
 		});
 
 
-		CardQAConfirm.onClick.AddListener (() => {
+		Panel.GetConfirmButton (CardQAHolder).onClick.AddListener (() => {
 			OnCardQAHolderConfirmClicked();
 		});
-		NoFreeDrawSuperDraw.onClick.AddListener (() => {
+		Panel.GetButtomFromButtonHolder (NoFreeDraw,0).onClick.AddListener (() => {
 			OnNoFreeDrawFeatherClicked();
 		});
-		NoFreeDrawTimeTravelDraw.onClick.AddListener (() => {
+		Panel.GetButtomFromButtonHolder (NoFreeDraw,1).onClick.AddListener (() => {
 			OnNoFreeDrawStarDustClicked();
 		});
-		NoFreeDrawDecline.onClick.AddListener (() => {
+		Panel.GetButtomFromButtonHolder (NoFreeDraw,2).onClick.AddListener (() => {
 			OnNoFreeDrawDeclineClicked();
 		});
-		DrawCardPopConfirm.onClick.AddListener (() => {
+		Panel.GetConfirmButton(DrawCardPop).onClick.AddListener (() => {
 			OnDrawCardPopConfirmClicked();
 		});
-		DrawCardPopCancel.onClick.AddListener (() => {
+		Panel.GetCancelButton(DrawCardPop).onClick.AddListener (() => {
 			OnDrawCardPopCancelClicked();
 		});
-		NoMoneyPopupConfirm.onClick.AddListener (() => {
+		Panel.GetConfirmButton(NoMoneyPopup).onClick.AddListener (() => {
 			OnNoMoneyPopupConfirmClicked();
 		});
-		NoMoneyPopupCancel.onClick.AddListener (() => {
+		Panel.GetCancelButton(NoMoneyPopup).onClick.AddListener (() => {
 			OnNoMoneyPopupCancelClicked();
 		});
 	}
@@ -463,7 +466,10 @@ public class DrawCards : MonoBehaviour {
 	public void OnNoMoneyPopupConfirmClicked(){
 		HidePanel (NoMoneyPopup);
 		gameObject.SetActive (false);
-		ShopHolder.SetActive (true);
+		var evt = new RequestMainMenuScreenCommand();
+		evt.ScreenType = typeof(ShopScreenViewModel);
+		var uFC = new uFrameComponent();
+		uFC.Publish(evt);;
 	}
 
 	public void OnNoMoneyPopupCancelClicked(){

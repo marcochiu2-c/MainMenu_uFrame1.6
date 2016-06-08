@@ -25,52 +25,44 @@ public enum Tech{ WeaponTechnology = 1, EasternWeaponTechnology = 2, WesternWeap
 public enum TechTreeDialogCommand { NoCounselorSelected, ConfirmTraining }
 
 public class TechTree : MonoBehaviour {
-	public List<Button> CounselorButtons;
-	public Text TotalIQText;
-	public Button TechnologySelector;
-	public Text TechnologyLabel;
-	public Text FromLv;
-	public Text ToLv;
-	public Text RemainTrainingTime;
+	public static List<Button> CounselorButtons = new List<Button>();
+	public static Text TotalIQText;
+	public static Button TechnologySelector;
+	public static Text TechnologyLabel;
+	public static Text FromLv;
+	public static Text ToLv;
+	public static Text RemainTrainingTime;
 
 //	public GameObject CounselorSelectorHolder;
-	public GameObject CounselorList;
+	public static GameObject CounselorList;
 
-	public GameObject WeaponTechnologyHolder;
-	public GameObject PotteryHolder;
-	public GameObject SeamEdgeHolder;
-	public GameObject MiningHolder;
-	public GameObject WoodworkerHolder;
-	public GameObject BasicScienceHolder;
-	public GameObject IChingHolder;
-	public GameObject TreeDiagram;
+	public static GameObject WeaponTechnologyHolder;
+	public static GameObject PotteryHolder;
+	public static GameObject SeamEdgeHolder;
+	public static GameObject MiningHolder;
+	public static GameObject WoodworkerHolder;
+	public static GameObject BasicScienceHolder;
+	public static GameObject IChingHolder;
+	public static GameObject TreeDiagram;
 	public static GameObject MessageDialog;
 	public static GameObject ConfirmDialog;
 	public static GameObject DisablePanel;
 
-	public Button WeaponTechnologyButton;
-	public Button PotteryButton;
-	public Button SeamEdgeButton;
-	public Button MiningButton;
-	public Button WoodworkerButton;
-	public Button BasicScienceButton;
-	public Button IChingButton;
-	public Button BackButton;
-	public Button CloseButton;
+	static Button WeaponTechnologyButton;
+	static Button PotteryButton;
+	static Button SeamEdgeButton;
+	static Button MiningButton;
+	static Button WoodworkerButton;
+	static Button BasicScienceButton;
+	static Button IChingButton;
+	static Button BackButton;
+	static Button CloseButton;
 
 	List<Button> TechButtons;
 
-	public static List<Button> staticCounselorButtons;
-	public static Transform staticCounselorPanel;
-	public static Text staticTotalIQText;
-//	public static Transform staticCounselorSelectorHolder;
 	public static Tech AssigningTech;
 	public static TechTreeDialogCommand DialogCommand; 
-	public static Button staticTechnologySelector;
-	public static Text staticTechnologyLabel;
-	public static Text staticFromLv;
-	public static Text staticToLv;
-	public static Text staticRemainTrainingTime;
+	
 	public static int[] AssigningCounselor = new int[]{0,0,0,0,0};
 	public static int AssigningSlot=0;
 	public static int AssigningCounselorSlot = 0;
@@ -159,6 +151,7 @@ public class TechTree : MonoBehaviour {
 
 	void OnEnable () {
 		game = Game.Instance;
+		AssignGameObjectVariable ();
 		MapTechButtons ();
 		if (TechTreePrefab.person.Count == 0) {
 			SetupStudentPrefabList ();
@@ -167,13 +160,7 @@ public class TechTree : MonoBehaviour {
 				TechTreePrefab.person[i].gameObject.SetActive(true);
 			}
 		}
-		staticCounselorButtons = CounselorButtons;
-		staticCounselorPanel = CounselorList.transform;
-		staticTotalIQText = TotalIQText;
-		staticTechnologyLabel = TechnologyLabel;
-		staticFromLv = FromLv;
-		staticToLv = ToLv;
-		staticRemainTrainingTime = RemainTrainingTime;
+
 //		staticCounselorSelectorHolder = CounselorSelectorHolder.transform;
 		InvokeRepeating ("SetRemainingTime", 0, 1);
 //		SetupTechTreeDiagram ();
@@ -212,7 +199,6 @@ public class TechTree : MonoBehaviour {
 
 	void CallTechTree(){
 		SetCharacters ();
-
 		TechnologyLabel.text = TechItems[ GetCurrentTech ()].Item;
 		game = Game.Instance;
 		for (int i = 0; i < 5; i++) {
@@ -244,16 +230,53 @@ public class TechTree : MonoBehaviour {
 
 	}
 
+	public void AssignGameObjectVariable(){
+		Transform layout = transform.GetChild (1);
+		Transform timeLeft = layout.GetChild (2);
+		TotalIQText = layout.GetChild (1).GetChild (1).GetComponent<Text> ();
+		TechnologySelector = timeLeft.GetChild (0).GetComponent<Button> ();
+		TechnologyLabel = timeLeft.GetChild (1).GetComponent<Text> ();
+		FromLv = timeLeft.GetChild (2).GetComponent<Text> ();
+		ToLv = timeLeft.GetChild (3).GetComponent<Text> ();
+		RemainTrainingTime = timeLeft.GetChild (4).GetComponent<Text> ();
+		CounselorList = transform.GetChild (2).gameObject;
+		TreeDiagram = transform.Find ("TreeDiagram").gameObject;
+		Transform technologyHolder = TreeDiagram.transform.GetChild (1);
+		WeaponTechnologyHolder = technologyHolder.Find ("WeaponTechnologyHolder").gameObject;
+		PotteryHolder = technologyHolder.Find ("PotteryHolder").gameObject;
+		SeamEdgeHolder = technologyHolder.Find ("SeamEdgeHolder").gameObject;
+		MiningHolder = technologyHolder.Find ("MiningHolder").gameObject;
+		WoodworkerHolder = technologyHolder.Find ("WoodworkerHolder").gameObject;
+		BasicScienceHolder = technologyHolder.Find ("BasicScienceHolder").gameObject;
+		IChingHolder = technologyHolder.Find ("IChingHolder").gameObject;
+		Transform buttonHolder = TreeDiagram.transform.GetChild (0).GetChild (0);
+		WeaponTechnologyButton = buttonHolder.Find ("WeaponTechnology").GetComponent<Button>();
+		PotteryButton = buttonHolder.Find ("Pottery").GetComponent<Button>();
+		SeamEdgeButton = buttonHolder.Find ("SeamEdge").GetComponent<Button>();
+		MiningButton = buttonHolder.Find ("Mining").GetComponent<Button>();
+		WoodworkerButton = buttonHolder.Find ("Woodworker").GetComponent<Button>();
+		BasicScienceButton = buttonHolder.Find ("BasicScience").GetComponent<Button>();
+		IChingButton = buttonHolder.Find ("IChing").GetComponent<Button>();
+
+		BackButton = transform.Find ("BackButton").GetComponent<Button>();
+		CloseButton = transform.Find ("CloseButton").GetComponent<Button>();
+		Transform counselorButtonHolder = layout.GetChild (1).GetChild (0);
+		for (int i = 0; i < 5; i++) {
+			CounselorButtons.Add (counselorButtonHolder.GetChild (i).GetComponent<Button>());
+		}
+
+	}
+
 	void ClearUIInformation(){
 		for (int i = 0; i < 5; i++){
-			TechTree.staticCounselorButtons[i].GetComponent<Image>().sprite = null;
-			TechTree.staticCounselorButtons[i].transform.GetChild(0).GetComponent<Text>().text = "";
+			TechTree.CounselorButtons[i].GetComponent<Image>().sprite = null;
+			TechTree.CounselorButtons[i].transform.GetChild(0).GetComponent<Text>().text = "";
 		}
-		TechTree.staticTotalIQText.text = "";
-		TechTree.staticTechnologyLabel.text = "";
-		TechTree.staticFromLv.text = "";
-		TechTree.staticToLv.text = "";
-		TechTree.staticRemainTrainingTime.text = "00:00:00";
+		TechTree.TotalIQText.text = "";
+		TechTree.TechnologyLabel.text = "";
+		TechTree.FromLv.text = "";
+		TechTree.ToLv.text = "";
+		TechTree.RemainTrainingTime.text = "00:00:00";
 	}
 	
 	void SetHeadImages(){
@@ -471,7 +494,7 @@ public class TechTree : MonoBehaviour {
 		int count = 0;
 		TechItem techs = TechItems [(int)tech];
 
-		ShowLog.Log (techs.Item);
+//		ShowLog.Log (techs.Item);
 //		if (tech == Tech.WeaponTechnology) {
 ////			Debug.Log("Weapon Tech, Tech requirement: "+string.Join(",", TechItems[0].TechRequirement.Select(x => x.ToString()).ToArray()));
 //			Debug.Log("Weapon Tech, Tech requirement: "+ TechItems[0].TechRequirement.Count);

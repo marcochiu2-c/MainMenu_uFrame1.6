@@ -1129,9 +1129,9 @@ public class Teams {
 		JSONClass j = new JSONClass ();
 		j.Add ("team_id", new JSONData (id));
 		j.Add ("general_id", new JSONData (generalId));
-		j.Add ("general_json",new JSONData( generalJson));
+		j["general_json"] = generalJson;
 		j.Add ("soldier_quantity", new JSONData (soldierQuantity));
-		j.Add ("soldier_json",new JSONData( soldierJson));
+		j["soldier_json"] = soldierJson;
 		j.Add ("status", new JSONData (status));
 		j.Add ("userId", new JSONData (game.login.id));
 		return j;

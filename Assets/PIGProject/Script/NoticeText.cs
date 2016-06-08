@@ -4,11 +4,7 @@ using UnityEngine.UI;
 
 public class NoticeText : MonoBehaviour {
 
-	public Text theText;
-
-	public TextAsset textFile;
-	public string[] textLines;
-	string webText="";
+	Text theText;
 
 //	private IEnumerator Check()
 //	{
@@ -51,6 +47,7 @@ public class NoticeText : MonoBehaviour {
 		//theText = GameObject.Find ("/_MainMenuSceneRoot//Canvas/NoticeHolder/NoticeHolder/NoticeMask/Text").GetComponent <Text>();
 //		StartCoroutine (Check ());
 		Debug.Log (MainScene.noticeText);
+		theText = transform.GetChild (1).GetChild (0).GetComponent<Text>();
 		theText.text = MainScene.noticeText;
 	}
 }

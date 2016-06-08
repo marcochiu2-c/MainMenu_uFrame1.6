@@ -126,7 +126,7 @@ public class SelfStudy : MonoBehaviour {
 			if (trainingObject.etaTimestamp < DateTime.Now && isDropZoneEnabled){
 				Academy.CounselorHolderFunction = "SelfStudy";
 				Academy.CounselorHolderButton = gameObject.GetComponent<Button>();
-				Academy.staticCounselorHolder.SetActive (true);
+				Academy.CounselorHolder.SetActive (true);
 			}
 		});
 	}
@@ -135,8 +135,8 @@ public class SelfStudy : MonoBehaviour {
 		int index = 0;
 		Counselor thisCounselor;
 		Game game = Game.Instance;
-		string title = Academy.staticSelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ().text;
-		Transform leftHolder = Academy.staticSelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (0);
+		string title = Academy.SelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ().text;
+		Transform leftHolder = Academy.SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (0);
 		string[] it = Regex.Split(ImageText.text, "\n");
 		if (it[0].Trim () !=""){
 			ImageText.text = String.Format("{0}\n{1}",
@@ -163,7 +163,7 @@ public class SelfStudy : MonoBehaviour {
 		Game game = Game.Instance;
 		Dictionary<int,string> KnowledgeDict = Utilities.SetDict.Knowledge ();
 		Dictionary<int,string> KnowledgeID = Utilities.SetDict.KnowledgeID ();
-		Transform leftHolder = Academy.staticSelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (0);
+		Transform leftHolder = Academy.SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (0);
 		SelfStudy p;
 		for (int i = 0; i <5; i++){
 			p = leftHolder.GetChild(i*2).GetComponent<SelfStudy>();

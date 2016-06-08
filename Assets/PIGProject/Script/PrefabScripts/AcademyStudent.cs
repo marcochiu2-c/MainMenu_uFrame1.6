@@ -55,7 +55,7 @@ public class AcademyStudent : MonoBehaviour {
 				TimeSpan ts = new TimeSpan(24,0,0);
 				int index = game.trainings.FindIndex(x => x == at.trainingObject);
 				#region CheckCoolDownPeriodAndLevel
-				if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
+				if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
 					if (game.trainings[AcademyTeach.IQTeach.FindIndex(x => x == at)].etaTimestamp > DateTime.Now + ts){
 						AcademyStudent.reCreateStudentItem(this,false);
 						GameObject.Destroy(this.gameObject);
@@ -69,7 +69,7 @@ public class AcademyStudent : MonoBehaviour {
 						IsLevelNotReach = true;
 						return;
 					}
-				}else if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "統率"){
+				}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "統率"){
 					if (game.trainings[AcademyTeach.CommandedTeach.FindIndex(x => x == at)].etaTimestamp > DateTime.Now + ts){
 						AcademyStudent.reCreateStudentItem(this,false);
 						GameObject.Destroy(this.gameObject);
@@ -83,7 +83,7 @@ public class AcademyStudent : MonoBehaviour {
 						IsLevelNotReach = true;
 						return;
 					}
-				}else if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "學問"){
+				}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "學問"){
 					if (game.trainings[AcademyTeach.KnowledgeTeach.FindIndex(x => x == at)].etaTimestamp > DateTime.Now + ts){
 						AcademyStudent.reCreateStudentItem(this,false);
 						GameObject.Destroy(this.gameObject);
@@ -97,7 +97,7 @@ public class AcademyStudent : MonoBehaviour {
 						IsLevelNotReach = true;
 						return;
 					}
-				}else if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "陣法"){
+				}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "陣法"){
 					if (game.trainings[AcademyTeach.FightingTeach.FindIndex(x => x == at)].etaTimestamp > DateTime.Now + ts){
 						AcademyStudent.reCreateStudentItem(this,false);
 						GameObject.Destroy(this.gameObject);
@@ -137,7 +137,7 @@ public class AcademyStudent : MonoBehaviour {
 					at.trainerId = characterId;
 					at.trainingType = characterType;
 					at.TeacherImageText.text = StudentImageText.text;
-					string category = Academy.staticTeachHolder.transform.GetChild (0).GetComponent<Text>().text;
+					string category = Academy.TeachHolder.transform.GetChild (0).GetComponent<Text>().text;
 //					AcademyStudent.showSkillsOptionPanel(category);
 					ConfirmTrainingIfOk(at);
 				}
@@ -157,7 +157,7 @@ public class AcademyStudent : MonoBehaviour {
 		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
 		GameObject ConfirmTeacherBy = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(7).gameObject;
 		if (aTeach.trainerId != 0 && aTeach.targetId != 0) {
-			if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
+			if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
 //			if (transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(0).GetComponent<Text>().text == "智商"){
 				//				Debug.Log (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["IQ"].AsFloat);
 				if (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["IQ"].AsFloat >
@@ -211,7 +211,7 @@ public class AcademyStudent : MonoBehaviour {
 	}
 
 	public static void ShowLevelNotReachPanel(){
-		GameObject LowerThanTrainer = Academy.staticAcademyHolder.transform.GetChild(1).GetChild(8).gameObject;
+		GameObject LowerThanTrainer = Academy.AcademyHolder.transform.GetChild(1).GetChild(8).gameObject;
 		Academy.ShowPanel(LowerThanTrainer);
 		Utilities.Panel.GetHeader(LowerThanTrainer).text = "功能未開放";
 		Utilities.Panel.GetMessageText(LowerThanTrainer).text = "請耐心等候。";
@@ -432,7 +432,7 @@ public class AcademyStudent : MonoBehaviour {
 			RectTransform rTransform = obj.gameObject.GetComponent<RectTransform>();
 			rTransform.localScale= new Vector3(1,1,1);
 			rTransform.position = new Vector3(612.75f,-352.5f,1);
-			obj.transform.SetParent(Academy.staticTeachHolder.transform,false);
+			obj.transform.SetParent(Academy.TeachHolder.transform,false);
 			for (var i = 0; i <14; i++) {
 				button[i] = obj.transform.GetChild(0).GetChild (1).GetChild(i).gameObject.GetComponent<Button>();
 				button[i].interactable = false;

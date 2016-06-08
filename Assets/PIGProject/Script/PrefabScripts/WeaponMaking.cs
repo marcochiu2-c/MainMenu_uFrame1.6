@@ -48,12 +48,12 @@ public class WeaponMaking : MonoBehaviour {
 			if (eta>DateTime.Now){
 				ArtisanHolder.IdEquipmentToBeProduced = id;
 				SetSpeedUpText();
-				ShowPanel(ArtisanHolder.staticSpeedUpPopup);
+				ShowPanel(ArtisanHolder.SpeedUpPopup);
 			}
 		});
 		Details.onClick.AddListener (() => {
 			SetDetailText();
-			ShowPanel(ArtisanHolder.staticDetailPanel);
+			ShowPanel(ArtisanHolder.DetailPanel);
 		});
 	}
 
@@ -63,7 +63,7 @@ public class WeaponMaking : MonoBehaviour {
 		string msg2 = "\n\n對\n主公\n返回最頂吧";
 		string details = "";
 		string colonAndTab = "\t：\t";
-		Text tPanel = ArtisanHolder.staticDetailPanel.transform.GetChild (1).GetChild (0).GetComponent<Text>();
+		Text tPanel = ArtisanHolder.DetailPanel.transform.GetChild (1).GetChild (0).GetComponent<Text>();
 		if (id > 5000 && id < 6000) {
 			details += "\n武器名稱"+colonAndTab+p.products[id].name;
 			details += "\n等級"+colonAndTab+p.products[id].attributes["Grade"];
@@ -115,23 +115,23 @@ public class WeaponMaking : MonoBehaviour {
 			type = 2;
 		}
 		if (game.artisans [type].etaTimestamp <= DateTime.Now) {
-			GameObject EquipmentQHolder = ArtisanHolder.staticEquipmentQHolder;
+			GameObject EquipmentQHolder = ArtisanHolder.EquipmentQHolder;
 			EquipmentQHolder.SetActive(true);
 		} else {
 			if (game.artisans [type].targetId == id){
 				ArtisanHolder.CancelType = type;
 				ArtisanHolder.CancelId   = id;
 				SetCancelPanel();
-				ShowPanel(ArtisanHolder.staticJobCancelPopup); // Cancel Panel
+				ShowPanel(ArtisanHolder.JobCancelPopup); // Cancel Panel
 			}else{
-				HidePanel(ArtisanHolder.staticJobCancelPopup); // Cancel Panel
+				HidePanel(ArtisanHolder.JobCancelPopup); // Cancel Panel
 			}
 		}
 	}
 
 	void SetCancelPanel(){
 		Game game = Game.Instance;	
-		GameObject JobCancelPopup = ArtisanHolder.staticJobCancelPopup;
+		GameObject JobCancelPopup = ArtisanHolder.JobCancelPopup;
 		string msg = "主公，裝備製作需時，確定取消嗎？";
 		if (game.artisans [ArtisanHolder.CancelType].status == 4) {
 			msg = "主公，這項工作不能取消";
@@ -156,7 +156,7 @@ public class WeaponMaking : MonoBehaviour {
 		string msg = "主公，使用amount星塵進行加速嗎？";
 		ArtisanHolder.IdEquipmentToBeProduced = id;
 		msg = msg.Replace ("amount", (((int) (tdiff.TotalHours*10))).ToString ());
-		Utilities.Panel.GetMessageText (ArtisanHolder.staticSpeedUpPopup).text = msg;
+		Utilities.Panel.GetMessageText (ArtisanHolder.SpeedUpPopup).text = msg;
 	}
 		                  
 	 public void SetPanel(Products p,int q, DateTime endTime){
@@ -224,11 +224,11 @@ public class WeaponMaking : MonoBehaviour {
 	}
 	
 	void ShowPanel(GameObject panel){
-		ArtisanHolder.staticDisablePopup.SetActive (true);  //Show Disable Panel mask
+		ArtisanHolder.DisablePopup.SetActive (true);  //Show Disable Panel mask
 		panel.SetActive (true);
 	}
 	void HidePanel(GameObject panel){
-		ArtisanHolder.staticDisablePopup.SetActive (false);  //Show Disable Panel mask
+		ArtisanHolder.DisablePopup.SetActive (false);  //Show Disable Panel mask
 		panel.SetActive (false);
 	}
 }

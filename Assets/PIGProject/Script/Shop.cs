@@ -56,8 +56,8 @@ public class Shop : MonoBehaviour {
 	public static bool _isInitialized = false;
 	Game game;
 	WsClient wsc;
-	public Button firstChargeButton;
-	public Button monthlySubscriptionButton;
+	Button firstChargeButton;
+	Button monthlySubscriptionButton;
 	
 	string googlePublicKey ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0MgHyYj9uNDoSYWb//fv+QA8UB6bFmiPjtDK2keV9aniCYsj4csyHp5y4Q69lFGUneRe3jMGauaqm/uld3eK0UjBJTstpITffD7UQm3QFa8qTpOQkck337uT75s7FjrvVuz+8q4v23nDRPEgPL1RNTrPFjxkoQHQ94+Tm3xexPN5zWkkUgVAP2bJkhkRmrd1AeQ8i0x4CryPWCEO3CxF7IEwiXtQ2JqM4I9NDB4MKtU6Bi9q+/j2po0DU2YtZvgMnbw7aEyd6n2W1p1W9EUwJHYVs/OUqA8OhEuPnT9DneYZPT00BJkrTxBHjF40OPd42UK/4wOxgqtcOE5a1MyxKQIDAQAB";
 	
@@ -69,7 +69,7 @@ public class Shop : MonoBehaviour {
 	
 	public void CallShop(){
 		Utilities.ShowLog.Log ("CallShop()");
-
+		AssignGameObjectVariable ();
 		game = Game.Instance;
 		wsc = WsClient.Instance;
 		
@@ -152,6 +152,14 @@ public class Shop : MonoBehaviour {
 		OpenIABEventManager.consumePurchaseSucceededEvent += consumePurchaseSucceededEvent;
 		OpenIABEventManager.consumePurchaseFailedEvent += consumePurchaseFailedEvent;
 	}
+
+	void AssignGameObjectVariable(){
+		if (gameObject.ToString () == "ShopHolder (UnityEngine.GameObject)") {
+			firstChargeButton = transform.GetChild(1).GetChild (0).Find ("ProductButton1st").GetComponent<Button>();
+			monthlySubscriptionButton = transform.GetChild(1).GetChild (0).Find ("ProductButtonMth").GetComponent<Button>();
+		}
+	}
+
 	private void OnDisable()
 	{
 		// Remove all event handlers

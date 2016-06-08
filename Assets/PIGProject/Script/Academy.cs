@@ -25,33 +25,27 @@ public class Academy : MonoBehaviour
 		public string ImageKey;
 	}
 
-	public Button[] buttons = new Button[4];
+	public static Button[] buttons = new Button[4];
 	string[] btnName = new string[4];
-	public Button[] qaButtons = new Button[2];
+	public static Button[] qaButtons = new Button[2];
 	string[] qaBtnName = new string[2];
-	public Button closeButton;
-	public Button backButton;
-	public GameObject AcademyHolder;
-	public GameObject SelfStudyHolder;
-	public GameObject TeachHolder;
-	public GameObject QAHolder;
-	public GameObject KnowledgeListHolder;
-	public GameObject ConfirmTeacherBy;
-	public GameObject ConfirmTraining;
-	public GameObject CounselorHolder;
-	public GameObject LowerThanTrainer;
+	public static Button closeButton;
+	public static Button backButton;
+	public static GameObject AcademyHolder;
+	public static GameObject SelfStudyHolder;
+	public static GameObject TeachHolder;
+	public static GameObject QAHolder;
+	public static GameObject KnowledgeListHolder;
+	public static GameObject ConfirmTeacherBy;
+	public static GameObject ConfirmTraining;
+	public static GameObject CounselorHolder;
+	public static GameObject LowerThanTrainer;
 	public Transform TeachScrollPanel;
 	public Transform StudentScrollPanel;
 	public Transform SelfLearnScrollPanel;
 	public static Dictionary<int,Sprite> imageDict;
 	public static Dictionary<int,string> nameDict;
-	public static GameObject staticLowerThanTrainer;
-	public static GameObject staticConfirmTeacherBy;
-	public static GameObject staticConfirmTraining;
-	public static GameObject staticTeachHolder;
-	public static GameObject staticSelfStudyHolder;
-	public static GameObject staticKnowledgeListHolder;
-	public static GameObject staticCounselorHolder;
+
 	public static GameObject DisablePanel;
 	public static List<Counselor> cStudentList;
 	public static List<Counselor> cSelfLearnList;
@@ -82,7 +76,7 @@ public class Academy : MonoBehaviour
 	}
 
 	public void CallAcademy(){
-
+		AssignGameObjectVariable ();
 		btnName [0] = "IQButton";
 		btnName [1] = "CommandedButton";
 		btnName [2] = "KnowledgeButton";
@@ -96,20 +90,12 @@ public class Academy : MonoBehaviour
 		AddButtonListener ();
 		KnowledgeOption.AssignButton (KnowledgeListHolder);
 		KnowledgeOption.AddButtonListener (KnowledgeListHolder,gameObject);
-		staticTeachHolder = TeachHolder;
-		staticAcademyHolder = AcademyHolder;
-		staticSelfStudyHolder = SelfStudyHolder;
-		staticLowerThanTrainer = LowerThanTrainer;
-		staticConfirmTeacherBy = ConfirmTeacherBy;
-		staticConfirmTraining = ConfirmTraining;
-		staticKnowledgeListHolder = KnowledgeListHolder;
-		staticCounselorHolder = CounselorHolder;
-		SelfStudyInstructionText = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();
-		TeachInstructionText = TeachHolder.transform.GetChild (1).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();
-		DisablePanel = AcademyScreenView.DisablePanel;
+
 
 		wsc = WsClient.Instance;
 		game = Game.Instance;
+
+
 		cStudentList = new List<Counselor> ();
 		cSelfLearnList = new List<Counselor> ();
 		techTreeList = TechTreeObject.GetList (1);
@@ -142,6 +128,36 @@ public class Academy : MonoBehaviour
 
 		//Get the default Self Study Sprite
 		SelfStudy.defaultSprite = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (0).GetChild (0).GetComponent<Image> ().sprite;
+
+
+	}
+	
+	public void AssignGameObjectVariable(){
+		Transform panel = transform.GetChild (1);
+		DisablePanel = AcademyScreenView.DisablePanel;
+		QAHolder = AcademyScreenView.QAHolder;
+		AcademyHolder = gameObject;
+		SelfStudyHolder = AcademyScreenView.SelfStudyHolder;
+		TeachHolder = AcademyScreenView.TeachHolder;
+		KnowledgeListHolder = panel.Find ("KnowledgeListHolder").gameObject;
+		ConfirmTeacherBy = panel.Find ("ConfirmTeachBy").gameObject;
+		ConfirmTraining = panel.Find ("ConfirmTraining").gameObject;
+		CounselorHolder = panel.Find ("CounselorsHolder").gameObject;
+		LowerThanTrainer = panel.Find ("LowerThanTrainer").gameObject;
+
+		closeButton = transform.Find ("CloseButton").GetComponent<Button>();
+		backButton = transform.Find ("BackButton").GetComponent<Button>();
+
+		buttons [0] = AcademyScreenView.IQButton;
+		buttons [1] = AcademyScreenView.CommandedButton;
+		buttons [2] = AcademyScreenView.KnowledgeButton;
+		buttons [3] = AcademyScreenView.FightingButton;
+
+		qaButtons [0] = AcademyScreenView.SelfStudyButton;
+		qaButtons [1] = AcademyScreenView.TeachButton;
+
+		SelfStudyInstructionText = SelfStudyHolder.transform.GetChild (0).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();
+		TeachInstructionText = TeachHolder.transform.GetChild (1).GetChild (1).GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Text>();
 	}
 
 	public void SetupStudentPrefabList(){

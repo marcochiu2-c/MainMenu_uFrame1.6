@@ -53,7 +53,7 @@ public class AcademySelfLearn : MonoBehaviour {
 				currentSelfStudy = at;
 				game = Game.Instance;
 				TimeSpan ts = new TimeSpan(24,0,0);
-				Text Title = Academy.staticSelfStudyHolder.transform.GetChild(0).GetChild(0).GetComponent<Text>();
+				Text Title = Academy.SelfStudyHolder.transform.GetChild(0).GetChild(0).GetComponent<Text>();
 				#region CheckCoolDownPeriod
 				if (Title.text == "智商"){
 					if (game.trainings[at.transform.GetSiblingIndex()/2].etaTimestamp > DateTime.Now + ts){
@@ -116,8 +116,8 @@ public class AcademySelfLearn : MonoBehaviour {
 	
 	public void ConfirmTrainingIfOk(SelfStudy aSelfStudy){
 		Game game = Game.Instance;
-		Text Title = Academy.staticSelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
-		GameObject ConfirmTraining = Academy.staticAcademyHolder.transform.GetChild (1).GetChild(6).gameObject;
+		Text Title = Academy.SelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
+		GameObject ConfirmTraining = Academy.AcademyHolder.transform.GetChild (1).GetChild(6).gameObject;
 		if (aSelfStudy.targetId != 0) {
 			isSelfStudy = true;
 			if (Title.text == "智商"){
@@ -144,7 +144,7 @@ public class AcademySelfLearn : MonoBehaviour {
 	}
 	
 	public void ShowLowerThanTrainerPanel(string isMaxPoint=""){
-		GameObject LowerThanTrainer = Academy.staticAcademyHolder.transform.GetChild (1).GetChild(8).gameObject;
+		GameObject LowerThanTrainer = Academy.AcademyHolder.transform.GetChild (1).GetChild(8).gameObject;
 		Academy.ShowPanel(LowerThanTrainer);
 		if (isMaxPoint == "") {
 			Utilities.Panel.GetHeader (LowerThanTrainer).text = "青出於藍";
@@ -162,7 +162,7 @@ public class AcademySelfLearn : MonoBehaviour {
 	}
 	
 	public static void ShowLevelNotReachPanel(){
-		GameObject LowerThanTrainer = Academy.staticAcademyHolder.transform.GetChild(1).GetChild(8).gameObject;
+		GameObject LowerThanTrainer = Academy.AcademyHolder.transform.GetChild(1).GetChild(8).gameObject;
 		LowerThanTrainer.SetActive(true);
 		Utilities.Panel.GetHeader(LowerThanTrainer).text = "功能未開放";
 		Utilities.Panel.GetMessageText(LowerThanTrainer).text = "請耐心等候。";
@@ -170,7 +170,7 @@ public class AcademySelfLearn : MonoBehaviour {
 	
 	public void ShowKnowledgeListPanel(int student){
 		Game game = Game.Instance;
-		GameObject KnowledgeListHolder = Academy.staticAcademyHolder.transform.GetChild (1).GetChild (5).gameObject;
+		GameObject KnowledgeListHolder = Academy.AcademyHolder.transform.GetChild (1).GetChild (5).gameObject;
 		KnowledgeOption.Woodworker.interactable = true;
 		KnowledgeOption.MetalFabrication.interactable = true;
 		KnowledgeOption.ChainSteel.interactable = true;
@@ -224,7 +224,7 @@ public class AcademySelfLearn : MonoBehaviour {
 		obj.characterId = aTeach.targetId;
 		obj.StudentPic = aTeach.image.sprite;
 		obj.StudentImageText.text = aTeach.ImageText.text;
-		string panel = Academy.staticAcademyHolder.transform.GetChild (1).GetChild (3).GetChild(0).GetChild (0).GetComponent<Text> ().text;
+		string panel = Academy.AcademyHolder.transform.GetChild (1).GetChild (3).GetChild(0).GetChild (0).GetComponent<Text> ().text;
 		if (panel == "智商") {
 			obj.SetAttributeText ("IQ");
 		}else if (panel == "統率") {
@@ -250,7 +250,7 @@ public class AcademySelfLearn : MonoBehaviour {
 		obj.characterType = aStudent.characterType;
 		obj.StudentPic = aStudent.StudentPic;
 		obj.StudentImageText.text = c [aStudent.characterType-1].Name;
-		string panel = Academy.staticAcademyHolder.transform.GetChild (1).GetChild (3).GetChild(0).GetChild (0).GetComponent<Text> ().text;
+		string panel = Academy.AcademyHolder.transform.GetChild (1).GetChild (3).GetChild(0).GetChild (0).GetComponent<Text> ().text;
 		if (panel == "智商") {
 			obj.SetAttributeText ("IQ");
 		}else if (panel == "統率") {
@@ -276,7 +276,7 @@ public class AcademySelfLearn : MonoBehaviour {
 			RectTransform rTransform = obj.gameObject.GetComponent<RectTransform>();
 			rTransform.localScale= new Vector3(1,1,1);
 			rTransform.position = new Vector3(612.75f,-352.5f,1);
-			obj.transform.SetParent(Academy.staticTeachHolder.transform,false);
+			obj.transform.SetParent(Academy.TeachHolder.transform,false);
 			for (var i = 0; i <14; i++) {
 				button[i] = obj.transform.GetChild(0).GetChild (1).GetChild(i).gameObject.GetComponent<Button>();
 				button[i].interactable = false;

@@ -5,11 +5,11 @@ using SimpleJSON;
 using Facebook.Unity;
 
 public class CharacterPage : MonoBehaviour {
-	public Image img;
-	public Text levelText;
-	public Text IQText;
-	public Text LeadershipText;
-	public Text PrestigeText;
+	public static Image img;
+	public static Text levelText;
+	public static Text IQText;
+	public static Text LeadershipText;
+	public static Text PrestigeText;
 	public static Sprite avatar = null;
 	Game game;
 	// Use this for initialization
@@ -19,6 +19,7 @@ public class CharacterPage : MonoBehaviour {
 
 	public void CallCharacterPage(){
 		game = Game.Instance;
+		AssignGameObjectVariable ();
 		if (FB.IsLoggedIn) {
 			FB.API("me/picture?type=square&height=200&width=200", HttpMethod.GET, FbGetPicture);
 		}
@@ -26,6 +27,19 @@ public class CharacterPage : MonoBehaviour {
 		IQText.text = game.login.attributes ["IQ"];
 		LeadershipText.text = game.login.attributes ["Leadership"];
 		PrestigeText.text = game.login.attributes ["Prestige"];
+	}
+
+	void AssignGameObjectVariable(){
+		img = transform.GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Image> ();
+		levelText = GetTextObject ("LevelHolder");
+		IQText = GetTextObject ("IQHolder");
+		LeadershipText = GetTextObject ("CommandedHolder");
+		PrestigeText = GetTextObject ("PrestigeHolder");
+	}
+
+	Text GetTextObject(string name){
+		Transform CharPageAttribute = transform.GetChild (1).GetChild (1).GetChild (0).GetChild (3);
+		return CharPageAttribute.Find (name).GetChild(1).GetComponent<Text> ();
 	}
 
 	// Update is called once per frame

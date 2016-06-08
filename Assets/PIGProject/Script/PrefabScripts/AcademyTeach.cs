@@ -128,14 +128,14 @@ public class AcademyTeach : MonoBehaviour {
 			if (trainingObject.etaTimestamp < DateTime.Now){
 				Academy.CounselorHolderFunction = "TeacherImage";
 				Academy.CounselorHolderButton = TeacherImage.GetComponent<Button>();
-				Academy.staticCounselorHolder.SetActive(true);
+				Academy.CounselorHolder.SetActive(true);
 			}
 		});
 		StudentImage.GetComponent<Button> ().onClick.AddListener (delegate  {
 			if (trainingObject.etaTimestamp < DateTime.Now){
 				Academy.CounselorHolderFunction = "StudentImage";
 				Academy.CounselorHolderButton = StudentImage.GetComponent<Button>();
-				Academy.staticCounselorHolder.SetActive(true);
+				Academy.CounselorHolder.SetActive(true);
 			}
 		 });
 

@@ -6,21 +6,20 @@ using System.Collections.Generic;
 using System;
 
 public class GeneralTrain : MonoBehaviour {
-	public Transform CouragePopup;
-	public Transform ForcePopup;
-	public Transform StrengthPopup;
-	public GameObject DisablePanel;
-	public GameObject TrainSFHolder;
-	public GameObject TrainSDHolder;
-	public GameObject NotEnoughSF;
-	public GameObject NotEnoughSD;
-	public Button CourageButton;
-	public Button ForceButton;
-	public Button StrengthButton;
-	public Button BackButton;
-	public Button CloseButton;
-
-//	public static 
+	static Transform CouragePopup;
+	static Transform ForcePopup;
+	static Transform StrengthPopup;
+	static GameObject DisablePanel;
+	static GameObject TrainSFHolder;
+	static GameObject TrainSDHolder;
+	static GameObject NotEnoughSF;
+	static GameObject NotEnoughSD;
+	static Button CourageButton;
+	static Button ForceButton;
+	static Button StrengthButton;
+	static Button BackButton;
+	static Button CloseButton;
+	
 	public static int OpenedPanel = -1;
 	public static List<int> RunningItem = new List<int>();// 0 - Courage, 1 - Force, 2- Strength
 
@@ -41,7 +40,7 @@ public class GeneralTrain : MonoBehaviour {
 
 	void CallGeneralTrain(){
 		game = Game.Instance;
-
+		AssignGameObjectVariable ();
 		CourageEventHolder = CouragePopup.GetChild (0).GetChild (0).GetChild (1);
 		ForceEventHolder = ForcePopup.GetChild (0).GetChild (0).GetChild (1);
 		StrengthEventHolder = StrengthPopup.GetChild (0).GetChild (0).GetChild (1);
@@ -50,6 +49,25 @@ public class GeneralTrain : MonoBehaviour {
 		RunningItem.Add ( -1);
 		RunningItem.Add ( -1);
 		RunningItem.Add ( -1);
+	}
+
+	void AssignGameObjectVariable(){
+		Transform panel = transform.Find ("Panel");
+		Transform buttonHolder  = panel.GetChild (0);
+		Transform popupHolder = panel.GetChild (1);
+		CouragePopup = popupHolder.Find ("CouragePopup");
+		ForcePopup = popupHolder.Find ("ForcePopup");
+		StrengthPopup = popupHolder.Find ("StrengthPopup");
+		DisablePanel = transform.Find ("DisablePanel").gameObject;
+		TrainSFHolder = transform.Find ("TrainSFHolder").gameObject;
+		TrainSDHolder = transform.Find ("TrainSDHolder").gameObject;
+		NotEnoughSF = transform.Find ("NotEnoughSF").gameObject;
+		NotEnoughSD = transform.Find ("NotEnoughSD").gameObject;
+		CourageButton = buttonHolder.Find ("CourageButton").GetComponent<Button>();
+		ForceButton = buttonHolder.Find ("ForceButton").GetComponent<Button>();
+		StrengthButton = buttonHolder.Find ("StrengthButton").GetComponent<Button>();
+		BackButton = transform.Find("BackButton").GetComponent<Button>();
+		CloseButton = transform.Find("CloseButton").GetComponent<Button>();
 	}
 
 	void SetTrainDict(){

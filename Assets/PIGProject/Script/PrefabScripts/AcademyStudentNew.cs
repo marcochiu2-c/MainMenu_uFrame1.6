@@ -23,7 +23,7 @@ public class AcademyStudentNew: MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		game = Game.Instance;
-//		CardHolder = Companion.staticCompanionHolder.GetChild (3).gameObject;
+
 		SetCharacters ();
 		AddButtonListener ();
 	}
@@ -37,7 +37,7 @@ public class AcademyStudentNew: MonoBehaviour {
 	void AddButtonListener(){
 		AcademyTeach at;
 		GetComponent<Button> ().onClick.AddListener (() => {
-			Academy.staticCounselorHolder.SetActive(false);
+			Academy.CounselorHolder.SetActive(false);
 
 			if (Academy.CounselorHolderFunction == "SelfStudy"){
 				SelfStudy ss =  Academy.CounselorHolderButton.GetComponent<SelfStudy>();
@@ -58,7 +58,7 @@ public class AcademyStudentNew: MonoBehaviour {
 				at.trainingType = counselor.type;
 				at.TeacherPic = imageDict[counselor.type];
 				at.TeacherImageText.text = nameDict[counselor.type];
-				string category = Academy.staticTeachHolder.transform.GetChild (0).GetComponent<Text>().text;
+				string category = Academy.TeachHolder.transform.GetChild (0).GetComponent<Text>().text;
 				//					AcademyStudent.showSkillsOptionPanel(category);
 				ConfirmTrainingIfOk(at);
 				gameObject.SetActive(false);
@@ -79,8 +79,8 @@ public class AcademyStudentNew: MonoBehaviour {
 
 	public void ConfirmSelfStudyIfOk(SelfStudy aSelfStudy){
 		Game game = Game.Instance;
-		Text Title = Academy.staticSelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
-		GameObject ConfirmTraining = Academy.staticConfirmTraining;
+		Text Title = Academy.SelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
+		GameObject ConfirmTraining = Academy.ConfirmTraining;
 		if (aSelfStudy.targetId != 0) {
 			if (Title.text == "智商"){
 				if (game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["IQ"].AsFloat <
@@ -111,10 +111,10 @@ public class AcademyStudentNew: MonoBehaviour {
 		Game game = Game.Instance;
 		//		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
 		//		GameObject ConfirmTeacherBy = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(7).gameObject;
-		GameObject LowerThanTrainer = Academy.staticLowerThanTrainer;
-		GameObject ConfirmTeacherBy = Academy.staticConfirmTeacherBy;
+		GameObject LowerThanTrainer = Academy.LowerThanTrainer;
+		GameObject ConfirmTeacherBy = Academy.ConfirmTeacherBy;
 		if (aTeach.trainerId != 0 && aTeach.targetId != 0) {
-			if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
+			if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
 
 				if (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["IQ"].AsFloat >
 				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["IQ"].AsFloat){
@@ -129,7 +129,7 @@ public class AcademyStudentNew: MonoBehaviour {
 					ShowLowerThanTrainerPanel();
 				}
 				
-			}else if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "統率"){
+			}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "統率"){
 				if (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["Leadership"].AsFloat >
 				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat){
 					if(game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat < 
@@ -141,17 +141,17 @@ public class AcademyStudentNew: MonoBehaviour {
 				}else{
 					ShowLowerThanTrainerPanel();
 				}
-			}else if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "學問"){
+			}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "學問"){
 				Debug.Log( "學問");
 				ShowKnowledgeListPanel(aTeach.trainerId,aTeach.targetId);
-			}else if (Academy.staticTeachHolder.transform.GetChild(0).GetComponent<Text>().text == "陣法"){
+			}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "陣法"){
 				
 			}
 		}
 	}
 
 	public void ShowLowerThanTrainerPanel(string isMaxPoint=""){
-		GameObject LowerThanTrainer = Academy.staticLowerThanTrainer;
+		GameObject LowerThanTrainer = Academy.LowerThanTrainer;
 		Academy.ShowPanel(LowerThanTrainer);
 		if (isMaxPoint == "") {
 			Utilities.Panel.GetHeader (LowerThanTrainer).text = "青出於藍";
@@ -179,12 +179,12 @@ public class AcademyStudentNew: MonoBehaviour {
 		KnowledgeOption.GunpowderModulation.interactable = true;
 		KnowledgeOption.Psychology.interactable = true;
 		
-		Academy.staticKnowledgeListHolder.SetActive (true);
+		Academy.KnowledgeListHolder.SetActive (true);
 	}
 
 	public void ShowKnowledgeListPanel(int teacher, int student){
 		Game game = Game.Instance;
-		GameObject panel = Academy.staticKnowledgeListHolder;
+		GameObject panel = Academy.KnowledgeListHolder;
 		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Woodworker"].AsInt > 
 		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Woodworker"].AsInt) {
 			KnowledgeOption.Woodworker.interactable = true;
@@ -294,7 +294,7 @@ public class AcademyStudentNew: MonoBehaviour {
 		counselor = c;
 		image.sprite =  imageDict[counselor.type];
 		Name.text = nameDict[counselor.type];
-		showPanelItems (Academy.staticCounselorHolder.transform);
+		showPanelItems (Academy.CounselorHolder.transform);
 	}
 //
 //	void ShowCardPanel(){
@@ -366,7 +366,7 @@ public class AcademyStudentNew: MonoBehaviour {
 			RectTransform rTransform = obj.gameObject.GetComponent<RectTransform>();
 			rTransform.localScale= new Vector3(1,1,1);
 			rTransform.position = new Vector3(612.75f,-352.5f,1);
-			obj.transform.SetParent(Academy.staticTeachHolder.transform,false);
+			obj.transform.SetParent(Academy.TeachHolder.transform,false);
 			for (var i = 0; i <14; i++) {
 				button[i] = obj.transform.GetChild(0).GetChild (1).GetChild(i).gameObject.GetComponent<Button>();
 				button[i].interactable = false;
