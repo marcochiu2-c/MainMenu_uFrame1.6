@@ -131,6 +131,9 @@ public class SelfStudy : MonoBehaviour {
 		});
 	}
 
+	/// <summary>
+	/// Updatet the text for the image
+	/// </summary>
 	void UpdateImageText(){
 		int index = 0;
 		Counselor thisCounselor;

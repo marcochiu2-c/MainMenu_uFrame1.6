@@ -44,8 +44,6 @@ public class NoticeText : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//theText = GameObject.Find ("/_MainMenuSceneRoot//Canvas/NoticeHolder/NoticeHolder/NoticeMask/Text").GetComponent <Text>();
-//		StartCoroutine (Check ());
 		Debug.Log (MainScene.noticeText);
 		theText = transform.GetChild (1).GetChild (0).GetComponent<Text>();
 		theText.text = MainScene.noticeText;

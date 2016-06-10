@@ -285,6 +285,11 @@ public class GeneralTrain : MonoBehaviour {
 		});
 	}
 
+	/// <summary>
+	/// Training paid by feather.
+	/// </summary>
+	/// <param name="type">Type.</param>
+	/// <param name="panel">Panel.</param>
 	void TrainByFeather(int type, string panel){
 		Dictionary<string,int> panelDict = new Dictionary<string, int>();
 		panelDict.Add("Courage",40);
@@ -304,6 +309,11 @@ public class GeneralTrain : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Trains paid by stardust.
+	/// </summary>
+	/// <param name="type">Type.</param>
+	/// <param name="panel">Panel.</param>
 	void TrainByStardust(int type, string panel){
 		Dictionary<string,int> panelDict = new Dictionary<string, int>();
 		panelDict.Add("Courage",40);

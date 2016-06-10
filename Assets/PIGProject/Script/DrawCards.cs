@@ -187,11 +187,7 @@ public class DrawCards : MonoBehaviour {
 //		Debug.Log ("Random Number: "+random);
 		Debug.Log ("Result Number: "+ result);
 		json = new JSONClass ();
-#if TEST
-		json["data"].Add ("userId",new JSONData(1));
-#else
 		json["data"].Add ("userId",new JSONData(game.login.id));
-#endif
 		json["data"].Add ("type" , new JSONData(result));
 		json["data"].Add ("level", new JSONData(1));
 		if (isCounselors) {
@@ -308,6 +304,10 @@ public class DrawCards : MonoBehaviour {
 		ShowLog.Log ("Time of next free draw:"+(Convert.ToDateTime( game.login.attributes["LastDrawTime"])+new TimeSpan(0,5,0)));	
 	}
 
+	/// <summary>
+	/// Determines whether this instance is today first draw.
+	/// </summary>
+	/// <returns><c>true</c> if this instance is today first draw; otherwise, <c>false</c>.</returns>
 	bool IsTodayFirstDraw(){
 		if(game.login.attributes["LastDrawTime"]==null){
 			ResetFreeDrawCount();
@@ -320,6 +320,9 @@ public class DrawCards : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Reset the free draw count to be used for the first login of the day.
+	/// </summary>
 	void ResetFreeDrawCount(){
 		game.login.attributes["LastDrawTime"]= DateTime.Today.ToString().Trim(charToTrim);
 		game.login.attributes.Add ("FreeDraw",new JSONData(5));
@@ -508,6 +511,10 @@ public class DrawCards : MonoBehaviour {
 		DrawTenCards ();
 	}
 
+	/// <summary>
+	/// Shows the card panel while the one card draw made or user checking the information of the card for ten card draw.
+	/// </summary>
+	/// <param name="character">Character.</param>
 	public void ShowCardPanel(int character){
 		GameObject panel = transform.GetChild (4).gameObject;
 		Image img = panel.transform.GetChild (0).GetComponent<Image> ();
