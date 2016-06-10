@@ -540,7 +540,6 @@ public class MainScene : MonoBehaviour {
 			for (var i = 0; i < count; i++) {
 				game.teams.Add (new Teams (MainScene.TeamInfo[i]));
 			}
-			game.teams[2].UpdateObject();
 			MainScene.TeamInfo = null;
 		}
 		if (MainScene.newUserId != 0) {

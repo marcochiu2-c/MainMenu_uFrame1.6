@@ -410,7 +410,10 @@ public class SchoolField : MonoBehaviour {
 		}
 	}
 
-
+	/// <summary>
+	/// Shows the confirmation of the time need for new soldier training.
+	/// </summary>
+	/// <param name="soldierQuantity">Soldier quantity.</param>
 	void ShowConfirmNewSoldierTraining(int soldierQuantity){Debug.Log ("ShowConfirmNewSoldierTraining()");
 		var p = ProductDict.Instance;
 		string msg = "";
@@ -505,6 +508,9 @@ public class SchoolField : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Handler of user acceptance of the time need to train the new soldiers
+	/// </summary>
 	void ConfirmedTrainingForNewSoldiers(){
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
 		j.Add ("TargetHit",new JSONData(j["Hit"].AsFloat));
@@ -804,6 +810,11 @@ public class SchoolField : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Raises the replace equipment event.
+	/// </summary>
+	/// <param name="armedType">Armed type.</param>
+	/// <param name="armedCategory">Armed category.</param>
 	public static void OnReplaceItem(int armedType,string armedCategory){
 		Dictionary<string,string> nameDict = new Dictionary<string, string> ();
 		Dictionary<string,GameObject> panelDict = new Dictionary<string, GameObject> ();
@@ -1016,6 +1027,10 @@ public class SchoolField : MonoBehaviour {
 		AssigningResources = 0;
 		AssigningStarDust = 0;
 	}
+
+	/// <summary>
+	/// Handler for Speed up production button clicked by user.
+	/// </summary>
 	void OnSpeedUpProductionClicked(){
 		HidePanel (TrainingEquConfirmHolder);
 		TimeSpan ts = AssigningTime - DateTime.Now;
@@ -1039,6 +1054,9 @@ public class SchoolField : MonoBehaviour {
 		ShowPanel (ConfirmSpeedUpHolder);
 	}
 
+	/// <summary>
+	/// Handler for the speed up production dialog confirmed event.
+	/// </summary>
 	void OnSpeedUpProductionConfirmed(){
 		int index = 0;
 		HidePanel (ConfirmSpeedUpHolder);
@@ -1211,6 +1229,9 @@ public class SchoolField : MonoBehaviour {
 		ShowPanel (TrainingQAHolder);
 	}
 
+	/// <summary>
+	/// Confirmed the training.
+	/// </summary>
 	void ConfirmedTraining(){
 		Transform valueHolder		 = AdjustSoildersAttribute.transform.GetChild (1);
 		Transform Hit				 = valueHolder.GetChild (0).GetChild (0).GetChild (0);

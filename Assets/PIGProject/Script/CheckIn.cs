@@ -77,13 +77,7 @@ public class CheckIn : MonoBehaviour
 		if (!game.checkinStatus.days.Contains (DateTime.Now.Day)) {
 			Debug.Log ("Checking in as " + DateTime.Now.Day);
 			game.checkinStatus.days.Add (DateTime.Now.Day);
-			JSONNode json = new JSONClass ();
-//			json ["data"] = game.checkinStatus.toJSON ();
-			Debug.Log (json["data"]);
-//			json ["table"] = "checkin";
-//			json ["action"] = "SET";
-//			Debug.Log (json.ToString ());
-//			wsc.Send (json.ToString ());
+
 			game.checkinStatus.UpdateObject();
 			Rewards();
 			DisableDayButton(game.checkinStatus.days.Count-1);

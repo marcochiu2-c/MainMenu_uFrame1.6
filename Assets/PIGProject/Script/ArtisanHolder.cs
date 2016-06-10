@@ -152,6 +152,10 @@ public class ArtisanHolder : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Free up resources while leaving holder
+	/// </summary>
+
 	void DestroyPrefabObject(){
 		var count = WeaponMaking.Weapons.Count;
 		for (int i = 0 ; i < count ; i++){
@@ -217,6 +221,9 @@ public class ArtisanHolder : MonoBehaviour {
 		});
 	}
 
+	/// <summary>
+	/// Handler of confirming the number of equipment to be produced.
+	/// </summary>
 	void OnEquipmentQHolderConfirmed(){
 		HidePanel(EquipmentQHolder);
 		NumberOfEquipmentToBeProduced = int.Parse(EquipmentQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text);
@@ -224,7 +231,10 @@ public class ArtisanHolder : MonoBehaviour {
 		ShowPanel(ArtisanConfirmPopup);
 		SetArtisanConfirmPopupText ();
 	}
-
+	
+	/// <summary>
+	/// Handler of confirming the Currency (Resources) that need to produce the equipments.
+	/// </summary>
 	void OnArtisanConfirmPopupConfirmed(){
 		int cost = p.products [IdEquipmentToBeProduced].attributes ["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced;
 		HidePanel(ArtisanConfirmPopup);
@@ -420,6 +430,10 @@ public class ArtisanHolder : MonoBehaviour {
 
 	}
 
+	/// <summary>
+	/// Prepare for the proceeding job prefabs to be highlighted 
+	/// </summary>
+
 	void HighlightProceedingJobs(){
 		if (game.artisans [0].etaTimestamp > DateTime.Now) {
 			IdWeaponWhichProducing = game.artisans[0].targetId;
@@ -432,6 +446,10 @@ public class ArtisanHolder : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Find and return the latest ending job 
+	/// </summary>
+	/// <returns>Return the latest ending job </returns>
 	int GetLatestEta(){
 		int last = 0;
 		if (game.artisans [0].etaTimestamp < game.artisans [1].etaTimestamp) {
