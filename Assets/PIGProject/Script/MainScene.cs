@@ -133,7 +133,8 @@ public class MainScene : MonoBehaviour {
 		AddButtonListener ();
 		shop = GetComponent<Shop> ();
 		Invoke ("CallShop", 3);
-
+		game = Game.Instance;
+		wsc = WsClient.Instance;
 		ArtisanPanel = transform.parent.FindChild ("ArtisanHolder").gameObject;
 //		wsc.Send("notice_url","GET",new JSONData (MainScene.userId));
 		wsc.Send("notice_text","GET",new JSONData (MainScene.userId));
@@ -144,6 +145,18 @@ public class MainScene : MonoBehaviour {
 		InvokeRepeating ("OnAcademyTrainingComplete", 3, 4);
 		InvokeRepeating ("OnArtisanJobsComplete", 3, 4);
 		InvokeRepeating ("OnTechTreeTrainingComplete", 2, 4);
+		InvokeRepeating ("OnCurrencyDisplayMissing", 0, 2);
+	}
+
+	void OnCurrencyDisplayMissing(){
+		if (silverFeatherText == null) {
+			needReloadFromDB = true;
+			CallMainScene();
+		}
+		if (silverFeatherText.text == "銀羽") {
+			wsc = WsClient.Instance;
+			CallMainScene();
+		}
 	}
 
 	void OnTechTreeTrainingComplete(){
@@ -397,7 +410,8 @@ public class MainScene : MonoBehaviour {
 	void SetGameObjectFromServer(){
 		var count = 0;
 		if (MainScene.UserInfo != null) {
-			game.login = new Login ((JSONClass)MainScene.UserInfo);TechTree.GetAvailableTechList ();
+			game.login = new Login ((JSONClass)MainScene.UserInfo);
+//			TechTree.GetAvailableTechList ();
 //			ShowLog.Log (game.login.ToString());
 			MainScene.UserInfo = null;
 			if (MainScene.userId == 0){
@@ -556,6 +570,7 @@ public class MainScene : MonoBehaviour {
 
 //			MainScene.ProfilePictureSprite = Sprite.Create (result.Texture, new Rect (0, 0, 128, 128), new Vector2 ());
 			Sprite avatar = Sprite.Create (result.Texture, new Rect (0, 0, 128, 128), new Vector2 ());
+			MainCharButton = GameObject.Find("MainCharButton").GetComponent<Button>();
 			MainCharButton.image.sprite = avatar;
 		}else{
 			ShowLog.Log(result.Error);

@@ -128,7 +128,8 @@ public class TechTree : MonoBehaviour {
 	};
 
 	Game game;
-
+	string CounselorNotSelectedHeader = "未選軍師";
+	string CounselorNotSelectedMessage = "軍師閣下，請先選擇至少一個軍師";
 
 	Dictionary<int,Sprite> imageDict;
 	Dictionary<int,string> nameDict;
@@ -315,8 +316,8 @@ public class TechTree : MonoBehaviour {
 				TreeDiagram.SetActive(true);
 			}else{
 				if (game.trainings [43].etaTimestamp < DateTime.Now){
-					Panel.GetHeader(MessageDialog).text = "未選軍師";
-					Panel.GetMessageText(MessageDialog).text = "軍師閣下，請先選擇至少一個軍師";
+					Panel.GetHeader(MessageDialog).text = CounselorNotSelectedHeader;
+					Panel.GetMessageText(MessageDialog).text = CounselorNotSelectedMessage;
 					DialogCommand = TechTreeDialogCommand.NoCounselorSelected;
 					ShowPanel(MessageDialog);
 				}
