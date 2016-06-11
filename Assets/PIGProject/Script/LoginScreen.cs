@@ -44,33 +44,14 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	private void CallLoginScreen(){
-		//		ProfileEvents.OnSoomlaProfileInitialized += () => {
-		//			debugText += "SoomlaProfile Initialized !"+"\n";
-		//			Soomla.SoomlaUtils.LogDebug("LoginScreen", "SoomlaProfile Initialized !");
-		//			LoginScreen.isSoomlaInit = true;
-		//			SoomlaProfile.Login(
-		//				Provider.FACEBOOK,                        // Social Provider
-		//				null
-		//				);
-		//		};
-		//		
-		//		ProfileEvents.OnLoginFinished += (UserProfile UserProfile, bool autoLogin, string payload) => {
-		//			//SoomlaProfile.MultiShare("Ha Ha Ha",
-		//			//                         "~/Documents/device-2015-07-17-104246.png");
-		//			Soomla.SoomlaUtils.LogDebug("LogInFinish","User: "+UserProfile.ProfileId);
-		//			snsURL = UserProfile.ProfileId;
-		//			LoginScreen.isSoomlaLoggedIn = true;
-		//			//			SoomlaProfile.GetContacts(Provider.FACEBOOK);
-		//			//var purchase = StoreInfo.GetPurchasableItemWithProductId("stardust_10")
-		//			//      .PurchaseType as PurchaseWithMarket;
-		//			//Debug.Log("Price of Star dust 10 pack "+ purchase.MarketItem.MarketPriceAndCurrency);
-		//			
-		//		};
-		//		SoomlaProfile.Initialize ();
 		
 		if (!FB.IsInitialized) {
 			// Initialize the Facebook SDK
+			#if UNITY_EDITOR
+			FB.Init ("104851296515749",true,true,true,false,true,null,OnHideUnity,InitCallback);
+			#else
 			FB.Init(InitCallback, OnHideUnity);
+			#endif
 		} else {
 			// Already initialized, signal an app activation App Event
 			FB.ActivateApp();
@@ -266,12 +247,6 @@ public class LoginScreen : MonoBehaviour {
 	}
 	
 	public void CheckUserSNSInDB(){
-		//		Debug.Log ("User not linked with SNS");
-		//		JSONNode json = new JSONClass ();
-		//		json ["data"] = snsURL;
-		//		json ["action"] = "GET";
-		//		json ["table"] = "getUserInformationBySnsUrl";
-		//		wsc.conn.Send (json.ToString ());
 		wsc.Send ("getUserInformationBySnsUrl", "GET", snsURL);
 		//		sentDBSNSCheckRequest = true;
 	}
@@ -280,13 +255,16 @@ public class LoginScreen : MonoBehaviour {
 	{
 		if (FB.IsInitialized) {
 			// Signal an app activation App Event
+#if (!UNITY_EDITOR)
 			FB.ActivateApp();
+#endif
 			// Continue with Facebook SDK
 			LoginScreen.isSNSInit = true;
 			if (game.login.snsType==1) {
 				Utilities.ShowLog.Log ("SNS ID: " + game.login.snsURL);
 				LoginSNS ();
 			}
+
 			// ...
 		} else {
 			Debug.Log("Failed to Initialize the Facebook SDK");
