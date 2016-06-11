@@ -914,6 +914,10 @@ public class ConferenceScreenViewBase : SubScreenView {
         ConferenceScreen.InitSoldierValue.OnNext(new InitSoldierValueCommand() { Sender = ConferenceScreen });
     }
     
+    public virtual void ExecuteSetTeam() {
+        ConferenceScreen.SetTeam.OnNext(new SetTeamCommand() { Sender = ConferenceScreen });
+    }
+    
     public virtual void ExecuteSetSoldierData(SetSoldierDataCommand command) {
         command.Sender = ConferenceScreen;
         ConferenceScreen.SetSoldierData.OnNext(command);
@@ -922,6 +926,11 @@ public class ConferenceScreenViewBase : SubScreenView {
     public virtual void ExecuteInitSoldierValue(InitSoldierValueCommand command) {
         command.Sender = ConferenceScreen;
         ConferenceScreen.InitSoldierValue.OnNext(command);
+    }
+    
+    public virtual void ExecuteSetTeam(SetTeamCommand command) {
+        command.Sender = ConferenceScreen;
+        ConferenceScreen.SetTeam.OnNext(command);
     }
 }
 

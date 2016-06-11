@@ -51,3 +51,6 @@ public partial class SetSoldierDataCommand : uFrame.MVVM.ViewModelCommand {
 
 public partial class InitSoldierValueCommand : uFrame.MVVM.ViewModelCommand {
 }
+
+public partial class SetTeamCommand : uFrame.MVVM.ViewModelCommand {
+}
