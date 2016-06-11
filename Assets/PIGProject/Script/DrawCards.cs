@@ -35,6 +35,8 @@ public class DrawCards : MonoBehaviour {
 
 	Dictionary<int,Sprite> imageDict;
 	Dictionary<int,string> nameDict;
+	Dictionary<int,Sprite> headDict;
+
 	public static Button backButton;
 	public static Button closeButton;
 
@@ -261,17 +263,9 @@ public class DrawCards : MonoBehaviour {
 		//string data = "["+ String.Join(" , ", storageJsonArray)+"]";
 
 		if (wsc.conn.IsAlive) {
-//			var json = new JSONClass ();
-//			json ["data"] = counselorNode;
-//			json ["action"] = "NEW";
-//			json ["table"] = "multiCounselors";
-//			Debug.Log (json.ToString());
+
 			wsc.Send ("multiCounselors","NEW",counselorNode);
 
-//			json ["data"] = generalNode;
-//			json ["action"] = "NEW";
-//			json ["table"] = "multiGenerals";
-//			Debug.Log (json.ToString ());
 			wsc.Send ("multiGenerals","NEW",generalNode);
 		} else {
 			Debug.Log ("Websocket Connection Lost!");
@@ -287,7 +281,7 @@ public class DrawCards : MonoBehaviour {
 			draw[i] = TenDrawHolder.transform.GetChild(i);  // Get the Image button
 
 			Debug.Log ("Characters number: "+characters[i]);
-			draw[i].GetComponent<Image>().sprite = imageDict[characters[i]];
+			draw[i].GetComponent<Image>().sprite = headDict[characters[i]];
 			draw[i].GetChild(0).GetComponent<Text>().text = nameDict[characters[i]];
 			draw[i].GetChild(1).GetComponent<Text>().text = characters[i].ToString();
 		}
@@ -573,6 +567,7 @@ public class DrawCards : MonoBehaviour {
 		LoadBodyPic bodyPic = LoadBodyPic.Instance;
 		imageDict = bodyPic.imageDict;
 		nameDict = bodyPic.nameDict;
+		headDict = LoadHeadPic.Instance.imageDict;
 	}
 
 	void ShowPanel(GameObject panel){
