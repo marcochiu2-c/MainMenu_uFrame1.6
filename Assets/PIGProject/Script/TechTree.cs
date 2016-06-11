@@ -273,7 +273,7 @@ public class TechTree : MonoBehaviour {
 	/// </summary>
 	void ClearUIInformation(){
 		for (int i = 0; i < 5; i++){
-			TechTree.CounselorButtons[i].GetComponent<Image>().sprite = null;
+			TechTree.CounselorButtons[i].GetComponent<Image>().sprite = MainScene.TechTreeKnob;
 			TechTree.CounselorButtons[i].transform.GetChild(0).GetComponent<Text>().text = "";
 		}
 		TechTree.TotalIQText.text = "";

@@ -60,6 +60,7 @@ public class MainScene : MonoBehaviour {
 	public static Nullable<DateTime> StorageLastUpdate = null;
 	public static Nullable<DateTime> WarfareLastUpdate = null;
 	public static Nullable<DateTime> FriendLastUpdate = null;
+	public static Sprite TechTreeKnob;
 	Shop shop;
 
 
@@ -74,7 +75,8 @@ public class MainScene : MonoBehaviour {
 
 //		StartCoroutine (TestTechItemData ());
 	}
-
+	
+	static bool isCheckedInventoryAtStart = false;
 //	IEnumerator TestTechItemData(){
 //		Dictionary<int,string> knowDict = SetDict.Knowledge ();
 //		int count = TechTree.TechItems.Count;
@@ -131,8 +133,11 @@ public class MainScene : MonoBehaviour {
 		DisablePanel = transform.Find ("DisablePanel").gameObject;
 		NoticeDialog = transform.Find ("NoticeDialog").gameObject;
 		AddButtonListener ();
-		shop = GetComponent<Shop> ();
-		Invoke ("CallShop", 3);
+		if (isCheckedInventoryAtStart) {
+			shop = GetComponent<Shop> ();
+			Invoke ("CallShop", 3);
+			isCheckedInventoryAtStart = true;
+		}
 		game = Game.Instance;
 		wsc = WsClient.Instance;
 		ArtisanPanel = transform.parent.FindChild ("ArtisanHolder").gameObject;
@@ -146,6 +151,7 @@ public class MainScene : MonoBehaviour {
 		InvokeRepeating ("OnArtisanJobsComplete", 3, 4);
 		InvokeRepeating ("OnTechTreeTrainingComplete", 2, 4);
 		InvokeRepeating ("OnCurrencyDisplayMissing", 0, 2);
+		TechTreeKnob = GameObject.Find ("/_MainMenuSceneRoot/Canvas/TechonologyTreeHolder/Layout/CounselorSelector/CounselorHolder/Button").GetComponent<Image> ().sprite;
 	}
 
 	void OnCurrencyDisplayMissing(){
@@ -175,7 +181,8 @@ public class MainScene : MonoBehaviour {
 			game.trainings [43].UpdateObject();
 			if (TechTree.TotalIQText != null){
 				for (int i = 0; i < 5; i++){
-					TechTree.CounselorButtons[i].GetComponent<Image>().sprite = null;
+					ShowLog.Log(TechTreeKnob);
+					TechTree.CounselorButtons[i].GetComponent<Image>().sprite = TechTreeKnob;
 					TechTree.CounselorButtons[i].transform.GetChild(0).GetComponent<Text>().text = "";
 				}
 				TechTree.TotalIQText.text = "";
