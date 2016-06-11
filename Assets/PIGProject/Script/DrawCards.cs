@@ -133,8 +133,10 @@ public class DrawCards : MonoBehaviour {
 			SingleCardHolder.SetActive(false);
 			gameObject.SetActive(true);
 			TenDrawHolder.SetActive(false);
+			CardQAHolder.SetActive(false);
+			DrawCardPop.SetActive(false);
+			DisablePanel.SetActive(false);
 			if (calledByDrawTenCards){
-				
 				TenDrawHolder.SetActive(true);
 				calledByDrawTenCards = false;
 			}
@@ -148,6 +150,9 @@ public class DrawCards : MonoBehaviour {
 			SingleCardHolder.SetActive(false);
 			gameObject.SetActive(false);
 			TenDrawHolder.SetActive(false);
+			CardQAHolder.SetActive(false);
+			DrawCardPop.SetActive(false);
+			DisablePanel.SetActive(false);
 			calledByDrawTenCards = false;
 			wsc.Send ("counselors", "GET", new JSONData (MainScene.userId));
 			wsc.Send ("generals", "GET", new JSONData (MainScene.userId));

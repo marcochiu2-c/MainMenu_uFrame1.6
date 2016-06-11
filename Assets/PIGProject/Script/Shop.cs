@@ -75,7 +75,7 @@ public class Shop : MonoBehaviour {
 		AssignGameObjectVariable ();
 		game = Game.Instance;
 		wsc = WsClient.Instance;
-		OpenIAB.enableDebugLogging (true,"Shop(): ");
+//		OpenIAB.enableDebugLogging (true,"Shop(): ");
 		prodIdDict = new Dictionary<string, ProductDesc> () {
 			{STARDUST_380,new ProductDesc("stardust",380)} ,{STARDUST_780,new ProductDesc("stardust",780)} ,
 			{STARDUST_1380,new ProductDesc("stardust",1380)} , {STARDUST_3680,new ProductDesc("stardust",3680)} ,
