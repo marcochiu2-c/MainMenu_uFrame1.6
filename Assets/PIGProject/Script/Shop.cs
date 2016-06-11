@@ -47,6 +47,9 @@ public class Shop : MonoBehaviour {
 	
 	const string MONTHLY_SUBSCRIPTION = "monthly_subscription";
 	const string SKU="";
+
+	static bool isSKUProductMapped = false;
+
 	string _label = "";    
 	Inventory _inventory = null;
 	//    ProductList prodList = new ProductList();
@@ -56,8 +59,8 @@ public class Shop : MonoBehaviour {
 	public static bool _isInitialized = false;
 	Game game;
 	WsClient wsc;
-	public Button firstChargeButton;
-	public Button monthlySubscriptionButton;
+	Button firstChargeButton;
+	Button monthlySubscriptionButton;
 	
 	string googlePublicKey ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0MgHyYj9uNDoSYWb//fv+QA8UB6bFmiPjtDK2keV9aniCYsj4csyHp5y4Q69lFGUneRe3jMGauaqm/uld3eK0UjBJTstpITffD7UQm3QFa8qTpOQkck337uT75s7FjrvVuz+8q4v23nDRPEgPL1RNTrPFjxkoQHQ94+Tm3xexPN5zWkkUgVAP2bJkhkRmrd1AeQ8i0x4CryPWCEO3CxF7IEwiXtQ2JqM4I9NDB4MKtU6Bi9q+/j2po0DU2YtZvgMnbw7aEyd6n2W1p1W9EUwJHYVs/OUqA8OhEuPnT9DneYZPT00BJkrTxBHjF40OPd42UK/4wOxgqtcOE5a1MyxKQIDAQAB";
 	
@@ -69,7 +72,7 @@ public class Shop : MonoBehaviour {
 	
 	public void CallShop(){
 		Utilities.ShowLog.Log ("CallShop()");
-
+		AssignGameObjectVariable ();
 		game = Game.Instance;
 		wsc = WsClient.Instance;
 		
@@ -89,33 +92,34 @@ public class Shop : MonoBehaviour {
 		currencyDict = new Dictionary<string, int> () {
 			{"feather",1},{"stardust",2},{"resource",3}
 		};
-		
-		// Map skus for different stores       
-		OpenIAB.mapSku(STARDUST_380, OpenIAB_Android.STORE_GOOGLE, STARDUST_380);
-		OpenIAB.mapSku(STARDUST_780, OpenIAB_Android.STORE_GOOGLE, STARDUST_780);
-		OpenIAB.mapSku(STARDUST_1380, OpenIAB_Android.STORE_GOOGLE, STARDUST_1380);
-		OpenIAB.mapSku(STARDUST_3680, OpenIAB_Android.STORE_GOOGLE, STARDUST_3680);
-		OpenIAB.mapSku(STARDUST_4980, OpenIAB_Android.STORE_GOOGLE, STARDUST_4980);
-		OpenIAB.mapSku(STARDUST_7880, OpenIAB_Android.STORE_GOOGLE, STARDUST_7880);
-		OpenIAB.mapSku(RESOURCE_76W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_76W);
-		OpenIAB.mapSku(RESOURCE_156W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_156W);
-		OpenIAB.mapSku(RESOURCE_276W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_276W);
-		OpenIAB.mapSku(RESOURCE_736W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_736W);
-		OpenIAB.mapSku(RESOURCE_996W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_996W);
-		OpenIAB.mapSku(RESOURCE_1576W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_1576W);
-		OpenIAB.mapSku(FEATHER_1900, OpenIAB_Android.STORE_GOOGLE, FEATHER_1900);
-		OpenIAB.mapSku(FEATHER_3900, OpenIAB_Android.STORE_GOOGLE, FEATHER_3900);
-		OpenIAB.mapSku(FEATHER_6900, OpenIAB_Android.STORE_GOOGLE, FEATHER_6900);
-		OpenIAB.mapSku(FEATHER_18400, OpenIAB_Android.STORE_GOOGLE, FEATHER_18400);
-		OpenIAB.mapSku(FEATHER_24900, OpenIAB_Android.STORE_GOOGLE, FEATHER_24900);
-		OpenIAB.mapSku(FEATHER_39400, OpenIAB_Android.STORE_GOOGLE, FEATHER_39400);
-		OpenIAB.mapSku(FIRST_CHARGE, OpenIAB_Android.STORE_GOOGLE, FIRST_CHARGE);
-		OpenIAB.mapSku(MONTHLY_SUBSCRIPTION, OpenIAB_Android.STORE_GOOGLE, MONTHLY_SUBSCRIPTION);
+		if (isSKUProductMapped == false) {
+			// Map skus for different stores       
+			OpenIAB.mapSku (STARDUST_380, OpenIAB_Android.STORE_GOOGLE, STARDUST_380);
+			OpenIAB.mapSku (STARDUST_780, OpenIAB_Android.STORE_GOOGLE, STARDUST_780);
+			OpenIAB.mapSku (STARDUST_1380, OpenIAB_Android.STORE_GOOGLE, STARDUST_1380);
+			OpenIAB.mapSku (STARDUST_3680, OpenIAB_Android.STORE_GOOGLE, STARDUST_3680);
+			OpenIAB.mapSku (STARDUST_4980, OpenIAB_Android.STORE_GOOGLE, STARDUST_4980);
+			OpenIAB.mapSku (STARDUST_7880, OpenIAB_Android.STORE_GOOGLE, STARDUST_7880);
+			OpenIAB.mapSku (RESOURCE_76W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_76W);
+			OpenIAB.mapSku (RESOURCE_156W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_156W);
+			OpenIAB.mapSku (RESOURCE_276W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_276W);
+			OpenIAB.mapSku (RESOURCE_736W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_736W);
+			OpenIAB.mapSku (RESOURCE_996W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_996W);
+			OpenIAB.mapSku (RESOURCE_1576W, OpenIAB_Android.STORE_GOOGLE, RESOURCE_1576W);
+			OpenIAB.mapSku (FEATHER_1900, OpenIAB_Android.STORE_GOOGLE, FEATHER_1900);
+			OpenIAB.mapSku (FEATHER_3900, OpenIAB_Android.STORE_GOOGLE, FEATHER_3900);
+			OpenIAB.mapSku (FEATHER_6900, OpenIAB_Android.STORE_GOOGLE, FEATHER_6900);
+			OpenIAB.mapSku (FEATHER_18400, OpenIAB_Android.STORE_GOOGLE, FEATHER_18400);
+			OpenIAB.mapSku (FEATHER_24900, OpenIAB_Android.STORE_GOOGLE, FEATHER_24900);
+			OpenIAB.mapSku (FEATHER_39400, OpenIAB_Android.STORE_GOOGLE, FEATHER_39400);
+			OpenIAB.mapSku (FIRST_CHARGE, OpenIAB_Android.STORE_GOOGLE, FIRST_CHARGE);
+			OpenIAB.mapSku (MONTHLY_SUBSCRIPTION, OpenIAB_Android.STORE_GOOGLE, MONTHLY_SUBSCRIPTION);
+			isSKUProductMapped = true;
+		}
 		//        OpenIAB.mapSku(SKU, OpenIAB_Android.STORE_AMAZON, "sku");
 		//        OpenIAB.mapSku(SKU, OpenIAB_Android.STORE_SAMSUNG, "100000105017/samsung_sku");
 		//        OpenIAB.mapSku(STARDUST_500, OpenIAB_iOS.STORE, STARDUST_500);
-		
-		
+
 		
 		var options = new OnePF.Options();
 		//        options.checkInventoryTimeoutMs = Options.INVENTORY_CHECK_TIMEOUT_MS * 2;
@@ -152,6 +156,14 @@ public class Shop : MonoBehaviour {
 		OpenIABEventManager.consumePurchaseSucceededEvent += consumePurchaseSucceededEvent;
 		OpenIABEventManager.consumePurchaseFailedEvent += consumePurchaseFailedEvent;
 	}
+
+	void AssignGameObjectVariable(){
+		if (gameObject.ToString () == "ShopHolder (UnityEngine.GameObject)") {
+			firstChargeButton = transform.GetChild(1).GetChild (0).Find ("ProductButton1st").GetComponent<Button>();
+			monthlySubscriptionButton = transform.GetChild(1).GetChild (0).Find ("ProductButtonMth").GetComponent<Button>();
+		}
+	}
+
 	private void OnDisable()
 	{
 		// Remove all event handlers

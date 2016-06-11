@@ -9,51 +9,37 @@ using Utilities;
 using uFrame.Kernel;
 
 public class SchoolField : MonoBehaviour {
-	public GameObject DollPanel;
-	public GameObject DataPanel;
-	public GameObject DisablePanel;
-	public GameObject NewSoldierPanel;
-	public GameObject AssignNSPopup;
-	public GameObject ButtonHolder;
-	public GameObject ArmyListHolder;
-	public GameObject ArmyQAHolder;
-	public GameObject MountListHolder;
-	public GameObject MountQAHolder;
-	public GameObject ArmorListHolder;
-	public GameObject ArmorQAHolder;
-	public GameObject AdjustSoildersAttribute;
-	public GameObject ShieldListHolder;
-	public GameObject ShieldQAHolder;
-	public GameObject TrainingQHolder;
-	public GameObject TrainingEquHolder;
-	public GameObject TrainingEquConfirmHolder;
-	public GameObject TrainingQAHolder;
-	public GameObject CannotTrainSoldierPopup;
-	public GameObject TrainingInProgressPopup;
-	public GameObject ConfirmSpeedUpHolder;
-	public GameObject ArtisanHolder;
-	public GameObject UnmountWeaponPanel;
+	public static GameObject DollPanel;
+	public static GameObject DataPanel;
+	public static GameObject DisablePanel;
+	public static GameObject NewSoldierPanel;
+	public static GameObject AssignNSPopup;
+	public static GameObject ArmyListHolder;
+	public static GameObject ArmyQAHolder;
+	public static GameObject MountListHolder;
+	public static GameObject MountQAHolder;
+	public static GameObject ArmorListHolder;
+	public static GameObject ArmorQAHolder;
+	public static GameObject AdjustSoildersAttribute;
+	public static GameObject ShieldListHolder;
+	public static GameObject ShieldQAHolder;
+	public static GameObject TrainingQHolder;
+	public static GameObject TrainingEquHolder;
+	public static GameObject TrainingEquConfirmHolder;
+	public static GameObject TrainingQAHolder;
+	public static GameObject CannotTrainSoldierPopup;
+	public static GameObject TrainingInProgressPopup;
+	public static GameObject ConfirmSpeedUpHolder;
+	public static GameObject ArtisanHolder;
+	public static GameObject UnmountWeaponPanel;
 	public static GameObject NotEnoughStardust;
-	public InputField TrainingQText;
-	public Button UnmountConfirm;
-	public Toggle UnmountAllToggle;
-	public Toggle UnmountWeaponToggle;
-	public Toggle UnmountArmorToggle;
-	public Toggle UnmountShieldToggle;
+	public static InputField TrainingQText;
+	public static Toggle UnmountAllToggle;
+	public static Toggle UnmountWeaponToggle;
+	public static Toggle UnmountArmorToggle;
+	public static Toggle UnmountShieldToggle;
 
 	bool isSpeedUpQuestion = false;
-
-	public static GameObject staticArmyQAHolder;
-	public static GameObject staticArmorQAHolder;
-	public static GameObject staticShieldQAHolder;
-	public static GameObject staticTrainingEquHolder;
-	public static GameObject staticDisablePanel;
-
-	public static Toggle staticUnmountAllToggle;
-	public static Toggle staticUnmountWeaponToggle;
-	public static Toggle staticUnmountArmorToggle;
-	public static Toggle staticUnmountShieldToggle;
-
 
 	public static int AssigningWeaponId=0;
 	public static int AssigningArmorId=0;
@@ -111,16 +97,8 @@ public class SchoolField : MonoBehaviour {
 //		Debug.Log (game.counselor [0].toJSON ().ToString ());
 //		Debug.Log (TotalSoldiersAvailable());
 
-		staticArmyQAHolder = ArmyQAHolder;
-		staticArmorQAHolder = ArmorQAHolder;
-		staticShieldQAHolder = ShieldQAHolder;
-		staticTrainingEquHolder = TrainingEquHolder;
-		staticDisablePanel = DisablePanel;
+		AssignGameObjectVariable ();
 
-		staticUnmountAllToggle = UnmountAllToggle;
-		staticUnmountWeaponToggle = UnmountWeaponToggle;
-		staticUnmountArmorToggle = UnmountArmorToggle;
-		staticUnmountShieldToggle = UnmountShieldToggle;
 		NotEnoughStardust = transform.FindChild ("NotEnoughStardust").gameObject;
 
 		DisablePanel.SetActive (false);
@@ -129,6 +107,36 @@ public class SchoolField : MonoBehaviour {
 		SetAdjustSoldierValues ();
 		p = ProductDict.Instance;
 		AddButtonListener ();
+	}
+
+	void AssignGameObjectVariable(){
+		DisablePanel = SchoolFieldScreenView.DisablePanel;
+		DollPanel = SchoolFieldScreenView.DollPanel;
+		DataPanel = SchoolFieldScreenView.DataPanel;
+		NewSoldierPanel = SchoolFieldScreenView.NewSoldierPanel;
+		AssignNSPopup = SchoolFieldScreenView.AssignNSHolder;
+		ArmyListHolder = SchoolFieldScreenView.ArmyListHolder;
+		ArmyQAHolder = SchoolFieldScreenView.ArmyQAHolder;
+		MountListHolder = SchoolFieldScreenView.MountListHolder;
+		MountQAHolder = transform.Find ("MountsQAHolder").gameObject;
+		ArmorListHolder = SchoolFieldScreenView.ArmorListHolder;
+		ArmorQAHolder = SchoolFieldScreenView.ArmorQAHolder;
+		ShieldListHolder = SchoolFieldScreenView.ShieldListHolder;
+		ShieldQAHolder = SchoolFieldScreenView.ShieldQAHolder;
+		AdjustSoildersAttribute = SchoolFieldScreenView.TrainingHolder;
+		TrainingQHolder = SchoolFieldScreenView.TrainingQHolder;
+		TrainingEquHolder = SchoolFieldScreenView.TrainingEquHolder;
+		TrainingEquConfirmHolder = SchoolFieldScreenView.TrainingEquConfirmAHolder;
+		TrainingQAHolder = SchoolFieldScreenView.TrainingQAHolder;
+		CannotTrainSoldierPopup = transform.Find ("CannotTrainSoldierPopup").gameObject;
+		TrainingInProgressPopup = SchoolFieldScreenView.TrainingInProgress;
+		ConfirmSpeedUpHolder = SchoolFieldScreenView.ConfirmSpeedUpHolder;
+		UnmountWeaponPanel = SchoolFieldScreenView.UnmountEquipment;
+		TrainingQText = TrainingQHolder.transform.Find ("TrainingMessage").GetChild (0).GetComponent<InputField> ();
+		UnmountAllToggle = UnmountWeaponPanel.transform.GetChild (1).GetChild (0).GetChild (0).GetComponent<Toggle> ();
+		UnmountWeaponToggle = UnmountWeaponPanel.transform.GetChild (1).GetChild (0).GetChild (1).GetComponent<Toggle> ();
+		UnmountArmorToggle = UnmountWeaponPanel.transform.GetChild (1).GetChild (0).GetChild (2).GetComponent<Toggle> ();
+		UnmountShieldToggle = UnmountWeaponPanel.transform.GetChild (1).GetChild (0).GetChild (3).GetComponent<Toggle> ();
 	}
 
 	void OnEnable(){
@@ -189,14 +197,14 @@ public class SchoolField : MonoBehaviour {
 		});
 		#region ChooseSoldierType  
 		//TODO assign action when changing Soldier Type
-		ButtonHolder.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => { });
-		ButtonHolder.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => { });
-		ButtonHolder.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => { });
-		ButtonHolder.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => { });
-		ButtonHolder.transform.GetChild(4).GetComponent<Button>().onClick.AddListener(() => { });
-		ButtonHolder.transform.GetChild(5).GetComponent<Button>().onClick.AddListener(() => { });
-		ButtonHolder.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(() => { });
-		ButtonHolder.transform.GetChild(7).GetComponent<Button>().onClick.AddListener(() => { });
+		SchoolFieldScreenView.SoldierType1Button.onClick.AddListener(() => { });
+		SchoolFieldScreenView.SoldierType2Button.onClick.AddListener(() => { });
+		SchoolFieldScreenView.SoldierType3Button.onClick.AddListener(() => { });
+		SchoolFieldScreenView.SoldierType4Button.onClick.AddListener(() => { });
+		SchoolFieldScreenView.SoldierType5Button.onClick.AddListener(() => { });
+		SchoolFieldScreenView.SoldierType6Button.onClick.AddListener(() => { });
+		SchoolFieldScreenView.SoldierType7Button.onClick.AddListener(() => { });
+		SchoolFieldScreenView.SoldierType8Button.onClick.AddListener(() => { });
 		#endregion
 
 		#region ConfirmationReplaceArmedEquipment
@@ -296,7 +304,7 @@ public class SchoolField : MonoBehaviour {
 			HidePanel(CannotTrainSoldierPopup);
 			TrainingQText.text = "";
 		});
-		UnmountConfirm.onClick.AddListener (() => {
+		Panel.GetConfirmButton (UnmountWeaponPanel).onClick.AddListener (() => {
 			if (UnmountAllToggle.isOn){
 				game.soldiers[AssigningSoldier - 1].attributes["weapon"].AsInt = 0;
 				game.soldiers[AssigningSoldier - 1].attributes["armor"].AsInt = 0;
@@ -333,7 +341,7 @@ public class SchoolField : MonoBehaviour {
 
 		CompletingTrainingSoldiers (AssigningSoldier - 1);
 		TimeSpan trainTime = Convert.ToDateTime (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"]) - DateTime.Now;
-		Debug.Log (AssigningStarDust);
+//		Debug.Log (AssigningStarDust);
 		game.wealth [1].Deduct (AssigningStarDust);
 		HidePanel (TrainingQAHolder);
 	}
@@ -402,7 +410,10 @@ public class SchoolField : MonoBehaviour {
 		}
 	}
 
-
+	/// <summary>
+	/// Shows the confirmation of the time need for new soldier training.
+	/// </summary>
+	/// <param name="soldierQuantity">Soldier quantity.</param>
 	void ShowConfirmNewSoldierTraining(int soldierQuantity){Debug.Log ("ShowConfirmNewSoldierTraining()");
 		var p = ProductDict.Instance;
 		string msg = "";
@@ -497,6 +508,9 @@ public class SchoolField : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Handler of user acceptance of the time need to train the new soldiers
+	/// </summary>
 	void ConfirmedTrainingForNewSoldiers(){
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
 		j.Add ("TargetHit",new JSONData(j["Hit"].AsFloat));
@@ -564,7 +578,7 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	public static void CheckArmedEquipmentAvailability(){
-		staticDisablePanel.SetActive (false);
+		DisablePanel.SetActive (false);
 		Debug.Log ("CheckArmedEquipmentAvailability()");
 		Game game = Game.Instance;
 		string msg = msgExtraEquipmentRequired;
@@ -585,8 +599,8 @@ public class SchoolField : MonoBehaviour {
 						game.soldiers [AssigningSoldier - 1].attributes["weapon"].AsInt = 0;
 						game.soldiers [AssigningSoldier - 1].UpdateObject();
 						lackEquipmentType = "Weapon";
-						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
-						staticShowPanel( staticTrainingEquHolder);
+						TrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
+						staticShowPanel( TrainingEquHolder);
 					}else{
 						game.soldiers [AssigningSoldier - 1].attributes["weapon"].AsInt = AssigningWeaponId;
 						game.soldiers [AssigningSoldier - 1].UpdateObject();
@@ -608,8 +622,8 @@ public class SchoolField : MonoBehaviour {
 						game.soldiers [AssigningSoldier - 1].attributes["armor"].AsInt = 0;
 						game.soldiers [AssigningSoldier - 1].UpdateObject();
 						lackEquipmentType = "Armor";
-						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
-						staticShowPanel( staticTrainingEquHolder);
+						TrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
+						staticShowPanel( TrainingEquHolder);
 					}else{
 						game.soldiers [AssigningSoldier - 1].attributes["armor"].AsInt = AssigningArmorId;
 						game.soldiers [AssigningSoldier - 1].UpdateObject();
@@ -633,8 +647,8 @@ public class SchoolField : MonoBehaviour {
 						game.soldiers [AssigningSoldier - 1].attributes["shield"].AsInt = 0;
 						game.soldiers [AssigningSoldier - 1].UpdateObject();
 						lackEquipmentType = "Shield";
-						staticTrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
-						staticShowPanel( staticTrainingEquHolder);
+						TrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text = msg;
+						staticShowPanel( TrainingEquHolder);
 					}else{
 						game.soldiers [AssigningSoldier - 1].attributes["shield"].AsInt = AssigningShieldId;
 						game.soldiers [AssigningSoldier - 1].UpdateObject();
@@ -796,15 +810,20 @@ public class SchoolField : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Raises the replace equipment event.
+	/// </summary>
+	/// <param name="armedType">Armed type.</param>
+	/// <param name="armedCategory">Armed category.</param>
 	public static void OnReplaceItem(int armedType,string armedCategory){
 		Dictionary<string,string> nameDict = new Dictionary<string, string> ();
 		Dictionary<string,GameObject> panelDict = new Dictionary<string, GameObject> ();
 		nameDict.Add ("weapon", "兵器");
 		nameDict.Add ("armor", "防具");
 		nameDict.Add ("shield", "盾");
-		panelDict.Add ("weapon", SchoolField.staticArmyQAHolder);
-		panelDict.Add ("armor", SchoolField.staticArmorQAHolder);
-		panelDict.Add ("shield", SchoolField.staticShieldQAHolder);
+		panelDict.Add ("weapon", ArmyQAHolder);
+		panelDict.Add ("armor", ArmorQAHolder);
+		panelDict.Add ("shield", ShieldQAHolder);
 		Game game = Game.Instance;
 		string qText = "";
 //		ProductDict p = ProductDict.Instance;
@@ -825,7 +844,7 @@ public class SchoolField : MonoBehaviour {
 				qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
 				qText = qText.Replace ("%New%", p.products [armedType].name);
 			}else{
-				staticHidePanel( staticArmyQAHolder);
+				staticHidePanel( ArmyQAHolder);
 				return;
 			}
 		}else if (armedCategory == "armor"){
@@ -833,7 +852,7 @@ public class SchoolField : MonoBehaviour {
 				qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
 				qText = qText.Replace ("%New%", p.products [armedType].name);
 			}else{
-				staticHidePanel( staticArmorQAHolder);
+				staticHidePanel( ArmorQAHolder);
 				return;
 			}
 		}else if (armedCategory == "shield"){
@@ -841,7 +860,7 @@ public class SchoolField : MonoBehaviour {
 				qText = qText.Replace ("%Orig%", p.products [game.soldiers [SchoolField.AssigningSoldier - 1].attributes [armedCategory].AsInt].name);
 				qText = qText.Replace ("%New%", p.products [armedType].name);
 			}else{
-				staticHidePanel( staticShieldQAHolder);
+				staticHidePanel( ShieldQAHolder);
 				return;
 			}
 		}
@@ -850,9 +869,9 @@ public class SchoolField : MonoBehaviour {
 
 	public void OnArmedReplacement(string category){
 		Dictionary<string,GameObject> panelDict = new Dictionary<string, GameObject> ();
-		panelDict.Add ("weapon", SchoolField.staticArmyQAHolder);
-		panelDict.Add ("armor", SchoolField.staticArmorQAHolder);
-		panelDict.Add ("shield", SchoolField.staticShieldQAHolder);
+		panelDict.Add ("weapon", ArmyQAHolder);
+		panelDict.Add ("armor", ArmorQAHolder);
+		panelDict.Add ("shield", ShieldQAHolder);
 		if (category == "weapon") {
 			game.soldiers[AssigningSoldier-1].attributes["weapon"].AsInt = AssigningWeaponId;
 		}else if (category == "armor") {
@@ -1008,6 +1027,10 @@ public class SchoolField : MonoBehaviour {
 		AssigningResources = 0;
 		AssigningStarDust = 0;
 	}
+
+	/// <summary>
+	/// Handler for Speed up production button clicked by user.
+	/// </summary>
 	void OnSpeedUpProductionClicked(){
 		HidePanel (TrainingEquConfirmHolder);
 		TimeSpan ts = AssigningTime - DateTime.Now;
@@ -1031,6 +1054,9 @@ public class SchoolField : MonoBehaviour {
 		ShowPanel (ConfirmSpeedUpHolder);
 	}
 
+	/// <summary>
+	/// Handler for the speed up production dialog confirmed event.
+	/// </summary>
 	void OnSpeedUpProductionConfirmed(){
 		int index = 0;
 		HidePanel (ConfirmSpeedUpHolder);
@@ -1203,6 +1229,9 @@ public class SchoolField : MonoBehaviour {
 		ShowPanel (TrainingQAHolder);
 	}
 
+	/// <summary>
+	/// Confirmed the training.
+	/// </summary>
 	void ConfirmedTraining(){
 		Transform valueHolder		 = AdjustSoildersAttribute.transform.GetChild (1);
 		Transform Hit				 = valueHolder.GetChild (0).GetChild (0).GetChild (0);
@@ -1350,12 +1379,12 @@ public class SchoolField : MonoBehaviour {
 	}
 
 	static void staticShowPanel(GameObject panel){
-		staticDisablePanel.SetActive (true);
+		DisablePanel.SetActive (true);
 		panel.SetActive (true);
 	}
 
 	static void staticHidePanel(GameObject panel){
-		staticDisablePanel.SetActive (false);
+		DisablePanel.SetActive (false);
 		panel.SetActive (false);
 	}
 

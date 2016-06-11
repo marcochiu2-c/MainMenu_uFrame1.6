@@ -108,10 +108,10 @@ public class LoginScreen : MonoBehaviour {
 			user =null;
 		}
 		
-		if (game.login.snsType==1){  // if account already login with SNS
-			//			Debug.Log ("account already login with SNS");
-			LoginSNS();
-		}	
+//		if (game.login.snsType==1 && isSNSInit){  // if account already login with SNS
+//			//			Debug.Log ("account already login with SNS");
+//			LoginSNS();
+//		}	
 		//		}else if (game.login.snsType==0 && game.login.id==0){// not yet registered with SNS
 		//			//TODO show Facebook register reminder first
 		//
@@ -234,10 +234,15 @@ public class LoginScreen : MonoBehaviour {
 			yield return null;
 		}	
 	}
-	
+
+	static bool tryLogin = false;
 	private bool LoginSNS(){
-		Debug.Log ("Logging in with SNS");
+
 		if (LoginScreen.isSNSInit){
+			if (tryLogin) return false;
+			Debug.Log ("Logging in with SNS");
+			tryLogin = true;
+
 			var perms = new List<string>(){"public_profile", "email", "user_friends","user_photos"};
 			FB.LogInWithReadPermissions(perms, AuthCallback);
 			
@@ -278,6 +283,10 @@ public class LoginScreen : MonoBehaviour {
 			FB.ActivateApp();
 			// Continue with Facebook SDK
 			LoginScreen.isSNSInit = true;
+			if (game.login.snsType==1) {
+				Utilities.ShowLog.Log ("SNS ID: " + game.login.snsURL);
+				LoginSNS ();
+			}
 			// ...
 		} else {
 			Debug.Log("Failed to Initialize the Facebook SDK");

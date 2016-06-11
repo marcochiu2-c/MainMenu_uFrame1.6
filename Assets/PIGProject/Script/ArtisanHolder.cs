@@ -11,18 +11,18 @@ using System.Collections.Generic;
 public class ArtisanHolder : MonoBehaviour {
 	Game game;
 	WsClient wsc = WsClient.Instance;
-	public GameObject ArtisanWeaponPanel;
-	public GameObject ArtisanArmorPanel;
-	public GameObject ArtisanShieldPanel;
+	GameObject ArtisanWeaponPanel;
+	GameObject ArtisanArmorPanel;
+	GameObject ArtisanShieldPanel;
 
 
-	public GameObject DisablePopup;
-	public GameObject ArtisanConfirmPopup;
-	public GameObject NeedExtraResourcesPopup;
-	public GameObject SpeedUpPopup;
-	public GameObject EquipmentQHolder;
-	public GameObject JobCancelPopup;
-	public GameObject DetailPanel;
+	public static GameObject DisablePopup;
+	public static GameObject ArtisanConfirmPopup;
+	public static GameObject NeedExtraResourcesPopup;
+	public static GameObject SpeedUpPopup;
+	public static GameObject EquipmentQHolder;
+	public static GameObject JobCancelPopup;
+	public static GameObject DetailPanel;
 	Button BackButton;
 	Button CloseButton;
 	static ProductDict p  = ProductDict.Instance;
@@ -34,11 +34,6 @@ public class ArtisanHolder : MonoBehaviour {
 	static int NumberOfEquipmentToBeProduced=0;
 	public static int CancelType = 0;
 	public static int CancelId   = 0;
-	public static GameObject staticDisablePopup;
-	public static GameObject staticSpeedUpPopup;
-	public static GameObject staticJobCancelPopup;
-	public static GameObject staticEquipmentQHolder;
-	public static GameObject staticDetailPanel;
 
 	int latestEta = 0;
 	// Use this for initialization
@@ -48,29 +43,38 @@ public class ArtisanHolder : MonoBehaviour {
 
 
 	public void CallArtisanHolder(){
-		game = Game.Instance;
-		BackButton = transform.GetChild (2).GetComponent<Button> ();
-		CloseButton = transform.GetChild (3).GetComponent<Button> ();
+
 		AddButtonListener ();
-
 		latestEta = GetLatestEta ();
-
 		SetItemButtonActivateWhenJobComplete ();
 
-		staticDisablePopup = DisablePopup;
-		staticSpeedUpPopup = SpeedUpPopup;
-		staticJobCancelPopup = JobCancelPopup;
-		staticEquipmentQHolder = EquipmentQHolder;
-		staticDetailPanel = DetailPanel;
 	}
 
 	void OnEnable(){
 		game = Game.Instance;
+		AssignGameObjectVariable ();
 		SetPanel (game.weapon);
 		SetPanel (game.armor);
 		SetPanel (game.shield);
 		InvokeRepeating ("updateProductionEtaTimeText", 0.5f, 1);
 		InvokeRepeating ("OnArtisanJobsComplete", 0.5f, 1);
+	}
+
+	void AssignGameObjectVariable(){
+		ArtisanWeaponPanel = ArtisanScreenView.armsPopup.transform.GetChild (0).GetChild (0).gameObject;
+		ArtisanArmorPanel = ArtisanScreenView.armorPopup.transform.GetChild (0).GetChild (0).gameObject;
+		ArtisanShieldPanel = ArtisanScreenView.shieldPopup.transform.GetChild (0).GetChild (0).gameObject;
+		Transform PopupHolder = transform.GetChild (0).Find ("PopupHolder");
+		DisablePopup = PopupHolder.Find ("DisablePanel").gameObject;
+		ArtisanConfirmPopup = PopupHolder.Find ("ArtisanConfirmPopup").gameObject;
+		NeedExtraResourcesPopup = PopupHolder.Find ("NeedExtraResourcesPopup").gameObject;
+		SpeedUpPopup = PopupHolder.Find ("SpeedUpPopup").gameObject;
+		EquipmentQHolder = PopupHolder.Find ("EquimentQHolder").gameObject;
+		JobCancelPopup = PopupHolder.Find ("CancelMakePopup").gameObject;
+		DetailPanel = PopupHolder.Find ("DetailPopup").gameObject;
+
+		BackButton = transform.GetChild (2).GetComponent<Button> ();
+		CloseButton = transform.GetChild (3).GetComponent<Button> ();
 	}
 
 	void OnDisable(){
@@ -148,6 +152,10 @@ public class ArtisanHolder : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Free up resources while leaving holder
+	/// </summary>
+
 	void DestroyPrefabObject(){
 		var count = WeaponMaking.Weapons.Count;
 		for (int i = 0 ; i < count ; i++){
@@ -213,6 +221,9 @@ public class ArtisanHolder : MonoBehaviour {
 		});
 	}
 
+	/// <summary>
+	/// Handler of confirming the number of equipment to be produced.
+	/// </summary>
 	void OnEquipmentQHolderConfirmed(){
 		HidePanel(EquipmentQHolder);
 		NumberOfEquipmentToBeProduced = int.Parse(EquipmentQHolder.transform.GetChild(1).GetChild(0).GetComponent<InputField>().text);
@@ -220,7 +231,10 @@ public class ArtisanHolder : MonoBehaviour {
 		ShowPanel(ArtisanConfirmPopup);
 		SetArtisanConfirmPopupText ();
 	}
-
+	
+	/// <summary>
+	/// Handler of confirming the Currency (Resources) that need to produce the equipments.
+	/// </summary>
 	void OnArtisanConfirmPopupConfirmed(){
 		int cost = p.products [IdEquipmentToBeProduced].attributes ["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced;
 		HidePanel(ArtisanConfirmPopup);
@@ -416,6 +430,10 @@ public class ArtisanHolder : MonoBehaviour {
 
 	}
 
+	/// <summary>
+	/// Prepare for the proceeding job prefabs to be highlighted 
+	/// </summary>
+
 	void HighlightProceedingJobs(){
 		if (game.artisans [0].etaTimestamp > DateTime.Now) {
 			IdWeaponWhichProducing = game.artisans[0].targetId;
@@ -428,6 +446,10 @@ public class ArtisanHolder : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Find and return the latest ending job 
+	/// </summary>
+	/// <returns>Return the latest ending job </returns>
 	int GetLatestEta(){
 		int last = 0;
 		if (game.artisans [0].etaTimestamp < game.artisans [1].etaTimestamp) {

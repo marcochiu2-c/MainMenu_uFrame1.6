@@ -24,7 +24,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
 	public static Button TeachButton;
 	
 	public static GameObject DisablePanel;
-	public static GameObject qaHolder;
+	public static GameObject QAHolder;
 	
 	public static GameObject SelfStudyHolder;
 	public static GameObject TeachHolder;
@@ -50,7 +50,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		Transform panel = ScreenUIContainer.transform.Find ("Panel");
 		Transform btnHolder = panel.Find ("ButtonHolder");
 		DisablePanel = panel.Find ("DisablePanel").gameObject;
-		qaHolder = panel.Find ("QAHolder").gameObject;
+		QAHolder = panel.Find ("QAHolder").gameObject;
 		SelfStudyHolder = panel.Find ("SelfStudyHolder").gameObject;
 		TeachHolder = panel.Find ("TeachHolder").gameObject;
 		IQButton = btnHolder.Find ("IQButton").GetComponent<Button> ();
@@ -58,8 +58,8 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		KnowledgeButton = btnHolder.Find ("KnowledgeButton").GetComponent<Button> ();
 		FightingButton = btnHolder.Find ("FightingButton").GetComponent<Button> ();
 
-		SelfStudyButton = qaHolder.transform.GetChild (1).GetChild (0).GetComponent<Button> ();
-		TeachButton = qaHolder.transform.GetChild (1).GetChild (1).GetComponent<Button> ();
+		SelfStudyButton = QAHolder.transform.GetChild (1).GetChild (0).GetComponent<Button> ();
+		TeachButton = QAHolder.transform.GetChild (1).GetChild (1).GetComponent<Button> ();
 
 		SelfStudyPopupTitle = SelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
 		TeachPopupTitle = Utilities.Panel.GetHeader (TeachHolder);
@@ -75,7 +75,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		// Any designer bindings are created in the base implementation.
 		
 		this.BindButtonToHandler (IQButton, () => {
-			qaHolder.SetActive(true);
+			QAHolder.SetActive(true);
 			SelfStudyPopupTitle.text = "智 商";
 			TeachPopupTitle.text = "智 商";
 			//button5.supportRichText = true;
@@ -90,7 +90,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		});
 		
 		this.BindButtonToHandler (CommandedButton, () => {
-			qaHolder.SetActive(true);
+			QAHolder.SetActive(true);
 			SelfStudyPopupTitle.text = "統 率";
 			TeachPopupTitle.text = "統 率";
 			
@@ -103,7 +103,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		});
 		
 		this.BindButtonToHandler (KnowledgeButton, () => {
-			qaHolder.SetActive(true);	
+			QAHolder.SetActive(true);	
 			SelfStudyPopupTitle.text = "學 問";
 			TeachPopupTitle.text = "學 問";
 			
@@ -115,7 +115,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		});
 		
 		this.BindButtonToHandler (FightingButton, () => {
-			qaHolder.SetActive(true);
+			QAHolder.SetActive(true);
 			SelfStudyPopupTitle.text = "陣 法";
 			TeachPopupTitle.text = "陣 法";
 			
@@ -136,14 +136,14 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		this.BindButtonToHandler (CloseButton, () => {
 			SelfStudyHolder.SetActive (false);
 			TeachHolder.SetActive (false);
-			qaHolder.SetActive(false);
+			QAHolder.SetActive(false);
 			
 			// TODO: move next statement to Model code
 			Academy.activePopup = ActivePopupEnum.none;
 		});
 		this.BindButtonToHandler (SelfStudyButton, () => {
 			Debug.Log ("SelfStudyButton clicked");
-			qaHolder.SetActive(false);
+			QAHolder.SetActive(false);
 			SelfStudyHolder.SetActive (true);
 			
 			//			CommandedPopup.gameObject.SetActive (false);
@@ -152,7 +152,7 @@ public class AcademyScreenView : AcademyScreenViewBase {
 		});
 		this.BindButtonToHandler (TeachButton, () => {
 			Debug.Log ("TeachButton clicked");
-			qaHolder.SetActive(false);
+			QAHolder.SetActive(false);
 			TeachHolder.transform.localScale = new Vector3(1, 1, 1);
 			//			academy =  new Academy();
 			//			academy.SetDataGrid();

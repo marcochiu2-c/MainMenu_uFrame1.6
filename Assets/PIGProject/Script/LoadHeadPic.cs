@@ -151,7 +151,7 @@ public class LoadHeadPic : MonoBehaviour
 		Debug.Log ("LoadHeadPic.SetCharacters()");
 		LoadHeadPic headPic = LoadHeadPic.Instance;
 		headPic.YaSinTipMukYi  = Instantiate( Resources.Load<Sprite>("Characters/也先帖木兒/Head-YaSinTipMukYi")) as Sprite;
-		headPic.YuHim  = Instantiate( Resources.Load<Sprite>("Characters/于謙/YuHim")) as Sprite;
+		headPic.YuHim  = Instantiate( Resources.Load<Sprite>("Characters/于謙/Head-YuHim")) as Sprite;
 		headPic.NgTseSeui  = Instantiate( Resources.Load<Sprite>("Characters/伍子胥/Head-NgTseSeui")) as Sprite;
 		headPic.BakPei  = Instantiate( Resources.Load<Sprite>("Characters/伯嚭/Head-BakPei")) as Sprite;
 		headPic.SinJan  = Instantiate( Resources.Load<Sprite>("Characters/先軫/Head-SinJan")) as Sprite;
@@ -160,7 +160,7 @@ public class LoadHeadPic : MonoBehaviour
 		headPic.LauBingChung  = Instantiate( Resources.Load<Sprite>("Characters/劉秉忠/Head-LauBingChung")) as Sprite;
 		headPic.SiNeiGin  = Instantiate( Resources.Load<Sprite>("Characters/史彌堅/Head-SiNeiGin")) as Sprite;
 		headPic.SiSiMing  = Instantiate( Resources.Load<Sprite>("Characters/史思明/Head-SiSiMing")) as Sprite;
-		headPic.SiManShui  = Instantiate( Resources.Load<Sprite>("Characters/史萬歲/SiManShui")) as Sprite;
+		headPic.SiManShui  = Instantiate( Resources.Load<Sprite>("Characters/史萬歲/Head-SiManShui")) as Sprite;
 		headPic.SiMaYi  = Instantiate( Resources.Load<Sprite>("Characters/司馬懿/Head-SiMaYi")) as Sprite;
 		headPic.NgSaamGwai  = Instantiate( Resources.Load<Sprite>("Characters/吳三桂/Head-NgSaamGwai")) as Sprite;
 		headPic.NgHei  = Instantiate( Resources.Load<Sprite>("Characters/吳起/Head-NgHei")) as Sprite;
@@ -169,7 +169,7 @@ public class LoadHeadPic : MonoBehaviour
 		headPic.ChowYu = Instantiate( Resources.Load<Sprite>("Characters/周瑜/Head-ChowYu")) as Sprite;
 		headPic.ChowSauYing  = Instantiate( Resources.Load<Sprite>("Characters/周秀英/Head-ChowSauYing")) as Sprite;
 		headPic.JitBit  = Instantiate( Resources.Load<Sprite>("Characters/哲別/Head-JitBit")) as Sprite;
-		headPic.SinHongShun  = Instantiate( Resources.Load<Sprite>("Characters/單雄信/SinHongShun")) as Sprite;
+		headPic.SinHongShun  = Instantiate( Resources.Load<Sprite>("Characters/單雄信/Head-SinHongShun")) as Sprite;
 		headPic.WongShekGong  = Instantiate( Resources.Load<Sprite>("Characters/圮上老人.黃石公/Head-WongShekGong")) as Sprite;
 		headPic.HaHouDun = Instantiate( Resources.Load<Sprite>("Characters/夏侯惇/Head-HaHouDun")) as Sprite;
 		headPic.GeungTseNga  = Instantiate( Resources.Load<Sprite>("Characters/姜子牙/Head-GeungTseNga")) as Sprite;
@@ -180,7 +180,7 @@ public class LoadHeadPic : MonoBehaviour
 		headPic.WaiLiuTse  = Instantiate( Resources.Load<Sprite>("Characters/尉繚子/Head-WaiLiuTse")) as Sprite;
 		headPic.WaiChiGingDak  = Instantiate( Resources.Load<Sprite>("Characters/尉遲敬德/Head-WaiChiGingDak")) as Sprite;
 		headPic.NgokFei  = Instantiate( Resources.Load<Sprite>("Characters/岳飛/Head-NgokFei")) as Sprite;
-		headPic.SheungYuChun  = Instantiate( Resources.Load<Sprite>("Characters/常遇春/SheungYuChun")) as Sprite;
+		headPic.SheungYuChun  = Instantiate( Resources.Load<Sprite>("Characters/常遇春/Head-SheungYuChun")) as Sprite;
 		headPic.LimPaul = Instantiate( Resources.Load<Sprite>("Characters/廉頗/Head-LimPaul")) as Sprite;
 		headPic.CheungShukYe  = Instantiate( Resources.Load<Sprite>("Characters/張叔夜/Head-CheungSukYe")) as Sprite;
 		headPic.CheungLeung  = Instantiate( Resources.Load<Sprite>("Characters/張良/Head-CheungLeung")) as Sprite;
@@ -208,8 +208,8 @@ public class LoadHeadPic : MonoBehaviour
 		headPic.YeungSou  = Instantiate( Resources.Load<Sprite>("Characters/楊素/Head-YeungSou")) as Sprite;
 		headPic.YeungHou = Instantiate( Resources.Load<Sprite>("Characters/楊鎬/Head-YeungHou")) as Sprite;
 		headPic.LokNgai  = Instantiate( Resources.Load<Sprite>("Characters/樂毅/Head-LokNgai")) as Sprite;
-		headPic.DikChing  = Instantiate( Resources.Load<Sprite>("Characters/狄青/DikChing")) as Sprite;
-		headPic.WongBakDong  = Instantiate( Resources.Load<Sprite>("Characters/王伯當/WongBakDong")) as Sprite;
+		headPic.DikChing  = Instantiate( Resources.Load<Sprite>("Characters/狄青/Head-DikChing")) as Sprite;
+		headPic.WongBakDong  = Instantiate( Resources.Load<Sprite>("Characters/王伯當/Head-WongBakDong")) as Sprite;
 		headPic.WongFaChing  = Instantiate( Resources.Load<Sprite>("Characters/王化貞/Head-WongFaChing")) as Sprite;
 		headPic.WongYuenMou = Instantiate( Resources.Load<Sprite>("Characters/王玄謨/Head-WongYuenMou")) as Sprite;
 		headPic.WongYi  = Instantiate( Resources.Load<Sprite>("Characters/王異/Head-WongYi")) as Sprite;
@@ -253,10 +253,10 @@ public class LoadHeadPic : MonoBehaviour
 		headPic.MaChiu  = Instantiate( Resources.Load<Sprite>("Characters/馬超/Head-MaChiu")) as Sprite;
 		headPic.SinYuChungTong = Instantiate( Resources.Load<Sprite>("Characters/鮮于仲通/Head-SinYuChungTong")) as Sprite;
 		headPic.WongChung  = Instantiate( Resources.Load<Sprite>("Characters/黃忠/Head-WongChung")) as Sprite;
-		headPic.PongDak  = Instantiate( Resources.Load<Sprite>("Characters/龐德/PongDak")) as Sprite;
+		headPic.PongDak  = Instantiate( Resources.Load<Sprite>("Characters/龐德/Head-PongDak")) as Sprite;
 		headPic.PongGyun  = Instantiate( Resources.Load<Sprite>("Characters/龐涓/Head-PongGyun")) as Sprite;
 		headPic.PongTung  = Instantiate( Resources.Load<Sprite>("Characters/龐統/Head-PongTung")) as Sprite;
-		headPic.KwanYu = Instantiate( Resources.Load<Sprite>("Characters/關羽/關公")) as Sprite;
+		headPic.KwanYu = Instantiate( Resources.Load<Sprite>("Characters/關羽/Head-關公")) as Sprite;
 		headPic._setCharacters ();
 
 		return headPic;

@@ -133,7 +133,8 @@ public class MainScene : MonoBehaviour {
 		AddButtonListener ();
 		shop = GetComponent<Shop> ();
 		Invoke ("CallShop", 3);
-
+		game = Game.Instance;
+		wsc = WsClient.Instance;
 		ArtisanPanel = transform.parent.FindChild ("ArtisanHolder").gameObject;
 //		wsc.Send("notice_url","GET",new JSONData (MainScene.userId));
 		wsc.Send("notice_text","GET",new JSONData (MainScene.userId));
@@ -144,6 +145,18 @@ public class MainScene : MonoBehaviour {
 		InvokeRepeating ("OnAcademyTrainingComplete", 3, 4);
 		InvokeRepeating ("OnArtisanJobsComplete", 3, 4);
 		InvokeRepeating ("OnTechTreeTrainingComplete", 2, 4);
+		InvokeRepeating ("OnCurrencyDisplayMissing", 0, 2);
+	}
+
+	void OnCurrencyDisplayMissing(){
+		if (silverFeatherText == null) {
+			needReloadFromDB = true;
+			CallMainScene();
+		}
+		if (silverFeatherText.text == "銀羽") {
+			wsc = WsClient.Instance;
+			CallMainScene();
+		}
 	}
 
 	void OnTechTreeTrainingComplete(){
@@ -160,16 +173,16 @@ public class MainScene : MonoBehaviour {
 			game.trainings [43].type = 0;
 			game.trainings [43].attributes ["TechTreeCounselors"] = new JSONArray();
 			game.trainings [43].UpdateObject();
-			if (TechTree.staticTotalIQText != null){
+			if (TechTree.TotalIQText != null){
 				for (int i = 0; i < 5; i++){
-					TechTree.staticCounselorButtons[i].GetComponent<Image>().sprite = null;
-					TechTree.staticCounselorButtons[i].transform.GetChild(0).GetComponent<Text>().text = "";
+					TechTree.CounselorButtons[i].GetComponent<Image>().sprite = null;
+					TechTree.CounselorButtons[i].transform.GetChild(0).GetComponent<Text>().text = "";
 				}
-				TechTree.staticTotalIQText.text = "";
-				TechTree.staticTechnologyLabel.text = "";
-				TechTree.staticFromLv.text = "";
-				TechTree.staticToLv.text = "";
-				TechTree.staticRemainTrainingTime.text = "00:00:00";
+				TechTree.TotalIQText.text = "";
+				TechTree.TechnologyLabel.text = "";
+				TechTree.FromLv.text = "";
+				TechTree.ToLv.text = "";
+				TechTree.RemainTrainingTime.text = "00:00:00";
 			}
 		}
 
@@ -298,7 +311,8 @@ public class MainScene : MonoBehaviour {
 			Application.Quit ();
 		}
 	}
-	
+
+
 	void OnSchoolFieldSoldierTrainComplete(){
 		int NumberOfTypeOfSoldiers = 8;
 		//		ShowLog.Log (Game.Instance);
@@ -311,43 +325,6 @@ public class MainScene : MonoBehaviour {
 				if (game.soldiers [i].attributes ["ETATrainingTime"] != null) {
 					if (Convert.ToDateTime (game.soldiers [i].attributes ["ETATrainingTime"]) < DateTime.Now) {
 						SchoolField.CompletingTrainingSoldiers(i);
-//						game.soldiers [i].attributes ["Hit"].AsFloat = game.soldiers [i].attributes ["TargetHit"].AsFloat;
-//						game.soldiers [i].attributes ["Dodge"].AsFloat = game.soldiers [i].attributes ["TargetDodge"].AsFloat;
-//						game.soldiers [i].attributes ["Strength"].AsFloat = game.soldiers [i].attributes ["TargetStrength"].AsFloat;
-//						game.soldiers [i].attributes ["AttackSpeed"].AsFloat = game.soldiers [i].attributes ["TargetAttackSpeed"].AsFloat;
-//						game.soldiers [i].attributes ["Morale"].AsFloat = game.soldiers [i].attributes ["TargetMorale"].AsFloat;
-//						game.soldiers [i].attributes ["Wand"].AsFloat = game.soldiers [i].attributes ["TargetWand"].AsFloat;
-//						game.soldiers [i].attributes ["PiercingLongWeapon"].AsFloat = game.soldiers [i].attributes ["TargetPiercingLongWeapon"].AsFloat;
-//						game.soldiers [i].attributes ["Bows"].AsFloat = game.soldiers [i].attributes ["TargetBows"].AsFloat;
-//						game.soldiers [i].attributes ["HighEndBows"].AsFloat = game.soldiers [i].attributes ["TargetHighEndBows"].AsFloat;
-//						game.soldiers [i].attributes ["HiddenWeapon"].AsFloat = game.soldiers [i].attributes ["TargetHiddenWeapon"].AsFloat;
-//						game.soldiers [i].attributes ["Knife"].AsFloat = game.soldiers [i].attributes ["TargetKnife"].AsFloat;
-//						game.soldiers [i].attributes ["HackTypeLongWeapon"].AsFloat = game.soldiers [i].attributes ["TargetHackTypeLongWeapon"].AsFloat;
-//						game.soldiers [i].attributes ["Sword"].AsFloat = game.soldiers [i].attributes ["TargetSword"].AsFloat;
-//						game.soldiers [i].attributes ["HighEndSword"].AsFloat = game.soldiers [i].attributes ["TargetHighEndSword"].AsFloat;
-//						game.soldiers [i].attributes ["SpecialWeapon"].AsFloat = game.soldiers [i].attributes ["TargetSpecialWeapon"].AsFloat;
-//						game.soldiers [i].attributes ["Axe"].AsFloat = game.soldiers [i].attributes ["TargetAxe"].AsFloat;
-//						game.soldiers [i].attributes ["Hammer"].AsFloat = game.soldiers [i].attributes ["TargetHammer"].AsFloat;
-//						game.soldiers [i].attributes.Remove ("ETATrainingTime");
-//						game.soldiers [i].attributes.Remove ("TargetHit");
-//						game.soldiers [i].attributes.Remove ("TargetDodge");
-//						game.soldiers [i].attributes.Remove ("TargetStrength");
-//						game.soldiers [i].attributes.Remove ("TargetAttackSpeed");
-//						game.soldiers [i].attributes.Remove ("TargetMorale");
-//						game.soldiers [i].attributes.Remove ("TargetWand");
-//						game.soldiers [i].attributes.Remove ("TargetPiercingLongWeapon");
-//						game.soldiers [i].attributes.Remove ("TargetBows");
-//						game.soldiers [i].attributes.Remove ("TargetHighEndBows");
-//						game.soldiers [i].attributes.Remove ("TargetHiddenWeapon");
-//						game.soldiers [i].attributes.Remove ("TargetKnife");
-//						game.soldiers [i].attributes.Remove ("TargetHackTypeLongWeapon");
-//						game.soldiers [i].attributes.Remove ("TargetSword");
-//						game.soldiers [i].attributes.Remove ("TargetHighEndSword");
-//						game.soldiers [i].attributes.Remove ("TargetSpecialWeapon");
-//						game.soldiers [i].attributes.Remove ("TargetAxe");
-//						game.soldiers [i].attributes.Remove ("TargetHammer");
-//						game.soldiers [i].quantity = game.soldiers [i].attributes ["trainingSoldiers"].AsInt;
-//						game.soldiers [i].UpdateObject ();
 					}
 				}
 			}
@@ -368,6 +345,9 @@ public class MainScene : MonoBehaviour {
 		shop.CallShop ();
 	}
 
+	/// <summary>
+	/// Check if game variable is not assigned, will reload from db if so.
+	/// </summary>
 	void CheckObject(){
 		if (game == null) {
 			ShowLog.Log ("Game object null");
@@ -424,11 +404,14 @@ public class MainScene : MonoBehaviour {
 		}
 	}
 
-
+	/// <summary>
+	///  Handler to assign JSON object that received from server
+	/// </summary>
 	void SetGameObjectFromServer(){
 		var count = 0;
 		if (MainScene.UserInfo != null) {
-			game.login = new Login ((JSONClass)MainScene.UserInfo);TechTree.GetAvailableTechList ();
+			game.login = new Login ((JSONClass)MainScene.UserInfo);
+//			TechTree.GetAvailableTechList ();
 //			ShowLog.Log (game.login.ToString());
 			MainScene.UserInfo = null;
 			if (MainScene.userId == 0){
@@ -587,6 +570,7 @@ public class MainScene : MonoBehaviour {
 
 //			MainScene.ProfilePictureSprite = Sprite.Create (result.Texture, new Rect (0, 0, 128, 128), new Vector2 ());
 			Sprite avatar = Sprite.Create (result.Texture, new Rect (0, 0, 128, 128), new Vector2 ());
+			MainCharButton = GameObject.Find("MainCharButton").GetComponent<Button>();
 			MainCharButton.image.sprite = avatar;
 		}else{
 			ShowLog.Log(result.Error);

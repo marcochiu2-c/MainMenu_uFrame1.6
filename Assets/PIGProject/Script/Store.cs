@@ -10,10 +10,11 @@ public class Store : MonoBehaviour
 {
 	Game game;
 	WsClient wsc;
-	public GameObject WeaponStorePanel;
-	public GameObject ArmorStorePanel;
-	public GameObject ShieldStorePanel;
-	public GameObject MountStorePanel;
+	static GameObject WeaponStorePanel;
+	static GameObject ArmorStorePanel;
+	static GameObject ShieldStorePanel;
+	static GameObject MountStorePanel;
+	Transform PopupHolder;
 	//List<GameObject> StorageItem = new List<GameObject> ();
 
 	float prefabWidth = 0f;
@@ -41,6 +42,7 @@ public class Store : MonoBehaviour
 	{
 		game = Game.Instance;
 		wsc = WsClient.Instance;
+		AssignGameObjectVariable ();
 		ProductDict p = new ProductDict ();
 		int weaponCount = game.weapon.Count;
 		int armorCount = game.armor.Count;
@@ -63,6 +65,19 @@ public class Store : MonoBehaviour
 //		for (int i = 0; i < mountCount; i++) {
 //			SetItem("Mount",i , p.products[ game.mount[i].type].name,game.mount[i].quantity);
 //		}
+	}
+
+	void AssignGameObjectVariable(){
+		PopupHolder = transform.Find ("PopupHolder");
+		WeaponStorePanel = GetGridLayoutPanel("WeaponGridList");
+		ArmorStorePanel = GetGridLayoutPanel("ArmorGridList");
+		ShieldStorePanel = GetGridLayoutPanel("ShieldGridList");
+		MountStorePanel = GetGridLayoutPanel("MountsGridList");
+	}
+
+	GameObject GetGridLayoutPanel(string name){
+		Transform gridList = PopupHolder.Find (name);
+		return gridList.GetChild (0).GetChild (0).GetChild (0).gameObject;
 	}
 
 	public void SetPanel(string panel,int quantity){
