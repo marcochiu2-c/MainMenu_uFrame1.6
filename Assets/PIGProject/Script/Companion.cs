@@ -94,6 +94,7 @@ public class Companion : MonoBehaviour
 				GameObject.DestroyImmediate(co.gameObject);
 			}
 			CompanionPrefab.person.Clear();
+			CounselorsHolder.gameObject.SetActive(true);
 		});
 	}
 

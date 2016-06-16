@@ -23,6 +23,8 @@ public class ArtisanHolder : MonoBehaviour {
 	public static GameObject EquipmentQHolder;
 	public static GameObject JobCancelPopup;
 	public static GameObject DetailPanel;
+	public static Transform PopupHolder;
+	public static Text TimeLeftText;
 	Button BackButton;
 	Button CloseButton;
 	static ProductDict p  = ProductDict.Instance;
@@ -58,13 +60,14 @@ public class ArtisanHolder : MonoBehaviour {
 		SetPanel (game.shield);
 		InvokeRepeating ("updateProductionEtaTimeText", 0.5f, 1);
 		InvokeRepeating ("OnArtisanJobsComplete", 0.5f, 1);
+		Debug.Log( ArtisanScreenView.armsPopup.transform.GetChild (0).GetChild (0).gameObject);
 	}
 
 	void AssignGameObjectVariable(){
 		ArtisanWeaponPanel = ArtisanScreenView.armsPopup.transform.GetChild (0).GetChild (0).gameObject;
 		ArtisanArmorPanel = ArtisanScreenView.armorPopup.transform.GetChild (0).GetChild (0).gameObject;
 		ArtisanShieldPanel = ArtisanScreenView.shieldPopup.transform.GetChild (0).GetChild (0).gameObject;
-		Transform PopupHolder = transform.GetChild (0).Find ("PopupHolder");
+		PopupHolder = transform.GetChild (1).Find ("PopupHolder");
 		DisablePopup = PopupHolder.Find ("DisablePanel").gameObject;
 		ArtisanConfirmPopup = PopupHolder.Find ("ArtisanConfirmPopup").gameObject;
 		NeedExtraResourcesPopup = PopupHolder.Find ("NeedExtraResourcesPopup").gameObject;
@@ -72,6 +75,7 @@ public class ArtisanHolder : MonoBehaviour {
 		EquipmentQHolder = PopupHolder.Find ("EquimentQHolder").gameObject;
 		JobCancelPopup = PopupHolder.Find ("CancelMakePopup").gameObject;
 		DetailPanel = PopupHolder.Find ("DetailPopup").gameObject;
+		TimeLeftText = PopupHolder.Find ("Image/Text").GetComponent<Text> ();
 
 		BackButton = transform.GetChild (2).GetComponent<Button> ();
 		CloseButton = transform.GetChild (3).GetComponent<Button> ();
@@ -177,10 +181,10 @@ public class ArtisanHolder : MonoBehaviour {
 	void AddButtonListener(){
 		BackButton.onClick.AddListener (() => {
 			CloseAllPanel("Cancel");
-			transform.GetChild(0).gameObject.SetActive(true);
 		});
 		CloseButton.onClick.AddListener (() => {
 			CloseAllPanel("Close");
+			ArtisanWeaponPanel.transform.parent.parent.gameObject.SetActive (true);
 			DestroyPrefabObject();
 			Resources.UnloadUnusedAssets();
 		});
@@ -466,9 +470,9 @@ public class ArtisanHolder : MonoBehaviour {
 	void updateProductionEtaTimeText(){
 		if (game.artisans [latestEta].etaTimestamp > DateTime.Now) {
 
-			transform.GetChild (0).GetChild (2).GetChild (3).GetChild (0).GetComponent<Text> ().text = string.Format ("生產中 {0} 後完成", Utilities.TimeUpdate.Time(game.artisans [latestEta].etaTimestamp));
+			TimeLeftText.text = string.Format ("生產中 {0} 後完成", Utilities.TimeUpdate.Time(game.artisans [latestEta].etaTimestamp));
 		} else {
-			transform.GetChild (0).GetChild (2).GetChild (3).GetChild (0).GetComponent<Text> ().text = "生產中 00:00:00 後完成";
+			TimeLeftText.text = "生產中 00:00:00 後完成";
 		}
 	}
 

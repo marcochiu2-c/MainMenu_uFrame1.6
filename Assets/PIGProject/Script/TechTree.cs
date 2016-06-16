@@ -183,9 +183,9 @@ public class TechTree : MonoBehaviour {
 		for (int i = 0; i < 8; i++) {
 			TechButtons.Add ( MiningHolder.transform.GetChild (i).gameObject.GetComponent<Button> ());
 		}
-		TechButtons.Add ( WoodworkerHolder.transform.GetChild (0).gameObject.GetComponent<Button> ());
-		TechButtons.Add ( WoodworkerHolder.transform.GetChild (1).gameObject.GetComponent<Button> ());
-		TechButtons.Add ( WoodworkerHolder.transform.GetChild (2).gameObject.GetComponent<Button> ());
+		for (int i = 0; i < 3; i++) {
+			TechButtons.Add (WoodworkerHolder.transform.GetChild (i).gameObject.GetComponent<Button> ());
+		}
 		for (int i = 0; i < 17; i++) {
 			TechButtons.Add ( BasicScienceHolder.transform.GetChild (i).gameObject.GetComponent<Button> ());
 		}
