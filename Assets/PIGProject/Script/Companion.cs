@@ -158,16 +158,6 @@ public class Companion : MonoBehaviour
 	{
 
 	}
-	
-	public void SetPanelParent(string panelToShow){
-		var count = 0;
-		if (panelToShow == "IQ") {
-			count = AcademyTeach.IQTeach.Count;
-			for (var i = 0; i < count; i++){
-				
-			}
-		}
-	}
 
 }
 

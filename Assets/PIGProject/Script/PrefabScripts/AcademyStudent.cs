@@ -12,7 +12,6 @@ public class AcademyStudent: MonoBehaviour {
 	public Text AttrValue;
 
 	public static List<AcademyStudent> person = new List<AcademyStudent>();
-	public static AcademyTeach currentTeachItem;
 	public static Transform commonPanel;
 	public Counselor counselor;
 	private Game game;
@@ -82,50 +81,6 @@ public class AcademyStudent: MonoBehaviour {
 				
 			}
 			
-		}
-	}
-
-
-	public void ConfirmTrainingIfOk(AcademyTeach aTeach){
-		Game game = Game.Instance;
-		//		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
-		//		GameObject ConfirmTeacherBy = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(7).gameObject;
-		GameObject LowerThanTrainer = Academy.LowerThanTrainer;
-		GameObject ConfirmTeacherBy = Academy.ConfirmTeacherBy;
-		if (aTeach.trainerId != 0 && aTeach.targetId != 0) {
-			if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
-
-				if (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["IQ"].AsFloat >
-				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["IQ"].AsFloat){
-					if(game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["IQ"].AsFloat < 
-					   game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["HighestIQ"].AsFloat){
-						Academy.ShowPanel(ConfirmTeacherBy);
-					}else{
-						ShowLowerThanTrainerPanel("isMaxPoint");
-					}
-				}else{
-					Debug.Log("Trainer: "+AcademyStudent.person.Find (x => x.counselor.id == AcademyStudent.currentTeachItem.trainerId));
-					ShowLowerThanTrainerPanel();
-				}
-				
-			}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "統率"){
-				if (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["Leadership"].AsFloat >
-				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat){
-					if(game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat < 
-					   game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["HighestLeadership"].AsFloat){
-						Academy.ShowPanel(ConfirmTeacherBy);
-					}else{
-						ShowLowerThanTrainerPanel("isMaxPoint");
-					}
-				}else{
-					ShowLowerThanTrainerPanel();
-				}
-			}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "學問"){
-				Debug.Log( "學問");
-				ShowKnowledgeListPanel(aTeach.trainerId,aTeach.targetId);
-			}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "陣法"){
-				
-			}
 		}
 	}
 
