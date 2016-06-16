@@ -5,161 +5,96 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Utilities;
 
-public class AcademyStudent : MonoBehaviour {
-	public Image StudentImage;
-	public Text StudentImageText;
-	
-	public Sprite StudentPic { get { return StudentImage.sprite; } set { StudentImage.sprite = value; } }
-	public static List<AcademyStudent> Students = new List<AcademyStudent>();
+public class AcademyStudent: MonoBehaviour {
+	public Image image;
+	public Text Name;
+	public Text AttrName;
+	public Text AttrValue;
+
+	public static List<AcademyStudent> person = new List<AcademyStudent>();
 	public static AcademyTeach currentTeachItem;
 	public static Transform commonPanel;
-	public int characterType;
-	public int characterId;
-	public bool isDropped=false;
+	public Counselor counselor;
 	private Game game;
-	bool Called = false;
-	GameObject candidatePanel;
-	public static GameObject currentStudentPrefab;
-	public static bool IsLevelNotReach=false;
+	GameObject CardHolder;
+
+	Dictionary<int,Sprite> imageDict;
+	Dictionary<int,string> nameDict;
 	// Use this for initialization
 	void Start () {
+		game = Game.Instance;
+
+		SetCharacters ();
+		AddButtonListener ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	}
 
-	void OnGUI () {
+	//TODO  Disallow any assignment in any OnGoing Jobs
 
-		Draggable drag = gameObject.GetComponent ("Draggable") as Draggable;
-		if (drag.parentToReturnTo != null) {
-			if (drag.parentToReturnTo == drag.placeholderParent && !isDropped &&
-			    (drag.placeholderParent.ToString() == "StudentImage (UnityEngine.RectTransform)" ||
-			 drag.placeholderParent.ToString() == "TeacherImage (UnityEngine.RectTransform)")){
+	void AddButtonListener(){
+		GetComponent<Button> ().onClick.AddListener (() => {
+			if (Academy.CounselorHolderFunction==""){
 
-				#region DropTheImageAndInfoCopy
-
-				AcademyTeach at = drag.placeholderParent.parent.GetComponent("AcademyTeach") as AcademyTeach;
-				if (!at.isDropZoneEnabled && !Called){
-					AcademyStudent.reCreateStudentItem(this,false);
-					GameObject.Destroy(this.gameObject);
-					Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-					Called = true ;
-					return;
-				}else if (!at.isDropZoneEnabled){
-					Called = false;
-					return;
-				}
-				currentTeachItem = at;
-				game = Game.Instance;
-				TimeSpan ts = new TimeSpan(24,0,0);
-				int index = game.trainings.FindIndex(x => x == at.trainingObject);
-				#region CheckCoolDownPeriodAndLevel
-				if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
-					if (game.trainings[AcademyTeach.IQTeach.FindIndex(x => x == at)].etaTimestamp > DateTime.Now + ts){
-						AcademyStudent.reCreateStudentItem(this,false);
-						GameObject.Destroy(this.gameObject);
-						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-						return;
-					}
-					if (index > 1 && index < 5){
-						ShowLevelNotReachPanel();
-						currentStudentPrefab =this.gameObject;
-						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-						IsLevelNotReach = true;
-						return;
-					}
-				}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "統率"){
-					if (game.trainings[AcademyTeach.CommandedTeach.FindIndex(x => x == at)].etaTimestamp > DateTime.Now + ts){
-						AcademyStudent.reCreateStudentItem(this,false);
-						GameObject.Destroy(this.gameObject);
-						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-						return;
-					}
-					if (index > 6 && index < 10){
-						ShowLevelNotReachPanel();
-						GameObject.Destroy(this.gameObject);
-						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-						IsLevelNotReach = true;
-						return;
-					}
-				}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "學問"){
-					if (game.trainings[AcademyTeach.KnowledgeTeach.FindIndex(x => x == at)].etaTimestamp > DateTime.Now + ts){
-						AcademyStudent.reCreateStudentItem(this,false);
-						GameObject.Destroy(this.gameObject);
-						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-						return;
-					}
-					if (index > 11 && index < 15){
-						ShowLevelNotReachPanel();
-						GameObject.Destroy(this.gameObject);
-						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-						IsLevelNotReach = true;
-						return;
-					}
-				}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "陣法"){
-					if (game.trainings[AcademyTeach.FightingTeach.FindIndex(x => x == at)].etaTimestamp > DateTime.Now + ts){
-						AcademyStudent.reCreateStudentItem(this,false);
-						GameObject.Destroy(this.gameObject);
-						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-						return;
-					}
-					if (index > 16 && index < 20){
-						ShowLevelNotReachPanel();
-						GameObject.Destroy(this.gameObject);
-						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-						IsLevelNotReach = true;
-						return;
-					}
-				}
-
-				if (drag.placeholderParent.ToString() == "StudentImage (UnityEngine.RectTransform)"){
-					if (at.targetId != 0){
-						Debug.Log (at.targetId);
-
-						AcademyStudent.reCreateStudentItem(this,false);
-						GameObject.Destroy(this.gameObject);
-						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-						return;
-					}
-					at.targetId = characterId;
-					at.targetType = characterType;
-					at.StudentImageText.text = StudentImageText.text;
-					ConfirmTrainingIfOk(at);
-				}else if (drag.placeholderParent.ToString() == "TeacherImage (UnityEngine.RectTransform)"){
-					if (at.trainerId != 0){
-						Debug.Log (at.trainerId);
-						AcademyStudent.reCreateStudentItem(this,true);
-						GameObject.Destroy(this.gameObject);
-						Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-						return;
-					}
-					at.trainerId = characterId;
-					at.trainingType = characterType;
-					at.TeacherImageText.text = StudentImageText.text;
-					string category = Academy.TeachHolder.transform.GetChild (0).GetComponent<Text>().text;
-//					AcademyStudent.showSkillsOptionPanel(category);
-					ConfirmTrainingIfOk(at);
-				}
-				#endregion
-				drag.placeholderParent.GetComponent<Image>().sprite = StudentPic;
-				#endregion
-
-				GameObject.Destroy(this.gameObject);
-				Students.Remove(this.gameObject.GetComponent<AcademyStudent>());
-				isDropped = true;
+				Academy.AssigningCounselor[Academy.AssigningCounselorSlot] = counselor;
+				Debug.Log("Counselor ID:"+Academy.AssigningCounselor[Academy.AssigningCounselorSlot].id);
+				Academy.SetCounselorSelectorButton(nameDict[counselor.type],TimeSpan.Zero);
+				Academy.OnCounselorSelected();
+			}else if(Academy.CounselorHolderFunction=="ChoosingTeacher"){
+				Academy.AssigningTeacher = counselor;
+				Debug.Log ("Teacher ID: "+counselor.id);
+				Debug.Log ("Student ID: "+Academy.AssigningCounselor[Academy.AssigningCounselorSlot].id);
+				Debug.Log ("Learning Item: "+Academy.AssigningLearning);
+				Academy.CounselorHolderFunction="";
+				Academy.ShowPanel(Academy.ConfirmTeacherBy);
 			}
+			Academy.CounselorHolder.SetActive(false);
+			gameObject.SetActive(false);
+
+		});
+	}
+
+	public void ConfirmSelfStudyIfOk(SelfStudy aSelfStudy){
+		Game game = Game.Instance;
+		Text Title = Academy.SelfStudyHolder.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
+		GameObject ConfirmTraining = Academy.ConfirmTraining;
+		if (aSelfStudy.targetId != 0) {
+			if (Title.text == "智商"){
+				if (game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["IQ"].AsFloat <
+				    game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["HighestIQ"].AsFloat){
+					Academy.ShowPanel(ConfirmTraining);
+				}else{
+					ShowLowerThanTrainerPanel("isMaxPoint");
+				}
+			}else if (Title.text == "統率"){
+				if (game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["Leadership"].AsFloat <
+				    game.counselor.Find (x=> x.id == aSelfStudy.targetId).attributes["attributes"]["HighestLeadership"].AsFloat){
+					Academy.ShowPanel(ConfirmTraining);
+				}else{
+					ShowLowerThanTrainerPanel("isMaxPoint");
+				}
+			}else if (Title.text == "學問"){
+				Debug.Log("學問 Clicked");
+				ShowKnowledgeListPanel(aSelfStudy.targetId);
+			}else if (Title.text == "陣法"){
+				
+			}
+			
 		}
 	}
 
+
 	public void ConfirmTrainingIfOk(AcademyTeach aTeach){
 		Game game = Game.Instance;
-		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
-		GameObject ConfirmTeacherBy = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(7).gameObject;
+		//		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
+		//		GameObject ConfirmTeacherBy = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(7).gameObject;
+		GameObject LowerThanTrainer = Academy.LowerThanTrainer;
+		GameObject ConfirmTeacherBy = Academy.ConfirmTeacherBy;
 		if (aTeach.trainerId != 0 && aTeach.targetId != 0) {
 			if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "智商"){
-//			if (transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(0).GetComponent<Text>().text == "智商"){
-				//				Debug.Log (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["IQ"].AsFloat);
+
 				if (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["IQ"].AsFloat >
 				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["IQ"].AsFloat){
 					if(game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["IQ"].AsFloat < 
@@ -169,10 +104,11 @@ public class AcademyStudent : MonoBehaviour {
 						ShowLowerThanTrainerPanel("isMaxPoint");
 					}
 				}else{
+					Debug.Log("Trainer: "+AcademyStudent.person.Find (x => x.counselor.id == AcademyStudent.currentTeachItem.trainerId));
 					ShowLowerThanTrainerPanel();
 				}
-
-			}else if (transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(0).GetComponent<Text>().text == "統率"){
+				
+			}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "統率"){
 				if (game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.trainerId)].attributes["attributes"]["Leadership"].AsFloat >
 				    game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat){
 					if(game.counselor[ game.counselor.FindIndex(x=> x.id ==  aTeach.targetId)].attributes["attributes"]["Leadership"].AsFloat < 
@@ -184,16 +120,17 @@ public class AcademyStudent : MonoBehaviour {
 				}else{
 					ShowLowerThanTrainerPanel();
 				}
-			}else if (transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(0).GetComponent<Text>().text == "學問"){
+			}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "學問"){
+				Debug.Log( "學問");
 				ShowKnowledgeListPanel(aTeach.trainerId,aTeach.targetId);
-			}else if (transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(0).GetComponent<Text>().text == "陣法"){
-
+			}else if (Academy.TeachHolder.transform.GetChild(0).GetComponent<Text>().text == "陣法"){
+				
 			}
 		}
 	}
 
 	public void ShowLowerThanTrainerPanel(string isMaxPoint=""){
-		GameObject LowerThanTrainer = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.GetChild(1).GetChild(8).gameObject;
+		GameObject LowerThanTrainer = Academy.LowerThanTrainer;
 		Academy.ShowPanel(LowerThanTrainer);
 		if (isMaxPoint == "") {
 			Utilities.Panel.GetHeader (LowerThanTrainer).text = "青出於藍";
@@ -204,24 +141,31 @@ public class AcademyStudent : MonoBehaviour {
 		}
 	}
 
-	public static void ShowIsMaxPointPanel(GameObject LowerThanTrainer){
-		Academy.ShowPanel(LowerThanTrainer);
-		Utilities.Panel.GetHeader(LowerThanTrainer).text = "學有所成";
-		Utilities.Panel.GetMessageText(LowerThanTrainer).text = "所選軍師徒弟智商已達頂點，請重新選擇。";
-	}
-
-	public static void ShowLevelNotReachPanel(){
-		GameObject LowerThanTrainer = Academy.AcademyHolder.transform.GetChild(1).GetChild(8).gameObject;
-		Academy.ShowPanel(LowerThanTrainer);
-		Utilities.Panel.GetHeader(LowerThanTrainer).text = "功能未開放";
-		Utilities.Panel.GetMessageText(LowerThanTrainer).text = "請耐心等候。";
+	public void ShowKnowledgeListPanel(int student){
+		Game game = Game.Instance;
+		KnowledgeOption.Woodworker.interactable = true;
+		KnowledgeOption.MetalFabrication.interactable = true;
+		KnowledgeOption.ChainSteel.interactable = true;
+		KnowledgeOption.MetalProcessing.interactable = true;
+		KnowledgeOption.Crafts.interactable = true;
+		KnowledgeOption.Geometry.interactable = true;
+		KnowledgeOption.Physics.interactable = true;
+		KnowledgeOption.Chemistry.interactable = true;
+		KnowledgeOption.PeriodicTable.interactable = true;
+		KnowledgeOption.Pulley.interactable = true;
+		KnowledgeOption.Anatomy.interactable = true;
+		KnowledgeOption.Catapult.interactable = true;
+		KnowledgeOption.GunpowderModulation.interactable = true;
+		KnowledgeOption.Psychology.interactable = true;
+		
+		Academy.KnowledgeListHolder.SetActive (true);
 	}
 
 	public void ShowKnowledgeListPanel(int teacher, int student){
 		Game game = Game.Instance;
-		GameObject panel = transform.parent.parent.parent.parent.parent.parent.parent.parent.parent.gameObject;
+		GameObject panel = Academy.KnowledgeListHolder;
 		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Woodworker"].AsInt > 
-			game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Woodworker"].AsInt) {
+		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Woodworker"].AsInt) {
 			KnowledgeOption.Woodworker.interactable = true;
 		} else {
 			KnowledgeOption.Woodworker.interactable = false;
@@ -231,6 +175,18 @@ public class AcademyStudent : MonoBehaviour {
 			KnowledgeOption.MetalFabrication.interactable = true;
 		} else {
 			KnowledgeOption.MetalFabrication.interactable = false;
+		}
+		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["EasternHistory"].AsInt > 
+		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["EasternHistory"].AsInt) {
+			KnowledgeOption.EasternHistory.interactable = true;
+		} else {
+			KnowledgeOption.EasternHistory.interactable = false;
+		}
+		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["WesternHistory"].AsInt > 
+		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["WesternHistory"].AsInt) {
+			KnowledgeOption.WesternHistory.interactable = true;
+		} else {
+			KnowledgeOption.WesternHistory.interactable = false;
 		}
 		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["ChainSteel"].AsInt > 
 		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["ChainSteel"].AsInt) {
@@ -304,127 +260,86 @@ public class AcademyStudent : MonoBehaviour {
 		} else {
 			KnowledgeOption.Psychology.interactable = false;
 		}
-		panel.transform.GetChild (5).gameObject.SetActive (true);
-	}
-
-	public void SetAttributeText(string panel){
-		Game game = Game.Instance;
-		if (panel == "IQ" || panel == "智商") {
-			transform.GetChild(1).GetComponent<Text>().text = "智商：";
-			transform.GetChild(2).GetComponent<Text>().text = game.counselor [game.counselor.FindIndex (x => x.id == characterId)].attributes["attributes"]["IQ"];
-		} else if (panel == "Commanded" || panel == "統率") {
-			transform.GetChild(1).GetComponent<Text>().text = "統率：";
-			transform.GetChild(2).GetComponent<Text>().text = game.counselor[ game.counselor.FindIndex (x=> x.id ==  characterId)].attributes["attributes"]["Leadership"];
-		} else if (panel == "Knowledge" || panel == "學問") {
-			transform.GetChild(1).GetComponent<Text>().text ="";
-			transform.GetChild(2).GetComponent<Text>().text ="";
-		} else if (panel == "Fighting" || panel == "陣法") {
-//			transform.GetChild(1).GetComponent<Text>().text ="陣法：";
-//			transform.GetChild(2).GetComponent<Text>().text = game.counselor[ game.counselor.FindIndex(x=> x.id ==  characterId)].attributes["attributes"]["Formation"];
-		}
-}
-
-
-	public static void showPanelItems(List<AcademyStudent> items){
-		var count = items.Count;
-		for (var i =0; i < count; i++) {
-			items[i].transform.parent = AcademyStudent.commonPanel;
-			RectTransform rTransform = items[i].GetComponent<RectTransform>();
-			rTransform.localScale= Vector3.one;
-		}
-	}
-
-
-	public static void reCreateStudentItem(AcademyTeach aTeach){
-		AcademyStudent obj1 = Instantiate(Resources.Load("AcademyStudentPrefab") as GameObject).GetComponent<AcademyStudent>();
-		AcademyStudent obj2 = Instantiate(Resources.Load("AcademyStudentPrefab") as GameObject).GetComponent<AcademyStudent>();
-
-		obj1.characterType = aTeach.trainingType;
-		obj1.characterId = aTeach.trainerId;
-		obj1.StudentPic = aTeach.TeacherPic;
-		obj1.StudentImageText.text = aTeach.TeacherImageText.text;
-
-		obj2.characterType = aTeach.targetType;
-		obj2.characterId = aTeach.targetId;
-		obj2.StudentPic = aTeach.StudentPic;
-		obj2.StudentImageText.text = aTeach.StudentImageText.text;
-		Debug.Log (aTeach.transform.parent.parent.parent.parent.parent.parent.GetChild (0));
-		string panel = aTeach.transform.parent.parent.parent.parent.parent.parent.GetChild (0).GetComponent<Text> ().text;
-		if (panel == "智商") {
-			if (obj1.StudentPic !=null){
-				obj1.SetAttributeText ("IQ");
-			}
-			if (obj2.StudentPic !=null){
-				obj2.SetAttributeText ("IQ");
-			}
-		}else if (panel == "統率") {
-			if (obj1.StudentPic !=null){
-				obj1.SetAttributeText ("Commanded");
-			}
-			if (obj2.StudentPic !=null){
-				obj2.SetAttributeText ("Commanded");
-			}
-		}else if (panel == "學問") {
-			if (obj1.StudentPic !=null){
-				obj1.SetAttributeText ("Knowledge");
-			}
-			if (obj2.StudentPic !=null){
-				obj2.SetAttributeText ("Knowledge");
-			}
-		}else if (panel == "陣法") {
-			if (obj1.StudentPic !=null){
-				obj1.SetAttributeText ("Fighting");
-			}
-			if (obj2.StudentPic !=null){
-				obj2.SetAttributeText ("Fighting");
-			}
-		}
-		RectTransform rTransform;
-		if (aTeach.TeacherPic != null) {
-			obj1.transform.parent = AcademyStudent.commonPanel;
-			rTransform = obj1.GetComponent<RectTransform> ();
-			rTransform.localScale = Vector3.one;
-			Students.Add(obj1);
+		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["IChing"].AsInt > 
+		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["IChing"].AsInt) {
+			KnowledgeOption.IChing.interactable = true;
 		} else {
-			GameObject.Destroy(obj1);
+			KnowledgeOption.IChing.interactable = false;
 		}
-		if (aTeach.StudentPic != null) {
-			obj2.transform.parent = AcademyStudent.commonPanel;
-			rTransform = obj2.GetComponent<RectTransform> ();
-			rTransform.localScale = Vector3.one;
-			Students.Add(obj2);
-		} else {
-			GameObject.Destroy(obj2);
-		}
+		panel.SetActive (true);
 	}
 
-	public static void reCreateStudentItem(AcademyStudent aStudent, bool isTeacher){
-		List<CounselorCards> c = CounselorCards.GetList (1);
-		AcademyStudent obj = Instantiate(Resources.Load("AcademyStudentPrefab") as GameObject).GetComponent<AcademyStudent>();
-		Debug.Log ("reCreateStudentItem()");
-		obj.characterId = aStudent.characterId;
-		obj.characterType = aStudent.characterType;
-		obj.StudentPic = aStudent.StudentPic;
-		obj.StudentImageText.text = c [aStudent.characterType-1].Name;
-		string panel = aStudent.transform.parent.parent.parent.parent.parent.parent.parent.parent.GetChild (0).GetComponent<Text> ().text;
-		if (panel == "智商") {
-			obj.SetAttributeText ("IQ");
-		}else if (panel == "統率") {
-			obj.SetAttributeText ("Commanded");
-		}else if (panel == "學問") {
-			obj.SetAttributeText ("Knowledge");
-		}else if (panel == "陣法") {
-			obj.SetAttributeText ("Fighting");
-		}
+	public void SetCounselor(Counselor c){
+		counselor = c;
+		image.sprite =  imageDict[counselor.type];
+		Name.text = nameDict[counselor.type];
+		showPanelItems (Academy.CounselorHolder.transform);
+	}
+//
+//	void ShowCardPanel(){
+//		int character = counselor.type;
+//		Transform cardHolder = CardHolder.transform.GetChild(1);
+//		Image img = CardHolder.transform.GetChild (0).GetComponent<Image> ();
+//		Text Name = cardHolder.transform.GetChild (1).GetComponent<Text> ();
+//		Text Level = cardHolder.GetChild (3).GetComponent<Text> ();
+//		Text IQ = cardHolder.GetChild (5).GetComponent<Text> ();
+//		Text Leadership = cardHolder.GetChild (7).GetComponent<Text> ();
+//		Text Prestige = cardHolder.GetChild (9).GetComponent<Text> ();
+//		Text Courage = cardHolder.GetChild (11).GetComponent<Text> ();
+//		Text Force = cardHolder.GetChild (13).GetComponent<Text> ();
+//		Text Physical = cardHolder.GetChild (15).GetComponent<Text> ();
+//		Text Obedience = cardHolder.GetChild (17).GetComponent<Text> ();
+//		Text Formation = cardHolder.GetChild (19).GetComponent<Text> ();
+//		Text Knowledge = cardHolder.GetChild (21).GetComponent<Text> ();
+//		CardHolder.SetActive (true);
+//
+//
+//		img.sprite = imageDict[counselor.type];
+//		Name.text = nameDict [counselor.type];
+//		Level.text=counselor.attributes["attributes"]["level"].AsInt.ToString();
+//		IQ.text=counselor.attributes["attributes"]["IQ"].AsFloat.ToString();
+//		Leadership.text=counselor.attributes["attributes"]["Leadership"].AsFloat.ToString();
+//		Prestige.text=counselor.attributes["attributes"]["Prestige"].AsFloat.ToString();
+//		Courage.text="-";
+//		Force.text="-";
+//		Physical.text="-";
+//		Obedience.text="-";
+//		Formation.text="-";
+//		Knowledge.text="-";
+//		Debug.Log("Knowledge: "+counselor.attributes["attributes"]["KnownKnowledge"].ToString());
+//		
+//	}
+	public void SetPanel(){
+//		if (panel == ActivePopupEnum.IQPopup) {
+//			AttrName.text = "智商：";
+//			AttrValue.text = counselor.attributes["attributes"]["IQ"];
+//		} else if (panel == ActivePopupEnum.CommandedPopup) {
+//			AttrName.text = "統率：";
+//			AttrValue.text = counselor.attributes["attributes"]["Leadership"];
+//		} else if (panel == ActivePopupEnum.KnowledgePopup || panel == ActivePopupEnum.FightingPopup) {
+//			AttrName.text = "";
+//			AttrValue.text = "";
+//		}
+		AttrName.text = "";
+		AttrValue.text = "";
+	}
 
-		obj.transform.parent = AcademyStudent.commonPanel;
-		RectTransform rTransform = obj.GetComponent<RectTransform>();
+	public void showPanelItems( Transform panel){
+		LoadHeadPic headPic = LoadHeadPic.Instance;
+		char[] charToTrim = { '"' };
+		transform.SetParent( panel.GetChild(1).GetChild(1).GetChild(0));
+//		string panelName = panel.parent.parent.parent.name;
+
+			Name.text = counselor.attributes["attributes"]["Name"].ToString().Trim (charToTrim);
+			image.sprite = headPic.imageDict[counselor.type];
+		
+		RectTransform rTransform = transform.GetComponent<RectTransform>();
 		rTransform.localScale= Vector3.one;
-		Students.Add(obj);
-	}
 
+	}
+	
 	public static void showSkillsOptionPanel(string panel){
-		var count = Academy.cStudentList.Count;
+		var count = Academy.CounselorList.Count;
 		Button[] button = new Button[14];
 		if (panel == "學問") { //Knowledge
 			KnowledgeOption obj = Instantiate(Resources.Load("KnowledgeOptionPrefab") as GameObject).GetComponent<KnowledgeOption>();
@@ -436,23 +351,28 @@ public class AcademyStudent : MonoBehaviour {
 			for (var i = 0; i <14; i++) {
 				button[i] = obj.transform.GetChild(0).GetChild (1).GetChild(i).gameObject.GetComponent<Button>();
 				button[i].interactable = false;
-//				Debug.Log(button[i]);
+				//				Debug.Log(button[i]);
 			}
 			for (int i =0 ; i< count; i++){
 				for (int j=0; j < 14; j++){
-				if (Academy.cStudentList[i].id==23){
-						for (int k = 0; k<Academy.cStudentList[i].attributes["skills"].Count;k++){
+					if (Academy.CounselorList[i].id==23){
+						for (int k = 0; k<Academy.CounselorList[i].attributes["skills"].Count;k++){
 							if (button[j].transform.GetChild(0).gameObject.GetComponent<Text>().text ==
-							    Academy.cStudentList[i].attributes["skills"][k]["name"].Value){
+							    Academy.CounselorList[i].attributes["skills"][k]["name"].Value){
 								button[j].interactable = true;
 							}
 						}
-				}
-//				Debug.Log("First skill name: "+Academy.cStudentList[i].attributes["skills"][0]["name"]);
-//				Debug.Log("First skill level: "+Academy.cStudentList[i].attributes["skills"][0]["level"]);
+					}
+					//				Debug.Log("First skill name: "+Academy.CounselorList[i].attributes["skills"][0]["name"]);
+					//				Debug.Log("First skill level: "+Academy.CounselorList[i].attributes["skills"][0]["level"]);
 				}
 			}
 		}
 	}
 
+	private void SetCharacters(){
+		LoadHeadPic headPic = LoadHeadPic.Instance;
+		imageDict = headPic.imageDict;
+		nameDict = headPic.nameDict;
+	}
 }

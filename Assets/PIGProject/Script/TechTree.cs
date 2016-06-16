@@ -66,6 +66,7 @@ public class TechTree : MonoBehaviour {
 	public static int[] AssigningCounselor = new int[]{0,0,0,0,0};
 	public static int AssigningSlot=0;
 	public static int AssigningCounselorSlot = 0;
+	public const int DBSlot = 8;
 	
 	static List<int> TechRequirementNone = new List<int>{};
 	static List<int> TechRequirement1 = new List<int>{1};
@@ -203,7 +204,7 @@ public class TechTree : MonoBehaviour {
 		TechnologyLabel.text = TechItems[ GetCurrentTech ()].Item;
 		game = Game.Instance;
 		for (int i = 0; i < 5; i++) {
-			AssigningCounselor[i] = game.trainings[43].attributes["TechTreeCounselors"][i].AsInt;
+			AssigningCounselor[i] = game.trainings[DBSlot].attributes["TechTreeCounselors"][i].AsInt;
 			if (AssigningCounselor[i] > 0){
 			CounselorButtons[i].GetComponent<Image>().sprite = 
 				imageDict[game.counselor.Find (x => x.id == AssigningCounselor[i]).attributes["type"].AsInt];
@@ -213,8 +214,8 @@ public class TechTree : MonoBehaviour {
 		}
 		// TODO add ICON image here and after assignment
 		TotalIQText.text = TotalIQOfCounselors ().ToString();
-		AssigningTech = (Tech)game.trainings[43].type;
-		if (game.trainings [43].etaTimestamp > DateTime.Now) {
+		AssigningTech = (Tech)game.trainings[DBSlot].type;
+		if (game.trainings [DBSlot].etaTimestamp > DateTime.Now) {
 			FromLv.text = "由 "+game.login.attributes [Enum.GetName (typeof(Tech), AssigningTech)].AsInt.ToString ()+" 級";
 			ToLv.text = "升至 "+(game.login.attributes [Enum.GetName (typeof(Tech), AssigningTech)].AsInt + 1).ToString ()+" 級";
 		} else {
@@ -225,7 +226,7 @@ public class TechTree : MonoBehaviour {
 		MessageDialog = transform.FindChild ("MessageDialog").gameObject;
 		ConfirmDialog = transform.FindChild ("ConfirmDialog").gameObject;
 		AddButtonListener ();
-		if (game.trainings[43].etaTimestamp < DateTime.Now){
+		if (game.trainings[DBSlot].etaTimestamp < DateTime.Now){
 			ClearUIInformation();
 		}
 
@@ -288,8 +289,8 @@ public class TechTree : MonoBehaviour {
 	}
 	
 	public void SetRemainingTime(){
-		if (game.trainings [43].etaTimestamp > DateTime.Now) {
-			RemainTrainingTime.text = Utilities.TimeUpdate.Time(game.trainings[43].etaTimestamp);
+		if (game.trainings [DBSlot].etaTimestamp > DateTime.Now) {
+			RemainTrainingTime.text = Utilities.TimeUpdate.Time(game.trainings[DBSlot].etaTimestamp);
 		} else {
 			RemainTrainingTime.text = "00:00:00";
 		}
@@ -311,11 +312,11 @@ public class TechTree : MonoBehaviour {
 			});
 		}
 		TechnologySelector.onClick.AddListener (() => {
-			if (game.trainings [43].etaTimestamp < DateTime.Now && TotalIQOfCounselors() > 0) {  // training not started
+			if (game.trainings [DBSlot].etaTimestamp < DateTime.Now && TotalIQOfCounselors() > 0) {  // training not started
 				SetupTechTreeDiagram ();
 				TreeDiagram.SetActive(true);
 			}else{
-				if (game.trainings [43].etaTimestamp < DateTime.Now){
+				if (game.trainings [DBSlot].etaTimestamp < DateTime.Now){
 					Panel.GetHeader(MessageDialog).text = CounselorNotSelectedHeader;
 					Panel.GetMessageText(MessageDialog).text = CounselorNotSelectedMessage;
 					DialogCommand = TechTreeDialogCommand.NoCounselorSelected;
@@ -361,7 +362,7 @@ public class TechTree : MonoBehaviour {
 		Debug.Log ("Number of Counselors: "+game.counselor.Count);
 		
 		int cslCount = 0; 
-		Trainings training = game.trainings[43];
+		Trainings training = game.trainings[DBSlot];
 		for (var i = 0 ; i < cList.Count ; i++){
 			for (int j=0; j < training.attributes["TechTreeCounselors"].Count; j++){
 				if (training.attributes["TechTreeCounselors"][j].AsInt == cList[i].id){
@@ -385,7 +386,7 @@ public class TechTree : MonoBehaviour {
 	}
 
 	void OnCounselorButtonClicked(string name){
-		if (game.trainings [43].etaTimestamp < DateTime.Now) {  // training not started
+		if (game.trainings [DBSlot].etaTimestamp < DateTime.Now) {  // training not started
 			if (name == "Button") {
 				//TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 0;
@@ -458,16 +459,16 @@ public class TechTree : MonoBehaviour {
 		Debug.Log ("OnConfirmedTraining()");
 		TreeDiagram.SetActive(false);
 
-		game.trainings[43].type = (int)AssigningTech;
-		game.trainings[43].targetId = 0;
-		game.trainings[43].startTimestamp = DateTime.Now;
-		game.trainings[43].trainerId = 0;
-		game.trainings[43].etaTimestamp = DateTime.Now+GetTotalTrainingHours();
-		game.trainings[43].status = (int)TrainingStatus.OnGoing;
+		game.trainings[DBSlot].type = (int)AssigningTech;
+		game.trainings[DBSlot].targetId = 0;
+		game.trainings[DBSlot].startTimestamp = DateTime.Now;
+		game.trainings[DBSlot].trainerId = 0;
+		game.trainings[DBSlot].etaTimestamp = DateTime.Now+GetTotalTrainingHours();
+		game.trainings[DBSlot].status = (int)TrainingStatus.OnGoing;
 		for (int i = 0; i < 5; i++) {
-			game.trainings [43].attributes ["TechTreeCounselors"][i].AsInt = AssigningCounselor[i];
+			game.trainings [DBSlot].attributes ["TechTreeCounselors"][i].AsInt = AssigningCounselor[i];
 		}
-		game.trainings[43].UpdateObject();
+		game.trainings[DBSlot].UpdateObject();
 	}
 
 	TimeSpan GetTotalTrainingHours(){
@@ -479,7 +480,6 @@ public class TechTree : MonoBehaviour {
 	}
 
 	bool isTrainingValid(Tech tech){
-		int index = 43;
 		List<Knowledge> knowledgeList = GetAvailableKnowlegdeList ();
 		List<Tech> techList = GetAvailableTechList ();
 		float highestIQ = HighestIQOfCounselors ();
@@ -532,7 +532,7 @@ public class TechTree : MonoBehaviour {
 	/// <returns>The current tech.</returns>
 	public static int GetCurrentTech(){
 		Game game = Game.Instance;
-		return game.trainings [43].type;
+		return game.trainings [DBSlot].type;
 	}
 
 	/// <summary>
@@ -611,7 +611,7 @@ public class TechTree : MonoBehaviour {
 				continue;
 			}
 
-			for (int j = 2001; j < numOfEnum+2001 ; j++){
+			for (int j = 2001; j < numOfEnum+2000 ; j++){
 				if (game.counselor[co].attributes["attributes"]["KnownKnowledge"][Enum.GetName (typeof(Knowledge),(Knowledge)j)].AsInt > 0){
 					if (!list.Exists(x => x == (Knowledge)j)){
 						list.Add ((Knowledge)j);

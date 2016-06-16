@@ -45,10 +45,7 @@ public class Companion : MonoBehaviour
 
 	WsClient wsc;
 	Game game;
-	
-	public static ActivePopupEnum activePopup;
-	Dictionary<ActivePopupEnum,string> academyCategoryText = new Dictionary<ActivePopupEnum, string>();
-	Dictionary<string,ActivePopupEnum> activePopupName = new Dictionary<string, ActivePopupEnum>();
+
 	private const int columnWidthCount = 5;
 	
 	// Use this for initialization

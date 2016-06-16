@@ -72,31 +72,14 @@ public class MainScene : MonoBehaviour {
 	void Start(){
 //		Debug.Log ("IQ: "+TechTree.GetIQRequirement(tech,level) );
 		CallMainScene ();
-
-//		StartCoroutine (TestTechItemData ());
+		GeneralTrain.RunningItem.Add(-1);
+		GeneralTrain.RunningItem.Add(-1);
+		GeneralTrain.RunningItem.Add(-1);
+		//		StartCoroutine (TestTechItemData ());
 	}
 	
 	static bool isCheckedInventoryAtStart = false;
-//	IEnumerator TestTechItemData(){
-//		Dictionary<int,string> knowDict = SetDict.Knowledge ();
-//		int count = TechTree.TechItems.Count;
-//		int techCount = 0;
-//		yield return new WaitForSeconds(3);
-//		for (int i = 0; i < count; i++) {
-//			print ("Name: "+TechTree.TechItems[i].Item);
-//			techCount = TechTree.TechItems[i].TechRequirement.Count;
-//			for (int j = 0 ; j < techCount; j ++){
-//				print ("TechRequirement: "+TechTree.TechItems[TechTree.TechItems[i].TechRequirement[j]].Item);
-//			}
-//			print (" ");
-//			techCount = TechTree.TechItems[i].KnowledgeRequirement.Count;
-//			for (int j = 0 ; j < techCount; j ++){
-//				print ("KnowledgeRequirement: "+knowDict[TechTree.TechItems[i].KnowledgeRequirement[j]]);
-//			}
-//			print (" ");
-//		}
-//
-//	}
+
 	// Use this for initialization
 	public void CallMainScene () {
 
@@ -110,9 +93,6 @@ public class MainScene : MonoBehaviour {
 		if (MainScene.needReloadFromDB) {
 			MainUIHolder = GameObject.Find ("MainUIHolder");
 			Debug.Log (MainUIHolder);
-			//silverFeatherText  = GameObject.Find ("/Canvas/HeaderHolder/SilverFeatherPanel/SilverFeatherText").GetComponents<Text>() [0];
-			//resourceText = GameObject.Find ("/Canvas/HeaderHolder/ResourcesPanel/ResourcesText").GetComponents<Text> () [0];
-			//starDustText = GameObject.Find ("/Canvas/HeaderHolder/StardustPanel/StardustText").GetComponents<Text> () [0];
 			silverFeatherText = GameObject.Find ("SilverFeatherText").GetComponents<Text> () [0];
 			resourceText = GameObject.Find ("ResourcesText").GetComponents<Text> () [0];
 			starDustText = GameObject.Find ("StardustText").GetComponents<Text> () [0];
@@ -147,7 +127,7 @@ public class MainScene : MonoBehaviour {
 		InvokeRepeating("CheckObject",1,2);
 		InvokeRepeating("QuitIfConnectionFailed",0,10);
 		InvokeRepeating ("OnSchoolFieldSoldierTrainComplete", 2, 4);
-		InvokeRepeating ("OnAcademyTrainingComplete", 3, 4);
+		InvokeRepeating ("OnAcademyTrainingComplete", 3, 2);
 		InvokeRepeating ("OnArtisanJobsComplete", 3, 4);
 		InvokeRepeating ("OnTechTreeTrainingComplete", 2, 4);
 		InvokeRepeating ("OnCurrencyDisplayMissing", 0, 2);
@@ -169,16 +149,16 @@ public class MainScene : MonoBehaviour {
 		Game game = Game.Instance;
 		Login lo = game.login;
 		string techName = "";
-		if (game.trainings[43].status == 1 && game.trainings[43].etaTimestamp < DateTime.Now){
-			techName = Enum.GetName(typeof(Tech),game.trainings[43].type);
+		if (game.trainings[TechTree.DBSlot].status == 1 && game.trainings[TechTree.DBSlot].etaTimestamp < DateTime.Now){
+			techName = Enum.GetName(typeof(Tech),game.trainings[TechTree.DBSlot].type);
 			lo.attributes.Add(techName,new JSONData(lo.attributes[techName].AsInt+1));
 			lo.UpdateObject();
-			game.trainings [43].status = 3;
-			game.trainings [43].trainerId = 0;
-			game.trainings [43].targetId = 0;
-			game.trainings [43].type = 0;
-			game.trainings [43].attributes ["TechTreeCounselors"] = new JSONArray();
-			game.trainings [43].UpdateObject();
+			game.trainings [TechTree.DBSlot].status = 3;
+			game.trainings [TechTree.DBSlot].trainerId = 0;
+			game.trainings [TechTree.DBSlot].targetId = 0;
+			game.trainings [TechTree.DBSlot].type = 0;
+			game.trainings [TechTree.DBSlot].attributes ["TechTreeCounselors"] = new JSONArray();
+			game.trainings [TechTree.DBSlot].UpdateObject();
 			if (TechTree.TotalIQText != null){
 				for (int i = 0; i < 5; i++){
 					ShowLog.Log(TechTreeKnob);
@@ -236,77 +216,19 @@ public class MainScene : MonoBehaviour {
 
 	void OnAcademyTrainingComplete(){
 		Dictionary<int, string> kId = SetDict.KnowledgeID ();
-		for (int i = 0; i < 40; i++) {
+		for (int i = 0; i < 5; i++) {
 			if (game.trainings[i].status == (int)TrainingStatus.OnGoing && game.trainings[i].etaTimestamp < DateTime.Now){
 				Counselor co = game.counselor.Find (x=>x.id == game.trainings [i].targetId);
-				if (i < 5 || (i >19 && i < 25)){ 
+				if (game.trainings[i].type == 1){ 
 					co.attributes["attributes"]["IQ"].AsFloat = co.attributes["attributes"]["IQ"].AsFloat + 1;
-				}else if ((i > 4 && i < 10)|| (i > 24 && i < 30)){
-					co.attributes["attributes"]["Leadership"].AsFloat =co.attributes["attributes"]["IQ"].AsFloat + 1;
-				}else if ((i > 9 && i < 15)|| (i > 29 && i < 35)){
+				}else if (game.trainings[i].type == 2){
+					co.attributes["attributes"]["Leadership"].AsFloat =co.attributes["attributes"]["Leadership"].AsFloat + 1;
+				}else if (game.trainings[i].type > 2000 && game.trainings[i].type<2100){
 					co.attributes["attributes"]["KnownKnowledge"][kId[game.trainings[i].type]].AsInt = co.attributes["attributes"]["KnownKnowledge"][kId[game.trainings[i].type]].AsInt + 1;
-//					switch (game.trainings [i].type){
-//					case 2001:
-//						co.attributes["attributes"]["KnownKnowledge"]["Woodworker"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Woodworker"].AsInt + 1;
-//						break;
-//					case 2002:
-//						co.attributes["attributes"]["KnownKnowledge"]["MetalFabrication"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["MetalFabrication"].AsInt + 1;
-//						break;
-//					case 2003:
-//						co.attributes["attributes"]["KnownKnowledge"]["EasternHistory"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["EasternHistory"].AsInt + 1;
-//						break;
-//					case 2004:
-//						co.attributes["attributes"]["KnownKnowledge"]["WesternHistory"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["WesternHistory"].AsInt + 1;
-//						break;
-//					case 2005:
-//						co.attributes["attributes"]["KnownKnowledge"]["ChainSteel"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["ChainSteel"].AsInt + 1;
-//						break;					
-//					case 2006:
-//						co.attributes["attributes"]["KnownKnowledge"]["MetalProcessing"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["MetalProcessing"].AsInt + 1;
-//						break;					
-//					case 2007:
-//						co.attributes["attributes"]["KnownKnowledge"]["Crafts"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Crafts"].AsInt + 1;
-//						break;					
-//					case 2008:
-//						co.attributes["attributes"]["KnownKnowledge"]["Geometry"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Geometry"].AsInt + 1;
-//						break;					
-//					case 2009:
-//						co.attributes["attributes"]["KnownKnowledge"]["Physics"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Physics"].AsInt + 1;
-//						break;					
-//					case 2010:
-//						co.attributes["attributes"]["KnownKnowledge"]["Chemistry"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Chemistry"].AsInt + 1;
-//						break;					
-//					case 2011:
-//						co.attributes["attributes"]["KnownKnowledge"]["PeriodicTable"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["PeriodicTable"].AsInt + 1;
-//						break;					
-//					case 2012:
-//						co.attributes["attributes"]["KnownKnowledge"]["Pulley"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Pulley"].AsInt + 1;
-//						break;					
-//					case 2013:
-//						co.attributes["attributes"]["KnownKnowledge"]["Anatomy"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Anatomy"].AsInt + 1;
-//						break;					
-//					case 2014:
-//						co.attributes["attributes"]["KnownKnowledge"]["Catapult"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Catapult"].AsInt + 1;
-//						break;					
-//					case 2015:
-//						co.attributes["attributes"]["KnownKnowledge"]["GunpowderModulation"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["GunpowderModulation"].AsInt + 1;
-//						break;					
-//					case 2016:
-//						co.attributes["attributes"]["KnownKnowledge"]["Psychology"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["Psychology"].AsInt + 1;
-//						break;
-//					case 2017:
-//						co.attributes["attributes"]["KnownKnowledge"]["IChing"].AsInt = co.attributes["attributes"]["KnownKnowledge"]["IChing"].AsInt + 1;
-//						break;
-//					}
-				}else if ((i > 14 && i < 20)||(i > 34 && i < 40)){
+				}else if (game.trainings[i].type > 3000 && game.trainings[i].type<3100){
 					
 				}
 				co.UpdateObject();
-//				game.trainings [i].status = 3;
-//				game.trainings [i].trainerId = 0;
-//				game.trainings [i].targetId = 0;
-//				game.trainings [i].type = 0;
-//				game.trainings [i].UpdateObject();
 				game.trainings [i].Completed();
 			}                                                                   
 		}
@@ -509,7 +431,6 @@ public class MainScene : MonoBehaviour {
 			for (var i = 0; i < count; i++) {
 				game.trainings.Add (new Trainings (MainScene.TrainingInfo[i]));
 			}
-//			List<Knowledge> list = TechTree.GetAvailableKnowlegdeList ();
 			MainScene.TrainingInfo = null;
 		}
 		if (MainScene.ArtisanInfo != null) {
@@ -594,11 +515,11 @@ public class MainScene : MonoBehaviour {
 		int point = 0;
 		General g = new General ();
 		Dictionary<int,string> trainDict = new Dictionary<int,string> ();
-		trainDict.Add (40, "Courage");
-		trainDict.Add (41, "Force");
-		trainDict.Add (42, "Physical");
+		trainDict.Add (5, "Courage");
+		trainDict.Add (6, "Force");
+		trainDict.Add (7, "Physical");
 		if (game.trainings.Count > 40) {
-			for (int i = 40 ; i < 43; i++){
+			for (int i = 5 ; i < 8; i++){
 				if (game.trainings[i].status == (int)TrainingStatus.OnGoing && game.trainings[i].etaTimestamp < DateTime.Now){
 					g = game.general.Find(x=>x.id == game.trainings[i].targetId);
 					point = game.trainings[i].type;
@@ -606,7 +527,7 @@ public class MainScene : MonoBehaviour {
 					GeneralTrainPrefab.currentPrefab =null;
 					g.UpdateObject();
 					game.trainings[i].Completed();
-					GeneralTrain.RunningItem[i-40] = 0;
+					GeneralTrain.RunningItem[i-5] = 0;
 //
 //					general = GeneralTrainPrefab.GTrain.Find(x => x.general.id == game.trainings[i].targetId);
 //					if(general != null){

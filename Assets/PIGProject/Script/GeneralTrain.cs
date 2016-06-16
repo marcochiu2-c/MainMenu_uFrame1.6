@@ -46,9 +46,6 @@ public class GeneralTrain : MonoBehaviour {
 		StrengthEventHolder = StrengthPopup.GetChild (0).GetChild (0).GetChild (1);
 		SetTrainDict ();
 		AddButtonListener ();
-		RunningItem.Add ( -1);
-		RunningItem.Add ( -1);
-		RunningItem.Add ( -1);
 	}
 
 	void AssignGameObjectVariable(){
@@ -244,9 +241,9 @@ public class GeneralTrain : MonoBehaviour {
 		Utilities.Panel.GetConfirmButton (TrainSFHolder).onClick.AddListener (() => {
 			// 10 Stardust for 1 hour
 			Dictionary<string,int> panelDict = new Dictionary<string, int>();
-			panelDict.Add("Courage",40);
-			panelDict.Add("Force",41);
-			panelDict.Add("Strength",42);
+			panelDict.Add("Courage",5);
+			panelDict.Add("Force",6);
+			panelDict.Add("Strength",7);
 			game.wealth[0].Deduct(featherDict[buttonClicked]);
 			Trainings tr  = game.trainings[panelDict[panel]];
 			GeneralTrainPrefab.currentPrefab.transform.SetSiblingIndex(0);
@@ -292,10 +289,10 @@ public class GeneralTrain : MonoBehaviour {
 	/// <param name="panel">Panel.</param>
 	void TrainByFeather(int type, string panel){
 		Dictionary<string,int> panelDict = new Dictionary<string, int>();
-		panelDict.Add("Courage",40);
-		panelDict.Add ("Force", 41);
-		panelDict.Add("Strength",42);
-		if (game.trainings[panelDict[panel]].status == 1 ||
+		panelDict.Add("Courage",5);
+		panelDict.Add ("Force", 6);
+		panelDict.Add("Strength",7);
+		if (game.trainings[panelDict[panel]].status == (int)TrainingStatus.OnGoing ||
 		 isTraining(GeneralTrainPrefab.currentPrefab.general.id)){
 			return;
 		}
@@ -316,10 +313,10 @@ public class GeneralTrain : MonoBehaviour {
 	/// <param name="panel">Panel.</param>
 	void TrainByStardust(int type, string panel){
 		Dictionary<string,int> panelDict = new Dictionary<string, int>();
-		panelDict.Add("Courage",40);
-		panelDict.Add ("Force", 41);
-		panelDict.Add("Strength",42);
-		if (game.trainings[panelDict[panel]].status == 1 || isTraining(GeneralTrainPrefab.currentPrefab.general.id)){
+		panelDict.Add("Courage",5);
+		panelDict.Add ("Force", 6);
+		panelDict.Add("Strength",7);
+		if (game.trainings[panelDict[panel]].status == (int)TrainingStatus.OnGoing || isTraining(GeneralTrainPrefab.currentPrefab.general.id)){
 			return;
 		}
 		if(GeneralTrainPrefab.currentPrefab != null){
@@ -351,9 +348,9 @@ public class GeneralTrain : MonoBehaviour {
 		attrDict.Add (ForcePopup, "Force");
 		attrDict.Add (StrengthPopup, "Physical");
 		Dictionary<Transform, int> idDict = new Dictionary<Transform, int> ();
-		idDict.Add (CouragePopup, 40);
-		idDict.Add (ForcePopup, 41);
-		idDict.Add (StrengthPopup, 42);
+		idDict.Add (CouragePopup, 5);
+		idDict.Add (ForcePopup, 6);
+		idDict.Add (StrengthPopup, 7);
 
 		int count = GeneralTrainPrefab.GTrain.Count;
 		int trainingGeneral = 0;
@@ -365,11 +362,11 @@ public class GeneralTrain : MonoBehaviour {
 			rTransform.localScale= Vector3.one;
 
 			//if the general in the prefab is training
-			if (game.trainings[idDict[panel]].status == 1 && game.trainings[idDict[panel]].targetId == game.general[i].id){
+			if (game.trainings[idDict[panel]].status == (int)TrainingStatus.OnGoing && game.trainings[idDict[panel]].targetId == game.general[i].id){
 				GeneralTrainPrefab.GTrain[i].SetRemainingTime(game.trainings[idDict[panel]].etaTimestamp);
 				GeneralTrainPrefab.GTrain[i].transform.SetSiblingIndex(0);
 				GeneralTrainPrefab.currentPrefab = GeneralTrainPrefab.GTrain[i];
-				RunningItem[idDict[panel]-40] = game.general[i].id;
+				RunningItem[idDict[panel]-5] = game.general[i].id;
 			}else{
 				GeneralTrainPrefab.GTrain[i].eta = new DateTime(2015,1,1);
 				if (game.trainings.Exists(x => x.targetId == game.general[i].id)){
@@ -414,7 +411,7 @@ public class GeneralTrain : MonoBehaviour {
 	}
 
 	bool isTraining(int id){
-		for (int i = 40; i < 43; i++) { 
+		for (int i = 5; i < 8; i++) { 
 			if (game.trainings [i].etaTimestamp > DateTime.Now) {
 				if (game.trainings [i].targetId == id) {
 					return true;
