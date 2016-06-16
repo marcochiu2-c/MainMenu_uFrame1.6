@@ -40,6 +40,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button SSCloseBtn;
 	public Button SQCloseBtn;
 	
+	public Button BattleBtn;
+	
 	public Button CloseBtn;
 	
 	public Button GoToSchoolFieldBtn;
@@ -160,8 +162,8 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		
 		Debug.Log (LocalUser.Soldier == null ? "SoldierVM is null" : LocalUser.Soldier.Count.ToString());
 		
-		//ExecuteInitSoldierValue();
-		for (int i = 1; i <= LocalUser.TotalTeam &&LocalUser.Soldier.Count == 0; i++)
+		/*
+		for (int i = 1; i <= LocalUser.TotalTeam; i++)
 		{
 			LocalUser.Soldier.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
 			LocalUser.Soldier[i - 1].Max_Health = 0;
@@ -169,12 +171,82 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			
 			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
 		}
+		*/
 		
 		
 		for (var i = 0 ; i < GeneralList.Count ; i++){
 			CreateSelfLearnItem (GeneralList[i]);
 		}
 		
+		
+		for(int i = 0; i < 5; i++)
+		{
+			if(game.teams[i].status == 1)
+			{
+				//Set General icon
+			
+				//Set Soldier Data
+				switch (i)
+				{
+				case 0:
+					_soldierQuantityText = SoldierQuantityText1;
+					_selectSoldier = SelectSoldier1Btn;
+					break;
+				case 1:
+					_soldierQuantityText = SoldierQuantityText2;
+					_selectSoldier = SelectSoldier2Btn;
+					break;
+				case 2:
+					_soldierQuantityText = SoldierQuantityText3;
+					_selectSoldier = SelectSoldier3Btn;
+					break;
+				case 3:
+					_soldierQuantityText = SoldierQuantityText4;
+					_selectSoldier = SelectSoldier4Btn;					
+					break;
+				case 4:
+					_soldierQuantityText = SoldierQuantityText5;
+					_selectSoldier = SelectSoldier5Btn;					
+					break;
+				default:
+					_soldierQuantityText = SoldierQuantityText1;
+					_selectSoldier = SelectSoldier1Btn;
+					break;
+				}
+				
+				//game.teams[this.ConferenceScreen.Group - 1].soldierQuantity = int.Parse(SoldierQuantityInput.text);
+				//game.teams[this.ConferenceScreen.Group - 1].soldierJson["type"].AsInt = this.ConferenceScreen.SoldierType - 1;
+				if(game.teams[i].generalJson["type"] != null)
+				{
+					whichTeam = i + 1;
+					AssignGeneral(game.teams[i].generalJson["type"].AsInt);
+					whichTeam = 0;
+				}
+				_soldierQuantityText.text = "兵數: " + game.teams[i].soldierQuantity;
+				
+				switch (game.teams[i].soldierJson["type"].AsInt)
+				{
+				case 1:
+					_selectSoldier.transform.GetChild(0).GetComponent<Text>().text = "兵種一";
+					break;
+				case 2:
+					_selectSoldier.transform.GetChild(0).GetComponent<Text>().text = "兵種二";
+					break;
+				case 3:
+					_selectSoldier.transform.GetChild(0).GetComponent<Text>().text = "兵種三";
+					break;
+				default:
+					_selectSoldier.transform.GetChild(0).GetComponent<Text>().text = "兵種一";
+					break;
+				}
+				
+				//this.ConferenceScreen.SoldierQuantity = game.teams[i].soldierQuantity;
+				//this.ConferenceScreen.SoldierType = game.teams[i].soldierJson["type"].AsInt;
+				//ExecuteSetTeam();
+				//initTeam(i);
+			}
+		}
+
 		//this.ConferenceScreen.Group = 1;
 		//AssignGeneral(GeneralList[0].type);
 		//LocalUser.TotalTeam = 0;
@@ -186,6 +258,12 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
 		var evt = new RequestMainMenuScreenCommand();
+		
+		/*
+		this.BindButtonToHandler (BattleBtn, () => {	
+			ExecuteSetSoldierData();
+		});
+		*/
 		
 		this.BindButtonToHandler (GoToSchoolFieldBtn, () => {
 			
@@ -461,6 +539,17 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			ExecuteSetSoldierData();
 			SoldierQuantityPanel.gameObject.SetActive (false);
 			LocalUser.SetTeam = true;
+			
+			
+			//game.teams[this.ConferenceScreen.Group - 1].generalId = this.ConferenceScreen.;
+			//game.teams[this.ConferenceScreen.Group - 1].generalJson["type"].AsInt = ;
+			//game.teams[this.ConferenceScreen.Group - 1].generalJson["attributes"] = ;
+			game.teams[this.ConferenceScreen.Group - 1].soldierQuantity = int.Parse(SoldierQuantityInput.text);
+			game.teams[this.ConferenceScreen.Group - 1].soldierJson["type"].AsInt = this.ConferenceScreen.SoldierType;
+			game.teams[this.ConferenceScreen.Group - 1].status = 1;
+			game.teams[this.ConferenceScreen.Group - 1].UpdateObject();
+			
+			Debug.Log ("game.teams updated to server");
 		});
 		
 		this.BindButtonToHandler (CloseBtn, () => {
@@ -486,7 +575,10 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		Image image;
 		Text iconText;
 		
-		switch (this.ConferenceScreen.Group)
+		//if (whichTeam != 0)
+		//	this.ConferenceScreen.Group = whichTeam;
+			
+		switch (whichTeam)
 		{
 			
 			case 1:
@@ -518,7 +610,11 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 		
 		GeneralHolder.gameObject.SetActive (false);
 		
-		LocalUser.generalImageType[this.ConferenceScreen.Group - 1] = type ;
+		game.teams[whichTeam - 1].generalJson["type"].AsInt = type;
+		game.teams[whichTeam - 1].status = 1;
+		game.teams[whichTeam - 1].UpdateObject();
+		
+		LocalUser.generalImageType[whichTeam - 1] = type ;
     }
     
 	public void CreateSelfLearnItem(General character)

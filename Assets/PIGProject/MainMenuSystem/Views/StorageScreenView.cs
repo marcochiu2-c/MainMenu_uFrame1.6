@@ -38,6 +38,8 @@ public class StorageScreenView : StorageScreenViewBase {
 		Transform popupHolder = ScreenUIContainer.transform.Find ("PopupHolder");
 		Transform btnGroup = ScreenUIContainer.transform.Find ("ButtonGroup");
 		
+		Debug.Log("ButtonGroup: " + btnGroup);
+		
 		weaponGrid = popupHolder.Find ("WeaponGridList").gameObject;
 		armorGrid = popupHolder.Find ("ArmorGridList").gameObject;
 		shieldGrid = popupHolder.Find ("ShieldGridList").gameObject;

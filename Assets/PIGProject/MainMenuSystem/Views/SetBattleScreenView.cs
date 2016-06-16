@@ -46,6 +46,7 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 	
 	public MainGameRootViewModel MainGameVM;
 	public UserViewModel LocalUser;
+	public Game game;
 	
 	public Slider loadingBar;
 	public GameObject loadingImage;
@@ -63,6 +64,8 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 		
 		LocalUser = uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
 		Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.Identifier);
+		
+		game = Game.Instance;
 
     }
     
@@ -236,6 +239,15 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
     public void ChangetoMainGame()
     {
 		
+		for(int i = 0; i < 5; i++)
+		{
+			if(game.teams[i].status == 1)
+			{
+				LocalUser.SetTeam = true;
+				break;
+			}
+		}
+		
 		if(LocalUser.SetTeam == false)
 		{
 			GoToConferencePanel.gameObject.SetActive(true);
@@ -251,8 +263,11 @@ public class SetBattleScreenView : SetBattleScreenViewBase {
 				LocalUser.TotalTeam++;
 		}
 		
+		
 		Debug.Log("TotalTeam: " + LocalUser.TotalTeam);
 		
+		
+
 		Publish(new UnloadSceneCommand()
 		        {
 			SceneName = "MainMenuScene"
