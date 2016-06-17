@@ -53,7 +53,8 @@ public class GeneralTrain : MonoBehaviour {
 		CourageEventHolder = CouragePopup.GetChild (0).GetChild (0).GetChild (1);
 		ForceEventHolder = ForcePopup.GetChild (0).GetChild (0).GetChild (1);
 		StrengthEventHolder = StrengthPopup.GetChild (0).GetChild (0).GetChild (1);
-
+		OpenedPanel = 0;
+		OnPanelOpen (CouragePopup);
 		AddButtonListener ();
 
 	}
@@ -418,6 +419,10 @@ public class GeneralTrain : MonoBehaviour {
 
 	// return true if the corrspondance is already in the highest value
 	bool isHighestPoint(string type, float point){
+		if (type == "Strength")
+			type = "Physical";
+		Debug.Log (type+": "+GeneralTrainPrefab.currentPrefab.general.attributes [type].AsFloat);
+		Debug.Log ("Highest" + type+": "+GeneralTrainPrefab.currentPrefab.general.attributes ["Highest" + type].AsFloat);
 		float highestPoint = GeneralTrainPrefab.currentPrefab.general.attributes ["Highest" + type].AsFloat;
 		return (point >= highestPoint);
 	}
