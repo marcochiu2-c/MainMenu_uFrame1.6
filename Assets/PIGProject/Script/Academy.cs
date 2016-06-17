@@ -440,7 +440,8 @@ public class Academy : MonoBehaviour
 			MainScene.MainUIHolder.SetActive(true);
 		});
 		KnowledgeListHolder.transform.GetChild (3).GetComponent<Button> ().onClick.AddListener (() => {
-			KnowledgeListHolder.SetActive(false);
+			HidePanel(KnowledgeListHolder);
+
 		});
 
 		Utilities.Panel.GetConfirmButton (ConfirmTeacherBy).onClick.AddListener (() => {
