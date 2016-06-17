@@ -15,8 +15,13 @@ public class IntroSceneFlow : uFrameComponent
 {
 
     /* Sprite to be animated */
-    public SpriteRenderer Logo;
+    public SpriteRenderer Poem0_1;
+	public SpriteRenderer Poem0_2;
+	public SpriteRenderer Poem0_3;
+	public SpriteRenderer Poem0_4;
 	
+	public GameObject BrokenChurch;
+
 	public Slider loadingBar;
 	public GameObject loadingImage;
 	
@@ -32,6 +37,10 @@ public class IntroSceneFlow : uFrameComponent
     public override void KernelLoaded()
     {
         base.KernelLoaded();
+		//SetZeroAlpha(Poem0_1);
+		//SetZeroAlpha(Poem0_2);
+		//SetZeroAlpha(Poem0_3);
+		//SetZeroAlpha(Poem0_4);
         StartCoroutine(ShowIntro());
     }
 
@@ -41,36 +50,57 @@ public class IntroSceneFlow : uFrameComponent
     private IEnumerator ShowIntro()
     {
         
-        //Make all the fancy stuff happen
-        var solidColor = Logo.color;
-        var transparentColor = new Color(solidColor.r,solidColor.g,solidColor.b,0);
-        Logo.color = transparentColor;
-
-        while (progress < 1f)
-        {
-            Logo.color = Color.Lerp(transparentColor, solidColor, progress);
-            progress += 0.5f * Time.deltaTime;
-            yield return null;
-        }
-
-        //yield return new WaitForSeconds(1);
+		StartCoroutine(SetAlpha(Poem0_1, 0.3f));
 		
-		/*
-        while (progress > 0f)
-        {
-            Logo.color = Color.Lerp(transparentColor, solidColor, progress);
-            progress -= 0.5f * Time.deltaTime;
-            yield return null;
-        }
-        */
+		yield return new WaitForSeconds(2f);
+		
+		StartCoroutine(SetAlpha(Poem0_2, 0.3f));
+		
+		yield return new WaitForSeconds(2f);
+		
+		StartCoroutine(SetAlpha(Poem0_3, 0.3f));
+		
+		yield return new WaitForSeconds(2f);
+		
+		StartCoroutine(SetAlpha(Poem0_4, 0.3f));
+		
+		yield return new WaitForSeconds(4f);
+		
+		BrokenChurch.gameObject.SetActive(true);
+		
+		Publish(new DialogueCommand()
+		        {
+			ConversationName = "Ch0_1"
+		});
 
-		loadingImage.SetActive (true);
-		StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
+		//loadingImage.SetActive (true);
+		//StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
         //In the end let the system know that intro is finished
         //Publish(new IntroFinishedEvent());
     }
-
-	IEnumerator LoadLevelWithBar (string level)
+	
+	private void SetZeroAlpha(SpriteRenderer image)
+	{
+		var solidColor = image.color;
+		var transparentColor = new Color(solidColor.r,solidColor.g,solidColor.b,0);
+		image.color = transparentColor;
+	}
+	
+	private IEnumerator SetAlpha(SpriteRenderer image, float time)
+	{
+		var solidColor = new Color(image.color.r,image.color.g,image.color.b,1);
+		var transparentColor = new Color(image.color.r,image.color.g,image.color.b,0);
+		image.color = transparentColor;
+		
+		while (progress < 1f)
+		{
+			image.color = Color.Lerp(transparentColor, solidColor, progress);
+			progress += time * Time.deltaTime;
+			yield return new WaitForSeconds(0.05f);
+		}
+	}
+	
+	private IEnumerator LoadLevelWithBar (string level)
 	{
 		_async = Application.LoadLevelAsync(level);
 		while(!_async.isDone)
