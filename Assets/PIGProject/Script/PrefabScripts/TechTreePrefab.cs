@@ -40,7 +40,7 @@ public class TechTreePrefab: MonoBehaviour {
 			TechTree.CounselorButtons[TechTree.AssigningCounselorSlot].transform.GetChild(0).GetComponent<Text>().text = nameDict[counselor.type];
 			gameObject.SetActive(false);
 			TechTree.CounselorList.SetActive(false);
-			Debug.Log ("Assigned Counselors after assignment: "+game.trainings[43].attributes["TechTreeCounselors"].Count);
+			Debug.Log ("Assigned Counselors after assignment: "+game.trainings[8].attributes["TechTreeCounselors"].Count);
 			TechTree.TotalIQText.text = TechTree.TotalIQOfCounselors().ToString();
 		});
 	}
