@@ -695,6 +695,8 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
     
     private Signal<InitSoldierValueCommand> _InitSoldierValue;
     
+    private Signal<SetTeamCommand> _SetTeam;
+    
     public ConferenceScreenViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
@@ -771,10 +773,20 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
         }
     }
     
+    public virtual Signal<SetTeamCommand> SetTeam {
+        get {
+            return _SetTeam;
+        }
+        set {
+            _SetTeam = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
         this.SetSoldierData = new Signal<SetSoldierDataCommand>(this);
         this.InitSoldierValue = new Signal<InitSoldierValueCommand>(this);
+        this.SetTeam = new Signal<SetTeamCommand>(this);
         _GroupProperty = new P<Int32>(this, "Group");
         _SoldierTypeProperty = new P<Int32>(this, "SoldierType");
         _SoldierQuantityProperty = new P<Int32>(this, "SoldierQuantity");
@@ -786,6 +798,10 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
     
     public virtual void ExecuteInitSoldierValue() {
         this.InitSoldierValue.OnNext(new InitSoldierValueCommand());
+    }
+    
+    public virtual void ExecuteSetTeam() {
+        this.SetTeam.OnNext(new SetTeamCommand());
     }
     
     public override void Read(ISerializerStream stream) {
@@ -806,6 +822,7 @@ public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
         base.FillCommands(list);
         list.Add(new ViewModelCommandInfo("SetSoldierData", SetSoldierData) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("InitSoldierValue", InitSoldierValue) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("SetTeam", SetTeam) { ParameterType = typeof(void) });
     }
     
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
