@@ -40,11 +40,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button SSCloseBtn;
 	public Button SQCloseBtn;
 	
-<<<<<<< HEAD
 	//public Button BattleBtn;
-=======
-	public Button BattleBtn;
->>>>>>> feature/Menu-Shawn
 	
 	public Button CloseBtn;
 	
@@ -334,7 +330,6 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			DefensiveLinup.gameObject.SetActive (false);
 			Standings.gameObject.SetActive (true);
 			
-			
 			TotalSoldierQunatityText.text = LocalUser.TotalSoldierQunatity.ToString();
 			TotalGeneralText.text = LocalUser.TotalGeneral.ToString();
 			TotalPlayerText.text = LocalUser.TotalPlayer.ToString();
@@ -342,9 +337,7 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 			AliveSoldiersText.text = LocalUser.AliveSoldiers.ToString();
 			LoseGearText.text = LocalUser.LoseGear.ToString();
 			SilverFeatherGainText.text = LocalUser.SilverFeatherGain.ToString();
-			ResourceGainText.text = LocalUser.ResourceGain.ToString();
-			
-			
+			ResourceGainText.text = LocalUser.ResourceGain.ToString();			
 		});
 		
 		this.BindButtonToHandler (SelectSoldier1Btn, () => {
