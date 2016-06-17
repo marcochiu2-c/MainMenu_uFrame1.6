@@ -44,24 +44,24 @@ public class GeneralTrainPrefab : MonoBehaviour {
 			// Set the clicked item to be currentPrefab
 
 			if(GeneralTrain.OpenedPanel == (int)GeneralTrainPanel.Courage){
-				Debug.Log ("game.trainings[40].status: "+game.trainings[40].status);
-				if (game.trainings[40].status ==(int)TrainingStatus.OnGoing){
+				Debug.Log ("game.trainings[5].status: "+game.trainings[5].status);
+				if (game.trainings[5].status ==(int)TrainingStatus.OnGoing){
 					return;
 				}else{
 					currentPrefab = gameObject.GetComponent<GeneralTrainPrefab> ();
 					currentPrefab.GetComponent<Image>().color = Color.green;
 				}
 			}else if (GeneralTrain.OpenedPanel == (int)GeneralTrainPanel.Force){
-				Debug.Log ("game.trainings[41].status: "+game.trainings[41].status);
-				if (game.trainings[41].status ==(int)TrainingStatus.OnGoing){
+				Debug.Log ("game.trainings[6].status: "+game.trainings[6].status);
+				if (game.trainings[6].status ==(int)TrainingStatus.OnGoing){
 					return;
 				}else{
 					currentPrefab = gameObject.GetComponent<GeneralTrainPrefab> ();
 					currentPrefab.GetComponent<Image>().color = Color.green;
 				}
 			}else if (GeneralTrain.OpenedPanel == (int)GeneralTrainPanel.Strength){
-				Debug.Log ("game.trainings[42].status: "+game.trainings[42].status);
-				if (game.trainings[42].status ==(int)TrainingStatus.OnGoing){
+				Debug.Log ("game.trainings[7].status: "+game.trainings[7].status);
+				if (game.trainings[7].status ==(int)TrainingStatus.OnGoing){
 					return;
 				}else{
 					currentPrefab = gameObject.GetComponent<GeneralTrainPrefab> ();

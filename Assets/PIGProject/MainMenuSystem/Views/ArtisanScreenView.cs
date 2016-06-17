@@ -34,7 +34,7 @@ public class ArtisanScreenView : ArtisanScreenViewBase {
 	public void AssignGameObjectVariable(){
 		Transform holder = ScreenUIContainer.transform.Find ("Holder");
 		Transform popupHolder = holder.Find ("PopupHolder");
-		Transform btnHolder = holder.Find ("ButtonHolder");
+		Transform btnHolder = popupHolder.Find ("ButtonHolder");
 
 		armsPopup = popupHolder.Find ("ArtisanArmsPopup").gameObject;
 		armorPopup = popupHolder.Find ("ArmorPopup").gameObject;

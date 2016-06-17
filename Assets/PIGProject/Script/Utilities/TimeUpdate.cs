@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Utilities{
 	public class TimeUpdate : MonoBehaviour {
-		
+
 		public static string Time(DateTime eta){
 			if (eta < DateTime.Now) return "00:00:00";
 			TimeSpan t = eta.Subtract (DateTime.Now);

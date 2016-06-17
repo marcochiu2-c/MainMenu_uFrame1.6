@@ -40,7 +40,11 @@ public class ConferenceScreenView : ConferenceScreenViewBase {
 	public Button SSCloseBtn;
 	public Button SQCloseBtn;
 	
+<<<<<<< HEAD
 	//public Button BattleBtn;
+=======
+	public Button BattleBtn;
+>>>>>>> feature/Menu-Shawn
 	
 	public Button CloseBtn;
 	

@@ -66,6 +66,7 @@ public class TechTree : MonoBehaviour {
 	public static int[] AssigningCounselor = new int[]{0,0,0,0,0};
 	public static int AssigningSlot=0;
 	public static int AssigningCounselorSlot = 0;
+	public const int DBSlot = 8;
 	
 	static List<int> TechRequirementNone = new List<int>{};
 	static List<int> TechRequirement1 = new List<int>{1};
@@ -139,9 +140,9 @@ public class TechTree : MonoBehaviour {
 	public static int GetIQRequirement(int tech, int level){
 		int totalIQ = 2160000;
 		Debug.Log ("Total IQ: " + totalIQ  * (TechItems [tech].Weight / 114));
-		Debug.Log ("Level: " + level);
-		Debug.Log ("Level IQ: " + LevelIQPercentage [level]);
-		return Mathf.RoundToInt (totalIQ*(TechItems[tech].Weight/114)*(LevelIQPercentage[level]/100f));
+		Debug.Log ("Level: " + (level+1));
+		Debug.Log ("Level IQ: " + LevelIQPercentage [level+1]);
+		return Mathf.RoundToInt (totalIQ*(TechItems[tech].Weight/114)*(LevelIQPercentage[level+1]/100f));
 	}
 
 
@@ -182,8 +183,10 @@ public class TechTree : MonoBehaviour {
 		for (int i = 0; i < 8; i++) {
 			TechButtons.Add ( MiningHolder.transform.GetChild (i).gameObject.GetComponent<Button> ());
 		}
-		TechButtons.Add ( WoodworkerHolder.transform.GetChild (0).gameObject.GetComponent<Button> ());
-		for (int i = 0; i < 19; i++) {
+		for (int i = 0; i < 3; i++) {
+			TechButtons.Add (WoodworkerHolder.transform.GetChild (i).gameObject.GetComponent<Button> ());
+		}
+		for (int i = 0; i < 17; i++) {
 			TechButtons.Add ( BasicScienceHolder.transform.GetChild (i).gameObject.GetComponent<Button> ());
 		}
 		TechButtons.Add ( IChingHolder.transform.GetChild (0).gameObject.GetComponent<Button> ());
@@ -203,7 +206,7 @@ public class TechTree : MonoBehaviour {
 		TechnologyLabel.text = TechItems[ GetCurrentTech ()].Item;
 		game = Game.Instance;
 		for (int i = 0; i < 5; i++) {
-			AssigningCounselor[i] = game.trainings[43].attributes["TechTreeCounselors"][i].AsInt;
+			AssigningCounselor[i] = game.trainings[DBSlot].attributes["TechTreeCounselors"][i].AsInt;
 			if (AssigningCounselor[i] > 0){
 			CounselorButtons[i].GetComponent<Image>().sprite = 
 				imageDict[game.counselor.Find (x => x.id == AssigningCounselor[i]).attributes["type"].AsInt];
@@ -213,8 +216,8 @@ public class TechTree : MonoBehaviour {
 		}
 		// TODO add ICON image here and after assignment
 		TotalIQText.text = TotalIQOfCounselors ().ToString();
-		AssigningTech = (Tech)game.trainings[43].type;
-		if (game.trainings [43].etaTimestamp > DateTime.Now) {
+		AssigningTech = (Tech)game.trainings[DBSlot].type;
+		if (game.trainings [DBSlot].etaTimestamp > DateTime.Now) {
 			FromLv.text = "由 "+game.login.attributes [Enum.GetName (typeof(Tech), AssigningTech)].AsInt.ToString ()+" 級";
 			ToLv.text = "升至 "+(game.login.attributes [Enum.GetName (typeof(Tech), AssigningTech)].AsInt + 1).ToString ()+" 級";
 		} else {
@@ -225,7 +228,7 @@ public class TechTree : MonoBehaviour {
 		MessageDialog = transform.FindChild ("MessageDialog").gameObject;
 		ConfirmDialog = transform.FindChild ("ConfirmDialog").gameObject;
 		AddButtonListener ();
-		if (game.trainings[43].etaTimestamp < DateTime.Now){
+		if (game.trainings[DBSlot].etaTimestamp < DateTime.Now){
 			ClearUIInformation();
 		}
 
@@ -288,8 +291,8 @@ public class TechTree : MonoBehaviour {
 	}
 	
 	public void SetRemainingTime(){
-		if (game.trainings [43].etaTimestamp > DateTime.Now) {
-			RemainTrainingTime.text = Utilities.TimeUpdate.Time(game.trainings[43].etaTimestamp);
+		if (game.trainings [DBSlot].etaTimestamp > DateTime.Now) {
+			RemainTrainingTime.text = Utilities.TimeUpdate.Time(game.trainings[DBSlot].etaTimestamp);
 		} else {
 			RemainTrainingTime.text = "00:00:00";
 		}
@@ -303,7 +306,7 @@ public class TechTree : MonoBehaviour {
 		MiningButton.onClick.AddListener (() => {ChangeHolder("Mining");});
 		WoodworkerButton.onClick.AddListener (() => {ChangeHolder("Woodworker");});
 		BasicScienceButton.onClick.AddListener (() => {ChangeHolder("BasicScience");});
-		IChingButton.onClick.AddListener (() => {ChangeHolder("IChingButton");});
+		IChingButton.onClick.AddListener (() => {ChangeHolder("IChing");});
 
 		for (int i = 0; i < 5; i++) {
 			CounselorButtons[i].onClick.AddListener(()=> {
@@ -311,11 +314,11 @@ public class TechTree : MonoBehaviour {
 			});
 		}
 		TechnologySelector.onClick.AddListener (() => {
-			if (game.trainings [43].etaTimestamp < DateTime.Now && TotalIQOfCounselors() > 0) {  // training not started
+			if (game.trainings [DBSlot].etaTimestamp < DateTime.Now && TotalIQOfCounselors() > 0) {  // training not started
 				SetupTechTreeDiagram ();
 				TreeDiagram.SetActive(true);
 			}else{
-				if (game.trainings [43].etaTimestamp < DateTime.Now){
+				if (game.trainings [DBSlot].etaTimestamp < DateTime.Now){
 					Panel.GetHeader(MessageDialog).text = CounselorNotSelectedHeader;
 					Panel.GetMessageText(MessageDialog).text = CounselorNotSelectedMessage;
 					DialogCommand = TechTreeDialogCommand.NoCounselorSelected;
@@ -361,7 +364,7 @@ public class TechTree : MonoBehaviour {
 		Debug.Log ("Number of Counselors: "+game.counselor.Count);
 		
 		int cslCount = 0; 
-		Trainings training = game.trainings[43];
+		Trainings training = game.trainings[DBSlot];
 		for (var i = 0 ; i < cList.Count ; i++){
 			for (int j=0; j < training.attributes["TechTreeCounselors"].Count; j++){
 				if (training.attributes["TechTreeCounselors"][j].AsInt == cList[i].id){
@@ -385,7 +388,7 @@ public class TechTree : MonoBehaviour {
 	}
 
 	void OnCounselorButtonClicked(string name){
-		if (game.trainings [43].etaTimestamp < DateTime.Now) {  // training not started
+		if (game.trainings [DBSlot].etaTimestamp < DateTime.Now) {  // training not started
 			if (name == "Button") {
 				//TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 0;
@@ -458,28 +461,26 @@ public class TechTree : MonoBehaviour {
 		Debug.Log ("OnConfirmedTraining()");
 		TreeDiagram.SetActive(false);
 
-		game.trainings[43].type = (int)AssigningTech;
-		game.trainings[43].targetId = 0;
-		game.trainings[43].startTimestamp = DateTime.Now;
-		game.trainings[43].trainerId = 0;
-		game.trainings[43].etaTimestamp = DateTime.Now+GetTotalTrainingHours();
-		game.trainings[43].status = (int)TrainingStatus.OnGoing;
+		game.trainings[DBSlot].type = (int)AssigningTech;
+		game.trainings[DBSlot].targetId = 0;
+		game.trainings[DBSlot].startTimestamp = DateTime.Now;
+		game.trainings[DBSlot].trainerId = 0;
+		game.trainings[DBSlot].etaTimestamp = DateTime.Now+GetTotalTrainingHours();
+		game.trainings[DBSlot].status = (int)TrainingStatus.OnGoing;
 		for (int i = 0; i < 5; i++) {
-			game.trainings [43].attributes ["TechTreeCounselors"][i].AsInt = AssigningCounselor[i];
+			game.trainings [DBSlot].attributes ["TechTreeCounselors"][i].AsInt = AssigningCounselor[i];
 		}
-		game.trainings[43].UpdateObject();
+		game.trainings[DBSlot].UpdateObject();
 	}
 
 	TimeSpan GetTotalTrainingHours(){
 		Debug.Log ("Total Counselor IQ: " + TotalIQOfCounselors ());
 		var tech = Enum.GetName (typeof(Tech), AssigningTech);
-		Debug.Log (tech+" Level: "+game.login.attributes[tech].AsInt);
 		float seconds = 3600 / TotalIQOfCounselors() * GetIQRequirement((int)AssigningTech,game.login.attributes[tech].AsInt) ;
 		return new TimeSpan (0,0,(int)seconds);
 	}
 
 	bool isTrainingValid(Tech tech){
-		int index = 43;
 		List<Knowledge> knowledgeList = GetAvailableKnowlegdeList ();
 		List<Tech> techList = GetAvailableTechList ();
 		float highestIQ = HighestIQOfCounselors ();
@@ -487,38 +488,22 @@ public class TechTree : MonoBehaviour {
 		int count = 0;
 		TechItem techs = TechItems [(int)tech];
 
-//		ShowLog.Log (techs.Item);
-//		if (tech == Tech.WeaponTechnology) {
-////			Debug.Log("Weapon Tech, Tech requirement: "+string.Join(",", TechItems[0].TechRequirement.Select(x => x.ToString()).ToArray()));
-//			Debug.Log("Weapon Tech, Tech requirement: "+ TechItems[0].TechRequirement.Count);
-//			Debug.Log("Weapon Tech, Knowledge requirement: "+string.Join(",", TechItems[0].KnowledgeRequirement.Select(x => x.ToString()).ToArray()));
-//			Debug.Log("Knowledge List:"+string.Join(",", knowledgeList.Select(x => x.ToString()).ToArray()));
-//			Debug.Log("Tech List:"+string.Join(",", techList.Select(x => x.ToString()).ToArray()));
-//		}
-//		if (tech == Tech.EasternWeaponTechnology) {
-////			Debug.Log("Eastern Weapon Tech, Tech requirement: "+string.Join(",", TechItems[1].TechRequirement.Select(x => x.ToString()).ToArray()));
-//			Debug.Log("Eastern Weapon Tech, Tech requirement: "+ TechItems[1].TechRequirement.Count);
-//		}
-//		if (tech == Tech.Tempered) {
-//			Debug.Log("Tempered, Tech requirement: "+string.Join(",", TechItems[6].TechRequirement.Select(x => x.ToString()).ToArray()));
-//			Debug.Log("Tempered, Knowledge requirement: "+string.Join(",", TechItems[6].KnowledgeRequirement.Select(x => x.ToString()).ToArray()));
-//		}
 		if (techs.MinimumIQ > highestIQ /*|| techs.MinimumLevel > level*/) {
-			ShowLog.Log("IQ Not Enough, Minimum IQ: "+ techs.MinimumIQ+" Highest IQ: "+highestIQ);
+			ShowLog.Log(techs.Item +" IQ Not Enough, Minimum IQ: "+ techs.MinimumIQ+" Highest IQ: "+highestIQ);
 			return false;
 		}
 
 		count = techs.TechRequirement.Count;
 		for (int i = 0; i < count ; i++){	
 			if (!techList.Exists(x => (int)x == techs.TechRequirement[i])){
-				ShowLog.Log("No Required Tech: "+(Tech)techs.TechRequirement[i]);
+				ShowLog.Log(techs.Item +" No Required Tech: "+(Tech)techs.TechRequirement[i]);
 				return false;
 			}
 	    }
 		count = techs.KnowledgeRequirement.Count;
 		for (int i = 0; i < count ; i++){
 			if (!knowledgeList.Exists(x => (int)x == techs.KnowledgeRequirement[i])){
-				ShowLog.Log("No Required Knowledge: "+(Knowledge)techs.KnowledgeRequirement[i]);
+				ShowLog.Log(techs.Item +" No Required Knowledge: "+(Knowledge)techs.KnowledgeRequirement[i]);
 				return false;
 			}
 		}
@@ -532,7 +517,7 @@ public class TechTree : MonoBehaviour {
 	/// <returns>The current tech.</returns>
 	public static int GetCurrentTech(){
 		Game game = Game.Instance;
-		return game.trainings [43].type;
+		return game.trainings [DBSlot].type;
 	}
 
 	/// <summary>
@@ -611,7 +596,7 @@ public class TechTree : MonoBehaviour {
 				continue;
 			}
 
-			for (int j = 2001; j < numOfEnum+2001 ; j++){
+			for (int j = 2001; j < numOfEnum+2000 ; j++){
 				if (game.counselor[co].attributes["attributes"]["KnownKnowledge"][Enum.GetName (typeof(Knowledge),(Knowledge)j)].AsInt > 0){
 					if (!list.Exists(x => x == (Knowledge)j)){
 						list.Add ((Knowledge)j);
@@ -630,6 +615,7 @@ public class TechTree : MonoBehaviour {
 		List<Knowledge> knowledges = GetAvailableKnowlegdeList ();
 		int count = TechButtons.Count;
 		for (int i = 0; i< count; i++) {
+			ShowLog.Log(i+": "+ (Tech)(i+1));
 			if (isTrainingValid ((Tech)(i+1))) {
 				TechButtons[i].interactable = true;
 			}else{
@@ -715,64 +701,65 @@ public class TechTree : MonoBehaviour {
 			}
 		} else if (EventSystem.current.currentSelectedGameObject.transform.parent.gameObject == WoodworkerHolder) {
 			if (EventSystem.current.currentSelectedGameObject.name == "Button") {
+				AssigningTech = Tech.WoodWorker;
 				ConfirmingTraining ("WoodWorker");
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (1)") {
+				AssigningTech = Tech.Geometry;
+				ConfirmingTraining ("Geometry");
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (2)") {
+				AssigningTech = Tech.Physics;
+				ConfirmingTraining ("Physics");
 			}
 		} else if (EventSystem.current.currentSelectedGameObject.transform.parent.gameObject == BasicScienceHolder) {
 			if (EventSystem.current.currentSelectedGameObject.name == "Button") {
-				AssigningTech = Tech.Geometry;
-				ConfirmingTraining ("Geometry");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (1)") {
-				AssigningTech = Tech.Physics;
-				ConfirmingTraining ("Physics");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (2)") {
 				AssigningTech = Tech.BasicScience;
 				ConfirmingTraining ("BasicScience");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (3)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (1)") {
 				AssigningTech = Tech.Chemistry;
 				ConfirmingTraining ("Chemistry");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (4)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (2)") {
 				AssigningTech = Tech.PeriodicTable;
 				ConfirmingTraining ("PeriodicTable");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (5)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (3)") {
 				AssigningTech = Tech.MagnesiumApplications;
 				ConfirmingTraining ("MagnesiumApplications");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (6)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (4)") {
 				AssigningTech = Tech.Biology;
 				ConfirmingTraining ("Biology");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (7)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (5)") {
 				AssigningTech = Tech.BodyStructure;
 				ConfirmingTraining ("BodyStructure");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (8)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (6)") {
 				AssigningTech = Tech.Kinetics;
 				ConfirmingTraining ("Kinetics");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (9)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (7)") {
 				AssigningTech = Tech.Nutrition;
 				ConfirmingTraining ("Nutrition");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (10)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (8)") {
 				AssigningTech = Tech.ScienceTraining;
 				ConfirmingTraining ("ScienceTraining");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (11)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (9)") {
 				AssigningTech = Tech.CoalApplication;
 				ConfirmingTraining ("CoalApplication");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (12)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (10)") {
 				AssigningTech = Tech.ChainSteel;
 				ConfirmingTraining ("ChainSteel");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (13)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (11)") {
 				AssigningTech = Tech.Psychology;
 				ConfirmingTraining ("Psychology");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (14)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (12)") {
 				AssigningTech = Tech.MindReading;
 				ConfirmingTraining ("MindReading");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (15)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (13)") {
 				AssigningTech = Tech.MindControl;
 				ConfirmingTraining ("MindControl");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (16)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (14)") {
 				AssigningTech = Tech.PaperMaking;
 				ConfirmingTraining ("PaperMaking");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (17)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (15)") {
 				AssigningTech = Tech.Typography;
 				ConfirmingTraining ("Typography");
-			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (18)") {
+			} else if (EventSystem.current.currentSelectedGameObject.name == "Button (16)") {
 				AssigningTech = Tech.Compass;
 				ConfirmingTraining ("Compass");
 			}

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text.RegularExpressions;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -44,7 +45,9 @@ public class NoticeText : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log (MainScene.noticeText);
+		Debug.Log ( Regex.Replace(MainScene.noticeText,
+		                         @"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)",
+		                         "<a target='_blank' href='$1'>$1</a>"));
 		theText = transform.GetChild (1).GetChild (0).GetComponent<Text>();
 		theText.text = MainScene.noticeText;
 	}
