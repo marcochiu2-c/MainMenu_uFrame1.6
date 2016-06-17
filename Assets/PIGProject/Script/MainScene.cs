@@ -518,7 +518,7 @@ public class MainScene : MonoBehaviour {
 		trainDict.Add (5, "Courage");
 		trainDict.Add (6, "Force");
 		trainDict.Add (7, "Physical");
-		if (game.trainings.Count > 40) {
+		if (game.trainings.Count > 5) {
 			for (int i = 5 ; i < 8; i++){
 				if (game.trainings[i].status == (int)TrainingStatus.OnGoing && game.trainings[i].etaTimestamp < DateTime.Now){
 					g = game.general.Find(x=>x.id == game.trainings[i].targetId);
