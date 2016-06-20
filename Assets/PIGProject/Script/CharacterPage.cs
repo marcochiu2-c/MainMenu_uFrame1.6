@@ -30,7 +30,7 @@ public class CharacterPage : MonoBehaviour {
 	}
 
 	void AssignGameObjectVariable(){
-		img = transform.GetChild (1).GetChild (0).GetChild (0).GetChild (0).GetComponent<Image> ();
+		img = transform.GetChild (0).GetChild (0).GetChild (0).GetChild (0).GetComponent<Image> ();
 		levelText = GetTextObject ("LevelHolder");
 		IQText = GetTextObject ("IQHolder");
 		LeadershipText = GetTextObject ("CommandedHolder");
@@ -38,7 +38,7 @@ public class CharacterPage : MonoBehaviour {
 	}
 
 	Text GetTextObject(string name){
-		Transform CharPageAttribute = transform.GetChild (1).GetChild (1).GetChild (0).GetChild (3);
+		Transform CharPageAttribute = transform.GetChild (0).GetChild (1).GetChild (0).GetChild (3);
 		return CharPageAttribute.Find (name).GetChild(1).GetComponent<Text> ();
 	}
 
