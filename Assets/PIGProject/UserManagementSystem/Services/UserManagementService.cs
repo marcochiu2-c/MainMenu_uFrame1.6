@@ -31,20 +31,22 @@ public class UserManagementService : UserManagementServiceBase
     {
         if (Username != "pig" && Password != "pig")
         {
-            Debug.Log("authorized in service");     
+            Debug.Log("authorized in service");
             LocalUser.AuthorizationState = AuthorizationState.Authorized;
         }
     }
 	
+	/*
 	public void loadDB ()
 	{
 		if(GameObject.Find ("MainUIHolder").GetComponent<MainScene> () != null)
 			MainScene = GameObject.Find ("MainUIHolder").GetComponent<MainScene> ();
 				
 		WsClient wsc = WsClient.Instance;
-		Debug.Log (wsc == null ? "ws  is null" : wsc.ToString());
+		Debug.Log ("loadDB from UserManagermentService");
 		
 		MainScene.needReloadFromDB = true;
 		MainScene.CallMainScene();
 	}
+	*/
 }
