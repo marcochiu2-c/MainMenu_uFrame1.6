@@ -27,8 +27,48 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		Debug.Log (LocalUser == null ? "LocalUser is null" : LocalUser.Identifier);
 		//Debug.Log ("Game Wealth: " + game.wealth[1].toJSON().ToString());
 		game = Game.Instance;
-    }
-
+		
+		LocalUser.UserLevel = CharacterPage.UserLevelCalculator(game.login.exp);
+		int userLevel = LocalUser.UserLevel;
+				//Testing use
+		//int userLevel = 25;
+		LocalUser.TotalTeam = 1;
+		
+		if (userLevel > 10)
+			LocalUser.TotalTeam = 2;
+		
+		if (userLevel > 20)
+			LocalUser.TotalTeam = 3;
+		
+		if (userLevel > 30)
+			LocalUser.TotalTeam = 4;
+		
+		if (userLevel > 40)
+			LocalUser.TotalTeam = 5;
+		
+		for (int i = 1; i <= LocalUser.TotalTeam; i++)
+		{
+			LocalUser.Soldier.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
+			LocalUser.Soldier[i - 1].Max_Health = 0;
+			Debug.Log ("SoldierVM added");
+			
+			//Debug.Log (SoldierVM == null ? "SoldierVM is null" : SoldierVM[0].Movement + " and " + SoldierVM[0].Health + " and " + SoldierVM[0].Action);
+		}
+		
+		for(int i = 0; i < 5; i++)
+		{
+			if(game.teams[i].status == 1)
+			{
+				LocalUser.SetTeam = true;
+				viewModel.Group = i + 1;
+				viewModel.SoldierQuantity = game.teams[i].soldierQuantity;
+				viewModel.SoldierType = game.teams[i].soldierJson["type"].AsInt;
+				SetSoldierData(viewModel);
+				//Observable.Timer(TimeSpan.FromSeconds(5)).Subscribe(_ => SetSoldierData(viewModel));
+			}
+		}
+	}
+    
     
     public override void InitSoldierValue(ConferenceScreenViewModel viewModel) {
 		base.InitSoldierValue(viewModel);
@@ -101,6 +141,7 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		//
     }
     
+    
 	public override void SetSoldierData(ConferenceScreenViewModel viewModel) {
 		base.SetSoldierData(viewModel);
 		
@@ -125,5 +166,9 @@ public class ConferenceScreenController : ConferenceScreenControllerBase {
 		//TODO: change weapon quantity
 		
 	}
+
+    public override void SetTeam(ConferenceScreenViewModel viewModel) {
+        base.SetTeam(viewModel);
+    }
 }
 
