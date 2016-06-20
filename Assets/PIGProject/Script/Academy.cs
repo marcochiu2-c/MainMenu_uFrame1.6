@@ -202,9 +202,18 @@ public class Academy : MonoBehaviour
 
 	void ActivateAllCounselorPrefab(){
 		int count = AcademyStudent.person.Count;
-		for (var i = 0; i < count; i++) {
-			AcademyStudent.person[i].gameObject.SetActive(true);
+		if (count > 0 ){
+			if (AcademyStudent.person[0] != null){
+				for (var i = 0; i < count; i++) {
+					AcademyStudent.person[i].gameObject.SetActive(true);
+				}
+				return;
+			}else{
+				CounselorList.Clear();
+				AcademyStudent.person = new List<AcademyStudent>();
+			}
 		}
+
 	}
 
 	/// <summary>

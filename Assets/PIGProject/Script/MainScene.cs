@@ -350,6 +350,9 @@ public class MainScene : MonoBehaviour {
 			MainCharButton.transform.GetChild(0).GetComponent<Text>().text = "等級 "+CharacterPage.UserLevelCalculator(game.login.exp).ToString();
 
 		}
+		if (MainCharButton.transform.GetChild(0).GetComponent<Text>().text.Trim() == "等級" && game.login != null){
+			MainCharButton.transform.GetChild(0).GetComponent<Text>().text = "等級 "+CharacterPage.UserLevelCalculator(game.login.exp).ToString();
+		}
 		if (MainScene.GeneralInfo != null) {
 			game.general = new List<General> ();
 			count = MainScene.GeneralInfo.Count;
