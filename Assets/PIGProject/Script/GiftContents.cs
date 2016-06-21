@@ -32,17 +32,28 @@ public class GiftContents : MonoBehaviour{
 		this.Target = new List<int> ();
 		ID = j ["gift_id"].AsInt;
 		Name = j ["gift_name"];
-		if (j["gift_json"]["stardusts"] != null){
-			Content.Add ("stardusts",j["gift_json"]["stardusts"].AsInt);
+		if (j ["gift_json"] ["stardusts"] != null) {
+			Content.Add ("stardusts", j ["gift_json"] ["stardusts"].AsInt);
+		} else {
+			Content.Add ("stardusts",0);
 		}
 		if (j["gift_json"]["resources"] != null){
 			Content.Add ("resources",j["gift_json"]["resources"].AsInt);
+		}else {
+			Content.Add ("resources",0);
 		}
 		if (j["gift_json"]["feathers"] != null){
 			Content.Add ("feathers",j["gift_json"]["feathers"].AsInt);
 		}
-		for (int i = 0; i < j["gift_target"].Count; i++) {
-			Target.Add (j["gift_target"][i].AsInt);
+		else {
+			Content.Add ("feathers",0);
+		}
+		if (j ["gift_target"].Count == 1 && j ["gift_target"] [0].AsInt == 0) {
+			Target.Add (MainScene.userId);
+		} else {
+			for (int i = 0; i < j["gift_target"].Count; i++) {
+				Target.Add (j ["gift_target"] [i].AsInt);
+			}
 		}
 		Expiry = DateTime.Parse (j ["expiry"] );
 	}
