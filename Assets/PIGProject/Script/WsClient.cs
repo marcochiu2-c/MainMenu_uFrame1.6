@@ -211,7 +211,9 @@ public class WsClient {
 			conn.OnMessage += (sender, e) => { 
 				if (e.Data != "[]"){
 					Utilities.ShowLog.Log("Received Message: " +e.Data);
-					Utilities.ShowLog.Log (JSON.Parse(e.Data).ToString());
+					var d = JSON.Parse (e.Data);
+					d["func"] = Enum.GetName(typeof(jsonFuncNumberEnum),(jsonFuncNumberEnum)d["func"].AsInt);
+					Utilities.ShowLog.Log (d.ToString());
 					handleMessage(JSON.Parse(e.Data));
 				}
 			};
@@ -410,6 +412,16 @@ public class WsClient {
 		case jsonFuncNumberEnum.getTeams:
 			if (j["obj"]!="[  ]"){
 				MainScene.TeamInfo = j["obj"];
+			}
+			break;
+		case jsonFuncNumberEnum.getGiftInfo:
+			if (j["obj"]!="[ ]"){
+				MainScene.GiftReceptionInfo = j["obj"];
+			}
+			break;
+		case jsonFuncNumberEnum.getGiftContent:
+			if (j["obj"]!="[  ]"){
+				MainScene.GiftContentInfo = j["obj"];
 			}
 			break;
 		default:

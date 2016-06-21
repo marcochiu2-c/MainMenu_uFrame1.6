@@ -234,7 +234,7 @@ public class Shop : MonoBehaviour {
 	void ShowMonthCardDailyRedeem(){
 		Utilities.Panel.GetHeader (MainScene.NoticeDialog).text = "月咭";
 		Utilities.Panel.GetMessageText (MainScene.NoticeDialog).text = "軍師閣下，請接受20星塵軍餉，助你揮軍發展。";
-
+		MainScene.OpenedFunction = MainSceneDialogFunction.MonthCard;
 		ShowMainScenePanel (MainScene.NoticeDialog);
 	}
 
