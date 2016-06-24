@@ -21,6 +21,7 @@ public class IntroSceneFlow : uFrameComponent
 	public SpriteRenderer Poem0_4;
 	
 	public GameObject BrokenChurch;
+	public GameObject Poem0;
 
 	public Slider loadingBar;
 	public GameObject loadingImage;
@@ -68,11 +69,20 @@ public class IntroSceneFlow : uFrameComponent
 		
 		BrokenChurch.gameObject.SetActive(true);
 		
+		Poem0.gameObject.SetActive(false);
+		
 		Publish(new DialogueCommand()
-		        {
+		{
 			ConversationName = "Ch0_1"
 		});
-
+		
+		//BrokenChurch.gameObject.SetActive(false);
+		
+		Publish(new DialogueCommand()
+		{
+			ConversationName = "Ch0_2"
+		});
+		
 		//loadingImage.SetActive (true);
 		//StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
         //In the end let the system know that intro is finished
@@ -96,7 +106,7 @@ public class IntroSceneFlow : uFrameComponent
 		{
 			image.color = Color.Lerp(transparentColor, solidColor, progress);
 			progress += time * Time.deltaTime;
-			yield return new WaitForSeconds(0.05f);
+			yield return new WaitForSeconds(0.1f);
 		}
 	}
 	

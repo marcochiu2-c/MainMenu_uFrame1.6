@@ -363,8 +363,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				_soldierCount = 0;
 			}
 		}
-		
-		
 	}
 	
 	//call after mov/attack accommand clicked
@@ -421,7 +419,6 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 				break;
 			}
 			*/
-			
 			
 			foreach (var neighbor in neighborhoodPoints)
 			{
@@ -484,9 +481,7 @@ public class GSHexGridManager : uFrameGridBehaviour<FlatHexPoint> {
 			{
 				myText.text = "請按「戰鬥開始」";
 			}
-			
 		}//End of ATTACK State
-		
 	}
 	
 	/// <summary>
