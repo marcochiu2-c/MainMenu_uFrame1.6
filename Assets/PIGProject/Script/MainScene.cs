@@ -247,6 +247,38 @@ public class MainScene : MonoBehaviour {
 			}                                                                   
 		}
 	}
+
+	void OnGeneralTrainComplete(){
+		game = Game.Instance;
+		if (game == null) {
+			reloadFromDB();
+			return;
+		}
+		int point = 0;
+		General g = new General ();
+		Dictionary<int,string> trainDict = new Dictionary<int,string> ();
+		trainDict.Add (5, "Courage");
+		trainDict.Add (6, "Force");
+		trainDict.Add (7, "Physical");
+		if (game.trainings.Count > 5) {
+			for (int i = 5 ; i < 8; i++){
+				if (game.trainings[i].status == (int)TrainingStatus.OnGoing && game.trainings[i].etaTimestamp < DateTime.Now){
+					g = game.general.Find(x=>x.id == game.trainings[i].targetId);
+					point = game.trainings[i].type;
+					g.attributes[trainDict[i]].AsFloat = g.attributes[trainDict[i]].AsFloat + point;
+					GeneralTrainPrefab.currentPrefab =null;
+					g.UpdateObject();
+					game.trainings[i].Completed();
+					GeneralTrain.RunningItem[i-5] = 0;
+					//
+					//					general = GeneralTrainPrefab.GTrain.Find(x => x.general.id == game.trainings[i].targetId);
+					//					if(general != null){
+					//						general.gameObject.SetActive(true);
+					//					}
+				}
+			}
+		}
+	}
 	
 	void QuitIfConnectionFailed(){
 		if (!wsc.conn.IsAlive) {
@@ -325,6 +357,9 @@ public class MainScene : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Reload data from database.
+	/// </summary>
 	public void reloadFromDB(){
 		Utilities.ShowLog.Log ("User ID: " + Game.Instance.login.id);
 		Utilities.ShowLog.Log ("reloadFromDB(); ");
@@ -554,6 +589,9 @@ public class MainScene : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Receive the gift information and add to the wealth.
+	/// </summary>
 	IEnumerator HandleGift(){
 		ShowLog.Log("Available Gift count: "+GiftContents.gcList.Count);
 		if (GiftContents.gcList.Exists(x => x.Target.Exists (y => y == userId) )){
@@ -601,38 +639,7 @@ public class MainScene : MonoBehaviour {
 		}
 	}
 
-	void OnGeneralTrainComplete(){
-//		GeneralTrainPrefab general = null;
-		game = Game.Instance;
-		if (game == null) {
-			reloadFromDB();
-			return;
-		}
-		int point = 0;
-		General g = new General ();
-		Dictionary<int,string> trainDict = new Dictionary<int,string> ();
-		trainDict.Add (5, "Courage");
-		trainDict.Add (6, "Force");
-		trainDict.Add (7, "Physical");
-		if (game.trainings.Count > 5) {
-			for (int i = 5 ; i < 8; i++){
-				if (game.trainings[i].status == (int)TrainingStatus.OnGoing && game.trainings[i].etaTimestamp < DateTime.Now){
-					g = game.general.Find(x=>x.id == game.trainings[i].targetId);
-					point = game.trainings[i].type;
-					g.attributes[trainDict[i]].AsFloat = g.attributes[trainDict[i]].AsFloat + point;
-					GeneralTrainPrefab.currentPrefab =null;
-					g.UpdateObject();
-					game.trainings[i].Completed();
-					GeneralTrain.RunningItem[i-5] = 0;
-//
-//					general = GeneralTrainPrefab.GTrain.Find(x => x.general.id == game.trainings[i].targetId);
-//					if(general != null){
-//						general.gameObject.SetActive(true);
-//					}
-				}
-			}
-		}
-	}
+
 
 	void ShowPanel(GameObject panel){
 		DisablePanel.SetActive (true);

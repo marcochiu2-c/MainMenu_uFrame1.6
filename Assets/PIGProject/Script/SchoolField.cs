@@ -336,6 +336,9 @@ public class SchoolField : MonoBehaviour {
 		
 	}
 
+	/// <summary>
+	/// Routine for Confirmation on the training speed up made.
+	/// </summary>
 	void ConfirmedSpeedUpTraining(){
 		Debug.Log ("Speed up Training Confirmed");
 
@@ -346,6 +349,9 @@ public class SchoolField : MonoBehaviour {
 		HidePanel (TrainingQAHolder);
 	}
 
+	/// <summary>
+	/// Raises the speed up training clicked event (if player want to speed up training).
+	/// </summary>
 	void OnSpeedUpTrainingClicked(){
 		if (game.soldiers [AssigningSoldier - 1].attributes ["ETATrainingTime"] != null) {
 			isSpeedUpQuestion = true;
@@ -365,9 +371,9 @@ public class SchoolField : MonoBehaviour {
 	#region ShowSoldiersAvailable
 
 
-
-
-
+	/// <summary>
+	/// Display the total available soldiers for team assignment.
+	/// </summary>
 	void ShowTotalSoldiersAvailableText(){
 //		Text availSoldiersText = NewSoldierPanel.transform.GetChild (0).GetComponent<Text> ();
 		Text availSoldiersText = NewSoldierPanel.transform.GetChild (0).GetChild (0).GetComponent<Text> ();
@@ -390,6 +396,9 @@ public class SchoolField : MonoBehaviour {
 	}
 	#endregion
 
+	/// <summary>
+	/// Assignment of new soldiers to the team
+	/// </summary>
 	public void OnSetNewSoldierNumber(){
 		InputField s = TrainingQText;
 		string soldiers = Regex.Replace(s.text, "[^0-9]", "");
@@ -456,6 +465,9 @@ public class SchoolField : MonoBehaviour {
 //		}
 	}
 
+	/// <summary>
+	/// Raises the confirmed new soldier training event if new soldiers need to be trained.
+	/// </summary>
 	void OnConfirmedNewSoldierTraining(){
 		int soldiers = game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt;
 		Debug.Log ("trainingSoldiers: "+game.soldiers [AssigningSoldier - 1].attributes ["trainingSoldiers"].AsInt);
@@ -537,29 +549,39 @@ public class SchoolField : MonoBehaviour {
 		HidePanel(TrainingQAHolder);
 	}
 
-	float CalculateTrainingTimeForNewSoldiers(int soldiers){
+	/// <summary>
+	/// Calculates the training time for new soldiers.
+	/// </summary>
+	/// <returns>The training time for new soldiers.</returns>
+	/// <param name="soldiers">Number of soldiers.</param>
+	float CalculateTrainingTimeForNewSoldiers(int NumOfSoldiers){
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
 		TotalTrainingTime = 0;
-		TotalTrainingTime += CalculateSoldierTrainingTime("Hit", soldiers, j["Hit"].AsFloat - 30);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Dodge", soldiers, j ["Dodge"].AsFloat - 20);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Strength", soldiers, j ["Strength"].AsFloat - 50);
-		TotalTrainingTime += CalculateSoldierTrainingTime("AttackSpeed", soldiers, j ["AttackSpeed"].AsFloat - 1);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Morale", soldiers, j ["Morale"].AsFloat - 50);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Wand", soldiers, j ["Wand"].AsFloat - 10);
-		TotalTrainingTime += CalculateSoldierTrainingTime("PiercingLongWeapon", soldiers, j ["PiercingLongWeapon"].AsFloat - 3);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Bows", soldiers, j ["Bows"].AsFloat - 3);
-		TotalTrainingTime += CalculateSoldierTrainingTime("HighEndBows", soldiers, j ["HighEndBows"].AsFloat - 1);
-		TotalTrainingTime += CalculateSoldierTrainingTime("HiddenWeapon", soldiers, j ["HiddenWeapon"].AsFloat - 1);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Knife", soldiers, j ["Knife"].AsFloat - 8);
-		TotalTrainingTime += CalculateSoldierTrainingTime("HackTypeLongWeapon", soldiers, j ["HackTypeLongWeapon"].AsFloat - 3);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Sword", soldiers, j ["Sword"].AsFloat - 5);
-		TotalTrainingTime += CalculateSoldierTrainingTime("HighEndSword", soldiers, j ["HighEndSword"].AsFloat);
-		TotalTrainingTime += CalculateSoldierTrainingTime("SpecialWeapon", soldiers, j ["SpecialWeapon"].AsFloat);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Axe", soldiers, j ["Axe"].AsFloat - 3);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Hammer", soldiers, j ["Hammer"].AsFloat - 4);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Hit", NumOfSoldiers, j["Hit"].AsFloat - 30);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Dodge", NumOfSoldiers, j ["Dodge"].AsFloat - 20);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Strength", NumOfSoldiers, j ["Strength"].AsFloat - 50);
+		TotalTrainingTime += CalculateSoldierTrainingTime("AttackSpeed", NumOfSoldiers, j ["AttackSpeed"].AsFloat - 1);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Morale", NumOfSoldiers, j ["Morale"].AsFloat - 50);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Wand", NumOfSoldiers, j ["Wand"].AsFloat - 10);
+		TotalTrainingTime += CalculateSoldierTrainingTime("PiercingLongWeapon", NumOfSoldiers, j ["PiercingLongWeapon"].AsFloat - 3);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Bows", NumOfSoldiers, j ["Bows"].AsFloat - 3);
+		TotalTrainingTime += CalculateSoldierTrainingTime("HighEndBows", NumOfSoldiers, j ["HighEndBows"].AsFloat - 1);
+		TotalTrainingTime += CalculateSoldierTrainingTime("HiddenWeapon", NumOfSoldiers, j ["HiddenWeapon"].AsFloat - 1);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Knife", NumOfSoldiers, j ["Knife"].AsFloat - 8);
+		TotalTrainingTime += CalculateSoldierTrainingTime("HackTypeLongWeapon", NumOfSoldiers, j ["HackTypeLongWeapon"].AsFloat - 3);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Sword", NumOfSoldiers, j ["Sword"].AsFloat - 5);
+		TotalTrainingTime += CalculateSoldierTrainingTime("HighEndSword", NumOfSoldiers, j ["HighEndSword"].AsFloat);
+		TotalTrainingTime += CalculateSoldierTrainingTime("SpecialWeapon", NumOfSoldiers, j ["SpecialWeapon"].AsFloat);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Axe", NumOfSoldiers, j ["Axe"].AsFloat - 3);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Hammer", NumOfSoldiers, j ["Hammer"].AsFloat - 4);
 		return TotalTrainingTime;
 	}
 
+	/// <summary>
+	/// Checks the armed equipment availability while new soldier assignment.
+	/// </summary>
+	/// <returns><c>true</c>, if armed equipment availability for new soldiers was checked, <c>false</c> otherwise.</returns>
+	/// <param name="soldierQuantity">Soldier quantity.</param>
 	public bool CheckArmedEquipmentAvailabilityForNewSoldiers(int soldierQuantity){
 		Game game = Game.Instance;
 		string msg = msgExtraEquipmentRequiredForNewSoldiers;
@@ -577,6 +599,9 @@ public class SchoolField : MonoBehaviour {
 		return false;
 	}
 
+	/// <summary>
+	/// Checks the armed equipment availability when changing type of armed equipment.
+	/// </summary>
 	public static void CheckArmedEquipmentAvailability(){
 		DisablePanel.SetActive (false);
 		Debug.Log ("CheckArmedEquipmentAvailability()");
@@ -735,7 +760,11 @@ public class SchoolField : MonoBehaviour {
 		}
 		ShowPanel( ShieldListHolder);
 	}
-	
+
+	/// <summary>
+	/// Shows the is need recruit artisan panel if any armed equipment is not enough.
+	/// </summary>
+	/// <param name="soldiers">Soldiers.</param>
 	public void ShowIsNeedRecruitArtisanPanel(int soldiers){
 		string txt = TrainingEquHolder.transform.GetChild(1).GetComponent<Text>().text;
 		txt = txt.Replace ("%SQ%", soldiers.ToString ());
@@ -787,6 +816,9 @@ public class SchoolField : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Sets the data panel for soldier team abilities.
+	/// </summary>
 	public void SetDataPanel(){
 		Transform dataHolder = DataPanel.transform.GetChild (0).GetChild (0);
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
@@ -1089,6 +1121,18 @@ public class SchoolField : MonoBehaviour {
 		AssigningResources = 0;
 	}
 
+	/// <summary>
+	/// Gets the slider object for Set Attribute Panel.
+	/// </summary>
+	/// <returns>The slider.</returns>
+	/// <param name="tr">Tr.</param>
+	Slider GetSlider(Transform tr){
+		return tr.GetChild (1).GetChild (1).GetComponent<Slider> ();
+	}
+
+	/// <summary>
+	/// Sets the adjust soldier values for showing.
+	/// </summary>
 	void SetAdjustSoldierValues(){
 		Transform valueHolder		 = AdjustSoildersAttribute.transform.GetChild (1);
 		Transform Hit				 = valueHolder.GetChild (0).GetChild (0).GetChild (0);
@@ -1110,25 +1154,28 @@ public class SchoolField : MonoBehaviour {
 		Transform Hammer			 = valueHolder.GetChild (0).GetChild (2).GetChild (5);
 
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
-		Hit.GetChild (1).GetChild (1).GetComponent<Slider> ().value					= Mathf.Round(j ["Hit"].AsFloat*100)/100;
-		Dodge.GetChild (1).GetChild (1).GetComponent<Slider> ().value				= Mathf.Round(j ["Dodge"].AsFloat*100)/100;
-		Strength.GetChild (1).GetChild (1).GetComponent<Slider> ().value			= Mathf.Round(j ["Strength"].AsFloat*100)/100;
-		AttackSpeed.GetChild (1).GetChild (1).GetComponent<Slider> ().value			= Mathf.Round(j ["AttackSpeed"].AsFloat*100)/100;
-		Morale.GetChild (1).GetChild (1).GetComponent<Slider> ().value				= Mathf.Round(j ["Morale"].AsFloat*100)/100;
-		Wand.GetChild (1).GetChild (1).GetComponent<Slider> ().value				= Mathf.Round(j ["Wand"].AsFloat*100)/100;
-		PiercingLongWeapon.GetChild (1).GetChild (1).GetComponent<Slider> ().value	= Mathf.Round(j ["PiercingLongWeapon"].AsFloat*100)/100;
-		Bows.GetChild (1).GetChild (1).GetComponent<Slider> ().value				= Mathf.Round(j ["Bows"].AsFloat*100)/100;
-		HighEndBows.GetChild (1).GetChild (1).GetComponent<Slider> ().value			= Mathf.Round(j ["HighEndBows"].AsFloat*100)/100;
-		HiddenWeapon.GetChild (1).GetChild (1).GetComponent<Slider> ().value		= Mathf.Round(j ["HiddenWeapon"].AsFloat*100)/100;
-		Knife.GetChild (1).GetChild (1).GetComponent<Slider> ().value				= Mathf.Round(j ["Knife"].AsFloat*100)/100;
-		HackTypeLongWeapon.GetChild (1).GetChild (1).GetComponent<Slider> ().value	= Mathf.Round(j ["HackTypeLongWeapon"].AsFloat*100)/100;
-		Sword.GetChild (1).GetChild (1).GetComponent<Slider> ().value				= Mathf.Round(j ["Sword"].AsFloat*100)/100;
-		HighEndSword.GetChild (1).GetChild (1).GetComponent<Slider> ().value		= Mathf.Round(j ["HighEndSword"].AsFloat*100)/100;
-		SpecialWeapon.GetChild (1).GetChild (1).GetComponent<Slider> ().value		= Mathf.Round(j ["SpecialWeapon"].AsFloat*100)/100;
-		Axe.GetChild (1).GetChild (1).GetComponent<Slider> ().value					= Mathf.Round(j ["Axe"].AsFloat*100)/100;
-		Hammer.GetChild (1).GetChild (1).GetComponent<Slider> ().value				= Mathf.Round(j ["Hammer"].AsFloat*100)/100;
+		GetSlider(Hit).value				= Mathf.Round(j ["Hit"].AsFloat*100)/100;
+		GetSlider(Dodge).value				= Mathf.Round(j ["Dodge"].AsFloat*100)/100;
+		GetSlider(Strength).value			= Mathf.Round(j ["Strength"].AsFloat*100)/100;
+		GetSlider(AttackSpeed).value		= Mathf.Round(j ["AttackSpeed"].AsFloat*100)/100;
+		GetSlider(Morale).value				= Mathf.Round(j ["Morale"].AsFloat*100)/100;
+		GetSlider(Wand).value				= Mathf.Round(j ["Wand"].AsFloat*100)/100;
+		GetSlider(PiercingLongWeapon).value	= Mathf.Round(j ["PiercingLongWeapon"].AsFloat*100)/100;
+		GetSlider(Bows).value				= Mathf.Round(j ["Bows"].AsFloat*100)/100;
+		GetSlider(HighEndBows).value		= Mathf.Round(j ["HighEndBows"].AsFloat*100)/100;
+		GetSlider(HiddenWeapon).value		= Mathf.Round(j ["HiddenWeapon"].AsFloat*100)/100;
+		GetSlider(Knife).value				= Mathf.Round(j ["Knife"].AsFloat*100)/100;
+		GetSlider(HackTypeLongWeapon).value	= Mathf.Round(j ["HackTypeLongWeapon"].AsFloat*100)/100;
+		GetSlider(Sword).value				= Mathf.Round(j ["Sword"].AsFloat*100)/100;
+		GetSlider(HighEndSword).value		= Mathf.Round(j ["HighEndSword"].AsFloat*100)/100;
+		GetSlider(SpecialWeapon).value		= Mathf.Round(j ["SpecialWeapon"].AsFloat*100)/100;
+		GetSlider(Axe).value				= Mathf.Round(j ["Axe"].AsFloat*100)/100;
+		GetSlider(Hammer).value				= Mathf.Round(j ["Hammer"].AsFloat*100)/100;
 	}
 
+	/// <summary>
+	/// Gets the adjusted soldier values for saving to database.
+	/// </summary>
 	void GetAdjustedSoldierValues(){
 		Game game = Game.Instance;
 		Transform valueHolder		 = AdjustSoildersAttribute.transform.GetChild (1);
@@ -1160,23 +1207,23 @@ public class SchoolField : MonoBehaviour {
 		Debug.Log ("Training Soldiers: " + trainingSoldiers);
 		TotalTrainingTime = 0;
 		JSONClass j = game.soldiers [AssigningSoldier - 1].attributes;
-		TotalTrainingTime += CalculateSoldierTrainingTime("Hit",trainingSoldiers,Hit.GetChild (1).GetChild (1).GetComponent<Slider> ().value- Mathf.Round(j ["Hit"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Dodge",trainingSoldiers,Dodge.GetChild (1).GetChild (1).GetComponent<Slider> ().value	-Mathf.Round(j ["Dodge"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Strength",trainingSoldiers,Strength.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Strength"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("AttackSpeed",trainingSoldiers,AttackSpeed.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["AttackSpeed"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Morale",trainingSoldiers,Morale.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Morale"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Wand",trainingSoldiers,Wand.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Wand"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("PiercingLongWeapon",trainingSoldiers,PiercingLongWeapon.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["PiercingLongWeapon"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Bows",trainingSoldiers,Bows.GetChild (1).GetChild (1).GetComponent<Slider> ().value- Mathf.Round(j ["Bows"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("HighEndBows",trainingSoldiers,HighEndBows.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["HighEndBows"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("HiddenWeapon",trainingSoldiers,HiddenWeapon.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["HiddenWeapon"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Knife",trainingSoldiers,Knife.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Knife"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("HackTypeLongWeapon",trainingSoldiers,HackTypeLongWeapon.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["HackTypeLongWeapon"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Sword",trainingSoldiers,Sword.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Sword"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("HighEndSword",trainingSoldiers,HighEndSword.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["HighEndSword"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("SpecialWeapon",trainingSoldiers,SpecialWeapon.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["SpecialWeapon"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Axe",trainingSoldiers,Axe.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Axe"].AsFloat*100)/100);
-		TotalTrainingTime += CalculateSoldierTrainingTime("Hammer",trainingSoldiers,Hammer.GetChild (1).GetChild (1).GetComponent<Slider> ().value - Mathf.Round(j ["Hammer"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Hit",trainingSoldiers,				GetSlider (Hit).value- Mathf.Round(j ["Hit"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Dodge",trainingSoldiers,				GetSlider(Dodge).value	-Mathf.Round(j ["Dodge"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Strength",trainingSoldiers,			GetSlider(Strength).value - Mathf.Round(j ["Strength"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("AttackSpeed",trainingSoldiers,		GetSlider(AttackSpeed).value - Mathf.Round(j ["AttackSpeed"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Morale",trainingSoldiers,			GetSlider(Morale).value - Mathf.Round(j ["Morale"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Wand",trainingSoldiers,				GetSlider(Wand).value - Mathf.Round(j ["Wand"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("PiercingLongWeapon",trainingSoldiers,GetSlider(PiercingLongWeapon).value - Mathf.Round(j ["PiercingLongWeapon"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Bows",trainingSoldiers,				GetSlider(Bows).value- Mathf.Round(j ["Bows"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("HighEndBows",trainingSoldiers,		GetSlider(HighEndBows).value - Mathf.Round(j ["HighEndBows"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("HiddenWeapon",trainingSoldiers,		GetSlider(HiddenWeapon).value - Mathf.Round(j ["HiddenWeapon"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Knife",trainingSoldiers,				GetSlider(Knife).value - Mathf.Round(j ["Knife"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("HackTypeLongWeapon",trainingSoldiers,GetSlider(HackTypeLongWeapon).value - Mathf.Round(j ["HackTypeLongWeapon"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Sword",trainingSoldiers,				GetSlider(Sword).value - Mathf.Round(j ["Sword"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("HighEndSword",trainingSoldiers,		GetSlider(HighEndSword).value - Mathf.Round(j ["HighEndSword"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("SpecialWeapon",trainingSoldiers,		GetSlider(SpecialWeapon).value - Mathf.Round(j ["SpecialWeapon"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Axe",trainingSoldiers,				GetSlider(Axe).value - Mathf.Round(j ["Axe"].AsFloat*100)/100);
+		TotalTrainingTime += CalculateSoldierTrainingTime("Hammer",trainingSoldiers,			GetSlider(Hammer).value - Mathf.Round(j ["Hammer"].AsFloat*100)/100);
 		Debug.Log ("AttackSpeed: "+Mathf.Round(j ["AttackSpeed"].AsFloat*100)/100);
 		Debug.Log ("AS Target: "+AttackSpeed.GetChild (1).GetChild (1).GetComponent<Slider> ().value);
 
@@ -1300,6 +1347,9 @@ public class SchoolField : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Display Soldier team values
+	/// </summary>
 	void UpdateSoldierSummaryPanel(){
 		string data = "";
 		CheckIfTrainingOngoing ();
@@ -1334,6 +1384,10 @@ public class SchoolField : MonoBehaviour {
 		SoldierSummary.text = data;
 	}
 
+	/// <summary>
+	/// Update the soldiers attributes when training complete.
+	/// </summary>
+	/// <param name="s">S.</param>
 	public static void CompletingTrainingSoldiers(int s){
 		Game game = Game.Instance;
 		game.soldiers [s].attributes ["Hit"].AsFloat = game.soldiers [s].attributes ["TargetHit"].AsFloat;

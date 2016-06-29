@@ -236,6 +236,11 @@ public class Academy : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Creates the student item by loading prefab
+	/// </summary>
+	/// <returns>The student item.</returns>
+	/// <param name="character">Counselor Character object</param>
 	public IEnumerator CreateStudentItem(Counselor character){
 		var type = character.type;
 		AcademyStudent obj = Instantiate(Resources.Load("AcademyStudent") as GameObject).GetComponent<AcademyStudent>();
@@ -250,6 +255,10 @@ public class Academy : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// Raises the counselor selector button click event.
+	/// </summary>
+	/// <param name="btn">Button order number</param>
 	void OnCounselorSelectorButtonClick (int btn){
 		if (game.trainings [btn].etaTimestamp < DateTime.Now) {  // Last training of this slot has ended or never started
 			ActivateAllCounselorPrefab ();
@@ -272,6 +281,10 @@ public class Academy : MonoBehaviour
 		}
 	}
 
+
+	/// <summary>
+	/// Raises the counselor selected event.
+	/// </summary>
 	public static void OnCounselorSelected ()
 	{
 		for (int i = 0 ; i < 5; i++){
@@ -285,12 +298,19 @@ public class Academy : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Enables all counselor selector buttons.
+	/// </summary>
 	void EnableAllCounselorSelectorButtons(){
 		for (int i = 0 ; i < 5; i++){
 			CounselorSelectorButtons[i].interactable = true;
 		}
 	}
 
+	/// <summary>
+	/// Raises the learning button click event.
+	/// </summary>
+	/// <param name="btn">Button of learning type</param>
 	void OnLearningButtonClick(LearningItemEnum btn){
 		AssigningLearning = btn;
 		AssigningKnowledge = Knowledge.none;
@@ -301,8 +321,11 @@ public class Academy : MonoBehaviour
 		}
 		AcademyScreenView.AcademyType.transform.Find ("TextDesc/Text").GetComponent<Text> ().text = academyDescription [btn];
 	}
-
-
+	
+	/// <summary>
+	/// Raises the Learning mode button click event.
+	/// </summary>
+	/// <param name="btn">Button of learning mode</param>
 	void OnQAButtonClick(LearningModeEnum btn){
 		string klge = Enum.GetName(typeof(Knowledge),AssigningKnowledge);
 		int level = AssigningCounselor [AssigningCounselorSlot].attributes ["attributes"] ["KnownKnowledge"] [klge].AsInt;
@@ -320,6 +343,9 @@ public class Academy : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// Hides the counselor items who is being training or trained.
+	/// </summary>
 	void HideItemsForTeach(){
 		int count = AcademyStudent.person.Count;
 		ActivateAllCounselorPrefab();
@@ -348,6 +374,13 @@ public class Academy : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Sets the information and photo to counselor selector button.
+	/// </summary>
+	/// <param name="name">Counselor name.</param>
+	/// <param name="ts">Timespan that theh training left.</param>
+	/// <param name="item">Training item name.</param>
+	/// <param name="level">Expected training level.</param>
 	public static void SetCounselorSelectorButton(string name, TimeSpan ts, string item="",int level=0){
 		Text nameText = CounselorSelectorButtons[AssigningCounselorSlot].transform.GetChild(0).GetComponent<Text>();
 		Text itemText = CounselorSelectorButtons [AssigningCounselorSlot].transform.GetChild (1).GetComponent<Text> ();
@@ -364,6 +397,10 @@ public class Academy : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Resets the counselor selector button on complete.
+	/// </summary>
+	/// <param name="slot">Slot number.</param>
 	public static void SetCounselorSelectorButtonOnComplete(int slot){
 		Text nameText = CounselorSelectorButtons[slot].transform.GetChild(0).GetComponent<Text>();
 		Text itemText = CounselorSelectorButtons [slot].transform.GetChild (1).GetComponent<Text> ();
@@ -399,6 +436,10 @@ public class Academy : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Resets the settings when leave the panel or not to run SetCounselorSelectorButton() if isClearButton set to be false.
+	/// </summary>
+	/// <param name="isClearButton">If set to <c>true</c>  clear Counselor selector button.</param>
 	void ResetSettings(bool isClearButton=true){
 		AssigningCounselor [AssigningCounselorSlot] = null;
 		AssigningKnowledge = Knowledge.none;
@@ -550,6 +591,9 @@ public class Academy : MonoBehaviour
 		});
 	}
 
+	/// <summary>
+	/// Sets the dictionary of description text of training category.
+	/// </summary>
 	void SetDictionary(){
 		academyDescription.Add(LearningItemEnum.IQ, "智商－正常人的智商介乎85~115之間，能夠率領百萬雄獅，智商當然並非一般常人可比，努力訓練謀士，率領百萬雄獅征戰天下。\n自修：於上方點選訓練空間，再選擇欲訓練的謀士即可。\n師承：於上方的訓練空間先選欲訓練的謀士，再選擇謀士作為師傅即可。");
 		academyDescription.Add(LearningItemEnum.Commanded, "統率－統率，即是可以率領的士兵數目，戰場上，多一根矛便是多一根矛，殺對手一個片甲不留。\n自修：於上方點選訓練空間，再選擇欲訓練的謀士即可。\n師承：於上方的訓練空間先選欲訓練的謀士，再選擇謀士作為師傅即可。");

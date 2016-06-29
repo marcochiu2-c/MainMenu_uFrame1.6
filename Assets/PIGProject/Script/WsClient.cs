@@ -158,7 +158,8 @@ public class WsClient {
 	//string result = "";
 #if UNITY_EDITOR
 	string protocol = "wss://";
-	private string ip = "192.168.100.64";   //My PC
+	//private string ip = "192.168.100.64";   //My PC
+	private string ip = "127.0.0.1";   //My PC
 	private int port = 3389; 
 	//	private string ip = "23.91.96.158";     //Production server
 	//	private int port = 3389; 
@@ -368,7 +369,6 @@ public class WsClient {
 			}
 			break;
 		case jsonFuncNumberEnum.getFriendshipInfo:
-//			Utilities.ShowLog.Log(j);
 			if (j["obj"]!="[  ]"){
 				MainScene.FriendInfo = j["obj"];
 			}
@@ -379,9 +379,6 @@ public class WsClient {
 				MainScene.TrainingInfo = j["obj"];
 			}
 			break;
-//			addArtisanJob = 250,
-//			updateArtisanJob = 251,
-//			getArtisanJob = 252,
 		case jsonFuncNumberEnum.getArtisanJob: case jsonFuncNumberEnum.newAccountArtisanJobs:
 			if (j["obj"]!="[  ]"){
 				MainScene.ArtisanInfo = j["obj"];
@@ -451,10 +448,36 @@ public class WsClient {
 		return result;
 	}
 
+
+	/// <summary>
+	/// Send JSON string through websocket
+	/// </summary>
+	/// <param name="json">Json object in string format</param>
 	public void Send(String json){
 		if (conn.IsAlive) {
 			Utilities.ShowLog.Log ("Sending Command");
 			conn.Send (json);
+		} else {
+			Utilities.ShowLog.Log ("Websocket Connection Lost!");
+			Application.Quit();
+		}
+	}
+
+	/// <summary>
+	/// Send JSON object to the server the use the handler according to action and table
+	/// </summary>
+	/// <param name="table">Table name, defined in server script</param>
+	/// <param name="action">Action = NEW/SET/GET</param>
+	/// <param name="j">json object, as SimpleJSON JSONNode</param>
+	public void Send(string table,string action, JSONNode j){
+		Game game = Game.Instance;
+		if (conn.IsAlive) {
+			JSONClass json = new JSONClass ();
+			json.Add ("action", new JSONData (action));
+			json.Add ("table", new JSONData (table));
+			json.Add ("data", j);
+			Utilities.ShowLog.Log (json.ToString ());
+			Send (json.ToString ());
 		} else {
 			Utilities.ShowLog.Log ("Websocket Connection Lost!");
 			Application.Quit();
@@ -477,25 +500,16 @@ public class WsClient {
 		return (long)timeSpan.TotalSeconds;
 	}
 
+	/// <summary>
+	/// Return Date Object in Javascript Date string format.
+	/// </summary>
+	/// <returns>Javascript Date string format.</returns>
+	/// <param name="dt">DateTime</param>
 	public static string JSDate(DateTime dt)
 	{
 		return dt.Year + "-" + dt.Month + "-" + dt.Day + " " + dt.Hour + ":" + dt.Minute + ":" + dt.Second;
 	}
 
-	public void Send(string table,string action, JSONNode j){
-		Game game = Game.Instance;
-		if (conn.IsAlive) {
-			JSONClass json = new JSONClass ();
-			json.Add ("action", new JSONData (action));
-			json.Add ("table", new JSONData (table));
-			json.Add ("data", j);
-			Utilities.ShowLog.Log (json.ToString ());
-			conn.Send (json.ToString ());
-		} else {
-			Utilities.ShowLog.Log ("Websocket Connection Lost!");
-			Application.Quit();
-		}
-	}
 
 
 

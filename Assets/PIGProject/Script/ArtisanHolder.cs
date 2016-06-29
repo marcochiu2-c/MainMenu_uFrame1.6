@@ -85,6 +85,9 @@ public class ArtisanHolder : MonoBehaviour {
 		CancelInvoke ();
 	}
 
+	/// <summary>
+	/// Raises the artisan jobs complete event.
+	/// </summary>
 	void OnArtisanJobsComplete (){
 		Game game = Game.Instance;
 		int id= 0;
@@ -327,6 +330,9 @@ public class ArtisanHolder : MonoBehaviour {
 		HidePanel (JobCancelPopup);
 	}
 
+	/// <summary>
+	/// Sets the job and update the database.
+	/// </summary>
 	void SetJob(){
 		DateTime  eta = DateTime.Now.Add (new TimeSpan(0,0,Mathf.Abs(p.products [IdEquipmentToBeProduced].attributes ["ProductionTime"].AsInt * NumberOfEquipmentToBeProduced)));;
 		int type=0;
@@ -356,6 +362,9 @@ public class ArtisanHolder : MonoBehaviour {
 		latestEta = GetLatestEta ();
 	}
 
+	/// <summary>
+	/// Show the dialog for confirmation of producing equipment
+	/// </summary>
 	void SetArtisanConfirmPopupText(){
 		ProductDict p = ProductDict.Instance;
 		string msg = "製造equipment需要amount的資源，確定製造嗎？";
@@ -374,6 +383,9 @@ public class ArtisanHolder : MonoBehaviour {
 		#endregion
 	}
 
+	/// <summary>
+	/// Show the dialog for confirmation of extra resources need.
+	/// </summary>
 	void SetNeedExtraResourcesPopupText(){
 		ProductDict p = ProductDict.Instance;
 		int cost = (p.products [IdEquipmentToBeProduced].attributes ["NumberOfProductionResources"].AsInt * NumberOfEquipmentToBeProduced);
@@ -437,7 +449,6 @@ public class ArtisanHolder : MonoBehaviour {
 	/// <summary>
 	/// Prepare for the proceeding job prefabs to be highlighted 
 	/// </summary>
-
 	void HighlightProceedingJobs(){
 		if (game.artisans [0].etaTimestamp > DateTime.Now) {
 			IdWeaponWhichProducing = game.artisans[0].targetId;

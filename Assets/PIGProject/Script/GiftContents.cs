@@ -27,6 +27,11 @@ public class GiftContents : MonoBehaviour{
 		Expiry = expiry;
 	}
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="GiftContents"/> class.
+	/// For gift target as [0] in JSON format, all players become the targets
+	/// </summary>
+	/// <param name="j">Data in JSON format</param>
 	public GiftContents(JSONNode j){
 		this.Content = new Dictionary<string, int> ();
 		this.Target = new List<int> ();
