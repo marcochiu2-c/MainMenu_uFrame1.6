@@ -158,7 +158,8 @@ public class WsClient {
 	//string result = "";
 #if UNITY_EDITOR
 	string protocol = "wss://";
-	private string ip = "192.168.100.64";   //My PC
+	//private string ip = "169.254.37.23";   //My PC
+	private string ip = "192.168.100.91";   //My PC
 	private int port = 3389; 
 	//	private string ip = "23.91.96.158";     //Production server
 	//	private int port = 3389; 

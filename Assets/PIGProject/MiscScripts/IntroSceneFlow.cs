@@ -51,6 +51,9 @@ public class IntroSceneFlow : uFrameComponent
     private IEnumerator ShowIntro()
     {
         
+        int[] testInt = new int[] {1, 2, 3, 4, 5};
+		Debug.Log("TestInt" + testInt[0] + testInt[1] + testInt[2] + 1);
+		
 		StartCoroutine(SetAlpha(Poem0_1, 0.3f));
 		
 		yield return new WaitForSeconds(2f);
@@ -70,7 +73,7 @@ public class IntroSceneFlow : uFrameComponent
 		BrokenChurch.gameObject.SetActive(true);
 		
 		Poem0.gameObject.SetActive(false);
-		
+	
 		Publish(new DialogueCommand()
 		{
 			ConversationName = "Ch0_1"
