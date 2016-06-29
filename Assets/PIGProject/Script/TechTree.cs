@@ -387,22 +387,21 @@ public class TechTree : MonoBehaviour {
 		obj.AddButtonListener ();
 	}
 
+	/// <summary>
+	/// Handler while the Counselor Selector Buttons clicked
+	/// </summary>
+	/// <param name="name">Name of the button</param>
 	void OnCounselorButtonClicked(string name){
 		if (game.trainings [DBSlot].etaTimestamp < DateTime.Now) {  // training not started
 			if (name == "Button") {
-				//TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 0;
 			}else if (name == "Button (1)") {
-				//TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 1;
 			}else if (name == "Button (2)") {
-				//TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 2;
 			}else if (name == "Button (3)") {
-				//TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 3;
 			}else if (name == "Button (4)") {
-//				TechTreePrefab.person.Find (x => x.counselor.id == AssigningCounselor[AssigningCounselorSlot]).gameObject.SetActive(true);
 				AssigningCounselorSlot = 4;
 			}
 			CounselorList.SetActive (true);
@@ -583,6 +582,10 @@ public class TechTree : MonoBehaviour {
 	}
 
 
+	/// <summary>
+	/// Gets the available knowlegde list among the counselors.
+	/// </summary>
+	/// <returns>The available knowlegde list.</returns>
 	public static List<Knowledge> GetAvailableKnowlegdeList(){
 		Game game = Game.Instance;
 		int numOfEnum = Enum.GetNames (typeof(Knowledge)).Length;
@@ -610,6 +613,9 @@ public class TechTree : MonoBehaviour {
 		return list;
 	}
 
+	/// <summary>
+	/// Setups the tech tree diagram.
+	/// </summary>
 	void SetupTechTreeDiagram(){
 		JSONClass tech = game.login.attributes;
 		List<Knowledge> knowledges = GetAvailableKnowlegdeList ();
@@ -624,6 +630,9 @@ public class TechTree : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Raises the tech button clicked event.
+	/// </summary>
 	public void OnTechButtonClicked(){
 		if (EventSystem.current.currentSelectedGameObject.transform.parent.gameObject == WeaponTechnologyHolder) {
 			if (EventSystem.current.currentSelectedGameObject.name == "Button") {
@@ -782,13 +791,10 @@ public class TechTree : MonoBehaviour {
 		Debug.Log ("HidePanel");
 		panel.SetActive (false);
 	}
-//	
-//	void ChangePanel(GameObject panel1, GameObject panel2){
-//		Debug.Log (panel1 + " panel is change to " + panel2);
-//		panel1.SetActive (false);
-//		panel2.SetActive (true);
-//	}
 
+	/// <summary>
+	/// Set the pic information to dictionary from LoadHeadPic.cs/LoadBodyPic.cs
+	/// </summary>
 	private void SetCharacters(){
 		LoadHeadPic headPic = LoadHeadPic.Instance;
 		imageDict = headPic.imageDict;

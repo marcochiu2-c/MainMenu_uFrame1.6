@@ -16,6 +16,8 @@ public enum EquipmentEnum {Weapon,Armor,Shield};
 
 public enum TrainingStatus {Cancelled = 0, OnGoing = 1, NotStarted = 2 ,Completed =3 , OnGoingCannotCancel =4 };
 
+public enum MainSceneDialogFunction {MonthCard, GiftAward};
+
 public class MainScene : MonoBehaviour {
 	WsClient wsc;
 	Text silverFeatherText;
@@ -55,14 +57,26 @@ public class MainScene : MonoBehaviour {
 	public static JSONNode ArtisanInfo = null;
 	public static JSONNode SoldierInfo = null;
 	public static JSONNode TeamInfo = null;
+	public static JSONNode GiftReceptionInfo = null;
+	public static JSONNode GiftContentInfo = null;
 	public static Nullable<DateTime> GeneralLastUpdate = null;
 	public static Nullable<DateTime> CounselorLastUpdate = null;
 	public static Nullable<DateTime> StorageLastUpdate = null;
 	public static Nullable<DateTime> WarfareLastUpdate = null;
 	public static Nullable<DateTime> FriendLastUpdate = null;
 	public static Sprite TechTreeKnob;
+	public static MainSceneDialogFunction OpenedFunction;
+	static bool LoadedGiftInfo = false;
+	static List<int> GiftReceptionId = new List<int>();
+	static int AssigningStardusts = 0;
+	static int AssigningResources = 0;
+	static int AssigningFeathers = 0;
+	bool buttonEventHandled = false;
+	JSONClass jc = new JSONClass ();
 	Shop shop;
-
+	string StarDustName = "時之星塵";
+	string ResourceName = "資源";
+	string FeatherName = "銀羽";
 
 	void Awake(){
 		Application.targetFrameRate = 30;
@@ -233,6 +247,38 @@ public class MainScene : MonoBehaviour {
 			}                                                                   
 		}
 	}
+
+	void OnGeneralTrainComplete(){
+		game = Game.Instance;
+		if (game == null) {
+			reloadFromDB();
+			return;
+		}
+		int point = 0;
+		General g = new General ();
+		Dictionary<int,string> trainDict = new Dictionary<int,string> ();
+		trainDict.Add (5, "Courage");
+		trainDict.Add (6, "Force");
+		trainDict.Add (7, "Physical");
+		if (game.trainings.Count > 5) {
+			for (int i = 5 ; i < 8; i++){
+				if (game.trainings[i].status == (int)TrainingStatus.OnGoing && game.trainings[i].etaTimestamp < DateTime.Now){
+					g = game.general.Find(x=>x.id == game.trainings[i].targetId);
+					point = game.trainings[i].type;
+					g.attributes[trainDict[i]].AsFloat = g.attributes[trainDict[i]].AsFloat + point;
+					GeneralTrainPrefab.currentPrefab =null;
+					g.UpdateObject();
+					game.trainings[i].Completed();
+					GeneralTrain.RunningItem[i-5] = 0;
+					//
+					//					general = GeneralTrainPrefab.GTrain.Find(x => x.general.id == game.trainings[i].targetId);
+					//					if(general != null){
+					//						general.gameObject.SetActive(true);
+					//					}
+				}
+			}
+		}
+	}
 	
 	void QuitIfConnectionFailed(){
 		if (!wsc.conn.IsAlive) {
@@ -263,8 +309,28 @@ public class MainScene : MonoBehaviour {
 
 	void AddButtonListener(){
 		Panel.GetConfirmButton(NoticeDialog).onClick.AddListener(()=>{
-			ShowLog.Log ("Close Notice Dialog");
-			HidePanel(NoticeDialog);
+			if (OpenedFunction == MainSceneDialogFunction.MonthCard){
+				ShowLog.Log ("Close Notice Dialog");
+				HidePanel(NoticeDialog);
+			}else if (OpenedFunction == MainSceneDialogFunction.GiftAward){
+				HidePanel(NoticeDialog);
+				if (buttonEventHandled == false){
+					GiftContents gc = GiftContents.gcList.Find(z => z.Target.Exists (y => y == userId));
+					wsc.Send("gift","NEW",jc);
+					game.wealth[0].Add(AssigningFeathers);
+					game.wealth[1].Add(AssigningStardusts);
+					game.wealth[2].Add(AssigningResources);
+					AssigningFeathers = 0;
+					AssigningStardusts = 0;
+					AssigningResources = 0;
+					GiftContents.gcList.Remove(gc);
+					ShowLog.Log("Available Gift count(AddButtonListener()): "+GiftContents.gcList.Count);
+					buttonEventHandled = true;
+				}
+				if (GiftContents.gcList.Count > 0) {
+					StartCoroutine(HandleGift());
+				}
+			}
 		});
 	}
 
@@ -291,6 +357,9 @@ public class MainScene : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Reload data from database.
+	/// </summary>
 	public void reloadFromDB(){
 		Utilities.ShowLog.Log ("User ID: " + Game.Instance.login.id);
 		Utilities.ShowLog.Log ("reloadFromDB(); ");
@@ -306,6 +375,9 @@ public class MainScene : MonoBehaviour {
 			wsc.Send ("getCheckinInfo", "GET", new JSONData (MainScene.userId));
 			wsc.Send ("training", "GET", new JSONData (MainScene.userId));
 			wsc.Send ("team", "GET", new JSONData(MainScene.userId));
+			if (!LoadedGiftInfo){
+				wsc.Send ("giftinfo","GET",new JSONData(MainScene.userId));
+			}
 			MainScene.needReloadFromDB = false;
 			Utilities.ShowLog.Log ("Game Wealth from reloadFromDB: " + game.wealth [0].toJSON ().ToString ());
 		}
@@ -492,6 +564,65 @@ public class MainScene : MonoBehaviour {
 			MainScene.userId = MainScene.newUserId;
 			MainScene.newUserId = 0;
 		}
+		if (MainScene.GiftReceptionInfo != null) {
+			for (int i = 0; i < MainScene.GiftReceptionInfo.Count ; i++){
+				Debug.Log("Gift reception time: "+MainScene.GiftReceptionInfo[i]["received_date"]);
+				MainScene.GiftReceptionId.Add (MainScene.GiftReceptionInfo[i]["gift_id"].AsInt);
+			}
+			ShowLog.Log("Gift reception count: "+MainScene.GiftReceptionId.Count);
+			LoadedGiftInfo = true;
+			wsc.Send ("giftcontent","GET",new JSONData(MainScene.userId));
+			MainScene.GiftReceptionInfo = null;
+		}
+		if (MainScene.GiftContentInfo != null) {
+			for (int i = 0; i < MainScene.GiftContentInfo.Count ; i++){
+				if (DateTime.Parse (MainScene.GiftContentInfo[i]["expiry"])>=DateTime.Now){
+					GiftContents.gcList.Add(new GiftContents(MainScene.GiftContentInfo[i]));
+				}
+			}
+			MainScene.GiftContentInfo = null;
+#if !UNITY_EDITOR
+			StartCoroutine(HandleGift());
+#else
+			Debug.Log("Will go HandleGift() in handheld.");
+#endif
+		}
+	}
+
+	/// <summary>
+	/// Receive the gift information and add to the wealth.
+	/// </summary>
+	IEnumerator HandleGift(){
+		ShowLog.Log("Available Gift count: "+GiftContents.gcList.Count);
+		if (GiftContents.gcList.Exists(x => x.Target.Exists (y => y == userId) )){
+			GiftContents gc = GiftContents.gcList.Find(z => z.Target.Exists (y => y == userId));
+			if (MainScene.GiftReceptionId.Exists(x => x == gc.ID)){
+				GiftContents.gcList.Remove(gc);
+				StartCoroutine(HandleGift());
+				yield break;
+			}
+			string msg = gc.Name+"\n\n";
+			if (gc.Content["stardusts"]>0) {
+				msg +=  StarDustName + ": "+gc.Content["stardusts"]+"\n";
+				AssigningStardusts = gc.Content["stardusts"];
+			}
+			if (gc.Content["resources"]>0) {
+				msg += ResourceName + ": "+gc.Content["resources"]+"\n";
+				AssigningResources = gc.Content["resources"];
+			}
+			if (gc.Content["feathers"]>0) {
+				msg += FeatherName + ": "+gc.Content["feathers"]+"\n";
+				AssigningFeathers = gc.Content["feathers"];
+			}
+			jc["giftId"].AsInt = gc.ID;
+			jc["userId"].AsInt = userId;
+			OpenedFunction = MainSceneDialogFunction.GiftAward;
+			Panel.GetMessageText(NoticeDialog).text = msg;
+			yield return new WaitForSeconds(1);
+			buttonEventHandled = false;
+			ShowPanel(NoticeDialog);
+			
+		}
 	}
 
 
@@ -508,38 +639,7 @@ public class MainScene : MonoBehaviour {
 		}
 	}
 
-	void OnGeneralTrainComplete(){
-//		GeneralTrainPrefab general = null;
-		game = Game.Instance;
-		if (game == null) {
-			reloadFromDB();
-			return;
-		}
-		int point = 0;
-		General g = new General ();
-		Dictionary<int,string> trainDict = new Dictionary<int,string> ();
-		trainDict.Add (5, "Courage");
-		trainDict.Add (6, "Force");
-		trainDict.Add (7, "Physical");
-		if (game.trainings.Count > 5) {
-			for (int i = 5 ; i < 8; i++){
-				if (game.trainings[i].status == (int)TrainingStatus.OnGoing && game.trainings[i].etaTimestamp < DateTime.Now){
-					g = game.general.Find(x=>x.id == game.trainings[i].targetId);
-					point = game.trainings[i].type;
-					g.attributes[trainDict[i]].AsFloat = g.attributes[trainDict[i]].AsFloat + point;
-					GeneralTrainPrefab.currentPrefab =null;
-					g.UpdateObject();
-					game.trainings[i].Completed();
-					GeneralTrain.RunningItem[i-5] = 0;
-//
-//					general = GeneralTrainPrefab.GTrain.Find(x => x.general.id == game.trainings[i].targetId);
-//					if(general != null){
-//						general.gameObject.SetActive(true);
-//					}
-				}
-			}
-		}
-	}
+
 
 	void ShowPanel(GameObject panel){
 		DisablePanel.SetActive (true);
