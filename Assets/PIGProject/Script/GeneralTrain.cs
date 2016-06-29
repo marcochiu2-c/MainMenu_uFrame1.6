@@ -341,6 +341,12 @@ public class GeneralTrain : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Update attributes when training complete.
+	/// </summary>
+	/// <param name="type">Train type.</param>
+	/// <param name="id">Id in database table.</param>
+	/// <param name="point">Ability point after training.</param>
 	void OnTrainingComplete(string type, int id, int point){
 		General g = game.general.Find (x => x.id == id);
 		float value = g.attributes [type].AsFloat + point;
@@ -390,6 +396,9 @@ public class GeneralTrain : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Load and setup general training prefab.
+	/// </summary>
 	void SetupGeneralTrainingPrefab(){
 		LoadHeadPic headPic = LoadHeadPic.Instance;
 
@@ -417,7 +426,12 @@ public class GeneralTrain : MonoBehaviour {
 	}
 
 
-	// return true if the corrspondance is already in the highest value
+	/// <summary>
+	/// Check if it is the highest point.
+	/// </summary>
+	/// <returns><c>true</c>, if highest point was ised, <c>false</c> otherwise.</returns>
+	/// <param name="type">Type.</param>
+	/// <param name="point">Point.</param>
 	bool isHighestPoint(string type, float point){
 		if (type == "Strength")
 			type = "Physical";

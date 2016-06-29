@@ -157,6 +157,9 @@ public class Shop : MonoBehaviour {
 		OpenIABEventManager.consumePurchaseFailedEvent += consumePurchaseFailedEvent;
 	}
 
+	/// <summary>
+	/// Assign the GameObject to the regarded variable.
+	/// </summary>
 	void AssignGameObjectVariable(){
 		if (gameObject.ToString () == "ShopHolder (UnityEngine.GameObject)") {
 			firstChargeButton = transform.GetChild(1).GetChild (0).Find ("ProductButton1st").GetComponent<Button>();
@@ -225,16 +228,22 @@ public class Shop : MonoBehaviour {
 
 	}
 
+	/// <summary>
+	/// Give the redeem on the first daily startup if the player the bought the Month Card.
+	/// </summary>
 	void SetMonthCardRedeem(){
 		ShowMonthCardDailyRedeem ();
 		game.login.attributes.Add("MonthCardRedeem",new JSONData(DateTime.Now.ToString()));
 		game.login.UpdateObject ();
 	}
 
+	/// <summary>
+	/// Show the dialog for giving the redeem on the first daily startup if the player the bought the Month Card.
+	/// </summary>
 	void ShowMonthCardDailyRedeem(){
 		Utilities.Panel.GetHeader (MainScene.NoticeDialog).text = "月咭";
 		Utilities.Panel.GetMessageText (MainScene.NoticeDialog).text = "軍師閣下，請接受20星塵軍餉，助你揮軍發展。";
-
+		MainScene.OpenedFunction = MainSceneDialogFunction.MonthCard;
 		ShowMainScenePanel (MainScene.NoticeDialog);
 	}
 

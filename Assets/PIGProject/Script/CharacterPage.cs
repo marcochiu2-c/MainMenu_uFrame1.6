@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using SimpleJSON;
 using Facebook.Unity;
+using System;
 
 public class CharacterPage : MonoBehaviour {
 	public static Image img;
@@ -27,6 +29,70 @@ public class CharacterPage : MonoBehaviour {
 		IQText.text = game.login.attributes ["IQ"];
 		LeadershipText.text = game.login.attributes ["Leadership"];
 		PrestigeText.text = game.login.attributes ["Prestige"];
+		List<Knowledge> kList = GetAvailableKnowlegdeList ();
+		SetKnowledgesToIconList (kList);
+		foreach (var x in kList) {
+			Utilities.ShowLog.Log("Available Knowledge: "+x);
+		}
+		SetKnowledgesToIconList (kList);
+		List<Tech> tList = TechTree.GetAvailableTechList ();
+		SetTechToIconList (tList);
+		foreach (var x in tList) {
+			Utilities.ShowLog.Log("Available Tech: "+x);
+		}
+	}
+
+	void SetKnowledgesToIconList(List<Knowledge> kList){
+		Transform matrixHolder = transform.Find ("NewContent/RightPanel/Scroll View/Viewport/Content/ContentHolder/LeftHolder/MatrixHolder");
+		Dictionary<int, string> knowledgeDict = Utilities.SetDict.Knowledge ();
+		int count = kList.Count;
+		Color enableColor = matrixHolder.GetChild (0).GetChild (1).GetComponent<Text> ().color;
+		Color disableColor = enableColor;
+		enableColor.a = 1f;
+		enableColor.b = 1f;
+		enableColor.g = 1f;
+		enableColor.r = 1f;
+		disableColor.a = 0.4f;
+		disableColor.b = 1f;
+		disableColor.g = 1f;
+		disableColor.r = 1f;
+		for (int i = 0; i < 17; i++) {
+			GetTechIconItem(matrixHolder, i).color = disableColor; // a same feature as TechIconList
+			GetKnowledgeIconItem(matrixHolder, i).color = disableColor;
+		}
+		foreach (var x in kList) {
+			GetTechIconItem(matrixHolder, ((int)x-2001)).color = enableColor; // a same feature as TechIconList
+			GetKnowledgeIconItem(matrixHolder, ((int)x-2001)).color = enableColor;
+		}
+	}
+
+	void SetTechToIconList(List<Tech> tList){
+		Transform techListHolder = transform.Find ("NewContent/RightPanel/Scroll View/Viewport/Content/ContentHolder/RightHolder/TechnologyListHolder");
+		int count = tList.Count;
+		Color enableColor = techListHolder.GetChild (0).GetChild (0).GetComponent<Text> ().color;
+		Color disableColor = enableColor;
+		enableColor.a = 1f;
+		enableColor.b = 1f;
+		enableColor.g = 1f;
+		enableColor.r = 1f;
+		disableColor.a = 0.4f;
+		disableColor.b = 1f;
+		disableColor.g = 1f;
+		disableColor.r = 1f;
+		for (int i = 0; i < 43; i++) {
+			GetTechIconItem(techListHolder, i).color = disableColor;
+		}
+		foreach (var x in tList) {
+			GetTechIconItem(techListHolder, (int)x-1).color = enableColor;
+		}
+	}
+
+	Text GetKnowledgeIconItem(Transform tr, int itemOrder){
+		return tr.GetChild (itemOrder).GetChild (1).GetComponent<Text>();
+	}
+
+	Text GetTechIconItem(Transform tr, int itemOrder){
+		return tr.GetChild (itemOrder).GetChild (0).GetComponent<Text>();
 	}
 
 	void AssignGameObjectVariable(){
@@ -41,7 +107,7 @@ public class CharacterPage : MonoBehaviour {
 		Transform CharPageAttribute = transform.GetChild (0).GetChild (1).GetChild (0).GetChild (3);
 		return CharPageAttribute.Find (name).GetChild(1).GetComponent<Text> ();
 	}
-
+	
 	// Update is called once per frame
 	void Update () {
 		if (CharacterPage.avatar != null) {
@@ -59,6 +125,37 @@ public class CharacterPage : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Gets the available knowlegde list among all counselors.
+	/// </summary>
+	/// <returns>The available knowlegde list.</returns>
+	public static List<Knowledge> GetAvailableKnowlegdeList(){
+		Game game = Game.Instance;
+		int numOfEnum = Enum.GetNames (typeof(Knowledge)).Length;
+		List<Knowledge> list = new List<Knowledge> ();
+		int co;
+		int numOfCounselors = game.counselor.Count;
+		for (int i = 0; i < numOfCounselors; i++) {
+			
+			for (int j = 2001; j < numOfEnum+2000 ; j++){
+				if (game.counselor[i].attributes["attributes"]["KnownKnowledge"][Enum.GetName (typeof(Knowledge),(Knowledge)j)].AsInt > 0){
+					if (!list.Exists(x => x == (Knowledge)j)){
+						list.Add ((Knowledge)j);
+					}
+				}
+			}
+			if (list.Count==numOfEnum){
+				return list;
+			}
+		}
+		return list;
+	}
+
+	/// <summary>
+	/// Get user level by providing experience.
+	/// </summary>
+	/// <returns>The user level.</returns>
+	/// <param name="exp">Experience value</param>
 	public static int UserLevelCalculator(int exp){
 		int level = 0;
 		if (exp <41) {
