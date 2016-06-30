@@ -17,13 +17,16 @@ public class MainGameRootView : MainGameRootViewBase {
     
 	public Text gameOverText;
 	public GSHexGridManager gSHexGridManager;
-
+	public UserViewModel LocalUser;
+	
 	public Button InfoButton;
 	public Button InfoCloseButton;
 	public Button InfoAtkButton;
 	public Button InfoMoveButton;
 	public Button InfoMissionButton;
 	public Button StartBattleButton;
+	public Button LeaveButton;
+	public Button Leave2Button;
 
 	public Button SlowButton; 
 	public Button NormalButton; 
@@ -38,14 +41,36 @@ public class MainGameRootView : MainGameRootViewBase {
 	public Button AATKButton;
 	public Button StandByButton;
 	
+	public Button DialogueTestButton;
+
+	public GameObject InfoPanel;
+	public GameObject BlockPanel;
+	public GameObject ExpPanel;
+	public GameObject SilverFeatherPanel;
+	public GameObject ResourcePanel;
 	public TextAsset atkInfo;
 	public TextAsset moveInfo;
 	public TextAsset missionInfo;
-	public GameObject InfoPanel;
-	public GameObject BlockPanel;
 	public Text InfoText;
+	
+	private Button _copyInfoButton;
+	
+	public Slider loadingBar;
+	public GameObject loadingImage;
+	public GameObject beginnerGuide;
+	public GameObject guideArrow;
+	public Dictionary<int,Sprite> imageDict;
+	public Image[] bottomGeneralIcon = new Image[5];
+	public SpriteRenderer[] GeneralSprite = new SpriteRenderer[5];
+	public Button[] SoldierBtn = new Button[5];
+	
+	private AsyncOperation _async;
 
 	public List<SoldierViewModel> SoldierVM = new List<SoldierViewModel>();
+	public List<SoldierView> SoldierV = new List<SoldierView>();
+	
+	public Game game;
+	public int TotalExp = 5010732;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -56,12 +81,28 @@ public class MainGameRootView : MainGameRootViewBase {
         // var vm = model as MainGameRootViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
 		InfoText.text = missionInfo.text;
+		game = Game.Instance;
+		
 		gSHexGridManager = GameObject.Find("HexMapGrid").GetComponent<GSHexGridManager>();
-
-		for (int i = 1; i <= 5; i++)
+		LocalUser =  uFrameKernel.Container.Resolve<UserViewModel>("LocalUser");
+		
+		//get the ImageDict
+		LoadHeadPic headPic = LoadHeadPic.SetCharacters();
+		imageDict = headPic.imageDict;
+		
+		for (int i = 1; i <= LocalUser.TotalTeam ; i++) 
+		{
 			SoldierVM.Add(uFrameKernel.Container.Resolve<SoldierViewModel>("Soldier" + i));
-
-
+			SoldierV.Add(uFrameKernel.Container.Resolve<SoldierView>("Soldier" + i));
+			
+			Debug.Log ("ImageType: " + LocalUser.generalImageType[i - 1]);
+			bottomGeneralIcon[i - 1].sprite = imageDict[LocalUser.generalImageType[i - 1]];
+			GeneralSprite[i - 1].sprite = imageDict[LocalUser.generalImageType[i - 1]];
+			SoldierBtn[i - 1].gameObject.SetActive(true);	
+		}
+		
+		//beginnerGuide = GameObject.Find("BeginnerGuide");
+		BeginnerGuide();
 	}
 	
 	public override void Bind() {
@@ -91,14 +132,97 @@ public class MainGameRootView : MainGameRootViewBase {
 		    */
 		});
 		
+		this.BindButtonToHandler(_copyInfoButton, () => {
+			
+			if(InfoPanel.activeSelf == false)
+			{
+				InfoPanel.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InOutQuad).OnStart(() =>  InfoPanel.SetActive(true));
+				BlockPanel.SetActive(true);
+			}
+			
+			else
+			{
+				InfoPanel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad).OnComplete(() => InfoPanel.SetActive(false));
+				BlockPanel.SetActive(false);	
+			}
+			
+			//beginnerGuide.SetActive(false);
+		
+		});
+		
 		this.BindButtonToHandler(InfoCloseButton, () => { 
 			InfoPanel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad).OnComplete(() => InfoPanel.SetActive(false));
 			BlockPanel.SetActive(false);
+			beginnerGuide.SetActive(false);
 		});
 		
 		this.BindButtonToHandler(StartBattleButton, () => { 
 			InfoPanel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad).OnComplete(() => InfoPanel.SetActive(false));
 			BlockPanel.SetActive(false);
+			beginnerGuide.SetActive(false);
+		});
+		
+		this.BindButtonToHandler(LeaveButton, () => { 
+			var evt = new RequestMainMenuScreenCommand();
+			
+			/*
+			Publish(new UnloadSceneCommand()
+			{
+				SceneName = "MainGameScene"
+			});
+			
+			Application.LoadLevel("MainMenuScene");
+			
+			//Publish(new LoadSceneCommand()
+			//{
+			//	SceneName = "MainMenuScene"
+			//});
+		    */
+			for(int i = 0; i < SoldierVM.Count ; i++)
+			{
+				SoldierVM[i].Counter = 0;
+				SoldierVM[i].playlist.Clear ();
+			}
+				
+			LocalUser.ScreenState = ScreenState.MainGame;
+									
+			loadingImage.SetActive (true);
+			StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
+			
+			evt.ScreenType = typeof(MenuScreenViewModel);
+			Publish(evt);
+			
+		});
+		
+		this.BindButtonToHandler(Leave2Button, () => { 
+			var evt = new RequestMainMenuScreenCommand();
+			
+			/*
+			Publish(new UnloadSceneCommand()
+			{
+				SceneName = "MainGameScene"
+			});
+			
+			Application.LoadLevel("MainMenuScene");
+			
+			//Publish(new LoadSceneCommand()
+			//{
+			//	SceneName = "MainMenuScene"
+			//});
+		    */
+			for(int i = 0; i < SoldierVM.Count ; i++)
+			{
+				SoldierVM[i].Counter = 0;
+				SoldierVM[i].playlist.Clear ();
+			}
+			
+			LocalUser.ScreenState = ScreenState.MainGame;
+			
+			loadingImage.SetActive (true);
+			StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
+			
+			evt.ScreenType = typeof(MenuScreenViewModel);
+			Publish(evt);
 		});
 
 		this.BindButtonToHandler(InfoAtkButton, () => { 
@@ -172,7 +296,7 @@ public class MainGameRootView : MainGameRootViewBase {
 			//this.Soldier.SoldierState = SoldierState.MOVE;
 			gSHexGridManager.selectPoint = true;
 			gSHexGridManager.MoveOrAttackPointSelected();
-		});
+		});//
 
 		this.BindButtonToHandler(AATKButton, () => {
 			SoldierVM[gSHexGridManager.sNum].Action = ActionStyle.A_ATK;
@@ -188,26 +312,146 @@ public class MainGameRootView : MainGameRootViewBase {
 			gSHexGridManager.MoveOrAttackPointSelected();
 		});
 		
+		this.BindButtonToHandler(DialogueTestButton, () => {
+			//TODO
+			Publish(new DialogueCommand()
+			        {
+				ConversationName = "Ch0_1"
+			});
+		});
+		
     }
 
     public override void GameStateChanged(GameState gameState) {
+    
 		if (gameState == GameState.Playing) return;
 		
-		if (this.MainGameRoot.EnemyCount == 0)
+		if (this.MainGameRoot.EnemyCount <= 0)
 		{
 			Debug.Log ("You Win");
-			gameOverText.text = "You Win";
+			gameOverText.text = "勝利";
 			gameOverText.gameObject.SetActive(true);
+			
 			ExecuteGameOver();
+			
+			
+			int expAdd = Mathf.RoundToInt(40 * Mathf.Pow(1.1f, LocalUser.UserLevel - 1) / TotalExp * 1000000);
+			int silverFeatherGain = expAdd * 9;
+			int resourceGain = expAdd * 400;
+			game.login.exp += expAdd;
+			//SilverFeather
+			game.wealth[0].Add(silverFeatherGain);
+			//Resource
+			game.wealth[2].Add (resourceGain);
+			game.login.UpdateObject();
+			
+			ExpPanel.gameObject.SetActive(true);
+			ExpPanel.transform.FindChild("Text").GetComponent<Text>().text = "所得經驗： " + expAdd;
+			
+			SilverFeatherPanel.gameObject.SetActive(true);
+			SilverFeatherPanel.transform.FindChild("Text").GetComponent<Text>().text = "所得銀羽： " + silverFeatherGain;
+			
+			//ResourcePanel.gameObject.SetActive(true);
+			//ResourcePanel.transform.FindChild("Text").GetComponent<Text>().text = "所得物資： " + resourceGain;
+			
+			
+			LocalUser.SilverFeatherGain = silverFeatherGain;
+			LocalUser.ResourceGain = resourceGain;
+			
+			for(int i = 0; i < SoldierVM.Count; i++)
+			{
+				LocalUser.TotalSoldierQunatity += (int)SoldierVM[i].Max_Health;
+				LocalUser.AliveSoldiers += (int)SoldierVM[i].Health;
+				LocalUser.DeadSoldiers += (int)SoldierVM[i].Max_Health - (int)SoldierVM[i].Health;
+				LocalUser.TotalGeneral ++;
+			}
+			
+			LocalUser.TotalPlayer = 1;
+			
+			Debug.Log("Add Exp: " + expAdd);
+			Debug.Log("User Exp: " + game.login.exp);
+			
+			/*
+			WsClient wsc = WsClient.Instance;
+			JSONClass j = new JSONClass ();
+			j["battle"] = "Win the Battle";
+			wsc.Send ("wealth", "SET", j);
+			*/
 		}
 		
-		else if(this.MainGameRoot.SoldierCount == 0)
+		//else if(this.MainGameRoot.SoldierCount == 0)
+		else
 		{
 			Debug.Log ("You Lose");
-			gameOverText.text = "GameOver";
+			gameOverText.text = "落敗";
 			gameOverText.gameObject.SetActive(true);
 			ExecuteGameOver();
 		}
-
     }
+    
+	IEnumerator LoadLevelWithBar (string level)
+	{
+		_async = Application.LoadLevelAsync(level);
+		while(!_async.isDone)
+		{
+			loadingBar.value=_async.progress;
+			yield return null;
+		}
+		
+		//UserManagementService.loadDB();
+	}
+	
+	/// <summary>
+	/// Init all Behavior in the Grid
+	/// </summary>
+	public void BeginnerGuide()
+	{
+
+		//GameObject guideArrow = GameObject.Find ("GuideArrow");
+		guideArrow.transform.localPosition = InfoButton.transform.localPosition + new Vector3(100, 0, 0);
+		//Test only
+		_copyInfoButton = Instantiate(InfoButton) as Button;
+		
+		_copyInfoButton.transform.parent = InfoButton.transform.parent; 
+		
+		_copyInfoButton.transform.localPosition = InfoButton.transform.localPosition ; 
+		_copyInfoButton.transform.localRotation = InfoButton.transform.localRotation ;  
+		_copyInfoButton.transform.localScale    = InfoButton.transform.localScale; 
+		
+		_copyInfoButton.transform.parent = beginnerGuide.transform;
+		
+		guideArrow.transform.DOLocalMoveX(-450f, 0.8f).SetLoops(-1, LoopType.Yoyo);
+		
+		BlockPanel.SetActive(true);
+		
+		/*
+		GameObject movePanel = GameObject.Find("MovePanel");
+		GameObject actionPanel = GameObject.Find ("ActionPanel");
+		GameObject flowPanel = GameObject.Find("FlowPanel");
+		
+		GameObject copyMovePanel = Instantiate(movePanel);
+		GameObject copyActionPanel = Instantiate(actionPanel);
+		GameObject copyFlowPanel = Instantiate(flowPanel);
+		
+		copyMovePanel.transform.parent = movePanel.transform.parent; 
+		copyActionPanel.transform.parent = movePanel.transform.parent;  
+		copyFlowPanel.transform.parent = movePanel.transform.parent;  
+
+		copyMovePanel.transform.localPosition = movePanel.transform.localPosition ;  
+		copyMovePanel.transform.localRotation = movePanel.transform.localRotation ;  
+		copyMovePanel.transform.localScale    = movePanel.transform.localScale ; 
+		
+		copyActionPanel.transform.localPosition = actionPanel.transform.localPosition ;  
+		copyActionPanel.transform.localRotation = actionPanel.transform.localRotation ;  
+		copyActionPanel.transform.localScale    = actionPanel.transform.localScale ;  
+		
+		copyFlowPanel.transform.localPosition = flowPanel.transform.localPosition ;  
+		copyFlowPanel.transform.localRotation = flowPanel.transform.localRotation ;  
+		copyFlowPanel.transform.localScale    = flowPanel.transform.localScale ;  
+		 
+		copyMovePanel.transform.parent = beginnerGuide.transform;
+		copyActionPanel.transform.parent = beginnerGuide.transform; 
+		copyFlowPanel.transform.parent = beginnerGuide.transform;
+		*/ 
+	}
 }

@@ -25,6 +25,18 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
     
     private P<AuthorizationState> _AuthorizationStateProperty;
     
+    private P<WinCondition> _WinConditionProperty;
+    
+    private P<ScreenState> _ScreenStateProperty;
+    
+    private P<Int32> _TotalTeamProperty;
+    
+    private P<Boolean> _SetTeamProperty;
+    
+    private P<Int32> _UserLevelProperty;
+    
+    private ModelCollection<SoldierViewModel> _Soldier;
+    
     public UserViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
@@ -38,6 +50,51 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual P<WinCondition> WinConditionProperty {
+        get {
+            return _WinConditionProperty;
+        }
+        set {
+            _WinConditionProperty = value;
+        }
+    }
+    
+    public virtual P<ScreenState> ScreenStateProperty {
+        get {
+            return _ScreenStateProperty;
+        }
+        set {
+            _ScreenStateProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> TotalTeamProperty {
+        get {
+            return _TotalTeamProperty;
+        }
+        set {
+            _TotalTeamProperty = value;
+        }
+    }
+    
+    public virtual P<Boolean> SetTeamProperty {
+        get {
+            return _SetTeamProperty;
+        }
+        set {
+            _SetTeamProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> UserLevelProperty {
+        get {
+            return _UserLevelProperty;
+        }
+        set {
+            _UserLevelProperty = value;
+        }
+    }
+    
     public virtual AuthorizationState AuthorizationState {
         get {
             return AuthorizationStateProperty.Value;
@@ -47,19 +104,94 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         }
     }
     
+    public virtual WinCondition WinCondition {
+        get {
+            return WinConditionProperty.Value;
+        }
+        set {
+            WinConditionProperty.Value = value;
+        }
+    }
+    
+    public virtual ScreenState ScreenState {
+        get {
+            return ScreenStateProperty.Value;
+        }
+        set {
+            ScreenStateProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 TotalTeam {
+        get {
+            return TotalTeamProperty.Value;
+        }
+        set {
+            TotalTeamProperty.Value = value;
+        }
+    }
+    
+    public virtual Boolean SetTeam {
+        get {
+            return SetTeamProperty.Value;
+        }
+        set {
+            SetTeamProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 UserLevel {
+        get {
+            return UserLevelProperty.Value;
+        }
+        set {
+            UserLevelProperty.Value = value;
+        }
+    }
+    
+    public virtual ModelCollection<SoldierViewModel> Soldier {
+        get {
+            return _Soldier;
+        }
+        set {
+            _Soldier = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
         _AuthorizationStateProperty = new P<AuthorizationState>(this, "AuthorizationState");
+        _WinConditionProperty = new P<WinCondition>(this, "WinCondition");
+        _ScreenStateProperty = new P<ScreenState>(this, "ScreenState");
+        _TotalTeamProperty = new P<Int32>(this, "TotalTeam");
+        _SetTeamProperty = new P<Boolean>(this, "SetTeam");
+        _UserLevelProperty = new P<Int32>(this, "UserLevel");
+        _Soldier = new ModelCollection<SoldierViewModel>(this, "Soldier");
     }
     
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
         this.AuthorizationState = (AuthorizationState)stream.DeserializeInt("AuthorizationState");;
+        this.WinCondition = (WinCondition)stream.DeserializeInt("WinCondition");;
+        this.ScreenState = (ScreenState)stream.DeserializeInt("ScreenState");;
+        this.TotalTeam = stream.DeserializeInt("TotalTeam");;
+        this.SetTeam = stream.DeserializeBool("SetTeam");;
+        this.UserLevel = stream.DeserializeInt("UserLevel");;
+        if (stream.DeepSerialize) {
+            this.Soldier.Clear();
+            this.Soldier.AddRange(stream.DeserializeObjectArray<SoldierViewModel>("Soldier"));
+        }
     }
     
     public override void Write(ISerializerStream stream) {
         base.Write(stream);
         stream.SerializeInt("AuthorizationState", (int)this.AuthorizationState);;
+        stream.SerializeInt("WinCondition", (int)this.WinCondition);;
+        stream.SerializeInt("ScreenState", (int)this.ScreenState);;
+        stream.SerializeInt("TotalTeam", this.TotalTeam);
+        stream.SerializeBool("SetTeam", this.SetTeam);
+        stream.SerializeInt("UserLevel", this.UserLevel);
+        if (stream.DeepSerialize) stream.SerializeArray("Soldier", this.Soldier);
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
@@ -70,6 +202,17 @@ public partial class UserViewModelBase : uFrame.MVVM.ViewModel {
         base.FillProperties(list);
         // PropertiesChildItem
         list.Add(new ViewModelPropertyInfo(_AuthorizationStateProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_WinConditionProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_ScreenStateProperty, false, false, true, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_TotalTeamProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_SetTeamProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_UserLevelProperty, false, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_Soldier, true, true, false, false));
     }
 }
 

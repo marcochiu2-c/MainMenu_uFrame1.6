@@ -23,6 +23,8 @@ public class UserManagementSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private UserController _UserController;
     
+    private SoldierController _SoldierController;
+    
     [uFrame.IOC.InjectAttribute("LocalUser")]
     public virtual UserViewModel LocalUser {
         get {
@@ -48,9 +50,24 @@ public class UserManagementSystemLoaderBase : uFrame.Kernel.SystemLoader {
         }
     }
     
+    [uFrame.IOC.InjectAttribute()]
+    public virtual SoldierController SoldierController {
+        get {
+            if (_SoldierController==null) {
+                _SoldierController = Container.CreateInstance(typeof(SoldierController)) as SoldierController;;
+            }
+            return _SoldierController;
+        }
+        set {
+            _SoldierController = value;
+        }
+    }
+    
     public override void Load() {
         Container.RegisterViewModelManager<UserViewModel>(new ViewModelManager<UserViewModel>());
         Container.RegisterController<UserController>(UserController);
+        Container.RegisterViewModelManager<SoldierViewModel>(new ViewModelManager<SoldierViewModel>());
+        Container.RegisterController<SoldierController>(SoldierController);
         Container.RegisterViewModel<UserViewModel>(LocalUser, "LocalUser");
     }
 }

@@ -20,3 +20,10 @@ public enum AuthorizationState {
     
     Unauthorized,
 }
+
+public enum ScreenState {
+    
+    MainMenu,
+    
+    MainGame,
+}

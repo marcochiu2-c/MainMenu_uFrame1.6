@@ -93,3 +93,12 @@ public enum GameState {
     
     GameOver,
 }
+
+public enum WinCondition {
+    
+    Tower,
+    
+    Enemies,
+    
+    Boss,
+}

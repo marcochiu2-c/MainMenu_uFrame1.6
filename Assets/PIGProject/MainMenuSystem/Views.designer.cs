@@ -748,7 +748,7 @@ public class SchoolFieldScreenViewBase : SubScreenView {
     }
 }
 
-public class AcademyScreenBase : SubScreenView {
+public class AcademyScreenViewBase : SubScreenView {
     
     public override string DefaultIdentifier {
         get {
@@ -855,6 +855,21 @@ public class TrainScreenViewBase : SubScreenView {
 
 public class ConferenceScreenViewBase : SubScreenView {
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _Group;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _SoldierType;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _SoldierQuantity;
+    
     public override string DefaultIdentifier {
         get {
             return base.DefaultIdentifier;
@@ -878,6 +893,10 @@ public class ConferenceScreenViewBase : SubScreenView {
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
         // var vm = model as ConferenceScreenViewModel;
         // This method is invoked when applying the data from the inspector to the viewmodel.  Add any view-specific customizations here.
+        var conferencescreenview = ((ConferenceScreenViewModel)model);
+        conferencescreenview.Group = this._Group;
+        conferencescreenview.SoldierType = this._SoldierType;
+        conferencescreenview.SoldierQuantity = this._SoldierQuantity;
     }
     
     public override void Bind() {
@@ -885,6 +904,24 @@ public class ConferenceScreenViewBase : SubScreenView {
         // Use this.ConferenceScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+    }
+    
+    public virtual void ExecuteSetSoldierData() {
+        ConferenceScreen.SetSoldierData.OnNext(new SetSoldierDataCommand() { Sender = ConferenceScreen });
+    }
+    
+    public virtual void ExecuteInitSoldierValue() {
+        ConferenceScreen.InitSoldierValue.OnNext(new InitSoldierValueCommand() { Sender = ConferenceScreen });
+    }
+    
+    public virtual void ExecuteSetSoldierData(SetSoldierDataCommand command) {
+        command.Sender = ConferenceScreen;
+        ConferenceScreen.SetSoldierData.OnNext(command);
+    }
+    
+    public virtual void ExecuteInitSoldierValue(InitSoldierValueCommand command) {
+        command.Sender = ConferenceScreen;
+        ConferenceScreen.InitSoldierValue.OnNext(command);
     }
 }
 

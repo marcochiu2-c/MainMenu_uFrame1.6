@@ -43,6 +43,16 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.HideInInspector()]
     public Int32 _EnemyCount;
     
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Int32 _PlayerIQ;
+    
+    [UnityEngine.SerializeField()]
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public WinCondition _WinCondition;
+    
     [UFToggleGroup("GameState")]
     [UnityEngine.HideInInspector()]
     public bool _BindGameState = true;
@@ -81,6 +91,8 @@ public class MainGameRootViewBase : uFrame.MVVM.ViewBase {
         maingamerootview.HexGridMatching = this._HexGridMatching;
         maingamerootview.SoldierCount = this._SoldierCount;
         maingamerootview.EnemyCount = this._EnemyCount;
+        maingamerootview.PlayerIQ = this._PlayerIQ;
+        maingamerootview.WinCondition = this._WinCondition;
     }
     
     public override void Bind() {
@@ -257,7 +269,7 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Int32 _AttackSpeed;
+    public Single _AttackSpeed;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
@@ -297,12 +309,7 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Int32 _HitPoint;
-    
-    [UnityEngine.SerializeField()]
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
-    public Int32 _WeaponProficieny;
+    public Single _HitPoint;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
@@ -322,12 +329,12 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Int32 _InitialMorale;
+    public Single _InitialMorale;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Int32 _Prestige;
+    public Single _Prestige;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
@@ -372,12 +379,12 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Int32 _WeaponProficiency;
+    public Single _WeaponProficiency;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
-    public Int32 _moraleStandard;
+    public Single _moraleStandard;
     
     [UnityEngine.SerializeField()]
     [UFGroup("View Model Properties")]
@@ -464,7 +471,6 @@ public class EntityViewBase : uFrame.MVVM.ViewBase {
         entityview.Name = this._Name;
         entityview.Physique = this._Physique;
         entityview.HitPoint = this._HitPoint;
-        entityview.WeaponProficieny = this._WeaponProficieny;
         entityview.Dodge = this._Dodge;
         entityview.Hurt = this._Hurt;
         entityview.Dead = this._Dead;

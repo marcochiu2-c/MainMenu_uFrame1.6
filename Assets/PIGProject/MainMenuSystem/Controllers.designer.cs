@@ -12,11 +12,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 using uFrame.IOC;
 using uFrame.Kernel;
-using UniRx;
-using uFrame.Serialization;
 using uFrame.MVVM;
+using uFrame.Serialization;
 
 
 public class MainMenuRootControllerBase : uFrame.MVVM.Controller {
@@ -682,12 +682,28 @@ public class ConferenceScreenControllerBase : SubScreenController {
     
     public virtual void InitializeConferenceScreen(ConferenceScreenViewModel viewModel) {
         // This is called when a ConferenceScreenViewModel is created
+        viewModel.SetSoldierData.Action = this.SetSoldierDataHandler;
+        viewModel.InitSoldierValue.Action = this.InitSoldierValueHandler;
         ConferenceScreenViewModelManager.Add(viewModel);
     }
     
     public override void DisposingViewModel(uFrame.MVVM.ViewModel viewModel) {
         base.DisposingViewModel(viewModel);
         ConferenceScreenViewModelManager.Remove(viewModel);
+    }
+    
+    public virtual void SetSoldierData(ConferenceScreenViewModel viewModel) {
+    }
+    
+    public virtual void InitSoldierValue(ConferenceScreenViewModel viewModel) {
+    }
+    
+    public virtual void SetSoldierDataHandler(SetSoldierDataCommand command) {
+        this.SetSoldierData(command.Sender as ConferenceScreenViewModel);
+    }
+    
+    public virtual void InitSoldierValueHandler(InitSoldierValueCommand command) {
+        this.InitSoldierValue(command.Sender as ConferenceScreenViewModel);
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using uFrame.Kernel;
 
@@ -15,7 +16,12 @@ public class IntroSceneFlow : uFrameComponent
 
     /* Sprite to be animated */
     public SpriteRenderer Logo;
-
+	
+	public Slider loadingBar;
+	public GameObject loadingImage;
+	
+	private AsyncOperation _async;
+	
     /* Animation progress (transparency in our case) */
     private float progress;
 
@@ -47,21 +53,33 @@ public class IntroSceneFlow : uFrameComponent
             yield return null;
         }
 
-        yield return new WaitForSeconds(2);
-
+        //yield return new WaitForSeconds(1);
+		
+		/*
         while (progress > 0f)
         {
             Logo.color = Color.Lerp(transparentColor, solidColor, progress);
             progress -= 0.5f * Time.deltaTime;
             yield return null;
         }
+        */
 
-
+		loadingImage.SetActive (true);
+		StartCoroutine (LoadLevelWithBar ("MainMenuScene"));
         //In the end let the system know that intro is finished
-        Publish(new IntroFinishedEvent());
+        //Publish(new IntroFinishedEvent());
     }
 
-
+	IEnumerator LoadLevelWithBar (string level)
+	{
+		_async = Application.LoadLevelAsync(level);
+		while(!_async.isDone)
+		{
+			loadingBar.value=_async.progress;
+			yield return null;
+		}
+		
+	}
 
 
 }

@@ -9,9 +9,18 @@ using uFrame.MVVM.Bindings;
 using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class ParallelScreenView : ParallelScreenViewBase {
+
+	public Button friends;
+	public Button pvp;
+	public Button guild;
+
+	public GameObject Friends;
+	public GameObject PVP;
+	public GameObject Guild;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -25,5 +34,24 @@ public class ParallelScreenView : ParallelScreenViewBase {
         // Use this.ParallelScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+
+		this.BindButtonToHandler (friends, () => {
+			Friends.gameObject.SetActive (true);
+			PVP.gameObject.SetActive (false);
+			Guild.gameObject.SetActive (false);
+		});
+
+		this.BindButtonToHandler (pvp, () => {
+			Friends.gameObject.SetActive (false);
+			PVP.gameObject.SetActive (true);
+			Guild.gameObject.SetActive (false);
+		});
+
+		this.BindButtonToHandler (guild, () => {
+			Friends.gameObject.SetActive (false);
+			PVP.gameObject.SetActive (false);
+			Guild.gameObject.SetActive (true);
+		});
+
     }
 }

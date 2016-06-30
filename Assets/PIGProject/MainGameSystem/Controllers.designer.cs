@@ -12,11 +12,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 using uFrame.IOC;
 using uFrame.Kernel;
-using UniRx;
-using uFrame.Serialization;
 using uFrame.MVVM;
+using uFrame.Serialization;
 
 
 public class MainGameRootControllerBase : uFrame.MVVM.Controller {

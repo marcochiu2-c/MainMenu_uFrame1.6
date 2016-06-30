@@ -12,7 +12,7 @@ using UniRx;
 using Gamelogic.Grids;
 
 public partial class EntityViewModel : EntityViewModelBase {
-	public float actualHit;
+	public float actualHit;  //func
 	public float hitRate;
 	public float otherHit;
 	public float physiqueCapacity;
@@ -46,9 +46,9 @@ public partial class EntityViewModel : EntityViewModelBase {
 	public object thisLock;
 	public System.Timers.Timer Timer;
 	public Weapons Weapon = new Weapons {Weight = 2,OtherHit = 50, CriticalHit = 30, FatalHit = 20, Sharpness = 90, IsSharp = true};
-	public Armors Armor = new Armors {Weight = 2, OtherCover = 30, CriticalCover = 30, FatalCover = 30, Hardness =30};
+	public Armors Armor = new Armors {Weight = 2, OtherCover = 30, CriticalCover = 30, FatalCover = 30, Hardness = 30};
 	public Shields Shield = new Shields{Weight = 0 , BlockRate = 0, Hardness =0};
-	public Formations Formation = new Formations {HitPoint = 10, Dodge = 10, Morale =5};
+	public Formations Formation = new Formations {HitPoint = 10, Dodge = 10, Morale = 5};
 	public FlatHexPoint CurrentPointLocation;
 
 	public float WeightDeduct (){

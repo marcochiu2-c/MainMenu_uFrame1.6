@@ -1,0 +1,303 @@
+﻿using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using Utilities;
+
+public class AcademyStudent: MonoBehaviour {
+	public Image image;
+	public Text Name;
+	public Text AttrName;
+	public Text AttrValue;
+
+	public static List<AcademyStudent> person = new List<AcademyStudent>();
+	public static Transform commonPanel;
+	public Counselor counselor;
+	private Game game;
+	GameObject CardHolder;
+
+	Dictionary<int,Sprite> imageDict;
+	Dictionary<int,string> nameDict;
+	// Use this for initialization
+	void Start () {
+		game = Game.Instance;
+
+		SetCharacters ();
+		AddButtonListener ();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	}
+
+
+	void AddButtonListener(){
+		GetComponent<Button> ().onClick.AddListener (() => {
+			if (Academy.CounselorHolderFunction==""){
+
+				Academy.AssigningCounselor[Academy.AssigningCounselorSlot] = counselor;
+				Debug.Log("Counselor ID:"+Academy.AssigningCounselor[Academy.AssigningCounselorSlot].id);
+				Academy.SetCounselorSelectorButton(nameDict[counselor.type],TimeSpan.Zero);
+				Academy.OnCounselorSelected();
+			}else if(Academy.CounselorHolderFunction=="ChoosingTeacher"){
+				Academy.AssigningTeacher = counselor;
+				Debug.Log ("Teacher ID: "+counselor.id);
+				Debug.Log ("Student ID: "+Academy.AssigningCounselor[Academy.AssigningCounselorSlot].id);
+				Debug.Log ("Learning Item: "+Academy.AssigningLearning);
+				Academy.CounselorHolderFunction="";
+				Academy.ShowPanel(Academy.ConfirmTeacherBy);
+			}
+			Academy.CounselorHolder.SetActive(false);
+			gameObject.SetActive(false);
+
+		});
+	}
+
+	public void ShowLowerThanTrainerPanel(string isMaxPoint=""){
+		GameObject LowerThanTrainer = Academy.LowerThanTrainer;
+		Academy.ShowPanel(LowerThanTrainer);
+		if (isMaxPoint == "") {
+			Utilities.Panel.GetHeader (LowerThanTrainer).text = "青出於藍";
+			Utilities.Panel.GetMessageText (LowerThanTrainer).text = "所選軍師之能力高於師傅，請重新選擇。";
+		} else if (isMaxPoint == "isMaxPoint"){
+			Utilities.Panel.GetHeader(LowerThanTrainer).text = "學有所成";
+			Utilities.Panel.GetMessageText(LowerThanTrainer).text = "所選軍師徒弟智商已達頂點，請重新選擇。";
+		}
+	}
+
+//	public void ShowKnowledgeListPanel(int student){
+//		Game game = Game.Instance;
+//		KnowledgeOption.Woodworker.interactable = true;
+//		KnowledgeOption.MetalFabrication.interactable = true;
+//		KnowledgeOption.ChainSteel.interactable = true;
+//		KnowledgeOption.MetalProcessing.interactable = true;
+//		KnowledgeOption.Crafts.interactable = true;
+//		KnowledgeOption.Geometry.interactable = true;
+//		KnowledgeOption.Physics.interactable = true;
+//		KnowledgeOption.Chemistry.interactable = true;
+//		KnowledgeOption.PeriodicTable.interactable = true;
+//		KnowledgeOption.Pulley.interactable = true;
+//		KnowledgeOption.Anatomy.interactable = true;
+//		KnowledgeOption.Catapult.interactable = true;
+//		KnowledgeOption.GunpowderModulation.interactable = true;
+//		KnowledgeOption.Psychology.interactable = true;
+//		
+//		Academy.KnowledgeListHolder.SetActive (true);
+//	}
+//
+//	public void ShowKnowledgeListPanel(int teacher, int student){
+//		Game game = Game.Instance;
+//		GameObject panel = Academy.KnowledgeListHolder;
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Woodworker"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Woodworker"].AsInt) {
+//			KnowledgeOption.Woodworker.interactable = true;
+//		} else {
+//			KnowledgeOption.Woodworker.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["MetalFabrication"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["MetalFabrication"].AsInt) {
+//			KnowledgeOption.MetalFabrication.interactable = true;
+//		} else {
+//			KnowledgeOption.MetalFabrication.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["EasternHistory"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["EasternHistory"].AsInt) {
+//			KnowledgeOption.EasternHistory.interactable = true;
+//		} else {
+//			KnowledgeOption.EasternHistory.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["WesternHistory"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["WesternHistory"].AsInt) {
+//			KnowledgeOption.WesternHistory.interactable = true;
+//		} else {
+//			KnowledgeOption.WesternHistory.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["ChainSteel"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["ChainSteel"].AsInt) {
+//			KnowledgeOption.ChainSteel.interactable = true;
+//		} else {
+//			KnowledgeOption.ChainSteel.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["MetalProcessing"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["MetalProcessing"].AsInt) {
+//			KnowledgeOption.MetalProcessing.interactable = true;
+//		} else {
+//			KnowledgeOption.MetalProcessing.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Crafts"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Crafts"].AsInt) {
+//			KnowledgeOption.Crafts.interactable = true;
+//		} else {
+//			KnowledgeOption.Crafts.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Geometry"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Geometry"].AsInt) {
+//			KnowledgeOption.Geometry.interactable = true;
+//		} else {
+//			KnowledgeOption.Geometry.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Physics"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Physics"].AsInt) {
+//			KnowledgeOption.Physics.interactable = true;
+//		} else {
+//			KnowledgeOption.Physics.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Chemistry"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Chemistry"].AsInt) {
+//			KnowledgeOption.Chemistry.interactable = true;
+//		} else {
+//			KnowledgeOption.Chemistry.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["PeriodicTable"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["PeriodicTable"].AsInt) {
+//			KnowledgeOption.PeriodicTable.interactable = true;
+//		} else {
+//			KnowledgeOption.PeriodicTable.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Pulley"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Pulley"].AsInt) {
+//			KnowledgeOption.Pulley.interactable = true;
+//		} else {
+//			KnowledgeOption.Pulley.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Anatomy"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Anatomy"].AsInt) {
+//			KnowledgeOption.Anatomy.interactable = true;
+//		} else {
+//			KnowledgeOption.Anatomy.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Catapult"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Catapult"].AsInt) {
+//			KnowledgeOption.Catapult.interactable = true;
+//		} else {
+//			KnowledgeOption.Catapult.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["GunpowderModulation"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["GunpowderModulation"].AsInt) {
+//			KnowledgeOption.GunpowderModulation.interactable = true;
+//		} else {
+//			KnowledgeOption.GunpowderModulation.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["Psychology"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["Psychology"].AsInt) {
+//			KnowledgeOption.Psychology.interactable = true;
+//		} else {
+//			KnowledgeOption.Psychology.interactable = false;
+//		}
+//		if (game.counselor [game.counselor.FindIndex (x => x.id == teacher)].attributes ["attributes"] ["KnownKnowledge"] ["IChing"].AsInt > 
+//		    game.counselor [game.counselor.FindIndex (x => x.id == student)].attributes ["attributes"] ["KnownKnowledge"] ["IChing"].AsInt) {
+//			KnowledgeOption.IChing.interactable = true;
+//		} else {
+//			KnowledgeOption.IChing.interactable = false;
+//		}
+//		panel.SetActive (true);
+//	}
+
+	public void SetCounselor(Counselor c){
+		counselor = c;
+		image.sprite =  imageDict[counselor.type];
+		Name.text = nameDict[counselor.type];
+		showPanelItems (Academy.CounselorHolder.transform);
+	}
+//
+//	void ShowCardPanel(){
+//		int character = counselor.type;
+//		Transform cardHolder = CardHolder.transform.GetChild(1);
+//		Image img = CardHolder.transform.GetChild (0).GetComponent<Image> ();
+//		Text Name = cardHolder.transform.GetChild (1).GetComponent<Text> ();
+//		Text Level = cardHolder.GetChild (3).GetComponent<Text> ();
+//		Text IQ = cardHolder.GetChild (5).GetComponent<Text> ();
+//		Text Leadership = cardHolder.GetChild (7).GetComponent<Text> ();
+//		Text Prestige = cardHolder.GetChild (9).GetComponent<Text> ();
+//		Text Courage = cardHolder.GetChild (11).GetComponent<Text> ();
+//		Text Force = cardHolder.GetChild (13).GetComponent<Text> ();
+//		Text Physical = cardHolder.GetChild (15).GetComponent<Text> ();
+//		Text Obedience = cardHolder.GetChild (17).GetComponent<Text> ();
+//		Text Formation = cardHolder.GetChild (19).GetComponent<Text> ();
+//		Text Knowledge = cardHolder.GetChild (21).GetComponent<Text> ();
+//		CardHolder.SetActive (true);
+//
+//
+//		img.sprite = imageDict[counselor.type];
+//		Name.text = nameDict [counselor.type];
+//		Level.text=counselor.attributes["attributes"]["level"].AsInt.ToString();
+//		IQ.text=counselor.attributes["attributes"]["IQ"].AsFloat.ToString();
+//		Leadership.text=counselor.attributes["attributes"]["Leadership"].AsFloat.ToString();
+//		Prestige.text=counselor.attributes["attributes"]["Prestige"].AsFloat.ToString();
+//		Courage.text="-";
+//		Force.text="-";
+//		Physical.text="-";
+//		Obedience.text="-";
+//		Formation.text="-";
+//		Knowledge.text="-";
+//		Debug.Log("Knowledge: "+counselor.attributes["attributes"]["KnownKnowledge"].ToString());
+//		
+//	}
+	public void SetPanel(){
+//		if (panel == ActivePopupEnum.IQPopup) {
+//			AttrName.text = "智商：";
+//			AttrValue.text = counselor.attributes["attributes"]["IQ"];
+//		} else if (panel == ActivePopupEnum.CommandedPopup) {
+//			AttrName.text = "統率：";
+//			AttrValue.text = counselor.attributes["attributes"]["Leadership"];
+//		} else if (panel == ActivePopupEnum.KnowledgePopup || panel == ActivePopupEnum.FightingPopup) {
+//			AttrName.text = "";
+//			AttrValue.text = "";
+//		}
+		AttrName.text = "";
+		AttrValue.text = "";
+	}
+
+	public void showPanelItems( Transform panel){
+		LoadHeadPic headPic = LoadHeadPic.Instance;
+		char[] charToTrim = { '"' };
+		transform.SetParent( panel.GetChild(1).GetChild(1).GetChild(0));
+//		string panelName = panel.parent.parent.parent.name;
+
+			Name.text = counselor.attributes["attributes"]["Name"].ToString().Trim (charToTrim);
+			image.sprite = headPic.imageDict[counselor.type];
+		
+		RectTransform rTransform = transform.GetComponent<RectTransform>();
+		rTransform.localScale= Vector3.one;
+
+	}
+	
+	public static void showSkillsOptionPanel(string panel){
+		var count = Academy.CounselorList.Count;
+		Button[] button = new Button[14];
+		if (panel == "學問") { //Knowledge
+			KnowledgeOption obj = Instantiate(Resources.Load("KnowledgeOptionPrefab") as GameObject).GetComponent<KnowledgeOption>();
+			obj.gameObject.SetActive(true);
+			RectTransform rTransform = obj.gameObject.GetComponent<RectTransform>();
+			rTransform.localScale= new Vector3(1,1,1);
+			rTransform.position = new Vector3(612.75f,-352.5f,1);
+			obj.transform.SetParent(Academy.TeachHolder.transform,false);
+			for (var i = 0; i <14; i++) {
+				button[i] = obj.transform.GetChild(0).GetChild (1).GetChild(i).gameObject.GetComponent<Button>();
+				button[i].interactable = false;
+				//				Debug.Log(button[i]);
+			}
+			for (int i =0 ; i< count; i++){
+				for (int j=0; j < 14; j++){
+					if (Academy.CounselorList[i].id==23){
+						for (int k = 0; k<Academy.CounselorList[i].attributes["skills"].Count;k++){
+							if (button[j].transform.GetChild(0).gameObject.GetComponent<Text>().text ==
+							    Academy.CounselorList[i].attributes["skills"][k]["name"].Value){
+								button[j].interactable = true;
+							}
+						}
+					}
+					//				Debug.Log("First skill name: "+Academy.CounselorList[i].attributes["skills"][0]["name"]);
+					//				Debug.Log("First skill level: "+Academy.CounselorList[i].attributes["skills"][0]["level"]);
+				}
+			}
+		}
+	}
+
+	private void SetCharacters(){
+		LoadHeadPic headPic = LoadHeadPic.Instance;
+		imageDict = headPic.imageDict;
+		nameDict = headPic.nameDict;
+	}
+}

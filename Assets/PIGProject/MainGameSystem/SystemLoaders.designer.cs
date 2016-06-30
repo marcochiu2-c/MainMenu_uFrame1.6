@@ -41,8 +41,6 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     
     private MainGameRootViewModel _MainGameRoot;
     
-    private NoticeScreenController _NoticeScreenController;
-    
     private MainGameRootController _MainGameRootController;
     
     private SoldierController _SoldierController;
@@ -50,6 +48,8 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     private EnemyController _EnemyController;
     
     private EntityController _EntityController;
+    
+    private NoticeScreenController _NoticeScreenController;
     
     [uFrame.IOC.InjectAttribute("Enemy1")]
     public virtual EnemyViewModel Enemy1 {
@@ -184,19 +184,6 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
     }
     
     [uFrame.IOC.InjectAttribute()]
-    public virtual NoticeScreenController NoticeScreenController {
-        get {
-            if (_NoticeScreenController==null) {
-                _NoticeScreenController = Container.CreateInstance(typeof(NoticeScreenController)) as NoticeScreenController;;
-            }
-            return _NoticeScreenController;
-        }
-        set {
-            _NoticeScreenController = value;
-        }
-    }
-    
-    [uFrame.IOC.InjectAttribute()]
     public virtual MainGameRootController MainGameRootController {
         get {
             if (_MainGameRootController==null) {
@@ -248,9 +235,20 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
         }
     }
     
+    [uFrame.IOC.InjectAttribute()]
+    public virtual NoticeScreenController NoticeScreenController {
+        get {
+            if (_NoticeScreenController==null) {
+                _NoticeScreenController = Container.CreateInstance(typeof(NoticeScreenController)) as NoticeScreenController;;
+            }
+            return _NoticeScreenController;
+        }
+        set {
+            _NoticeScreenController = value;
+        }
+    }
+    
     public override void Load() {
-        Container.RegisterViewModelManager<NoticeScreenViewModel>(new ViewModelManager<NoticeScreenViewModel>());
-        Container.RegisterController<NoticeScreenController>(NoticeScreenController);
         Container.RegisterViewModelManager<MainGameRootViewModel>(new ViewModelManager<MainGameRootViewModel>());
         Container.RegisterController<MainGameRootController>(MainGameRootController);
         Container.RegisterViewModelManager<SoldierViewModel>(new ViewModelManager<SoldierViewModel>());
@@ -259,6 +257,8 @@ public class MainGameSystemLoaderBase : uFrame.Kernel.SystemLoader {
         Container.RegisterController<EnemyController>(EnemyController);
         Container.RegisterViewModelManager<EntityViewModel>(new ViewModelManager<EntityViewModel>());
         Container.RegisterController<EntityController>(EntityController);
+        Container.RegisterViewModelManager<NoticeScreenViewModel>(new ViewModelManager<NoticeScreenViewModel>());
+        Container.RegisterController<NoticeScreenController>(NoticeScreenController);
         Container.RegisterViewModel<EnemyViewModel>(Enemy1, "Enemy1");
         Container.RegisterViewModel<EnemyViewModel>(Enemy2, "Enemy2");
         Container.RegisterViewModel<EnemyViewModel>(Enemy3, "Enemy3");

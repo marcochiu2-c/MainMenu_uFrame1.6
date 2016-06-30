@@ -9,9 +9,14 @@ using uFrame.MVVM.Bindings;
 using uFrame.Serialization;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class CharPageScreenView : CharPageScreenViewBase {
+
+	//public Button loadButton;
+
+	//public GameObject senceHolder;
     
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
@@ -25,5 +30,9 @@ public class CharPageScreenView : CharPageScreenViewBase {
         // Use this.CharPageScreen to access the viewmodel.
         // Use this method to subscribe to the view-model.
         // Any designer bindings are created in the base implementation.
+
+		/*this.BindButtonToHandler (loadButton, () => {
+			senceHolder.gameObject.SetActive (true);
+		});*/
     }
 }

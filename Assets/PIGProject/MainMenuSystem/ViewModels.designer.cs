@@ -685,28 +685,137 @@ public partial class CharPageScreenViewModel {
 
 public partial class ConferenceScreenViewModelBase : SubScreenViewModel {
     
+    private P<Int32> _GroupProperty;
+    
+    private P<Int32> _SoldierTypeProperty;
+    
+    private P<Int32> _SoldierQuantityProperty;
+    
+    private Signal<SetSoldierDataCommand> _SetSoldierData;
+    
+    private Signal<InitSoldierValueCommand> _InitSoldierValue;
+    
     public ConferenceScreenViewModelBase(uFrame.Kernel.IEventAggregator aggregator) : 
             base(aggregator) {
     }
     
+    public virtual P<Int32> GroupProperty {
+        get {
+            return _GroupProperty;
+        }
+        set {
+            _GroupProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> SoldierTypeProperty {
+        get {
+            return _SoldierTypeProperty;
+        }
+        set {
+            _SoldierTypeProperty = value;
+        }
+    }
+    
+    public virtual P<Int32> SoldierQuantityProperty {
+        get {
+            return _SoldierQuantityProperty;
+        }
+        set {
+            _SoldierQuantityProperty = value;
+        }
+    }
+    
+    public virtual Int32 Group {
+        get {
+            return GroupProperty.Value;
+        }
+        set {
+            GroupProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 SoldierType {
+        get {
+            return SoldierTypeProperty.Value;
+        }
+        set {
+            SoldierTypeProperty.Value = value;
+        }
+    }
+    
+    public virtual Int32 SoldierQuantity {
+        get {
+            return SoldierQuantityProperty.Value;
+        }
+        set {
+            SoldierQuantityProperty.Value = value;
+        }
+    }
+    
+    public virtual Signal<SetSoldierDataCommand> SetSoldierData {
+        get {
+            return _SetSoldierData;
+        }
+        set {
+            _SetSoldierData = value;
+        }
+    }
+    
+    public virtual Signal<InitSoldierValueCommand> InitSoldierValue {
+        get {
+            return _InitSoldierValue;
+        }
+        set {
+            _InitSoldierValue = value;
+        }
+    }
+    
     public override void Bind() {
         base.Bind();
+        this.SetSoldierData = new Signal<SetSoldierDataCommand>(this);
+        this.InitSoldierValue = new Signal<InitSoldierValueCommand>(this);
+        _GroupProperty = new P<Int32>(this, "Group");
+        _SoldierTypeProperty = new P<Int32>(this, "SoldierType");
+        _SoldierQuantityProperty = new P<Int32>(this, "SoldierQuantity");
+    }
+    
+    public virtual void ExecuteSetSoldierData() {
+        this.SetSoldierData.OnNext(new SetSoldierDataCommand());
+    }
+    
+    public virtual void ExecuteInitSoldierValue() {
+        this.InitSoldierValue.OnNext(new InitSoldierValueCommand());
     }
     
     public override void Read(ISerializerStream stream) {
         base.Read(stream);
+        this.Group = stream.DeserializeInt("Group");;
+        this.SoldierType = stream.DeserializeInt("SoldierType");;
+        this.SoldierQuantity = stream.DeserializeInt("SoldierQuantity");;
     }
     
     public override void Write(ISerializerStream stream) {
         base.Write(stream);
+        stream.SerializeInt("Group", this.Group);
+        stream.SerializeInt("SoldierType", this.SoldierType);
+        stream.SerializeInt("SoldierQuantity", this.SoldierQuantity);
     }
     
     protected override void FillCommands(System.Collections.Generic.List<uFrame.MVVM.ViewModelCommandInfo> list) {
         base.FillCommands(list);
+        list.Add(new ViewModelCommandInfo("SetSoldierData", SetSoldierData) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("InitSoldierValue", InitSoldierValue) { ParameterType = typeof(void) });
     }
     
     protected override void FillProperties(System.Collections.Generic.List<uFrame.MVVM.ViewModelPropertyInfo> list) {
         base.FillProperties(list);
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_GroupProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_SoldierTypeProperty, false, false, false, false));
+        // PropertiesChildItem
+        list.Add(new ViewModelPropertyInfo(_SoldierQuantityProperty, false, false, false, false));
     }
 }
 

@@ -15,6 +15,8 @@ public class MainMenuService : MainMenuServiceBase
 	//Inject MainMenuRoot view model with id "MainMenuRoot"
     [Inject("MainMenuRoot")] public MainMenuRootViewModel MainMenuRoot;
     [Inject("LocalUser")] public UserViewModel LocalUser;
+	[Inject] public UserManagementService UserManagementService;
+	//public MainScene mainScene;
 	//public GameObject DisablePanel;
 
     //Invoked when kernel is loading to prepare the service
@@ -42,6 +44,7 @@ public class MainMenuService : MainMenuServiceBase
 
 	private void FindObject(){
 		//DisablePanel = GameObject.Find ("DisablePanel");
+		
 	}
 
     private void OnAuthorizationStateChanged(AuthorizationState state)
@@ -90,6 +93,17 @@ public class MainMenuService : MainMenuServiceBase
 		//	if (screenType.Name != "MenuScreenViewModel") DisablePanel.gameObject.SetActive(true);
 		//	else DisablePanel.gameObject.SetActive(false);
 		//}
+		
+		//if (screenType.Name == "MenuScreenViewModel")
+		//	UserManagementService.loadDB();
+		
+		/*
+		if(mainScene == null)
+			mainScene = GameObject.Find ("MainUIHolder").GetComponent<MainScene> ();
+		
+		MainScene.needReloadFromDB = true;
+		mainScene.CallMainScene();
+		*/
     }
 
     public override void RequestMainMenuScreenCommandHandler(RequestMainMenuScreenCommand data)

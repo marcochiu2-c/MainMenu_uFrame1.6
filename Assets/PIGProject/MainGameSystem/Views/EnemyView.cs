@@ -12,7 +12,7 @@ using UnityEngine;
 using Gamelogic.Grids;
 
 public class EnemyView : EnemyViewBase {
-	public GSHexGridManager gSHexGridManager;
+	//public GSHexGridManager gSHexGridManager;
     protected override void InitializeViewModel(uFrame.MVVM.ViewModel model) {
         base.InitializeViewModel(model);
         // NOTE: this method is only invoked if the 'Initialize ViewModel' is checked in the inspector.
