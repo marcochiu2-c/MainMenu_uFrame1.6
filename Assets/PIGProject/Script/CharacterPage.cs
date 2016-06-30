@@ -15,7 +15,7 @@ public class CharacterPage : MonoBehaviour {
 	public static Sprite avatar = null;
 	Game game;
 	// Use this for initialization
-	void Start () {
+	void OnEnable () {
 		CallCharacterPage ();
 	}
 
